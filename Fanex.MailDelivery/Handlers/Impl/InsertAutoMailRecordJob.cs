@@ -42,7 +42,7 @@
                 {
                     MailStatus = MailStatus.Waiting,
                     Schedule = schedule,
-                    SendTime = nextRun
+                    SentTime = nextRun
                 };
             }
 

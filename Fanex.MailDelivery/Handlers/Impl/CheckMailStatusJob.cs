@@ -43,7 +43,7 @@
 
                     case MailStatus.Waiting:
                     case MailStatus.Running:
-                        if (record.SendTime < DateTime.Now)
+                        if (record.SentTime < DateTime.Now)
                         {
                             //// If exceed wait time config, then send notify email
                         }

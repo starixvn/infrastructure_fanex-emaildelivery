@@ -96,7 +96,7 @@
     <Compile Include="Handlers\Impl\InsertAutoMailRecordJob.cs" />
     <Compile Include="Handlers\Impl\CheckMailStatusJob.cs" />
     <Compile Include="Handlers\Impl\JobHandler.cs" />
-    <Compile Include="Handlers\Impl\RabbitMQBroker.cs" />
+    <Compile Include="Handlers\Impl\MailServiceMessageBroker.cs" />
     <Compile Include="Handlers\Impl\RabbitMQLogger.cs" />
     <Compile Include="Handlers\Interface\IMessageBroker.cs" />
     <Compile Include="Models\AutoMailRecord.cs" />

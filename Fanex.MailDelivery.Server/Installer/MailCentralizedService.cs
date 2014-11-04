@@ -23,7 +23,7 @@
         public MailCentralizedService(IMessageBroker messageBroker)
         {
             InitializeComponent();
-            _messageBroker = messageBroker ?? new RabbitMQBroker();
+            _messageBroker = messageBroker ?? new MailServiceMessageBroker();
             _jobHandler = new JobHandler();
             DbSettingProviderManager.Current.Start();
         }

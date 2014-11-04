@@ -11,7 +11,13 @@
     /// </summary>
     public class MailRecord
     {
-        public DateTime SendTime { get; set; }
+        public int Id { get; set; }
+
+        public bool Active { get; set; }
+
+        public int SiteId { get; set; }
+
+        public DateTime SentTime { get; set; }
 
         public MailStatus MailStatus { get; set; }
     }

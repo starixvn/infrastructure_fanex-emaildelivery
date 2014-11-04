@@ -9,21 +9,22 @@
     using Fanex.MailDelivery.Configurations;
     using Fanex.MailDelivery.Handlers.Interface;
     using Fanex.MailDelivery.Services;
+    using System;
 
     /// <summary>
     /// TODO: Update summary.
     /// </summary>
-    public class RabbitMQBroker : IMessageBroker
+    public class MailServiceMessageBroker : IMessageBroker
     {
         private IBus _bus;
         private IMailService _mailService;
 
-        public RabbitMQBroker()
+        public MailServiceMessageBroker()
             : this(null)
         {
         }
 
-        public RabbitMQBroker(IMailService mailService)
+        public MailServiceMessageBroker(IMailService mailService)
         {
             _mailService = mailService ?? new MailService();
         }
@@ -139,6 +140,7 @@
             _bus.Respond<UpdateFunctionMailingListMessage, ResultMessage>(
                  updateFunctionMailingListMessage =>
                  {
+                     Console.WriteLine("Updated function mailing list:" + updateFunctionMailingListMessage.MailingList.TOs[0]);
                      return new ResultMessage
                          {
                              ErrCode = 0,
@@ -155,6 +157,7 @@
             _bus.Respond<UpdateScheduleMailingListMessage, ResultMessage>(
                  updateScheduleMailingListMessage =>
                  {
+                     Console.WriteLine("Updated schedule mailing list:" + updateScheduleMailingListMessage.MailingList.TOs[0]);
                      return new ResultMessage
                      {
                          ErrCode = 0,

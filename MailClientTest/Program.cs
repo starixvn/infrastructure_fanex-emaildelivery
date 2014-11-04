@@ -16,8 +16,8 @@ namespace MailClientTest
             MailClientHandler.Start();
             Console.WriteLine("Mail Client Service Site: {0} started.", AppSettings.MailCientConfig.SiteId);
 
-            SendMail();
-            //ModifyMailingList();
+            //SendMail();
+            ModifyMailingList();
 
             MailClientHandler.Stop();
         }
