@@ -37,7 +37,7 @@ namespace MailClientTest.Jobs
             //// Get Job init value here
             //jobContext.MergedJobDataMap
 
-            //// Sent Mail
+            //// Compose mail here.
             var mail = new Mail();
 
             return new JobResultMessage

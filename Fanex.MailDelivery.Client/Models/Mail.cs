@@ -1,10 +1,4 @@
-﻿// -----------------------------------------------------------------------
-// <copyright file="Mail.cs" company="">
-// TODO: Update copyright text.
-// </copyright>
-// -----------------------------------------------------------------------
-
-namespace Fanex.MailDelivery.Client.Models
+﻿namespace Fanex.MailDelivery.Client.Models
 {
     using System;
     using System.Collections.Generic;
@@ -12,7 +6,7 @@ namespace Fanex.MailDelivery.Client.Models
     using System.Text;
 
     /// <summary>
-    /// TODO: Update summary.
+    /// Mail content.
     /// </summary>
     public class Mail
     {

@@ -10,26 +10,28 @@
     using Fanex.MailDelivery.Enumerations;
 
     /// <summary>
-    /// TODO: Update summary.
+    /// Check Mail Status Job.
     /// </summary>
-    public class CheckAutoMailStatusJob : IJob
+    public class CheckMailStatusJob : IJob
     {
         public const string CheckAutoMailStatusJobName = "CheckAutoMailStatusJobName";
         public const string CheckAutoMailStatusJobTriggerName = "CheckAutoMailStatusJobTriggerName";
 
         public void Execute(IJobExecutionContext context)
         {
-            //// Check Auto mail status
-            List<AutoMailRecord> autoMailRecords = new List<AutoMailRecord>();
+            //// Check mail status
+            List<MailRecord> autoMailRecords = new List<MailRecord>();
 
             foreach (var record in autoMailRecords)
             {
                 switch (record.MailStatus)
                 {
                     case MailStatus.Failed:
+                    case MailStatus.DataIsNotReady:
                         //// Send mail notify
                         break;
                     case MailStatus.Waiting:
+                    case MailStatus.Running:
                         if (record.SendTime < DateTime.Now)
                         {
                             //// If exceed wait time config, then send notify email
@@ -41,7 +43,7 @@
                 }
             }
 
-            Console.WriteLine("CheckAutoMailStatusJob run");
+            Console.WriteLine("CheckMailStatusJob run");
         }
     }
 }

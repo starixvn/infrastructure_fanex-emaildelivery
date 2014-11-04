@@ -96,6 +96,7 @@
 
             TriggerBuilder triggerBuilder = TriggerBuilder.Create();
 
+            //// Start Schedule
             if (IsScheduleStartNow(schedule))
             {
                 triggerBuilder.StartNow();
@@ -103,6 +104,12 @@
             else
             {
                 triggerBuilder.StartAt(schedule.StartTime);
+            }
+
+            //// End Schedule
+            if (schedule.EndTime != null)
+            {
+                triggerBuilder.EndAt(new DateTimeOffset((DateTime)schedule.EndTime));
             }
 
             ITrigger trigger = triggerBuilder
@@ -116,7 +123,7 @@
         private IJobDetail GetJob(Schedule schedule)
         {
             string jobName = GetJobName(schedule.Id);
-            // define the job and tie it to our Job class
+            //// Define the job and tie it to our Job class
             var jobType = AppSettings.GetJobType(schedule.Id);
             IJobDetail job = JobBuilder.Create(jobType)
                 .WithIdentity(jobName, MailDeliveryConstants.MailCentralizedTriggerGroup)

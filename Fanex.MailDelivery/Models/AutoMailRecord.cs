@@ -8,14 +8,10 @@
     using Fanex.MailDelivery.Enumerations;
 
     /// <summary>
-    /// TODO: Update summary.
+    /// Auto Mail Record.
     /// </summary>
-    public class AutoMailRecord
+    public class AutoMailRecord : MailRecord
     {
         public Schedule Schedule { get; set; }
-
-        public DateTime SendTime { get; set; }
-
-        public MailStatus MailStatus { get; set; }
     }
 }

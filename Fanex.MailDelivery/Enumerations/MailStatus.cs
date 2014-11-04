@@ -1,10 +1,4 @@
-﻿// -----------------------------------------------------------------------
-// <copyright file="AutoMailStatus.cs" company="">
-// TODO: Update copyright text.
-// </copyright>
-// -----------------------------------------------------------------------
-
-namespace Fanex.MailDelivery.Enumerations
+﻿namespace Fanex.MailDelivery.Enumerations
 {
     using System;
     using System.Collections.Generic;
@@ -12,12 +6,14 @@ namespace Fanex.MailDelivery.Enumerations
     using System.Text;
 
     /// <summary>
-    /// TODO: Update summary.
+    /// Mail Status.
     /// </summary>
     public enum MailStatus : int
     {
         Sent = 1,
         Waiting = 2,
-        Failed = 3
+        Failed = 3,
+        Running = 4,
+        DataIsNotReady = 5
     }
 }

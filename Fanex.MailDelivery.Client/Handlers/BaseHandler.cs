@@ -1,10 +1,4 @@
-﻿// -----------------------------------------------------------------------
-// <copyright file="BaseHandler.cs" company="">
-// TODO: Update copyright text.
-// </copyright>
-// -----------------------------------------------------------------------
-
-namespace Fanex.MailDelivery.Client.Handlers
+﻿namespace Fanex.MailDelivery.Client.Handlers
 {
     using System;
     using System.Collections.Generic;
@@ -13,7 +7,7 @@ namespace Fanex.MailDelivery.Client.Handlers
     using Fanex.Logging;
 
     /// <summary>
-    /// TODO: Update summary.
+    /// Base Handler.
     /// </summary>
     public class BaseHandler
     {

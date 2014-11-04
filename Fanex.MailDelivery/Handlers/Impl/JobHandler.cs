@@ -1,10 +1,4 @@
-﻿// -----------------------------------------------------------------------
-// <copyright file="JobHandler.cs" company="">
-// TODO: Update copyright text.
-// </copyright>
-// -----------------------------------------------------------------------
-
-namespace Fanex.MailDelivery.Handlers.Impl
+﻿namespace Fanex.MailDelivery.Handlers.Impl
 {
     using System;
     using System.Collections.Generic;
@@ -15,7 +9,7 @@ namespace Fanex.MailDelivery.Handlers.Impl
     using Fanex.MailDelivery.Configurations;
 
     /// <summary>
-    /// TODO: Update summary.
+    /// Job Handler.
     /// </summary>
     public class JobHandler
     {
@@ -51,12 +45,12 @@ namespace Fanex.MailDelivery.Handlers.Impl
 
         private void StartCheckAutoMailStatusJob()
         {
-            IJobDetail job = JobBuilder.Create<CheckAutoMailStatusJob>()
-                    .WithIdentity(CheckAutoMailStatusJob.CheckAutoMailStatusJobName)
+            IJobDetail job = JobBuilder.Create<CheckMailStatusJob>()
+                    .WithIdentity(CheckMailStatusJob.CheckAutoMailStatusJobName)
                     .Build();
 
             ITrigger trigger = TriggerBuilder.Create()
-                .WithIdentity(CheckAutoMailStatusJob.CheckAutoMailStatusJobTriggerName)
+                .WithIdentity(CheckMailStatusJob.CheckAutoMailStatusJobTriggerName)
                 .StartNow()
                 .WithCronSchedule(AppSettings.MailServiceSection.CheckAutoMailStatusSchedule)
                 .Build();

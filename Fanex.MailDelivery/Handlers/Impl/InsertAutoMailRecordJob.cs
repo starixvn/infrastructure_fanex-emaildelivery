@@ -16,7 +16,7 @@ namespace Fanex.MailDelivery.Handlers.Impl
     using Fanex.MailDelivery.Enumerations;
 
     /// <summary>
-    /// TODO: Update summary.
+    /// Insert Auto Mail Record Job.
     /// </summary>
     public class InsertAutoMailRecordJob : IJob
     {
