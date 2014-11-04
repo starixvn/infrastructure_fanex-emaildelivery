@@ -1,20 +1,10 @@
-﻿// -----------------------------------------------------------------------
-// <copyright file="FileAttachment.cs" company="">
-// TODO: Update copyright text.
-// </copyright>
-// -----------------------------------------------------------------------
-
-namespace Fanex.MailDelivery.Client.Models
+﻿namespace Fanex.MailDelivery.Client.Models
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using Fanex.MailDelivery.Client.Enumerations;
     using System.IO;
+    using Fanex.MailDelivery.Client.Enumerations;
 
     /// <summary>
-    /// TODO: Update summary.
+    /// Mail Attachment.
     /// </summary>
     public class MailAttachment
     {
@@ -41,6 +31,10 @@ namespace Fanex.MailDelivery.Client.Models
 
         public string FileName { get; set; }
 
+        /// <summary>
+        /// Reads the content of the file.
+        /// </summary>
+        /// <param name="filePath">The file path.</param>
         private void ReadFileContent(string filePath)
         {
             if (FileContent == null
@@ -55,6 +49,5 @@ namespace Fanex.MailDelivery.Client.Models
                 FileName = Path.GetFileName(filePath);
             }
         }
-        
     }
 }

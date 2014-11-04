@@ -12,11 +12,18 @@ namespace Fanex.MailDelivery.Client.Enumerations
     using System.Text;
 
     /// <summary>
-    /// TODO: Update summary.
+    /// Mail Type.
     /// </summary>
     public enum MailType : int
     {
+        /// <summary>
+        /// Function mail.
+        /// </summary>
         Function = 1,
+
+        /// <summary>
+        /// Schedule Mail.
+        /// </summary>
         Schedule = 2
     }
 }

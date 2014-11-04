@@ -1,9 +1,6 @@
 ﻿namespace Fanex.MailDelivery.Client.Models
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
 
     /// <summary>
     /// Schedule information.
@@ -33,6 +30,10 @@
 
         public int CurrentRetryTimes { get; set; }
 
+        /// <summary>
+        /// Clones this instance.
+        /// </summary>
+        /// <returns>Schedule instance.</returns>
         public Schedule Clone()
         {
             return new Schedule
@@ -55,6 +56,5 @@
         {
             return CurrentRetryTimes <= MaxRetryTimes;
         }
-
     }
 }

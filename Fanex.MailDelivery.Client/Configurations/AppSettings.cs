@@ -1,22 +1,24 @@
 ﻿namespace Fanex.MailDelivery.Client.Configurations
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
 
     /// <summary>
     /// TODO: Update summary.
     /// </summary>
     public class AppSettings
     {
-        public static MailClientSection MailCientConfig { private set; get; }
-
         static AppSettings()
         {
             MailCientConfig = MailClientSection.GetConfig();
         }
 
+        public static MailClientSection MailCientConfig { get; private set; }
+
+        /// <summary>
+        /// Gets the function identifier.
+        /// </summary>
+        /// <param name="functionName">Name of the function.</param>
+        /// <returns>Function ID.</returns>
         public static int GetFunctionId(string functionName)
         {
             FunctionElementCollection functions = MailCientConfig.Functions;
@@ -32,6 +34,11 @@
             return 0;
         }
 
+        /// <summary>
+        /// Gets the type of the job.
+        /// </summary>
+        /// <param name="scheduleId">The schedule identifier.</param>
+        /// <returns>Job Type return.</returns>
         public static Type GetJobType(int scheduleId)
         {
             var schedules = MailCientConfig.Schedules;

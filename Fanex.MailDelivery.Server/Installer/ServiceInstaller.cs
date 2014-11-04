@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Configuration.Install;
-using System.Linq;
-using System.ServiceProcess;
-
-
-namespace Fanex.MailDelivery.Server.Installer
+﻿namespace Fanex.MailDelivery.Server.Installer
 {
+    using System;
+    using System.ComponentModel;
+    using System.Linq;
+    using System.ServiceProcess;
+
+    /// <summary>
+    /// Service Installer.
+    /// </summary>
     [RunInstaller(true)]
     public partial class ServiceInstaller : System.Configuration.Install.Installer
     {
@@ -29,7 +28,7 @@ namespace Fanex.MailDelivery.Server.Installer
             ParseServiceNameSwitches(commandlineArgs, out serviceName);
 
             _service.ServiceName = serviceName;
-            _service.Description = "Fanex - Email - Mail Service - Name " + serviceName;
+            _service.Description = "Fanex-Email-Delivery " + serviceName;
             _service.StartType = ServiceStartMode.Automatic;
             Installers.Add(_process);
             Installers.Add(_service);

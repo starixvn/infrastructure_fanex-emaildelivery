@@ -1,14 +1,11 @@
 ﻿namespace Fanex.MailDelivery.Admin.Handlers.Impl
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using Fanex.MailDelivery.Admin.Handlers.Interface;
     using EasyNetQ;
     using Fanex.MailDelivery.Admin.Configurations;
-    using Fanex.MailDelivery.Client.Models;
+    using Fanex.MailDelivery.Admin.Handlers.Interface;
     using Fanex.MailDelivery.Client;
+    using Fanex.MailDelivery.Client.Models;
 
     /// <summary>
     /// Mail Admin Message Broker.
@@ -19,7 +16,8 @@
 
         public void Start()
         {
-            _bus = RabbitHutch.CreateBus(AppSettings.MailAdminConfig.RabbitMQConnectionString,
+            _bus = RabbitHutch.CreateBus(
+                AppSettings.MailAdminConfig.RabbitMQConnectionString,
                 serviceRegister =>
                 {
                     serviceRegister.Register<IEasyNetQLogger>(_ => new MailAdminLogger());

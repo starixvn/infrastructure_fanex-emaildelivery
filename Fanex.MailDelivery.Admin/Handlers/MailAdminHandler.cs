@@ -1,12 +1,7 @@
 ﻿namespace Fanex.MailDelivery.Admin.Handlers
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using Fanex.MailDelivery.Admin.Handlers.Interface;
-    using Fanex.MailDelivery.Client.Handlers.Interface;
     using Fanex.MailDelivery.Admin.Handlers.Impl;
+    using Fanex.MailDelivery.Admin.Handlers.Interface;
     using Fanex.MailDelivery.Client.Models;
 
     /// <summary>

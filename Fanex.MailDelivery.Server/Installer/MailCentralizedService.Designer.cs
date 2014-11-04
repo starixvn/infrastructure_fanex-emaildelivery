@@ -1,22 +1,29 @@
 ﻿namespace Fanex.MailDelivery.Server.Installer
 {
+    using System.Diagnostics.CodeAnalysis;
+
+    /// <summary>
+    /// Mail Centralized Service.
+    /// </summary>
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1400:AccessModifierMustBeDeclared", Justification = "Reviewed.")]
     partial class MailCentralizedService
     {
         /// <summary> 
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private System.ComponentModel.IContainer _components = null;
 
         /// <summary>
         /// Clean up any resources being used.
         /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        /// <param name="disposing">True if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (components != null))
+            if (disposing && (_components != null))
             {
-                components.Dispose();
+                _components.Dispose();
             }
+
             base.Dispose(disposing);
         }
 
@@ -28,7 +35,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
+            _components = new System.ComponentModel.Container();
             this.ServiceName = "MailCentralizedService";
         }
 

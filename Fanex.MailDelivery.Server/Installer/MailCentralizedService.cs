@@ -1,10 +1,15 @@
 ﻿namespace Fanex.MailDelivery.Server.Installer
 {
+    using System.Diagnostics.CodeAnalysis;
     using System.ServiceProcess;
     using Fanex.Data.Configuration;
     using Fanex.MailDelivery.Handlers.Impl;
     using Fanex.MailDelivery.Handlers.Interface;
 
+    /// <summary>
+    /// Mail Centralized Service.
+    /// </summary>
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1400:AccessModifierMustBeDeclared", Justification = "Reviewed.")]
     partial class MailCentralizedService : ServiceBase
     {
         private IMessageBroker _messageBroker;

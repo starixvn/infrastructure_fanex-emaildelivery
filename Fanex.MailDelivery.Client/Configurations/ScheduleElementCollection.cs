@@ -5,7 +5,7 @@
     /// <summary>
     /// TODO: Update summary.
     /// </summary>
-    [ConfigurationCollection(typeof(ScheduleElement), AddItemName="Schedule")]
+    [ConfigurationCollection(typeof(ScheduleElement), AddItemName = "Schedule")]
     public class ScheduleElementCollection : ConfigurationElementCollection
     {
         protected override ConfigurationElement CreateNewElement()

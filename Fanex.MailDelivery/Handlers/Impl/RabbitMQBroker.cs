@@ -2,13 +2,13 @@
 {
     using System.Collections.Generic;
     using EasyNetQ;
+    using Fanex.MailDelivery.Client;
     using Fanex.MailDelivery.Client.Messages;
     using Fanex.MailDelivery.Client.Messages.MailingList;
     using Fanex.MailDelivery.Client.Models;
     using Fanex.MailDelivery.Configurations;
     using Fanex.MailDelivery.Handlers.Interface;
     using Fanex.MailDelivery.Services;
-    using Fanex.MailDelivery.Client;
 
     /// <summary>
     /// TODO: Update summary.
@@ -28,11 +28,19 @@
             _mailService = mailService ?? new MailService();
         }
 
+        /// <summary>
+        /// Starts this instance.
+        /// </summary>
         public void Start()
         {
             //// Standard practice is to create a single IBus instance for the lifetime of your application. Dispose it when your application closes.
             //// https://github.com/mikehadlow/EasyNetQ/wiki/Connecting-to-RabbitMQ
-            _bus = RabbitHutch.CreateBus(AppSettings.MailServiceSection.RabbitMQConnectionString);
+            _bus = RabbitHutch.CreateBus(
+                AppSettings.MailServiceSection.RabbitMQConnectionString,
+                serviceRegister =>
+                {
+                    serviceRegister.Register<IEasyNetQLogger>(_ => new RabbitMQLogger());
+                });
             SubscribeScheduleRequest();
             SubscribeMail();
             SubscribeJobResult();
@@ -42,9 +50,13 @@
             SubscribeScheduleMailingListUpdate();
         }
 
+        /// <summary>
+        /// Subscribes the mail.
+        /// </summary>
         public void SubscribeMail()
         {
-            _bus.Subscribe<Mail>(MailDeliveryConstants.SendMailRoutingKey,
+            _bus.Subscribe<Mail>(
+                MailDeliveryConstants.SendMailRoutingKey,
                     mail =>
                     {
                         _mailService.SendMail(mail);
@@ -52,9 +64,13 @@
                     config => config.WithTopic(MailDeliveryConstants.SendMailRoutingKey));
         }
 
+        /// <summary>
+        /// Subscribes the job result.
+        /// </summary>
         public void SubscribeJobResult()
         {
-            _bus.Subscribe<JobResultMessage>(MailDeliveryConstants.JobResultRoutingKey,
+            _bus.Subscribe<JobResultMessage>(
+                MailDeliveryConstants.JobResultRoutingKey,
                     jobStatus =>
                     {
                         _mailService.UpdateJobStatus(jobStatus.Schedule, jobStatus.JobStatus);
@@ -63,6 +79,9 @@
                     config => config.WithTopic(MailDeliveryConstants.JobResultRoutingKey));
         }
 
+        /// <summary>
+        /// Subscribes the schedule request.
+        /// </summary>
         public void SubscribeScheduleRequest()
         {
             _bus.Respond<ScheduleRequestMessage, List<Schedule>>(
@@ -71,10 +90,12 @@
                     List<Schedule> schedules = _mailService.GetSchedules(scheduleRequest.Ids);
 
                     return schedules;
-                }
-            );
+                });
         }
 
+        /// <summary>
+        /// Subscribes the function mailing list request.
+        /// </summary>
         public void SubscribeFunctionMailingListRequest()
         {
             _bus.Respond<FunctionMailingListRequest, MailingListMessage>(
@@ -88,10 +109,12 @@
                                 "bbb"
                             }
                         };
-                }
-            );
+                });
         }
 
+        /// <summary>
+        /// Subscribes the schedule mailing list request.
+        /// </summary>
         public void SubscribeScheduleMailingListRequest()
         {
             _bus.Respond<ScheduleMailingListRequest, MailingListMessage>(
@@ -105,10 +128,12 @@
                                 "ddd"
                             }
                     };
-                }
-            );
+                });
         }
 
+        /// <summary>
+        /// Subscribes the function mailing list update.
+        /// </summary>
         public void SubscribeFunctionMailingListUpdate()
         {
             _bus.Respond<UpdateFunctionMailingListMessage, ResultMessage>(
@@ -119,10 +144,12 @@
                              ErrCode = 0,
                              Message = "Updated successfully!"
                          };
-                 }
-             );
+                 });
         }
 
+        /// <summary>
+        /// Subscribes the schedule mailing list update.
+        /// </summary>
         public void SubscribeScheduleMailingListUpdate()
         {
             _bus.Respond<UpdateScheduleMailingListMessage, ResultMessage>(
@@ -133,8 +160,7 @@
                          ErrCode = 0,
                          Message = "Updated successfully!"
                      };
-                 }
-             );
+                 });
         }
 
         public void Dispose()

@@ -6,8 +6,6 @@
     using Fanex.MailDelivery.Client.Messages;
     using Fanex.MailDelivery.Client.Messages.MailingList;
     using Fanex.MailDelivery.Client.Models;
-    using System;
-    using Fanex.MailDelivery.Client.Enumerations;
 
     /// <summary>
     /// Mail Client Handler.
@@ -18,8 +16,8 @@
         private static IMailClientMessageBroker _messageBroker;
 
         public static void Start(
-            IJobHandler jobHandler = null
-            , IMailClientMessageBroker messageBroker = null)
+            IJobHandler jobHandler = null,
+            IMailClientMessageBroker messageBroker = null)
         {
             _jobHandler = jobHandler ?? new JobHandler();
             _messageBroker = messageBroker ?? new MailClientMessageBroker();

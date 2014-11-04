@@ -1,10 +1,4 @@
-﻿// -----------------------------------------------------------------------
-// <copyright file="RabbitMQLogger.cs" company="">
-// TODO: Update copyright text.
-// </copyright>
-// -----------------------------------------------------------------------
-
-namespace Fanex.MailDelivery.Client.Handlers.Impl
+﻿namespace Fanex.MailDelivery.Client.Handlers.Impl
 {
     using System;
     using System.Collections.Generic;
@@ -15,9 +9,9 @@ namespace Fanex.MailDelivery.Client.Handlers.Impl
     using Fanex.MailDelivery.Client.Configurations;
 
     /// <summary>
-    /// TODO: Update summary.
+    /// Mail Client Logger.
     /// </summary>
-    public class MailClientLogger: IEasyNetQLogger
+    public class MailClientLogger : IEasyNetQLogger
     {
         public void DebugWrite(string format, params object[] args)
         {

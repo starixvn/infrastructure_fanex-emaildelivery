@@ -1,21 +1,12 @@
-﻿// -----------------------------------------------------------------------
-// <copyright file="IMailService.cs" company="">
-// TODO: Update copyright text.
-// </copyright>
-// -----------------------------------------------------------------------
-
-namespace Fanex.MailDelivery.Services
+﻿namespace Fanex.MailDelivery.Services
 {
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
+    using Fanex.MailDelivery.Client.Enumerations;
     using Fanex.MailDelivery.Client.Models;
     using Fanex.NAP.Framework.Command;
-using Fanex.MailDelivery.Client.Enumerations;
 
     /// <summary>
-    /// TODO: Update summary.
+    /// Mail Service interface.
     /// </summary>
     public interface IMailService
     {

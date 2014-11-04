@@ -7,30 +7,6 @@
     /// </summary>
     public class MailClientSection : ConfigurationSection
     {
-        public static MailClientSection GetConfig(string sectionName = "Fanex.MailDelivery.Client")
-        {
-            return ConfigurationManager.GetSection(sectionName) as MailClientSection;
-        }
-
-        [ConfigurationProperty("Functions", IsRequired=false)]
-        public FunctionElementCollection Functions
-        {
-            get { return (FunctionElementCollection)this["Functions"]; }
-            set { this["Functions"] = value; }
-        }
-
-        [ConfigurationProperty("Schedules", IsRequired= false)]
-        public ScheduleElementCollection Schedules
-        {
-            get { return (ScheduleElementCollection)this["Schedules"]; }
-            set { this["Schedules"] = value; }
-        }
-
-        public bool HasSchedule()
-        {
-            return Schedules.Count > 0;
-        }
-
         [ConfigurationProperty("applicationSendMailId", IsRequired = true)]
         public int ApplicationSendMailId
         {
@@ -38,11 +14,18 @@
             set { this["applicationSendMailId"] = value; }
         }
 
-        [ConfigurationProperty("siteId", IsRequired = true)]
-        public int SiteId
+        [ConfigurationProperty("Functions", IsRequired = false)]
+        public FunctionElementCollection Functions
         {
-            get { return (int)this["siteId"]; }
-            set { this["siteId"] = value; }
+            get { return (FunctionElementCollection)this["Functions"]; }
+            set { this["Functions"] = value; }
+        }
+
+        [ConfigurationProperty("messageBrokerLogCategory", IsRequired = true)]
+        public string MessageBrokerLogCategory
+        {
+            get { return (string)this["messageBrokerLogCategory"]; }
+            set { this["messageBrokerLogCategory"] = value; }
         }
 
         [ConfigurationProperty("rabbitMQConnectionString", IsRequired = true)]
@@ -52,11 +35,28 @@
             set { this["rabbitMQConnectionString"] = value; }
         }
 
-        [ConfigurationProperty("messageBrokerLogCategory", IsRequired = true)]
-        public string MessageBrokerLogCategory
+        [ConfigurationProperty("Schedules", IsRequired = false)]
+        public ScheduleElementCollection Schedules
         {
-            get { return (string)this["messageBrokerLogCategory"]; }
-            set { this["messageBrokerLogCategory"] = value; }
+            get { return (ScheduleElementCollection)this["Schedules"]; }
+            set { this["Schedules"] = value; }
+        }
+
+        [ConfigurationProperty("siteId", IsRequired = true)]
+        public int SiteId
+        {
+            get { return (int)this["siteId"]; }
+            set { this["siteId"] = value; }
+        }
+
+        public static MailClientSection GetConfig(string sectionName = "Fanex.MailDelivery.Client")
+        {
+            return ConfigurationManager.GetSection(sectionName) as MailClientSection;
+        }
+
+        public bool HasSchedule()
+        {
+            return Schedules.Count > 0;
         }
     }
 }

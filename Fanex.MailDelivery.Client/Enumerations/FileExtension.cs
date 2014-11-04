@@ -11,37 +11,37 @@
     public enum FileExtension
     {
         /// <summary>
-        /// Excel file.
+        /// Excel file extension..
         /// </summary>
         MS_EXCEL,
 
         /// <summary>
-        /// Doc file.
+        /// Doc file extension..
         /// </summary>
         MS_DOC,
 
         /// <summary>
-        /// Img file.
+        /// Image file extension..
         /// </summary>
         IMG_JPG,
 
         /// <summary>
-        /// Gif file.
+        /// Gif file extension..
         /// </summary>
         IMG_GIF,
 
         /// <summary>
-        /// Png file.
+        /// PNG file extension.
         /// </summary>
         IMG_PNG,
 
         /// <summary>
-        /// Pdf file.
+        /// PDF file extension..
         /// </summary>
         PDF,
 
         /// <summary>
-        /// Text file.
+        /// Text file extension..
         /// </summary>
         TEXT
     }

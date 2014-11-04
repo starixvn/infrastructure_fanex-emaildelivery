@@ -25,6 +25,19 @@
             Console.WriteLine(string.Format("Retry Schedule {0}", schedule.Id));
         }
 
+        /// <summary>
+        /// Retries the job.
+        /// </summary>
+        /// <param name="schedule">The schedule.</param>
+        public void RetryJob(Schedule schedule)
+        {
+            IJobDetail job = GetRetryJob(schedule);
+            ITrigger trigger = GetRetryTrigger(schedule);
+
+            // Tell quartz to schedule the job using our trigger
+            _scheduler.ScheduleJob(job, trigger);
+        }
+
         public void Start()
         {
             if (AppSettings.MailCientConfig.HasSchedule())
@@ -42,7 +55,7 @@
             {
                 IJobDetail job = GetJob(schedule);
                 ITrigger trigger = GetTrigger(schedule);
-                // Tell quartz to schedule the job using our trigger
+                //// Tell quartz to schedule the job using our trigger
                 _scheduler.ScheduleJob(job, trigger);
             }
         }
@@ -85,6 +98,98 @@
             }
         }
 
+        private IJobDetail GetJob(Schedule schedule)
+        {
+            string jobName = GetJobName(schedule.Id);
+            //// Define the job and tie it to our Job class
+            var jobType = AppSettings.GetJobType(schedule.Id);
+            IJobDetail job = JobBuilder.Create(jobType)
+                .WithIdentity(jobName, MailDeliveryConstants.MailCentralizedTriggerGroup)
+                .Build();
+            return job;
+        }
+
+        /// <summary>
+        /// Gets the data map with supply for running job.
+        /// </summary>
+        /// <param name="schedule">The schedule.</param>
+        /// <returns>Job data map.</returns>
+        private JobDataMap GetJobDataMap(Schedule schedule)
+        {
+            JobDataMap jobDataMap = new JobDataMap();
+            jobDataMap.Add(MailDeliveryConstants.ScheduleJobDataKey, schedule);
+
+            var schedules = AppSettings.MailCientConfig.Schedules;
+
+            foreach (ScheduleElement scheduleConfig in schedules)
+            {
+                if (schedule.Id == scheduleConfig.Id)
+                {
+                    foreach (JobInputDataElement jobData in scheduleConfig.JobInputData)
+                    {
+                        jobDataMap.Add(jobData.Name, jobData.Value);
+                    }
+                }
+            }
+
+            return jobDataMap;
+        }
+
+        private string GetJobName(int scheduleId)
+        {
+            return string.Format(MailDeliveryConstants.AutoMailJobNameFormat, scheduleId);
+        }
+
+        /// <summary>
+        /// Gets the retry all process trigger.
+        /// </summary>
+        /// <param name="schedule">The schedule.</param>
+        /// <returns>Trigger details.</returns>
+        private ITrigger GetRetryAllProcessTrigger(Schedule schedule)
+        {
+            var jobDataMap = GetJobDataMap(schedule);
+            ITrigger retryTrigger = TriggerBuilder.Create()
+                .StartNow()
+                .UsingJobData(jobDataMap)
+                .Build();
+
+            return retryTrigger;
+        }
+
+        /// <summary>
+        /// Gets the retry job.
+        /// </summary>
+        /// <param name="schedule">The schedule.</param>
+        /// <returns>Job details.</returns>
+        private IJobDetail GetRetryJob(Schedule schedule)
+        {
+            string jobName = string.Format(
+                MailDeliveryConstants.AutoMailJobNameFormat,
+                schedule.Id.ToString() + Guid.NewGuid().ToString());
+            //// define the job and tie it to our Job class
+            var jobType = AppSettings.GetJobType(schedule.Id);
+            IJobDetail job = JobBuilder.Create(jobType)
+                .WithIdentity(jobName, MailDeliveryConstants.MailCentralizedTriggerGroup)
+                .Build();
+            return job;
+        }
+
+        /// <summary>
+        /// Gets the retry trigger.
+        /// </summary>
+        /// <param name="schedule">The schedule.</param>
+        /// <returns>Trigger details.</returns>
+        private ITrigger GetRetryTrigger(Schedule schedule)
+        {
+            var jobDataMap = GetJobDataMap(schedule);
+            ITrigger retryTrigger = TriggerBuilder.Create()
+                .StartAt(DateTimeOffset.Now.AddMinutes(schedule.RetryIntervalInMinutes))
+                .UsingJobData(jobDataMap)
+                .Build();
+
+            return retryTrigger;
+        }
+
         /// <summary>
         /// Gets the trigger from schedule.
         /// </summary>
@@ -120,47 +225,6 @@
             return trigger;
         }
 
-        private IJobDetail GetJob(Schedule schedule)
-        {
-            string jobName = GetJobName(schedule.Id);
-            //// Define the job and tie it to our Job class
-            var jobType = AppSettings.GetJobType(schedule.Id);
-            IJobDetail job = JobBuilder.Create(jobType)
-                .WithIdentity(jobName, MailDeliveryConstants.MailCentralizedTriggerGroup)
-                .Build();
-            return job;
-        }
-
-        private string GetJobName(int scheduleId)
-        {
-            return string.Format(MailDeliveryConstants.AutoMailJobNameFormat, scheduleId);
-        }
-
-        /// <summary>
-        /// Gets the data map with supply for running job.
-        /// </summary>
-        /// <param name="schedule">The schedule.</param>
-        /// <returns>Job data map.</returns>
-        private JobDataMap GetJobDataMap(Schedule schedule)
-        {
-            JobDataMap jobDataMap = new JobDataMap();
-            jobDataMap.Add(MailDeliveryConstants.ScheduleJobDataKey, schedule);
-
-            var schedules = AppSettings.MailCientConfig.Schedules;
-
-            foreach (ScheduleElement scheduleConfig in schedules)
-            {
-                if (schedule.Id == scheduleConfig.Id)
-                {
-                    foreach (JobInputDataElement jobData in scheduleConfig.JobInputData)
-                    {
-                        jobDataMap.Add(jobData.Name, jobData.Value);
-                    }
-                }
-            }
-            return jobDataMap;
-        }
-
         /// <summary>
         /// Determines whether [is schedule start now or start in the future] [the specified schedule].
         /// </summary>
@@ -173,50 +237,6 @@
             TimeSpan timeGap = startTimeOffSet - currentTimeOffSet;
 
             return timeGap.TotalMilliseconds <= 0;
-        }
-
-        private IJobDetail GetRetryJob(Schedule schedule)
-        {
-            string jobName = string.Format(
-                MailDeliveryConstants.AutoMailJobNameFormat,
-                schedule.Id.ToString() + Guid.NewGuid().ToString());
-            // define the job and tie it to our Job class
-            var jobType = AppSettings.GetJobType(schedule.Id);
-            IJobDetail job = JobBuilder.Create(jobType)
-                .WithIdentity(jobName, MailDeliveryConstants.MailCentralizedTriggerGroup)
-                .Build();
-            return job;
-        }
-
-        private ITrigger GetRetryTrigger(Schedule schedule)
-        {
-            var jobDataMap = GetJobDataMap(schedule);
-            ITrigger retryTrigger = TriggerBuilder.Create()
-                .StartAt(DateTimeOffset.Now.AddSeconds(schedule.RetryIntervalInMinutes))
-                .UsingJobData(jobDataMap)
-                .Build();
-
-            return retryTrigger;
-        }
-
-        private ITrigger GetRetryAllProcessTrigger(Schedule schedule)
-        {
-            var jobDataMap = GetJobDataMap(schedule);
-            ITrigger retryTrigger = TriggerBuilder.Create()
-                .StartNow()
-                .UsingJobData(jobDataMap)
-                .Build();
-
-            return retryTrigger;
-        }
-
-        public void RetryJob(Schedule schedule)
-        {
-            IJobDetail job = GetRetryJob(schedule);
-            ITrigger trigger = GetRetryTrigger(schedule);
-
-            // Tell quartz to schedule the job using our trigger
-            _scheduler.ScheduleJob(job, trigger);
         }
     }
 }

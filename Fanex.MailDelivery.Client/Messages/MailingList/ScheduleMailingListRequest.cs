@@ -1,10 +1,4 @@
-﻿// -----------------------------------------------------------------------
-// <copyright file="ScheduleMailingListRequestMessage.cs" company="">
-// TODO: Update copyright text.
-// </copyright>
-// -----------------------------------------------------------------------
-
-namespace Fanex.MailDelivery.Client.Messages.MailingList
+﻿namespace Fanex.MailDelivery.Client.Messages.MailingList
 {
     using System;
     using System.Collections.Generic;
@@ -12,7 +6,7 @@ namespace Fanex.MailDelivery.Client.Messages.MailingList
     using System.Text;
 
     /// <summary>
-    /// TODO: Update summary.
+    /// Schedule Mailing List Request.
     /// </summary>
     public class ScheduleMailingListRequest
     {

@@ -1,18 +1,19 @@
 ﻿namespace Fanex.MailDelivery.Server
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
+    using System.Reflection;
     using System.ServiceProcess;
     using Fanex.MailDelivery.Server.Installer;
-    using System.Reflection;
 
     /// <summary>
-    /// TODO: Update summary.
+    /// Program starts.
     /// </summary>
     public class Program
     {
+        /// <summary>
+        /// Mains the specified arguments.
+        /// </summary>
+        /// <param name="args">The arguments.</param>
         public static void Main(string[] args)
         {
             ServiceBase[] servicesToRun = new ServiceBase[]
@@ -44,6 +45,5 @@
                 ServiceBase.Run(servicesToRun);
             }
         }
-
     }
 }

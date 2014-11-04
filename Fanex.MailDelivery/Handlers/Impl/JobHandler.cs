@@ -1,19 +1,14 @@
 ﻿namespace Fanex.MailDelivery.Handlers.Impl
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
+    using Fanex.MailDelivery.Configurations;
     using Quartz;
     using Quartz.Impl;
-    using Fanex.MailDelivery.Configurations;
 
     /// <summary>
     /// Job Handler.
     /// </summary>
     public class JobHandler
     {
-
         private IScheduler _scheduler;
 
         public void Start()
@@ -28,21 +23,18 @@
             }
         }
 
-        private void StartInsertAutoMailRecordJob()
+        public void Stop()
         {
-            IJobDetail job = JobBuilder.Create<InsertAutoMailRecordJob>()
-                    .WithIdentity(InsertAutoMailRecordJob.InsertAutoMailRecordJobName)
-                    .Build();
-
-            ITrigger trigger = TriggerBuilder.Create()
-                .WithIdentity(InsertAutoMailRecordJob.InsertAutoMailRecordJobTriggerName)
-                .StartNow()
-                .WithCronSchedule(AppSettings.MailServiceSection.InsertMailStatusRecordSchedule)
-                .Build();
-
-            _scheduler.ScheduleJob(job, trigger);
+            if (AppSettings.MailServiceSection.IsRunAutoMailStatusReport
+                && _scheduler != null)
+            {
+                _scheduler.Shutdown();
+            }
         }
 
+        /// <summary>
+        /// Starts the check automatic mail status job.
+        /// </summary>
         private void StartCheckAutoMailStatusJob()
         {
             IJobDetail job = JobBuilder.Create<CheckMailStatusJob>()
@@ -58,13 +50,22 @@
             _scheduler.ScheduleJob(job, trigger);
         }
 
-        public void Stop()
+        /// <summary>
+        /// Starts the insert automatic mail record job.
+        /// </summary>
+        private void StartInsertAutoMailRecordJob()
         {
-            if (AppSettings.MailServiceSection.IsRunAutoMailStatusReport 
-                && _scheduler != null)
-            {
-                _scheduler.Shutdown();
-            }
+            IJobDetail job = JobBuilder.Create<InsertAutoMailRecordJob>()
+                    .WithIdentity(InsertAutoMailRecordJob.InsertAutoMailRecordJobName)
+                    .Build();
+
+            ITrigger trigger = TriggerBuilder.Create()
+                .WithIdentity(InsertAutoMailRecordJob.InsertAutoMailRecordJobTriggerName)
+                .StartNow()
+                .WithCronSchedule(AppSettings.MailServiceSection.InsertMailStatusRecordSchedule)
+                .Build();
+
+            _scheduler.ScheduleJob(job, trigger);
         }
     }
 }

@@ -13,13 +13,14 @@
     /// </summary>
     public class MailClientMessageBroker : IMailClientMessageBroker
     {
-        private string UpdateScheduleSubscriptionId = string.Format(MailDeliveryConstants.UpdateScheduleRoutingKeyFormat, AppSettings.MailCientConfig.SiteId);
-        private string RetryJobSubscriptionId = string.Format(MailDeliveryConstants.RetryJobRoutingKeyFormat, AppSettings.MailCientConfig.SiteId);
+        private string _updateScheduleSubscriptionId = string.Format(MailDeliveryConstants.UpdateScheduleRoutingKeyFormat, AppSettings.MailCientConfig.SiteId);
+        private string _retryJobSubscriptionId = string.Format(MailDeliveryConstants.RetryJobRoutingKeyFormat, AppSettings.MailCientConfig.SiteId);
         private IBus _bus;
 
         public void Start()
         {
-            _bus = RabbitHutch.CreateBus(AppSettings.MailCientConfig.RabbitMQConnectionString,
+            _bus = RabbitHutch.CreateBus(
+                AppSettings.MailCientConfig.RabbitMQConnectionString,
                 serviceRegister =>
                 {
                     serviceRegister.Register<IEasyNetQLogger>(_ => new MailClientLogger());
@@ -35,22 +36,24 @@
 
         public void SubscribeScheduleChange()
         {
-            _bus.Subscribe<Schedule>(UpdateScheduleSubscriptionId,
+            _bus.Subscribe<Schedule>(
+                _updateScheduleSubscriptionId,
                     schedule =>
                     {
                         MailClientHandler.UpdateSchedule(schedule);
                     },
-                    config => config.WithTopic(UpdateScheduleSubscriptionId));
+                    config => config.WithTopic(_updateScheduleSubscriptionId));
         }
 
         public void SubscribeRetryJob()
         {
-            _bus.Subscribe<Schedule>(RetryJobSubscriptionId,
+            _bus.Subscribe<Schedule>(
+                _retryJobSubscriptionId,
                     schedule =>
                     {
                         MailClientHandler.RetryAllProcess(schedule);
                     },
-                    config => config.WithTopic(RetryJobSubscriptionId));
+                    config => config.WithTopic(_retryJobSubscriptionId));
         }
 
         public void Publish(Mail mail)
@@ -64,6 +67,10 @@
             _bus.Publish(mail, MailDeliveryConstants.SendMailRoutingKey);
         }
 
+        /// <summary>
+        /// Gets the schedules.
+        /// </summary>
+        /// <returns>Schedule list.</returns>
         public List<Schedule> GetSchedules()
         {
             ScheduleRequestMessage scheduleRequest = new ScheduleRequestMessage();

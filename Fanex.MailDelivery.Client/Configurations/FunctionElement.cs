@@ -5,7 +5,6 @@
     /// <summary>
     /// TODO: Update summary.
     /// </summary>
-
     public class FunctionElement : ConfigurationElement
     {
         [ConfigurationProperty("id", IsKey = true, IsRequired = true)]
