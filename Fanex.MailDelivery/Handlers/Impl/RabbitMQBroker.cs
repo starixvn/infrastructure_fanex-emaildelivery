@@ -1,0 +1,145 @@
+﻿namespace Fanex.MailDelivery.Handlers.Impl
+{
+    using System.Collections.Generic;
+    using EasyNetQ;
+    using Fanex.MailDelivery.Client.Messages;
+    using Fanex.MailDelivery.Client.Messages.MailingList;
+    using Fanex.MailDelivery.Client.Models;
+    using Fanex.MailDelivery.Configurations;
+    using Fanex.MailDelivery.Handlers.Interface;
+    using Fanex.MailDelivery.Services;
+    using Fanex.MailDelivery.Client;
+
+    /// <summary>
+    /// TODO: Update summary.
+    /// </summary>
+    public class RabbitMQBroker : IMessageBroker
+    {
+        private IBus _bus;
+        private IMailService _mailService;
+
+        public RabbitMQBroker()
+            : this(null)
+        {
+        }
+
+        public RabbitMQBroker(IMailService mailService)
+        {
+            _mailService = mailService ?? new MailService();
+        }
+
+        public void Start()
+        {
+            //// Standard practice is to create a single IBus instance for the lifetime of your application. Dispose it when your application closes.
+            //// https://github.com/mikehadlow/EasyNetQ/wiki/Connecting-to-RabbitMQ
+            _bus = RabbitHutch.CreateBus(AppSettings.MailServiceSection.RabbitMQConnectionString);
+            SubscribeScheduleRequest();
+            SubscribeMail();
+            SubscribeJobResult();
+            SubscribeFunctionMailingListRequest();
+            SubscribeFunctionMailingListUpdate();
+            SubscribeScheduleMailingListRequest();
+            SubscribeScheduleMailingListUpdate();
+        }
+
+        public void SubscribeMail()
+        {
+            _bus.Subscribe<Mail>(MailDeliveryConstants.SendMailRoutingKey,
+                    mail =>
+                    {
+                        _mailService.SendMail(mail);
+                    },
+                    config => config.WithTopic(MailDeliveryConstants.SendMailRoutingKey));
+        }
+
+        public void SubscribeJobResult()
+        {
+            _bus.Subscribe<JobResultMessage>(MailDeliveryConstants.JobResultRoutingKey,
+                    jobStatus =>
+                    {
+                        _mailService.UpdateJobStatus(jobStatus.Schedule, jobStatus.JobStatus);
+                        _mailService.SendMail(jobStatus.Mail);
+                    },
+                    config => config.WithTopic(MailDeliveryConstants.JobResultRoutingKey));
+        }
+
+        public void SubscribeScheduleRequest()
+        {
+            _bus.Respond<ScheduleRequestMessage, List<Schedule>>(
+                scheduleRequest =>
+                {
+                    List<Schedule> schedules = _mailService.GetSchedules(scheduleRequest.Ids);
+
+                    return schedules;
+                }
+            );
+        }
+
+        public void SubscribeFunctionMailingListRequest()
+        {
+            _bus.Respond<FunctionMailingListRequest, MailingListMessage>(
+                functionMailingListRequest =>
+                {
+                    return new MailingListMessage
+                        {
+                            TOs = new List<string>
+                            {
+                                "aaa",
+                                "bbb"
+                            }
+                        };
+                }
+            );
+        }
+
+        public void SubscribeScheduleMailingListRequest()
+        {
+            _bus.Respond<ScheduleMailingListRequest, MailingListMessage>(
+                scheduleMailingListRequest =>
+                {
+                    return new MailingListMessage
+                    {
+                        TOs = new List<string>
+                            {
+                                "ccc",
+                                "ddd"
+                            }
+                    };
+                }
+            );
+        }
+
+        public void SubscribeFunctionMailingListUpdate()
+        {
+            _bus.Respond<UpdateFunctionMailingListMessage, ResultMessage>(
+                 updateFunctionMailingListMessage =>
+                 {
+                     return new ResultMessage
+                         {
+                             ErrCode = 0,
+                             Message = "Updated successfully!"
+                         };
+                 }
+             );
+        }
+
+        public void SubscribeScheduleMailingListUpdate()
+        {
+            _bus.Respond<UpdateScheduleMailingListMessage, ResultMessage>(
+                 updateScheduleMailingListMessage =>
+                 {
+                     return new ResultMessage
+                     {
+                         ErrCode = 0,
+                         Message = "Updated successfully!"
+                     };
+                 }
+             );
+        }
+
+        public void Dispose()
+        {
+            _bus.Dispose();
+        }
+    }
+}

@@ -1,0 +1,48 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Fanex.MailDelivery.Admin.Handlers;
+using Fanex.MailDelivery.Client.Models;
+
+namespace AdminSiteTest
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            MailAdminHandler.Start();
+            string inputKey = string.Empty;
+            var updatedSchedule = new Schedule
+            {
+                Id = 1,
+                SiteId = 1,
+                FunctionId = 1,
+                Name = "Trigger1",
+                RepeatExpression = "0/5 * * * * ?",
+                StartTime = DateTime.Now,
+                EndTime = DateTime.Now.AddDays(30),
+                RetryIntervalInMinutes = 5,
+                MaxRetryTimes = 2,
+                Active = true
+            };
+
+            Console.WriteLine("Enter 1 for publishing schedule change, 2 for retry job, 0 for out.");
+            while (inputKey != "0")
+            {
+                inputKey = Console.ReadLine();
+                switch (inputKey)
+                {
+                    case "1":
+                        MailAdminHandler.PublishScheduleChangeMessage(updatedSchedule);
+                        break;
+                    case "2":
+                        MailAdminHandler.PublishRetryJobMessage(updatedSchedule);
+                        break;
+                }
+            }
+
+            MailAdminHandler.Stop();
+        }
+    }
+}

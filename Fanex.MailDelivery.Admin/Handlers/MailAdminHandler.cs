@@ -1,0 +1,40 @@
+﻿namespace Fanex.MailDelivery.Admin.Handlers
+{
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using Fanex.MailDelivery.Admin.Handlers.Interface;
+    using Fanex.MailDelivery.Client.Handlers.Interface;
+    using Fanex.MailDelivery.Admin.Handlers.Impl;
+    using Fanex.MailDelivery.Client.Models;
+
+    /// <summary>
+    /// Mail Admin Handler.
+    /// </summary>
+    public class MailAdminHandler
+    {
+        private static IMailAdminMessageBroker _messageBroker;
+
+        public static void Start(IMailAdminMessageBroker messageBroker = null)
+        {
+            _messageBroker = messageBroker ?? new MailAdminMessageBroker();
+            _messageBroker.Start();
+        }
+
+        public static void Stop()
+        {
+            _messageBroker.Stop();
+        }
+
+        public static void PublishRetryJobMessage(Schedule schedule)
+        {
+            _messageBroker.PublishRetryJobMessage(schedule);
+        }
+
+        public static void PublishScheduleChangeMessage(Schedule schedule)
+        {
+            _messageBroker.PublishScheduleChangeMessage(schedule);
+        }
+    }
+}

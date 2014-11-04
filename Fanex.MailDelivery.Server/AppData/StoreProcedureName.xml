@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Functions>
+  <Function Name="MailDeliver">
+    <Setting Key="StoreConfig" SpName="MailRecorder_InsConfig" DbName="DBMA.bodb_Maintenance.bodbAdminNet"  />
+  </Function>
+</Functions>
+
+
+
+

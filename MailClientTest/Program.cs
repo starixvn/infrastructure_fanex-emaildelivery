@@ -1,0 +1,62 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Fanex.MailDelivery.Client.Handlers;
+using Fanex.MailDelivery.Client.Configurations;
+using Fanex.MailDelivery.Client.Models;
+
+namespace MailClientTest
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            MailClientHandler.Start();
+            Console.WriteLine("Mail Client Service Site: {0} started.", AppSettings.MailCientConfig.SiteId);
+
+            SendMail();
+            //ModifyMailingList();
+
+            MailClientHandler.Stop();
+        }
+
+        private static void SendMail()
+        {
+            var mailSubject = string.Empty;
+            Console.WriteLine("Enter a mail subject. 'Quit' to quit.");
+            while ((mailSubject = Console.ReadLine()) != "Quit")
+            {
+                var mail = new Mail();
+                //// Prepare mail
+
+                mail.FunctionId = AppSettings.GetFunctionId("FuntionA");
+                MailClientHandler.SendFunctionMail(mail);
+
+                Console.WriteLine("Sent Mail");
+            }
+        }
+
+        private static void ModifyMailingList()
+        {
+            var mailSubject = string.Empty;
+            var functionId = 1;
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("Get Mailing List");
+
+            var mailingList = MailClientHandler.GetFunctionMailingList(functionId);
+
+            foreach (var toMail in mailingList.TOs)
+            {
+                Console.WriteLine(toMail);
+            }
+
+            mailingList.TOs[0] = "abc";
+
+            var result = MailClientHandler.UpdateFunctionMailingList(functionId, mailingList);
+
+            Console.WriteLine(result.Message);
+            Console.ForegroundColor = ConsoleColor.Gray;
+        }
+    }
+}

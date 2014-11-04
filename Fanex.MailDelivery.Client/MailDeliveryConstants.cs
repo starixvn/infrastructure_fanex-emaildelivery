@@ -1,0 +1,26 @@
+﻿namespace Fanex.MailDelivery.Client
+{
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+
+    /// <summary>
+    /// Route key for deliver message.
+    /// </summary>
+    public class MailDeliveryConstants
+    {
+        public const string SendMailRoutingKey = "RoutingKey.SendMail";
+        public const string JobResultRoutingKey = "RoutingKey.JobResult";
+        public const string UpdateScheduleRoutingKeyFormat = "RoutingKey.UpdateSchedule_{0}";
+        public const string RetryJobRoutingKeyFormat = "RoutingKey.RetryJob_{0}";
+
+        public const string AutoMailJobNameFormat = "AutoMailJob_{0}";
+        public const string MailCentralizedJobGroup = "MailCentralizedJobGroup";
+        public const string MailCentralizedTriggerGroup = "MailCentralizedTriggerGroup";
+        public const string JobRetryNameFormat = "JobRetry_{0}";
+        public const string TriggerRetryNameFormat = "TriggerRetry_{0}";
+
+        public const string ScheduleJobDataKey = "Fanex.MailDelivery.Client.ScheduleJobDataKey";
+    }
+}

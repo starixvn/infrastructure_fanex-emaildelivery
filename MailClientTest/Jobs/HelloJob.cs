@@ -1,0 +1,51 @@
+﻿// -----------------------------------------------------------------------
+// <copyright file="HelloJob.cs" company="">
+// TODO: Update copyright text.
+// </copyright>
+// -----------------------------------------------------------------------
+
+namespace MailClientTest.Jobs
+{
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using Fanex.MailDelivery.Client.Models;
+    using Fanex.MailDelivery.Client.Jobs;
+    using Quartz;
+    using Fanex.MailDelivery.Client.Handlers;
+    using Fanex.MailDelivery.Client.Enumerations;
+    using Fanex.MailDelivery.Client.Messages;
+
+    /// <summary>
+    /// Hello Job.
+    /// </summary>
+    public class HelloJob : JobBase
+    {
+        protected override JobResultMessage Run(Schedule schedule, IJobExecutionContext jobContext)
+        {
+            var jobLog = string.Format(
+                "Run Hello Job: \n\tSite Id: {0}, Function Id: {1}, Schedule: {2}. \n\tSent at {3}",
+                schedule.SiteId,
+                schedule.FunctionId,
+                schedule.Id,
+                DateTime.Now);
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine(jobLog);
+            Console.ForegroundColor = ConsoleColor.White;
+
+            //// Get Job init value here
+            //jobContext.MergedJobDataMap
+
+            //// Sent Mail
+            var mail = new Mail();
+
+            return new JobResultMessage
+                {
+                    Mail = mail,
+                    Schedule = schedule,
+                    JobStatus = JobStatus.Success
+                };
+        }
+    }
+}
