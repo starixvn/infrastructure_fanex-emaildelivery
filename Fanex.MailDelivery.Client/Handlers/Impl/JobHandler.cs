@@ -183,7 +183,7 @@
         {
             var jobDataMap = GetJobDataMap(schedule);
             ITrigger retryTrigger = TriggerBuilder.Create()
-                .StartAt(DateTimeOffset.Now.AddMinutes(schedule.RetryIntervalInMinutes))
+                .StartAt(DateTimeOffset.Now.AddSeconds(schedule.RetryIntervalInMinutes))
                 .UsingJobData(jobDataMap)
                 .Build();
 

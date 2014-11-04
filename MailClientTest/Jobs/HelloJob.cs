@@ -39,7 +39,7 @@ namespace MailClientTest.Jobs
                 {
                     Mail = mail,
                     Schedule = schedule,
-                    JobStatus = JobStatus.Success
+                    JobStatus = JobStatus.DataIsNoReady
                 };
         }
     }

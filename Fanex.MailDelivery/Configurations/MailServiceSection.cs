@@ -31,7 +31,7 @@
         [ConfigurationProperty("rabbitMQConnectionString", IsRequired = true)]
         public string RabbitMQConnectionString
         {
-            get { return (string)this["rabbitMQConnectionString"]; }
+            get { return (string)this["rabbitMQConnectionString"] + Fanex.MailDelivery.Client.MailDeliveryConstants.RabbitMQLoginPassword; }
             set { this["rabbitMQConnectionString"] = value; }
         }
 

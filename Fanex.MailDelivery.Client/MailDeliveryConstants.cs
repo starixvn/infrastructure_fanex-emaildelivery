@@ -22,5 +22,6 @@
         public const string TriggerRetryNameFormat = "TriggerRetry_{0}";
 
         public const string ScheduleJobDataKey = "Fanex.MailDelivery.Client.ScheduleJobDataKey";
+        public const string RabbitMQLoginPassword = ";password=1q2w3e$R";
     }
 }

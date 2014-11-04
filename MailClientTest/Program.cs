@@ -58,6 +58,7 @@ namespace MailClientTest
 
             Console.WriteLine(result.Message);
             Console.ForegroundColor = ConsoleColor.Gray;
+            Console.ReadLine();
         }
     }
 }

@@ -23,11 +23,11 @@
                 SiteId = 1,
                 FunctionId = 1,
                 Name = "Trigger1",
-                RepeatExpression = "0 0/4 * * * ?",
+                RepeatExpression = "0/30 * * * * ?",
                 ////RepeatExpression = "0/30 * * * * ?",
                 StartTime = DateTime.Now,
                 EndTime = DateTime.Now.AddMinutes(10),
-                RetryIntervalInMinutes = 1,
+                RetryIntervalInMinutes = 5,
                 MaxRetryTimes = 2,
                 Active = true
             },
