@@ -13,7 +13,7 @@
         /// <summary>
         /// The data is no ready status.
         /// </summary>
-        DataIsNoReady = 1,
+        DataIsNotReady = 1,
 
         /// <summary>
         /// The failed status.

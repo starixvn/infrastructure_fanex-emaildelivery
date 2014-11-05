@@ -36,10 +36,10 @@
                 SiteId = 2,
                 FunctionId = 2,
                 Name = "Trigger2",
-                RepeatExpression = "0 0/10 * * * ?",
+                RepeatExpression = "0/30 * * * * ?",
                 StartTime = DateTime.Now,
-                RetryIntervalInSeconds = 60,
-                MaxRetryTimes = 4,
+                RetryIntervalInSeconds = 5,
+                MaxRetryTimes = 2,
                 Active = true
             },
             new Schedule
@@ -48,10 +48,10 @@
                 SiteId = 3,
                 FunctionId = 3,
                 Name = "Trigger3",
-                RepeatExpression = "0 0/20 * * * ?",
+                RepeatExpression = "0/45 * * * * ?",
                 StartTime = DateTime.Now,
-                RetryIntervalInSeconds = 150,
-                MaxRetryTimes = 5,
+                RetryIntervalInSeconds = 5,
+                MaxRetryTimes = 2,
                 Active = true
             }
         };
@@ -106,7 +106,7 @@
                         break;
 
                     case JobStatus.Running:
-                    case JobStatus.DataIsNoReady:
+                    case JobStatus.DataIsNotReady:
                         var jobRetryLog = string.Format(
                                            "Job Retry: \n\tSite Id: {0}, Function Id: {1}, Schedule: {2}. \n\tRetrytimes: {3}.\n\tMaxRetrytimes: {4}.",
                                            schedule.SiteId,

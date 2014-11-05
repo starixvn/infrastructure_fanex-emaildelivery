@@ -18,6 +18,10 @@
         private IBus _bus;
         private IJobHandler _jobHandler;
 
+        /// <summary>
+        /// Starts the specified job handler.
+        /// </summary>
+        /// <param name="jobHandler">The job handler.</param>
         public void Start(IJobHandler jobHandler)
         {
             _jobHandler = jobHandler;

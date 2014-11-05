@@ -6,7 +6,7 @@
     using System.Text;
 
     /// <summary>
-    /// Mailing List ErrMsg.
+    /// Mailing List Message.
     /// </summary>
     public class MailingListMessage
     {

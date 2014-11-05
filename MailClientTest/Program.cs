@@ -16,8 +16,8 @@ namespace MailClientTest
             MailClientHandler.Start();
             Console.WriteLine("Mail Client Service Site: {0} started.", AppSettings.MailCientConfig.SiteId);
 
-            SendMail();
-            //ModifyMailingList();
+            //SendMail();
+            ModifyMailingList();
 
             MailClientHandler.Stop();
         }
@@ -28,7 +28,10 @@ namespace MailClientTest
             Console.WriteLine("Enter a mail subject. 'Quit' to quit.");
             while ((mailSubject = Console.ReadLine()) != "Quit")
             {
-                var mail = new Mail();
+                var mail = new Mail
+                    {
+                        Subject = mailSubject
+                    };
                 //// Prepare mail
 
                 mail.FunctionId = AppSettings.GetFunctionId("FuntionA");
@@ -43,16 +46,18 @@ namespace MailClientTest
             var mailSubject = string.Empty;
             var functionId = 1;
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("Get Mailing List");
+            
 
             var mailingList = MailClientHandler.GetFunctionMailingList(functionId);
-
+            Console.WriteLine("Get Mailing List:");
+            
             foreach (var toMail in mailingList.TOs)
             {
                 Console.WriteLine(toMail);
             }
 
-            mailingList.TOs[0] = "abc";
+            Console.WriteLine("Please input mail to:");
+            mailingList.TOs[0] = Console.ReadLine();
 
             var result = MailClientHandler.UpdateFunctionMailingList(functionId, mailingList);
 

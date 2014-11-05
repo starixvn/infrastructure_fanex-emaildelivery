@@ -39,7 +39,7 @@ namespace MailClientTest.Jobs
                 {
                     Mail = mail,
                     Schedule = schedule,
-                    JobStatus = JobStatus.DataIsNoReady,
+                    JobStatus = JobStatus.DataIsNotReady,
                     Result = new ResultMessage
                     {
                         ErrCode = 0,

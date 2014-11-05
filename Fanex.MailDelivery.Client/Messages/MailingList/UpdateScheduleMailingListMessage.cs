@@ -6,7 +6,7 @@
     using System.Text;
 
     /// <summary>
-    /// Update Schedule Mailing List ErrMsg.
+    /// Update Schedule Mailing List Message.
     /// </summary>
     public class UpdateScheduleMailingListMessage
     {

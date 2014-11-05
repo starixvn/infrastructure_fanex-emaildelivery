@@ -1,5 +1,6 @@
 ﻿namespace Fanex.MailDelivery.Handlers.Impl
 {
+    using System;
     using System.Collections.Generic;
     using EasyNetQ;
     using Fanex.MailDelivery.Client;
@@ -9,10 +10,9 @@
     using Fanex.MailDelivery.Configurations;
     using Fanex.MailDelivery.Handlers.Interface;
     using Fanex.MailDelivery.Services;
-    using System;
 
     /// <summary>
-    /// TODO: Update summary.
+    /// Mail Service Message Broker.
     /// </summary>
     public class MailServiceMessageBroker : IMessageBroker
     {

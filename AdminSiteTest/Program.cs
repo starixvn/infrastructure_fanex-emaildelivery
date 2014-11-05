@@ -20,7 +20,7 @@ namespace AdminSiteTest
                 SiteId = 1,
                 FunctionId = 1,
                 Name = "Trigger1",
-                RepeatExpression = "0/5 * * * * ?",
+                RepeatExpression = "0/20 * * * * ?",
                 StartTime = DateTime.Now,
                 EndTime = DateTime.Now.AddDays(30),
                 RetryIntervalInSeconds = 5,

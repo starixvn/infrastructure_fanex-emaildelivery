@@ -11,7 +11,7 @@
     /// <summary>
     /// Handling job executing.
     /// </summary>
-    public class JobHandler : IJobHandler
+    public class JobHandler : BaseHandler, IJobHandler
     {
         private IScheduler _scheduler;
 
@@ -50,14 +50,29 @@
             }
         }
 
+        /// <summary>
+        /// Starts the jobs.
+        /// </summary>
+        /// <param name="schedules">The schedules.</param>
         public void StartJobs(List<Schedule> schedules)
         {
             foreach (var schedule in schedules)
             {
-                IJobDetail job = GetJob(schedule);
-                ITrigger trigger = GetTrigger(schedule);
-                //// Tell quartz to schedule the job using our trigger
-                _scheduler.ScheduleJob(job, trigger);
+                if (schedule.Active)
+                {
+                    IJobDetail job = GetJob(schedule);
+                    ITrigger trigger = GetTrigger(schedule);
+                    //// Tell quartz to schedule the job using our trigger
+                    _scheduler.ScheduleJob(job, trigger);
+                    if (schedule.SiteId != AppSettings.MailCientConfig.SiteId)
+                    {
+                        LogInfo(
+                            string.Format(
+                                "Current site id is {0}, but schedule site id is {1}",
+                                AppSettings.MailCientConfig.SiteId,
+                                schedule.SiteId));
+                    }
+                }
             }
         }
 
@@ -95,7 +110,11 @@
             }
             else
             {
-                Console.WriteLine(string.Format("Schedule {0} is null", schedule.Id));
+                IJobDetail job = GetJob(schedule);
+                ITrigger trigger = GetTrigger(schedule);
+                //// Tell quartz to schedule the job using our trigger
+                _scheduler.ScheduleJob(job, trigger);
+                Console.WriteLine(string.Format("Started schedule {0} ", schedule.Id));
             }
         }
 

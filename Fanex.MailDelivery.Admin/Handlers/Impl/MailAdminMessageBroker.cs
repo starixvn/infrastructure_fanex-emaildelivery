@@ -8,7 +8,7 @@
     using Fanex.MailDelivery.Client.Models;
 
     /// <summary>
-    /// Mail Admin ErrMsg Broker.
+    /// Mail Admin Message Broker.
     /// </summary>
     public class MailAdminMessageBroker : IMailAdminMessageBroker
     {
