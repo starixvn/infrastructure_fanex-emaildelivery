@@ -15,7 +15,7 @@
 
         protected override object GetElementKey(ConfigurationElement element)
         {
-            return ((ScheduleElement)element).Name;
+            return ((ScheduleElement)element).Id;
         }
     }
 }
