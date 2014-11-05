@@ -40,11 +40,12 @@
 
         public void Start()
         {
+            ISchedulerFactory schedFact = new StdSchedulerFactory();
+            _scheduler = schedFact.GetScheduler();
+            _scheduler.Start();
+            
             if (AppSettings.MailCientConfig.HasSchedule())
             {
-                ISchedulerFactory schedFact = new StdSchedulerFactory();
-                _scheduler = schedFact.GetScheduler();
-                _scheduler.Start();
                 StartJobs(MailClientHandler.GetSchedules());
             }
         }
@@ -62,7 +63,7 @@
 
         public void Stop()
         {
-            if (AppSettings.MailCientConfig.HasSchedule())
+            if (_scheduler != null)
             {
                 _scheduler.Shutdown();
             }
@@ -183,7 +184,7 @@
         {
             var jobDataMap = GetJobDataMap(schedule);
             ITrigger retryTrigger = TriggerBuilder.Create()
-                .StartAt(DateTimeOffset.Now.AddSeconds(schedule.RetryIntervalInMinutes))
+                .StartAt(DateTimeOffset.Now.AddSeconds(schedule.RetryIntervalInSeconds))
                 .UsingJobData(jobDataMap)
                 .Build();
 

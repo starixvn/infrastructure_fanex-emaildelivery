@@ -4,7 +4,7 @@
     using Fanex.MailDelivery.Client.Models;
 
     /// <summary>
-    /// Job Status Message.
+    /// Job Status ErrMsg.
     /// </summary>
     public class JobResultMessage
     {
@@ -14,7 +14,7 @@
 
         public JobStatus JobStatus { get; set; }
 
-        public ResultMessage ResultMessage { get; set; }
+        public ResultMessage Result { get; set; }
 
         public int RunningTime { get; set; }
     }

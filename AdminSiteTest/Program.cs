@@ -23,9 +23,9 @@ namespace AdminSiteTest
                 RepeatExpression = "0/5 * * * * ?",
                 StartTime = DateTime.Now,
                 EndTime = DateTime.Now.AddDays(30),
-                RetryIntervalInMinutes = 5,
+                RetryIntervalInSeconds = 5,
                 MaxRetryTimes = 2,
-                Active = true
+                Active = false
             };
 
             Console.WriteLine("Enter 1 for publishing schedule change, 2 for retry job, 0 for out.");

@@ -6,6 +6,6 @@ set PATH=%PATH%;%DOTNETFX2%
 
 echo Installing Broadcast Command Service...
 echo ---------------------------------------------------
-installutil /u Fanex.MailDeliver.MailServer.exe /servicename="Fanex Email Service Ver 1"
+installutil /u Fanex.MailDelivery.Server.exe /servicename="Fanex Mail Delivery - V1"
 echo ---------------------------------------------------
 echo Done.

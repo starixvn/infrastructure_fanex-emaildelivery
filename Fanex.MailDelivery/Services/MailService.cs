@@ -23,11 +23,10 @@
                 SiteId = 1,
                 FunctionId = 1,
                 Name = "Trigger1",
-                RepeatExpression = "0/30 * * * * ?",
-                ////RepeatExpression = "0/30 * * * * ?",
+                RepeatExpression = "0/15 * * * * ?",
                 StartTime = DateTime.Now,
                 EndTime = DateTime.Now.AddMinutes(10),
-                RetryIntervalInMinutes = 5,
+                RetryIntervalInSeconds = 2,
                 MaxRetryTimes = 2,
                 Active = true
             },
@@ -39,7 +38,7 @@
                 Name = "Trigger2",
                 RepeatExpression = "0 0/10 * * * ?",
                 StartTime = DateTime.Now,
-                RetryIntervalInMinutes = 1,
+                RetryIntervalInSeconds = 60,
                 MaxRetryTimes = 4,
                 Active = true
             },
@@ -51,7 +50,7 @@
                 Name = "Trigger3",
                 RepeatExpression = "0 0/20 * * * ?",
                 StartTime = DateTime.Now,
-                RetryIntervalInMinutes = 1,
+                RetryIntervalInSeconds = 150,
                 MaxRetryTimes = 5,
                 Active = true
             }

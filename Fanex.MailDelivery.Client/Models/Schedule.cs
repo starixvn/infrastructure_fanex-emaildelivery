@@ -24,7 +24,7 @@
 
         public bool Active { get; set; }
 
-        public int RetryIntervalInMinutes { get; set; }
+        public int RetryIntervalInSeconds { get; set; }
 
         public int MaxRetryTimes { get; set; }
 
@@ -46,7 +46,7 @@
                 StartTime = StartTime,
                 EndTime = EndTime,
                 Active = Active,
-                RetryIntervalInMinutes = RetryIntervalInMinutes,
+                RetryIntervalInSeconds = RetryIntervalInSeconds,
                 MaxRetryTimes = MaxRetryTimes,
                 CurrentRetryTimes = CurrentRetryTimes
             };

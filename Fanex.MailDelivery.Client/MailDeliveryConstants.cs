@@ -16,8 +16,8 @@
         public const string RetryJobRoutingKeyFormat = "RoutingKey.RetryJob_{0}";
 
         public const string AutoMailJobNameFormat = "AutoMailJob_{0}";
-        public const string MailCentralizedJobGroup = "MailCentralizedJobGroup";
-        public const string MailCentralizedTriggerGroup = "MailCentralizedTriggerGroup";
+        public const string MailCentralizedJobGroup = "Fanex.MailDelivery.Client.MailCentralizedJobGroup";
+        public const string MailCentralizedTriggerGroup = "Fanex.MailDelivery.Client.MailCentralizedTriggerGroup";
         public const string JobRetryNameFormat = "JobRetry_{0}";
         public const string TriggerRetryNameFormat = "TriggerRetry_{0}";
 

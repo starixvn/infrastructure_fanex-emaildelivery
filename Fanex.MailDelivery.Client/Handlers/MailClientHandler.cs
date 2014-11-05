@@ -21,7 +21,7 @@
         {
             _jobHandler = jobHandler ?? new JobHandler();
             _messageBroker = messageBroker ?? new MailClientMessageBroker();
-            _messageBroker.Start();
+            _messageBroker.Start(_jobHandler);
             _jobHandler.Start();
         }
 
@@ -69,16 +69,6 @@
         public static void RetryJob(Schedule schedule)
         {
             _jobHandler.RetryJob(schedule);
-        }
-
-        public static void RetryAllProcess(Schedule schedule)
-        {
-            _jobHandler.RetryAllProcess(schedule);
-        }
-
-        public static void UpdateSchedule(Schedule schedule)
-        {
-            _jobHandler.UpdateSchedule(schedule);
         }
     }
 }

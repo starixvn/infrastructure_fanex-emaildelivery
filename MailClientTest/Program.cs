@@ -16,8 +16,8 @@ namespace MailClientTest
             MailClientHandler.Start();
             Console.WriteLine("Mail Client Service Site: {0} started.", AppSettings.MailCientConfig.SiteId);
 
-            //SendMail();
-            ModifyMailingList();
+            SendMail();
+            //ModifyMailingList();
 
             MailClientHandler.Stop();
         }
@@ -56,7 +56,7 @@ namespace MailClientTest
 
             var result = MailClientHandler.UpdateFunctionMailingList(functionId, mailingList);
 
-            Console.WriteLine(result.Message);
+            Console.WriteLine(result.ErrMsg);
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.ReadLine();
         }

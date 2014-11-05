@@ -144,7 +144,7 @@
                      return new ResultMessage
                          {
                              ErrCode = 0,
-                             Message = "Updated successfully!"
+                             ErrMsg = "Updated successfully!"
                          };
                  });
         }
@@ -161,7 +161,7 @@
                      return new ResultMessage
                      {
                          ErrCode = 0,
-                         Message = "Updated successfully!"
+                         ErrMsg = "Updated successfully!"
                      };
                  });
         }

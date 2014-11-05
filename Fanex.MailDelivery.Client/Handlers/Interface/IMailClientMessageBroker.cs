@@ -6,11 +6,11 @@
     using Fanex.MailDelivery.Client.Models;
 
     /// <summary>
-    /// I Message Broker.
+    /// I ErrMsg Broker.
     /// </summary>
     public interface IMailClientMessageBroker
     {
-        void Start();
+        void Start(IJobHandler jobHandler);
 
         void Stop();
 

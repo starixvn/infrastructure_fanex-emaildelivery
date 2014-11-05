@@ -16,9 +16,11 @@
         private string _updateScheduleSubscriptionId = string.Format(MailDeliveryConstants.UpdateScheduleRoutingKeyFormat, AppSettings.MailCientConfig.SiteId);
         private string _retryJobSubscriptionId = string.Format(MailDeliveryConstants.RetryJobRoutingKeyFormat, AppSettings.MailCientConfig.SiteId);
         private IBus _bus;
+        private IJobHandler _jobHandler;
 
-        public void Start()
+        public void Start(IJobHandler jobHandler)
         {
+            _jobHandler = jobHandler;
             _bus = RabbitHutch.CreateBus(
                 AppSettings.MailCientConfig.RabbitMQConnectionString,
                 serviceRegister =>
@@ -40,7 +42,7 @@
                 _updateScheduleSubscriptionId,
                     schedule =>
                     {
-                        MailClientHandler.UpdateSchedule(schedule);
+                        _jobHandler.UpdateSchedule(schedule);
                     },
                     config => config.WithTopic(_updateScheduleSubscriptionId));
         }
@@ -51,7 +53,7 @@
                 _retryJobSubscriptionId,
                     schedule =>
                     {
-                        MailClientHandler.RetryAllProcess(schedule);
+                        _jobHandler.RetryAllProcess(schedule);
                     },
                     config => config.WithTopic(_retryJobSubscriptionId));
         }
