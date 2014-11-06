@@ -31,7 +31,7 @@
             {
                 var jobResult = Run(schedule, context);
 
-                MailClientHandler.SendAutoMail(jobResult);
+                MailClientHandler.ReportJobAndSendMail(jobResult);
 
                 if (jobResult.JobStatus != JobStatus.Success)
                 {

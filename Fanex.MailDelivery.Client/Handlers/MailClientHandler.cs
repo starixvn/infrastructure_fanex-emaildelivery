@@ -30,12 +30,12 @@
             _jobHandler.Stop();
         }
 
-        public static void SendFunctionMail(Mail mail)
+        public static void SendMail(Mail mail)
         {
             _messageBroker.Publish(mail);
         }
 
-        public static void SendAutoMail(JobResultMessage jobResult)
+        public static void ReportJobAndSendMail(JobResultMessage jobResult)
         {
             _messageBroker.Publish(jobResult);
         }
