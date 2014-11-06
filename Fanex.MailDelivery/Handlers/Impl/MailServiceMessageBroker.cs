@@ -5,7 +5,6 @@
     using EasyNetQ;
     using Fanex.MailDelivery.Client;
     using Fanex.MailDelivery.Client.Messages;
-    using Fanex.MailDelivery.Client.Messages.MailingList;
     using Fanex.MailDelivery.Client.Models;
     using Fanex.MailDelivery.Configurations;
     using Fanex.MailDelivery.Handlers.Interface;
@@ -99,17 +98,10 @@
         /// </summary>
         public void SubscribeFunctionMailingListRequest()
         {
-            _bus.Respond<FunctionMailingListRequest, MailingListMessage>(
+            _bus.Respond<MailingListRequest, MailingList>(
                 functionMailingListRequest =>
                 {
-                    return new MailingListMessage
-                        {
-                            TOs = new List<string>
-                            {
-                                "aaa",
-                                "bbb"
-                            }
-                        };
+                    return _mailService.GetMailingList(functionMailingListRequest.MailingListId);
                 });
         }
 
@@ -118,17 +110,10 @@
         /// </summary>
         public void SubscribeScheduleMailingListRequest()
         {
-            _bus.Respond<ScheduleMailingListRequest, MailingListMessage>(
+            _bus.Respond<MailingListRequest, MailingList>(
                 scheduleMailingListRequest =>
                 {
-                    return new MailingListMessage
-                    {
-                        TOs = new List<string>
-                            {
-                                "ccc",
-                                "ddd"
-                            }
-                    };
+                    return _mailService.GetMailingList(scheduleMailingListRequest.MailingListId);
                 });
         }
 
@@ -137,14 +122,14 @@
         /// </summary>
         public void SubscribeFunctionMailingListUpdate()
         {
-            _bus.Respond<UpdateFunctionMailingListMessage, ResultMessage>(
-                 updateFunctionMailingListMessage =>
+            _bus.Respond<MailingList, ResultMessage>(
+                 mailingList =>
                  {
-                     Console.WriteLine("Updated function mailing list:" + updateFunctionMailingListMessage.MailingList.TOs[0]);
+                     var commandResult = _mailService.UpdateMailingList(mailingList);
                      return new ResultMessage
                          {
-                             ErrCode = 0,
-                             ErrMsg = "Updated successfully!"
+                             ErrCode = commandResult.Code,
+                             ErrMsg = commandResult.Message
                          };
                  });
         }
@@ -154,14 +139,14 @@
         /// </summary>
         public void SubscribeScheduleMailingListUpdate()
         {
-            _bus.Respond<UpdateScheduleMailingListMessage, ResultMessage>(
-                 updateScheduleMailingListMessage =>
+            _bus.Respond<MailingList, ResultMessage>(
+                 mailingList =>
                  {
-                     Console.WriteLine("Updated schedule mailing list:" + updateScheduleMailingListMessage.MailingList.TOs[0]);
+                     var commandResult = _mailService.UpdateMailingList(mailingList);
                      return new ResultMessage
                      {
-                         ErrCode = 0,
-                         ErrMsg = "Updated successfully!"
+                         ErrCode = commandResult.Code,
+                         ErrMsg = commandResult.Message
                      };
                  });
         }

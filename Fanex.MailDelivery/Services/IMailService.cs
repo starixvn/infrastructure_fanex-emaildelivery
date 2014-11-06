@@ -15,5 +15,9 @@
         CommandResult UpdateJobStatus(Schedule schedule, JobStatus jobStatus);
 
         CommandResult SendMail(Mail mail);
+
+        MailingList GetMailingList(int mailingListId);
+
+        CommandResult UpdateMailingList(MailingList mailingList);
     }
 }

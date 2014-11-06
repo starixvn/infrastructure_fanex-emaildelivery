@@ -4,7 +4,6 @@
     using Fanex.MailDelivery.Client.Handlers.Impl;
     using Fanex.MailDelivery.Client.Handlers.Interface;
     using Fanex.MailDelivery.Client.Messages;
-    using Fanex.MailDelivery.Client.Messages.MailingList;
     using Fanex.MailDelivery.Client.Models;
 
     /// <summary>
@@ -46,22 +45,22 @@
             return _messageBroker.GetSchedules();
         }
 
-        public static MailingListMessage GetFunctionMailingList(int functionId)
+        public static MailingList GetFunctionMailingList(int functionId)
         {
             return _messageBroker.GetFunctionMailingList(functionId);
         }
 
-        public static MailingListMessage GetScheduleMailingList(int scheduleId)
+        public static MailingList GetScheduleMailingList(int scheduleId)
         {
             return _messageBroker.GetScheduleMailingList(scheduleId);
         }
 
-        public static ResultMessage UpdateFunctionMailingList(int functionId, MailingListMessage mailingList)
+        public static ResultMessage UpdateFunctionMailingList(int functionId, MailingList mailingList)
         {
             return _messageBroker.UpdateFunctionMailingList(functionId, mailingList);
         }
 
-        public static ResultMessage UpdateScheduleMailingList(int scheduleId, MailingListMessage mailingList)
+        public static ResultMessage UpdateScheduleMailingList(int scheduleId, MailingList mailingList)
         {
             return _messageBroker.UpdateScheduleMailingList(scheduleId, mailingList);
         }

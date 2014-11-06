@@ -6,7 +6,7 @@
     /// Mail Centralized Service.
     /// </summary>
     [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1400:AccessModifierMustBeDeclared", Justification = "Reviewed.")]
-    partial class MailCentralizedService
+    partial class MailDeliveryService
     {
         /// <summary> 
         /// Required designer variable.

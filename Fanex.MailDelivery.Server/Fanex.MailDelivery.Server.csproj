@@ -65,11 +65,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Installer\MailCentralizedService.cs">
+    <Compile Include="Installer\MailDeliveryService.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Installer\MailCentralizedService.Designer.cs">
-      <DependentUpon>MailCentralizedService.cs</DependentUpon>
+    <Compile Include="Installer\MailDeliveryService.Designer.cs">
+      <DependentUpon>MailDeliveryService.cs</DependentUpon>
     </Compile>
     <Compile Include="Installer\ServiceInstaller.cs">
       <SubType>Component</SubType>

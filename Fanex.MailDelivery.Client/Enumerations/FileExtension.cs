@@ -6,7 +6,7 @@
     using System.Text;
 
     /// <summary>
-    /// TODO: Update summary.
+    /// File Extension.
     /// </summary>
     public enum FileExtension
     {

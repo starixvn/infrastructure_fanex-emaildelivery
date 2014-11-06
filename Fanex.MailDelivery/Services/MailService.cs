@@ -15,7 +15,7 @@
         /// <summary>
         /// Data stimulate, should get data from database here.
         /// </summary>
-        private static List<Schedule> _schedules = new List<Schedule> 
+        private static List<Schedule> _schedules = new List<Schedule>
         {
             new Schedule
             {
@@ -158,6 +158,41 @@
             }
 
             return null;
+        }
+
+        public MailingList GetMailingList(int mailingListId)
+        {
+            return new MailingList
+            {
+                TOs = new List<string>
+                            {
+                                "aaa",
+                                "bbb"
+                            }
+            };
+        }
+
+        /// <summary>
+        /// Updates the mailing list.
+        /// </summary>
+        /// <param name="mailingList">The mailing list.</param>
+        /// <returns>Update result.</returns>
+        public CommandResult UpdateMailingList(MailingList mailingList)
+        {
+            if (mailingList.MailType == MailType.Function)
+            {
+                Console.WriteLine("Updated function mailing list:" + mailingList.TOs[0]);
+            }
+            else
+            {
+                Console.WriteLine("Updated schedule mailing list:" + mailingList.TOs[0]);
+            }
+
+            return new CommandResult
+            {
+                Code = 0,
+                Message = "Updated successfully!"
+            };
         }
     }
 }

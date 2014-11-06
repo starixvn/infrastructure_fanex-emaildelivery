@@ -3,9 +3,9 @@
     using System.Collections.Generic;
     using EasyNetQ;
     using Fanex.MailDelivery.Client.Configurations;
+    using Fanex.MailDelivery.Client.Enumerations;
     using Fanex.MailDelivery.Client.Handlers.Interface;
     using Fanex.MailDelivery.Client.Messages;
-    using Fanex.MailDelivery.Client.Messages.MailingList;
     using Fanex.MailDelivery.Client.Models;
 
     /// <summary>
@@ -100,50 +100,45 @@
             _bus.Publish(jobStatus, MailDeliveryConstants.JobResultRoutingKey);
         }
 
-        public MailingListMessage GetFunctionMailingList(int functionId)
+        public MailingList GetFunctionMailingList(int functionId)
         {
-            var mailingListRequest = new FunctionMailingListRequest
+            var mailingListRequest = new MailingListRequest
             {
                 SiteId = AppSettings.MailCientConfig.SiteId,
-                FunctionId = functionId
+                MailingListId = functionId
             };
 
-            return _bus.Request<FunctionMailingListRequest, MailingListMessage>(mailingListRequest);
+            return _bus.Request<MailingListRequest, MailingList>(mailingListRequest);
         }
 
-        public MailingListMessage GetScheduleMailingList(int scheduleId)
+        public MailingList GetScheduleMailingList(int scheduleId)
         {
-            var mailingListRequest = new ScheduleMailingListRequest
+            var mailingListRequest = new MailingListRequest
             {
                 SiteId = AppSettings.MailCientConfig.SiteId,
-                ScheduleId = scheduleId
+                MailingListId = scheduleId,
+                MailType = MailType.Schedule
             };
 
-            return _bus.Request<ScheduleMailingListRequest, MailingListMessage>(mailingListRequest);
+            return _bus.Request<MailingListRequest, MailingList>(mailingListRequest);
         }
 
-        public ResultMessage UpdateFunctionMailingList(int functionId, MailingListMessage mailingList)
+        public ResultMessage UpdateFunctionMailingList(int functionId, MailingList mailingList)
         {
-            var updateFunctionMailingListMessage = new UpdateFunctionMailingListMessage
-            {
-                SiteId = AppSettings.MailCientConfig.SiteId,
-                FunctionId = functionId,
-                MailingList = mailingList
-            };
+            mailingList.SiteId = AppSettings.MailCientConfig.SiteId;
+            mailingList.Id = functionId;
+            mailingList.MailType = MailType.Function;
 
-            return _bus.Request<UpdateFunctionMailingListMessage, ResultMessage>(updateFunctionMailingListMessage);
+            return _bus.Request<MailingList, ResultMessage>(mailingList);
         }
 
-        public ResultMessage UpdateScheduleMailingList(int scheduleId, MailingListMessage mailingList)
+        public ResultMessage UpdateScheduleMailingList(int scheduleId, MailingList mailingList)
         {
-            var updateScheduleMailingListMessage = new UpdateScheduleMailingListMessage
-            {
-                SiteId = AppSettings.MailCientConfig.SiteId,
-                ScheduleId = scheduleId,
-                MailingList = mailingList
-            };
+            mailingList.SiteId = AppSettings.MailCientConfig.SiteId;
+            mailingList.Id = scheduleId;
+            mailingList.MailType = MailType.Schedule;
 
-            return _bus.Request<UpdateScheduleMailingListMessage, ResultMessage>(updateScheduleMailingListMessage);
+            return _bus.Request<MailingList, ResultMessage>(mailingList);
         }
     }
 }

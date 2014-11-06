@@ -1,0 +1,28 @@
+﻿namespace Fanex.MailDelivery.Client.Models
+{
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using Fanex.MailDelivery.Client.Enumerations;
+
+    /// <summary>
+    /// Mailing list.
+    /// </summary>
+    public class MailingList
+    {
+        public int Id { get; set; }
+
+        public int SiteId { get; set; }
+
+        public string Name { get; set; }
+
+        public MailType MailType { get; set; }
+
+        public List<string> TOs { get; set; }
+
+        public List<string> CCs { get; set; }
+
+        public List<string> BCCs { get; set; }
+    }
+}

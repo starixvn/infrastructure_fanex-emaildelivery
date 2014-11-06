@@ -18,7 +18,7 @@
         {
             ServiceBase[] servicesToRun = new ServiceBase[]
             {
-                new MailCentralizedService()
+                new MailDeliveryService()
             };
 
             if (Environment.UserInteractive)

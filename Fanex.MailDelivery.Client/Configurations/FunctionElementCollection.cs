@@ -3,7 +3,7 @@
     using System.Configuration;
 
     /// <summary>
-    /// TODO: Update summary.
+    /// Function Element Collection.
     /// </summary>
     [ConfigurationCollection(typeof(FunctionElement))]
     public class FunctionElementCollection : ConfigurationElementCollection

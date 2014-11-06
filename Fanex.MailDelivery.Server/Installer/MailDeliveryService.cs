@@ -10,17 +10,17 @@
     /// Mail Centralized Service.
     /// </summary>
     [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1400:AccessModifierMustBeDeclared", Justification = "Reviewed.")]
-    partial class MailCentralizedService : ServiceBase
+    partial class MailDeliveryService : ServiceBase
     {
         private IMessageBroker _messageBroker;
         private JobHandler _jobHandler;
 
-        public MailCentralizedService()
+        public MailDeliveryService()
             : this(null)
         {
         }
 
-        public MailCentralizedService(IMessageBroker messageBroker)
+        public MailDeliveryService(IMessageBroker messageBroker)
         {
             InitializeComponent();
             _messageBroker = messageBroker ?? new MailServiceMessageBroker();

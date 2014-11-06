@@ -2,7 +2,6 @@
 {
     using System.Collections.Generic;
     using Fanex.MailDelivery.Client.Messages;
-    using Fanex.MailDelivery.Client.Messages.MailingList;
     using Fanex.MailDelivery.Client.Models;
 
     /// <summary>
@@ -20,13 +19,13 @@
 
         void Publish(JobResultMessage jobStatus);
 
-        MailingListMessage GetFunctionMailingList(int functionId);
+        MailingList GetFunctionMailingList(int functionId);
 
-        MailingListMessage GetScheduleMailingList(int scheduleId);
+        MailingList GetScheduleMailingList(int scheduleId);
 
-        ResultMessage UpdateFunctionMailingList(int functionId, MailingListMessage mailingList);
+        ResultMessage UpdateFunctionMailingList(int functionId, MailingList mailingList);
 
-        ResultMessage UpdateScheduleMailingList(int scheduleId, MailingListMessage mailingList);
+        ResultMessage UpdateScheduleMailingList(int scheduleId, MailingList mailingList);
 
         List<Schedule> GetSchedules();
 
