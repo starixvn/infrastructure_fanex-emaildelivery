@@ -58,7 +58,7 @@
         {
             foreach (var schedule in schedules)
             {
-                if (schedule.Active)
+                if (schedule.Active && !schedule.IsScheduleEnd())
                 {
                     IJobDetail job = GetJob(schedule);
                     ITrigger trigger = GetTrigger(schedule);
@@ -96,7 +96,7 @@
             if (oldTrigger != null)
             {
                 //// If schedule still active, then update schedule, opposite case then un-schedule job.
-                if (schedule.Active)
+                if (schedule.Active && !schedule.IsScheduleEnd())
                 {
                     ITrigger newTrigger = GetTrigger(schedule);
                     _scheduler.RescheduleJob(triggerKey, newTrigger);
@@ -110,11 +110,14 @@
             }
             else
             {
-                IJobDetail job = GetJob(schedule);
-                ITrigger trigger = GetTrigger(schedule);
-                //// Tell quartz to schedule the job using our trigger
-                _scheduler.ScheduleJob(job, trigger);
-                Console.WriteLine(string.Format("Started schedule {0} ", schedule.Id));
+                if (!schedule.IsScheduleEnd())
+                {
+                    IJobDetail job = GetJob(schedule);
+                    ITrigger trigger = GetTrigger(schedule);
+                    //// Tell quartz to schedule the job using our trigger
+                    _scheduler.ScheduleJob(job, trigger);
+                    Console.WriteLine(string.Format("Started schedule {0} ", schedule.Id));
+                }
             }
         }
 

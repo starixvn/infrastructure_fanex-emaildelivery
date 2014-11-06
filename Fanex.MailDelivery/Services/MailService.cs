@@ -162,14 +162,23 @@
 
         public MailingList GetMailingList(int mailingListId)
         {
-            return new MailingList
+            try
             {
-                TOs = new List<string>
+                return new MailingList
+                {
+                    TOs = new List<string>
                             {
                                 "aaa",
                                 "bbb"
                             }
-            };
+                };
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -179,20 +188,33 @@
         /// <returns>Update result.</returns>
         public CommandResult UpdateMailingList(MailingList mailingList)
         {
-            if (mailingList.MailType == MailType.Function)
+            try
             {
-                Console.WriteLine("Updated function mailing list:" + mailingList.TOs[0]);
-            }
-            else
-            {
-                Console.WriteLine("Updated schedule mailing list:" + mailingList.TOs[0]);
-            }
+                if (mailingList.MailType == MailType.Function)
+                {
+                    Console.WriteLine("Updated function mailing list:" + mailingList.TOs[0]);
+                }
+                else
+                {
+                    Console.WriteLine("Updated schedule mailing list:" + mailingList.TOs[0]);
+                }
 
-            return new CommandResult
+                return new CommandResult
+                {
+                    Code = 0,
+                    Message = "Updated successfully!"
+                };
+            }
+            catch (Exception ex)
             {
-                Code = 0,
-                Message = "Updated successfully!"
-            };
+                LogError(ex);
+
+                return new CommandResult
+                {
+                    Code = 1001,
+                    Message = "Update unsuccessfully!"
+                };
+            }
         }
     }
 }

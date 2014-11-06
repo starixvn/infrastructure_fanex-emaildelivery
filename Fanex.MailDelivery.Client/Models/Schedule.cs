@@ -56,5 +56,10 @@
         {
             return CurrentRetryTimes <= MaxRetryTimes;
         }
+
+        public bool IsScheduleEnd()
+        {
+            return EndTime != null && EndTime < DateTime.Now;
+        }
     }
 }

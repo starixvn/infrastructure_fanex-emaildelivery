@@ -34,7 +34,7 @@ namespace MailClientTest
                     };
                 //// Prepare mail
 
-                mail.FunctionId = AppSettings.GetFunctionId("FuntionA");
+                mail.MailingListId = AppSettings.GetFunctionId("FuntionA");
                 MailClientHandler.SendMail(mail);
 
                 Console.WriteLine("Sent Mail");

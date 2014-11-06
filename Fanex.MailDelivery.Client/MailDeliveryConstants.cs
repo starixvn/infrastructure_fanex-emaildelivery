@@ -23,5 +23,7 @@
 
         public const string ScheduleJobDataKey = "Fanex.MailDelivery.Client.ScheduleJobDataKey";
         public const string RabbitMQLoginPassword = ";password=1q2w3e$R";
+
+        public const int JobFailedErrorCode = 1000;
     }
 }

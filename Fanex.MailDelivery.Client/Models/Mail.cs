@@ -12,11 +12,11 @@
     {
         public int SiteId { get; set; }
 
-        public int FunctionId { get; set; }
+        public int MailingListId { get; set; }
 
         public int ApplicationSendMailId { get; set; }
 
-        ////public int LicenseeId { get; set; }
+        public int LicenseeId { get; set; }
 
         #region Mail Content
 

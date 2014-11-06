@@ -1,5 +1,6 @@
 ﻿namespace Fanex.MailDelivery.Client.Jobs
 {
+    using System;
     using Fanex.MailDelivery.Client.Enumerations;
     using Fanex.MailDelivery.Client.Handlers;
     using Fanex.MailDelivery.Client.Messages;
@@ -26,17 +27,42 @@
         /// </remarks>
         public void Execute(IJobExecutionContext context)
         {
-            var schedule = context.MergedJobDataMap[MailDeliveryConstants.ScheduleJobDataKey] as Schedule;
-            if (schedule != null)
+            try
             {
-                var jobResult = Run(schedule, context);
-
-                MailClientHandler.ReportJob(jobResult);
-
-                if (jobResult.JobStatus != JobStatus.Success)
+                var schedule = context.MergedJobDataMap[MailDeliveryConstants.ScheduleJobDataKey] as Schedule;
+                if (schedule != null)
                 {
-                    RetryJob(schedule.Clone(), context.MergedJobDataMap);
+                    JobResultMessage jobResult = null;
+                    try
+                    {
+                        jobResult = Run(schedule, context);
+                    }
+                    catch (Exception ex)
+                    {
+                        BaseHandler.LogError(ex);
+                        jobResult = new JobResultMessage
+                        {
+                            Schedule = schedule,
+                            JobStatus = JobStatus.Failed,
+                            Result = new ResultMessage
+                            {
+                                ErrCode = MailDeliveryConstants.JobFailedErrorCode,
+                                ErrMsg = ex.ToString()
+                            }
+                        };
+                    }
+
+                    MailClientHandler.ReportJob(jobResult);
+
+                    if (jobResult.JobStatus != JobStatus.Success)
+                    {
+                        RetryJob(schedule.Clone(), context.MergedJobDataMap);
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                BaseHandler.LogError(ex);
             }
         }
 
