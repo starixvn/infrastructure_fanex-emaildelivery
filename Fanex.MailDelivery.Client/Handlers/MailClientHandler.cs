@@ -35,7 +35,7 @@
             _messageBroker.Publish(mail);
         }
 
-        public static void ReportJobAndSendMail(JobResultMessage jobResult)
+        public static void ReportJob(JobResultMessage jobResult)
         {
             _messageBroker.Publish(jobResult);
         }
