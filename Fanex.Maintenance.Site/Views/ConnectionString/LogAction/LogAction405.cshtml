@@ -1,0 +1,36 @@
+﻿@using Fanex.ConnectionString.Model
+@model LogExecSp
+@{
+    var oldData = Model.ConvertToListConnection(Model.OldData);
+    var newData = Model.ConvertToListConnection(Model.Data);
+
+    var newDataDictionary = new Dictionary<string, string>();
+    foreach (var item in newData)
+    {
+        newDataDictionary.Add(item.Name, item.DatabaseServer.Name);
+    }
+}
+<table style="width: 100%">
+    <tr>
+        <td>
+            @ViewResource.Connection
+        </td>
+        <td>
+            @ViewResource.Old_Value
+        </td>
+        <td>
+            @ViewResource.New_Value
+        </td>
+    </tr>
+    @foreach (var item in oldData)
+    {
+        <tr>
+            <td>@item.Name
+            </td>
+            <td>@item.DatabaseServer.Name
+            </td>
+            <td>@newDataDictionary[item.Name]
+            </td>
+        </tr>
+    }
+</table>

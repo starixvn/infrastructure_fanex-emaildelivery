@@ -1,0 +1,31 @@
+﻿@using Fanex.NAP.Core.Model
+@{
+    var menuItemList = ViewBag.Menu != null ? ViewBag.Menu as List<MenuItem> : new List<MenuItem>();
+    var lvl0MenuItemList = menuItemList.Where(m => m.Parent == null).OrderBy(m => m.DisplayOrder).ToList();
+}
+<nav>
+	<ul class="menu">
+@for (int i = 0; i < lvl0MenuItemList.Count; i++)
+{
+    var menuItem = lvl0MenuItemList[i];
+    var lvl1MenuItemList = menuItemList.Where(x => x.Parent != null && x.Parent.Id == menuItem.Id)
+        .OrderBy(x => x.DisplayOrder).ToList();
+
+    if (lvl1MenuItemList.Any())
+    {
+		<li mid="@menuItem.Id" class="has-kids"><a href="javascript:;">@menuItem.Name</a>
+			<ul>
+		@foreach (var subMenuItem in lvl1MenuItemList)
+  {
+				<li mid="@subMenuItem.Id"><a href="@Url.Content(subMenuItem.GetValidUrl())">@subMenuItem.Name</a></li>
+  }
+			</ul>
+		</li>
+    }
+    else
+    {
+		<li mid="@menuItem.Id"><a href="@Url.Content(menuItem.GetValidUrl())">@menuItem.Name</a></li>
+    }
+}
+	</ul>
+</nav>

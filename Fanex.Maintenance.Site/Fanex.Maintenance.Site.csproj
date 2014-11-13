@@ -1,0 +1,671 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D4312B0D-CC74-4AA1-979A-AF26702808A1}</ProjectGuid>
+    <ProjectTypeGuids>{E3E379DF-F4C6-4180-9B81-6769533ABE47};{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Fanex.Maintenance.Site</RootNamespace>
+    <AssemblyName>Fanex.Maintenance.Site</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>false</UseIISExpress>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Accessibility">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Antlr3.Runtime">
+      <HintPath>..\packages\WebGrease.1.3.0\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="BundleTransformer.Core">
+      <HintPath>..\packages\BundleTransformer.Core.1.7.27\lib\net40\BundleTransformer.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="dotless.Core">
+      <HintPath>..\packages\dotless.1.3.0.5\lib\dotless.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Fanex.Caching">
+      <HintPath>..\_Dependencies\Fanex\Fanex.Caching.dll</HintPath>
+    </Reference>
+    <Reference Include="Fanex.Common">
+      <HintPath>..\_Dependencies\Fanex\Fanex.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Fanex.ConnectionString, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\_Dependencies\Others\Fanex.ConnectionString.dll</HintPath>
+    </Reference>
+    <Reference Include="Fanex.ConnectionString.Core">
+      <HintPath>..\_Dependencies\Fanex\Fanex.ConnectionString.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Fanex.Data">
+      <HintPath>..\_Dependencies\Fanex\Fanex.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Fanex.Logging">
+      <HintPath>..\_Dependencies\Fanex\Fanex.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Fanex.MailDeliver.MailClient, Version=1.0.0.3, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\_Dependencies\MailService\Fanex.MailDeliver.MailClient.dll</HintPath>
+    </Reference>
+    <Reference Include="Fanex.Maintenance.Controller, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\_Dependencies\mSite\Fanex.Maintenance.Controller.dll</HintPath>
+    </Reference>
+    <Reference Include="Fanex.Maintenance.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\_Dependencies\mSite\Fanex.Maintenance.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Fanex.Maintenance.Repository, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\_Dependencies\mSite\Fanex.Maintenance.Repository.dll</HintPath>
+    </Reference>
+    <Reference Include="Fanex.Maintenance.Service, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\_Dependencies\mSite\Fanex.Maintenance.Service.dll</HintPath>
+    </Reference>
+    <Reference Include="Fanex.Maintenance.ViewModel, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\_Dependencies\mSite\Fanex.Maintenance.ViewModel.dll</HintPath>
+    </Reference>
+    <Reference Include="Fanex.NAP.Core, Version=1.0.0.2, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\_Dependencies\Fanex\Fanex.NAP.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Fanex.NAP.Framework, Version=1.0.0.3, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\_Dependencies\Fanex\Fanex.NAP.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="IBCFile">
+      <HintPath>..\_Dependencies\Others\IBCFile.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Common, Version=5.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\_Dependencies\Entlib\Microsoft.Practices.EnterpriseLibrary.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Data, Version=5.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\_Dependencies\Entlib\Microsoft.Practices.EnterpriseLibrary.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Logging">
+      <HintPath>..\_Dependencies\Entlib\Microsoft.Practices.EnterpriseLibrary.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\_Dependencies\Entlib\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity, Version=2.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\_Dependencies\Entlib\Microsoft.Practices.Unity.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Configuration">
+      <HintPath>..\_Dependencies\Entlib\Microsoft.Practices.Unity.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\_Dependencies\SignalR 1.0RC\Microsoft.Web.Infrastructure.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="SPSRemoting">
+      <HintPath>..\_Dependencies\Others\SPSRemoting.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.0\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Net.Http">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Net.Http.2.0.20710.0\lib\net40\System.Net.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.4.0.20710.0\lib\net40\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Net.Http.2.0.20710.0\lib\net40\System.Net.Http.WebRequest.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.4.0.20710.0\lib\net40\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.4.0.20710.0\lib\net40\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.4.0.20710.0\lib\net40\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.2.0.20710.0\lib\net40\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="UMControllerLibrary">
+      <HintPath>..\_Dependencies\Others\UMControllerLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="WebGrease">
+      <HintPath>..\packages\WebGrease.1.3.0\lib\WebGrease.dll</HintPath>
+    </Reference>
+    <Reference Include="WebMatrix.Data, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="WebMatrix.WebData, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\BundleExtensions.cs" />
+    <Compile Include="Areas\UserLogin\Controllers\BaseController.cs" />
+    <Compile Include="Areas\UserLogin\Controllers\CommonController.cs" />
+    <Compile Include="Areas\UserLogin\Controllers\LoginController.cs" />
+    <Compile Include="Areas\UserLogin\Controllers\SSOController.cs" />
+    <Compile Include="Areas\UserLogin\Controllers\UserSiteController.cs" />
+    <Compile Include="Areas\UserLogin\UserLogInAreaRegistration.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
+    <Content Include="App_Data\ConnectionStringSpName.xml" />
+    <Content Include="App_Data\mSiteSpNames.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_Data\NAPCommonSpNames.xml" />
+    <Content Include="Areas\UserLogin\scripts\lib\jquery-1.8.0.min.js" />
+    <Content Include="Areas\UserLogin\scripts\Plugin\jquery-1.6.2.js" />
+    <Content Include="Areas\UserLogin\scripts\ReCheckIn.js" />
+    <Content Include="Areas\UserLogin\themes\img\auth-bg.png" />
+    <Content Include="Areas\UserLogin\themes\img\bg.png" />
+    <Content Include="Areas\UserLogin\themes\img\lock.png" />
+    <Content Include="Areas\UserLogin\themes\img\password.png" />
+    <Content Include="Areas\UserLogin\themes\img\title-bg.jpg" />
+    <Content Include="Areas\UserLogin\themes\img\username.png" />
+    <Content Include="Areas\UserLogin\themes\img\warn.png" />
+    <Content Include="Areas\UserLogin\themes\img\welcome.png" />
+    <Content Include="Areas\UserLogin\themes\login.css" />
+    <Content Include="Global.asax" />
+    <Content Include="images\calendar.gif" />
+    <Content Include="images\Play.png" />
+    <Content Include="images\Play_disable.png" />
+    <Content Include="images\ReRun.png" />
+    <Content Include="images\ReRun_disable.png" />
+    <Content Include="images\sprite_v.png" />
+    <Content Include="images\Stop.png" />
+    <Content Include="images\Stop_disable.png" />
+    <Content Include="scripts\Connection\Connection.js" />
+    <Content Include="scripts\Connection\ChangeConnection.js" />
+    <Content Include="scripts\Connection\AliasDatabase.js" />
+    <Content Include="scripts\Connection\Log.js" />
+    <Content Include="scripts\Connection\Database.js" />
+    <Content Include="scripts\Connection\Site.js" />
+    <Content Include="scripts\lib\custom-datepicker.js" />
+    <Content Include="scripts\lib\jquery.blockUI.js" />
+    <Content Include="scripts\lib\chosen\chosen-sprite.png" />
+    <Content Include="scripts\lib\chosen\chosen.css" />
+    <Content Include="scripts\lib\chosen\chosen.jquery.js" />
+    <Content Include="scripts\lib\chosen\chosen.jquery.min.js" />
+    <Content Include="scripts\lib\chosen\chosen.proto.js" />
+    <Content Include="scripts\lib\chosen\chosen.proto.min.js" />
+    <Content Include="scripts\lib\jquery-1.8.0.min.js" />
+    <Content Include="scripts\lib\jquery-ui-1.8.23.min.js" />
+    <Content Include="scripts\lib\msgbox\images\alert.png" />
+    <Content Include="scripts\lib\msgbox\images\btn-close.png" />
+    <Content Include="scripts\lib\msgbox\images\confirm.png" />
+    <Content Include="scripts\lib\msgbox\images\error.png" />
+    <Content Include="scripts\lib\msgbox\images\info.png" />
+    <Content Include="scripts\lib\msgbox\images\question.png" />
+    <Content Include="scripts\lib\msgbox\msgbox-0.0.1.css" />
+    <Content Include="scripts\lib\msgbox\msgbox-0.0.1.js" />
+    <Content Include="scripts\lib\msgbox\msgbox-0.0.1.min.css" />
+    <Content Include="scripts\lib\msgbox\msgbox-0.0.1.min.js" />
+    <Content Include="scripts\lib\tipsy\tipsy-1.0.0.css" />
+    <Content Include="scripts\lib\tipsy\tipsy-1.0.0.js" />
+    <Content Include="scripts\lib\tipsy\tipsy-1.0.0.min.css" />
+    <Content Include="scripts\lib\tipsy\tipsy-1.0.0.min.js" />
+    <Content Include="scripts\lib\XMLEditor\css\main.css" />
+    <Content Include="scripts\lib\XMLEditor\img\icons.png" />
+    <Content Include="scripts\lib\XMLEditor\img\liveXmlEdit.png" />
+    <Content Include="scripts\lib\XMLEditor\img\treeview-default-line.gif" />
+    <Content Include="scripts\lib\XMLEditor\img\treeview-default.gif" />
+    <Content Include="scripts\lib\XMLEditor\js\ext\GLR\css\GLR.messenger.css" />
+    <Content Include="scripts\lib\XMLEditor\js\ext\GLR\GLR.js" />
+    <Content Include="scripts\lib\XMLEditor\js\ext\GLR\GLR.messenger.js" />
+    <Content Include="scripts\lib\XMLEditor\js\ext\jquery-1.4.js" />
+    <Content Include="scripts\lib\XMLEditor\js\ext\jquery-color.js" />
+    <Content Include="scripts\lib\XMLEditor\js\ext\jquery.js" />
+    <Content Include="scripts\lib\XMLEditor\js\loc\xmlEditor.js" />
+    <Content Include="scripts\Logs\Index.js" />
+    <Content Include="scripts\Mail\AddMailSettingPopUp.js" />
+    <Content Include="scripts\Mail\AddMailFunction.js" />
+    <Content Include="scripts\Mail\AddMailConfigPopUp.js" />
+    <Content Include="scripts\Mail\AddMailConfig.js" />
+    <Content Include="scripts\Mail\MailList.js" />
+    <Content Include="scripts\Maintenance.js" />
+    <Content Include="scripts\lib\Fanex.Grid\Fanex.Grid.Convert.js" />
+    <Content Include="scripts\lib\Fanex.Grid\Fanex.Grid.css" />
+    <Content Include="scripts\lib\Fanex.Grid\Fanex.Grid.js" />
+    <Content Include="scripts\lib\Fanex.Grid\Fanex.Pagination.css" />
+    <Content Include="scripts\lib\Fanex.Grid\Fanex.Pagination.js" />
+    <Content Include="scripts\lib\Fanex.Grid\images\1350530947_page_excel.png" />
+    <Content Include="scripts\lib\Fanex.Grid\images\ajax-loader.gif" />
+    <Content Include="scripts\lib\Fanex.Grid\images\back-icon.png" />
+    <Content Include="scripts\lib\Fanex.Grid\images\bgtitle.png" />
+    <Content Include="scripts\lib\Fanex.Grid\images\bg_gloss_wave.png" />
+    <Content Include="scripts\lib\Fanex.Grid\images\check-box.png" />
+    <Content Include="scripts\lib\Fanex.Grid\images\collapse-icon.png" />
+    <Content Include="scripts\lib\Fanex.Grid\images\collapse-small.png" />
+    <Content Include="scripts\lib\Fanex.Grid\images\email.png" />
+    <Content Include="scripts\lib\Fanex.Grid\images\excel-icon.png" />
+    <Content Include="scripts\lib\Fanex.Grid\images\expand-icon.png" />
+    <Content Include="scripts\lib\Fanex.Grid\images\expand-small.png" />
+    <Content Include="scripts\lib\Fanex.Grid\images\go-hover-icon.png" />
+    <Content Include="scripts\lib\Fanex.Grid\images\icn_add.png" />
+    <Content Include="scripts\lib\Fanex.Grid\images\icn_del.png" />
+    <Content Include="scripts\lib\Fanex.Grid\images\icn_edit.png" />
+    <Content Include="scripts\lib\Fanex.Grid\images\icon_page.gif" />
+    <Content Include="scripts\lib\Fanex.Grid\images\refresh_icon.png" />
+    <Content Include="scripts\lib\Fanex.Grid\images\report_check.png" />
+    <Content Include="scripts\lib\Fanex.Grid\images\send-mail.png" />
+    <Content Include="scripts\lib\Fanex.Grid\images\seperations.png" />
+    <Content Include="scripts\lib\Fanex.Grid\images\setting.png" />
+    <Content Include="scripts\lib\Fanex.Grid\images\sort-icon-new.png" />
+    <Content Include="scripts\lib\Fanex.Grid\images\sort-icon-new1.png" />
+    <Content Include="scripts\lib\Fanex.Grid\images\sort-icon-new3.png" />
+    <Content Include="scripts\lib\Fanex.Grid\images\sort-icon.png" />
+    <Content Include="scripts\lib\Fanex.Grid\images\sorting_asc.gif" />
+    <Content Include="scripts\lib\Fanex.Grid\images\sorting_bg.gif" />
+    <Content Include="scripts\lib\Fanex.Grid\images\sorting_desc.gif" />
+    <Content Include="scripts\lib\Fanex.Grid\images\white-top-bottom.gif" />
+    <Content Include="scripts\lib\Fanex.Grid\moment.js" />
+    <Content Include="scripts\lib\Fanex.Grid\numeral.js" />
+    <Content Include="scripts\lib\jquery.cookie.js" />
+    <Content Include="scripts\lib\RefreshCountDown.js" />
+    <Content Include="scripts\lib\Select2\select2-custom.css" />
+    <Content Include="scripts\lib\Select2\select2-spinner.gif" />
+    <Content Include="scripts\lib\Select2\select2.css" />
+    <Content Include="scripts\lib\Select2\select2.js" />
+    <Content Include="scripts\lib\Select2\select2.png" />
+    <Content Include="scripts\ServiceMonitoring\ServiceMonitoring.js" />
+    <Content Include="themes\assets\css\font-awesome-ie7.css" />
+    <Content Include="themes\assets\css\font-awesome.css" />
+    <Content Include="themes\assets\css\prettify.css" />
+    <Content Include="themes\assets\css\site.css" />
+    <Content Include="themes\assets\font\fontawesome-webfont.svg" />
+    <Content Include="themes\assets\ico\favicon.ico" />
+    <Content Include="themes\fonts.css" />
+    <Content Include="themes\jquery-ui\smoothness\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="themes\jquery-ui\smoothness\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="themes\jquery-ui\smoothness\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="themes\jquery-ui\smoothness\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="themes\jquery-ui\smoothness\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="themes\jquery-ui\smoothness\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="themes\jquery-ui\smoothness\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="themes\jquery-ui\smoothness\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="themes\jquery-ui\smoothness\images\ui-icons_222222_256x240.png" />
+    <Content Include="themes\jquery-ui\smoothness\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="themes\jquery-ui\smoothness\images\ui-icons_454545_256x240.png" />
+    <Content Include="themes\jquery-ui\smoothness\images\ui-icons_888888_256x240.png" />
+    <Content Include="themes\jquery-ui\smoothness\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="themes\jquery-ui\smoothness\jquery-ui-1.8.23.css" />
+    <Content Include="themes\jquery-ui\smoothness\jquery-ui-1.8.23.min.css" />
+    <Content Include="themes\manage\images\ajax-loader.gif" />
+    <Content Include="themes\manage\images\breadcrumb_divider.png" />
+    <Content Include="themes\manage\images\btn_submit.png" />
+    <Content Include="themes\manage\images\btn_submit_2.png" />
+    <Content Include="themes\manage\images\btn_view_site.png" />
+    <Content Include="themes\manage\images\cancel.png" />
+    <Content Include="themes\manage\images\collapse-title.png" />
+    <Content Include="themes\manage\images\default.png" />
+    <Content Include="themes\manage\images\error.png" />
+    <Content Include="themes\manage\images\evolution_tasks.png" />
+    <Content Include="themes\manage\images\expand-title.png" />
+    <Content Include="themes\manage\images\forward-back.png" />
+    <Content Include="themes\manage\images\forward-back1.png" />
+    <Content Include="themes\manage\images\forward.png" />
+    <Content Include="themes\manage\images\forward1.png" />
+    <Content Include="themes\manage\images\gnome_system_monitor.png" />
+    <Content Include="themes\manage\images\hardwarechip.png" />
+    <Content Include="themes\manage\images\header_bg.png" />
+    <Content Include="themes\manage\images\header_shadow.png" />
+    <Content Include="themes\manage\images\icn_add_user.png" />
+    <Content Include="themes\manage\images\icn_alert_error.png" />
+    <Content Include="themes\manage\images\icn_alert_info.png" />
+    <Content Include="themes\manage\images\icn_alert_success.png" />
+    <Content Include="themes\manage\images\icn_alert_warning.png" />
+    <Content Include="themes\manage\images\icn_audio.png" />
+    <Content Include="themes\manage\images\icn_categories.png" />
+    <Content Include="themes\manage\images\icn_categories1.png" />
+    <Content Include="themes\manage\images\icn_edit.png" />
+    <Content Include="themes\manage\images\icn_edit_article.png" />
+    <Content Include="themes\manage\images\icn_edit_article1.png" />
+    <Content Include="themes\manage\images\icn_folder.png" />
+    <Content Include="themes\manage\images\icn_jump_back.png" />
+    <Content Include="themes\manage\images\icn_logout.png" />
+    <Content Include="themes\manage\images\icn_new_article.png" />
+    <Content Include="themes\manage\images\icn_photo.png" />
+    <Content Include="themes\manage\images\icn_profile.png" />
+    <Content Include="themes\manage\images\icn_search.png" />
+    <Content Include="themes\manage\images\icn_security.png" />
+    <Content Include="themes\manage\images\icn_settings.png" />
+    <Content Include="themes\manage\images\icn_tags.png" />
+    <Content Include="themes\manage\images\icn_tags1.png" />
+    <Content Include="themes\manage\images\icn_trash.png" />
+    <Content Include="themes\manage\images\icn_user.png" />
+    <Content Include="themes\manage\images\icn_video.png" />
+    <Content Include="themes\manage\images\icn_view_users.png" />
+    <Content Include="themes\manage\images\list_information.png" />
+    <Content Include="themes\manage\images\loading7.gif" />
+    <Content Include="themes\manage\images\memory.png" />
+    <Content Include="themes\manage\images\messagebox_warning.png" />
+    <Content Include="themes\manage\images\module_footer_bg.png" />
+    <Content Include="themes\manage\images\network_server.png" />
+    <Content Include="themes\manage\images\post_message.png" />
+    <Content Include="themes\manage\images\progress.png" />
+    <Content Include="themes\manage\images\retry.png" />
+    <Content Include="themes\manage\images\schedule.png" />
+    <Content Include="themes\manage\images\secondary_bar.png" />
+    <Content Include="themes\manage\images\secondary_bar_shadow.png" />
+    <Content Include="themes\manage\images\server.png" />
+    <Content Include="themes\manage\images\sidebar.png" />
+    <Content Include="themes\manage\images\sidebar_divider.png" />
+    <Content Include="themes\manage\images\sidebar_shadow.png" />
+    <Content Include="themes\manage\images\sprites.png" />
+    <Content Include="themes\manage\images\success.png" />
+    <Content Include="themes\manage\images\table_sorter_header.png" />
+    <Content Include="themes\manage\images\warning.png" />
+    <Content Include="themes\manage\img\actions\add-user.png" />
+    <Content Include="themes\manage\img\actions\chgpwd-ico.png" />
+    <Content Include="themes\manage\img\actions\dd\action-ico.png" />
+    <Content Include="themes\manage\img\actions\dd\chgpwd-ico.png" />
+    <Content Include="themes\manage\img\actions\dd\edit-ico.png" />
+    <Content Include="themes\manage\img\actions\dd\permission-ico.png" />
+    <Content Include="themes\manage\img\actions\dd\play.png" />
+    <Content Include="themes\manage\img\actions\dd\site-ico.png" />
+    <Content Include="themes\manage\img\actions\dd\step.png" />
+    <Content Include="themes\manage\img\actions\dd\stop.png" />
+    <Content Include="themes\manage\img\actions\dd\user-info-ico.png" />
+    <Content Include="themes\manage\img\actions\dd\viewlog.png" />
+    <Content Include="themes\manage\img\actions\edit-ico.png" />
+    <Content Include="themes\manage\img\actions\permission-ico.png" />
+    <Content Include="themes\manage\img\actions\site-ico.png" />
+    <Content Include="themes\manage\img\actions\tick-ico-16.png" />
+    <Content Include="themes\manage\img\actions\user-info-ico.png" />
+    <Content Include="themes\manage\img\bg_body.png" />
+    <Content Include="themes\manage\img\bg_footer.jpg" />
+    <Content Include="themes\manage\img\bg_header.png" />
+    <Content Include="themes\manage\img\blank.png" />
+    <Content Include="themes\manage\img\btLoading.gif" />
+    <Content Include="themes\manage\img\btn-edit.png" />
+    <Content Include="themes\manage\img\btnCountDown-hover.png" />
+    <Content Include="themes\manage\img\btnCountDown.png" />
+    <Content Include="themes\manage\img\btRefresh.png" />
+    <Content Include="themes\manage\img\btRefresh_new.png" />
+    <Content Include="themes\manage\img\btRefresh_new_disabled.png" />
+    <Content Include="themes\manage\img\chosen-sprite.png" />
+    <Content Include="themes\manage\img\combo-pickr\bottom.png" />
+    <Content Include="themes\manage\img\combo-pickr\closebutton.png" />
+    <Content Include="themes\manage\img\combo-pickr\inner.png" />
+    <Content Include="themes\manage\img\combo-pickr\link-overlay.png" />
+    <Content Include="themes\manage\img\combo-pickr\mainbg.png" />
+    <Content Include="themes\manage\img\combo-pickr\openbutton.png" />
+    <Content Include="themes\manage\img\edit-ico.png" />
+    <Content Include="themes\manage\img\error.png" />
+    <Content Include="themes\manage\img\grid-view.png" />
+    <Content Include="themes\manage\img\hub.png" />
+    <Content Include="themes\manage\img\lnk-white.png" />
+    <Content Include="themes\manage\img\logo1.png" />
+    <Content Include="themes\manage\img\logo2.png" />
+    <Content Include="themes\manage\img\logo3.png" />
+    <Content Include="themes\manage\img\minus.png" />
+    <Content Include="themes\manage\img\plus.png" />
+    <Content Include="themes\manage\img\setting.png" />
+    <Content Include="themes\manage\img\sprites.png" />
+    <Content Include="themes\manage\img\table_left.jpg" />
+    <Content Include="themes\manage\img\table_left.png" />
+    <Content Include="themes\manage\img\textures\fabric.png" />
+    <Content Include="themes\manage\img\textures\grid.png" />
+    <Content Include="themes\manage\img\textures\scratches.png" />
+    <Content Include="themes\manage\img\tick-ico-16.png" />
+    <Content Include="themes\manage\img\tick.png" />
+    <Content Include="themes\manage\img\time_ico.gif" />
+    <Content Include="themes\manage\img\tree-view.png" />
+    <Content Include="themes\manage\img\ui-modal-btn.png" />
+    <Content Include="themes\manage\img\warning.png" />
+    <Content Include="themes\reset.css" />
+    <Content Include="themes\style.css" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Login\Index.cshtml" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Views\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\UserLogin\Views\Common\Error.cshtml" />
+    <Content Include="Areas\UserLogin\Views\Common\NotFound.cshtml" />
+    <Content Include="Areas\UserLogin\Views\Common\Unauthorize.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\UserLogin\themes\fonts\Abel.woff" />
+    <Content Include="Areas\UserLogin\themes\select-site.less" />
+    <Content Include="Areas\UserLogin\Views\Login\Index.cshtml" />
+    <Content Include="Areas\UserLogin\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\UserLogin\Views\UserSite\Site.cshtml" />
+    <Content Include="Areas\UserLogin\Views\Web.config" />
+    <Content Include="Areas\UserLogin\Views\SSO\SSOIndex.cshtml" />
+    <Content Include="Areas\UserLogin\Views\Common\Offline.cshtml" />
+    <Content Include="themes\assets\font\fontawesome-webfont.eot" />
+    <Content Include="themes\assets\font\fontawesome-webfont.ttf" />
+    <Content Include="themes\assets\font\fontawesome-webfont.woff" />
+    <Content Include="themes\assets\font\museo_slab_300-webfont.eot" />
+    <Content Include="themes\assets\font\museo_slab_300-webfont.ttf" />
+    <Content Include="themes\assets\font\museo_slab_500-webfont.eot" />
+    <Content Include="themes\assets\font\museo_slab_500-webfont.ttf" />
+    <Content Include="themes\assets\font\proximanova-webfont.eot" />
+    <Content Include="themes\assets\font\proximanova-webfont.ttf" />
+    <Content Include="themes\assets\less\font-awesome-ie7.less" />
+    <Content Include="themes\assets\less\font-awesome.less" />
+    <Content Include="themes\assets\less\font-site.less" />
+    <Content Include="themes\assets\less\mixins.less" />
+    <Content Include="themes\assets\less\site.less" />
+    <Content Include="themes\assets\less\variables.less" />
+    <Content Include="themes\fonts\YanoneKaffeesatz.woff" />
+    <Content Include="themes\manage\addnew.less" />
+    <Content Include="themes\manage\colors.less" />
+    <Content Include="themes\manage\common.less" />
+    <Content Include="themes\manage\grid.less" />
+    <Content Include="themes\manage\index.less" />
+    <Content Include="themes\manage\style.less" />
+    <Content Include="themes\manage\themes.less" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Log\Index.cshtml" />
+    <Content Include="Views\Mail\MailList.cshtml" />
+    <Content Include="Views\Mail\MailSetting.cshtml" />
+    <Content Include="Views\Mail\AddMailSetting.cshtml" />
+    <Content Include="Views\Mail\EditMailSetting.cshtml" />
+    <Content Include="Views\Mail\MailConfig.cshtml" />
+    <Content Include="Views\Mail\AddMailConfig.cshtml" />
+    <Content Include="Views\Mail\EditMailConfig.cshtml" />
+    <Content Include="Views\Mail\MailFunction.cshtml" />
+    <Content Include="Views\Mail\AddMailFunction.cshtml" />
+    <Content Include="Views\Mail\EditMailFunction.cshtml" />
+    <Content Include="Views\Mail\AddMailConfigPopUp.cshtml" />
+    <Content Include="Views\Mail\AddMailSettingPopUp.cshtml" />
+    <Content Include="Views\Mail\GetMessage.cshtml" />
+    <Content Include="Views\DatabaseReport\DataIntegrity.cshtml" />
+    <Content Include="WebConnectionString.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Views\ConnectionString\Connection.cshtml" />
+    <Content Include="Views\ConnectionString\CreateConnection.cshtml" />
+    <Content Include="Views\ConnectionString\Site.cshtml" />
+    <Content Include="Views\ConnectionString\CreateSite.cshtml" />
+    <Content Include="Views\ConnectionString\EditSite.cshtml" />
+    <Content Include="Views\ConnectionString\DatabaseServer.cshtml" />
+    <Content Include="Views\ConnectionString\CreateDatabaseServer.cshtml" />
+    <Content Include="Views\ConnectionString\EditDatabaseServer.cshtml" />
+    <Content Include="Views\CommonError\Error.cshtml" />
+    <Content Include="Views\CommonError\NotFound.cshtml" />
+    <Content Include="Views\ConnectionString\Log.cshtml" />
+    <Content Include="Views\Mail\GetError.cshtml" />
+    <Content Include="Views\Machine\Index.cshtml" />
+    <Content Include="Views\Machine\EditMachine.cshtml" />
+    <Content Include="Views\Machine\InsertMachine.cshtml" />
+    <Content Include="themes\manage\RefreshCountDown.less" />
+    <Content Include="Views\LicenseeSetting\LrfDomain.cshtml" />
+    <Content Include="Views\ConnectionString\Database.cshtml" />
+    <Content Include="Views\ConnectionString\CreateDatabase.cshtml" />
+    <Content Include="Views\ConnectionString\EditDatabase.cshtml" />
+    <Content Include="Views\ConnectionString\EditConnection.cshtml" />
+    <Content Include="Views\ConnectionString\SwitchConnection.cshtml" />
+    <Content Include="Views\ConnectionString\ConnectionAssignSite.cshtml" />
+    <Content Include="Views\ConnectionString\LogAction\LogAction102.cshtml" />
+    <Content Include="Views\ConnectionString\LogAction\LogAction101.cshtml" />
+    <Content Include="Views\ConnectionString\LogAction\LogAction100.cshtml" />
+    <Content Include="Views\ConnectionString\LogAction\LogAction200.cshtml" />
+    <Content Include="Views\ConnectionString\LogAction\LogAction202.cshtml" />
+    <Content Include="Views\ConnectionString\LogAction\LogAction201.cshtml" />
+    <Content Include="Views\ConnectionString\LogAction\LogAction300.cshtml" />
+    <Content Include="Views\ConnectionString\LogAction\LogAction301.cshtml" />
+    <Content Include="Views\ConnectionString\LogAction\LogAction302.cshtml" />
+    <Content Include="Views\ConnectionString\LogAction\LogAction400.cshtml" />
+    <Content Include="Views\ConnectionString\LogAction\LogAction401.cshtml" />
+    <Content Include="Views\ConnectionString\LogAction\LogAction402.cshtml" />
+    <Content Include="Views\ConnectionString\LogAction\LogAction403.cshtml" />
+    <Content Include="Views\ConnectionString\LogAction\LogAction404.cshtml" />
+    <Content Include="Views\ConnectionString\LogAction\LogAction405.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\_Menu.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\ConnectionString\GetConnectionBySite.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="themes\grid.less" />
+    <Content Include="themes\manage\log\manage.less" />
+    <Content Include="themes\manage\manage.less" />
+    <Content Include="themes\manage\report\dataintegry.less" />
+    <Content Include="themes\select-site.less" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Mail\ComposeEmail.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ServiceMonitoringCache\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\ServiceMonitoring\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\ServiceMonitoring\XMLEditor.cshtml" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>51518</DevelopmentServerPort>
+          <DevelopmentServerVPath>/mSite</DevelopmentServerVPath>
+          <IISUrl>
+          </IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>

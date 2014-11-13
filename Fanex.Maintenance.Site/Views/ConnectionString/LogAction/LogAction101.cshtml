@@ -1,0 +1,63 @@
+﻿@using Fanex.ConnectionString.Model
+@model LogExecSp
+@{
+    var oldData = Model.ConvertToDatabaseServer(Model.OldData);
+    var newData = Model.ConvertToDatabaseServer(Model.Data);
+}
+<table style="width: 100%">
+    <tr>
+        <td>
+            #
+        </td>
+        <td>
+            @ViewResource.Old_Value
+        </td>
+        <td>
+            @ViewResource.New_Value
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @ViewResource.Name
+        </td>
+        <td>
+            @oldData.Name
+        </td>
+        <td>
+            @newData.Name
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @ViewResource.Server_IP
+        </td>
+        <td>
+            @oldData.ServerIP
+        </td>
+        <td>
+            @newData.ServerIP
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @ViewResource.Description
+        </td>
+        <td>
+            @oldData.Description
+        </td>
+        <td>
+            @newData.Description
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @ViewResource.Status
+        </td>
+        <td>
+            @oldData.IsActive
+        </td>
+        <td>
+            @newData.IsActive
+        </td>
+    </tr>
+</table>

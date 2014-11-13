@@ -1,0 +1,145 @@
+﻿@using Fanex.Maintenance.ViewModel.Connection
+@model SwitchConnectionViewModel
+@{
+    ViewBag.Title = ViewResource.SwitchConnection;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int i = 0;
+}
+@section Head {
+    @Styles.Render("~/css/manage")
+}
+@section Headline {
+    <h1>
+        <span class="title">@ViewBag.Title</span>
+        @Html.ActionLink("← " + ViewResource.Back_To_List, "Connection", "ConnectionString", null, new { @class = "lnk" })
+    </h1>
+}
+@using (Html.BeginForm("SwitchConnection", "ConnectionString", FormMethod.Get))
+{
+    <section id="filter-bar">
+        <div class="filter-form">
+            <div class="lbl-field width-auto">
+                @Html.Label(ViewResource.From_DbServer)
+            </div>
+            <div class="edit-field">
+                @Html.DropDownListFor(m => m.FromDbServerId, Model.SelectListDatabaseServer)
+            </div>
+            <div class="submit">
+                <input type="submit" value="Submit" />
+            </div>
+        </div>
+    </section>
+}
+<table class="grid">
+    <thead>
+        <tr>
+            <th>
+                #
+            </th>
+            <th>
+                <input type="checkbox" name="checkall" />
+            </th>
+            <th>
+                @ViewResource.Alias
+            </th>
+            <th>
+                @ViewResource.DatabaseServer
+            </th>
+            <th>
+                @ViewResource.AliasDatabaseServer
+            </th>
+            <th>
+                @ViewResource.Database_Name
+            </th>
+            <th>
+                @ViewResource.Login
+            </th>
+            <th>
+                @ViewResource.Password
+            </th>
+            <th>
+                @ViewResource.Modifier
+            </th>
+            <th>
+                @ViewResource.Modified_Date
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (!ReferenceEquals(Model.Connections, null))
+        {
+            foreach (var item in Model.Connections)
+            {
+                string rowCss = i % 2 == 0 ? string.Empty : "class=\"alt\"";
+                i++;
+            <tr class="@rowCss">
+                <td class="width-30 align-center">
+                    @i
+                </td>
+                <td class="align-center">
+                    <input type="checkbox" sid="@item.Id" sname="@item.Name" class="update-server"/>
+                </td>
+                <td>
+                    @item.Name
+                </td>
+                <td>
+                    @item.DatabaseServer.Name
+                </td>
+                <td>
+                    @item.Database.ServerAlias
+                </td>
+                <td>
+                    @item.Database.Name
+                </td>
+                <td>
+                    @item.LoginName
+                </td>
+                <td>
+                    @item.Password
+                </td>
+                <td>
+                    @item.Modifier.Name
+                </td>
+                <td>
+                    @item.ModifiedDate
+                </td>
+            </tr>
+            }
+            if (i == 0)
+            {
+            <tr>
+                <td colspan="12" class="align-center">
+                    @ViewResource.NoInformationAvailable
+                </td>
+            </tr>
+            }
+        }
+        else
+        { 
+            <tr>
+                <td colspan="12" class="align-center">
+                    @ViewResource.NoInformationAvailable
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@if (i > 0)
+{ 
+    <section id="filter-bar">
+        <div class="filter-form">
+            <div class="lbl-field width-auto">
+                @Html.Label(ViewResource.To_DbServer)
+            </div>
+            <div class="edit-field">
+                @Html.DropDownListFor(m => m.ToDbServerId, Model.SelectListDatabaseServer)
+            </div>
+            <div class="submit">
+                <input type="submit" value="@ViewResource.Update" id="btnSwitchServer"/>
+            </div>
+        </div>
+    </section>
+}
+@section Foot{
+    @Scripts.Render("~/scripts/connectionstring-connection")
+}

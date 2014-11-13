@@ -1,0 +1,132 @@
+﻿@using Fanex.Maintenance.ViewModel.Connection
+@model SearchDatabaseViewModel
+@{
+    ViewBag.Title = ViewResource.Database;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Head {
+    @Styles.Render("~/css/manage")
+}
+@section Headline {
+    <h1>
+        <span class="title">@ViewBag.Title</span>
+        @if (Model.HasEditPermission)
+        { 
+            @Html.ActionLink("+ Create New", "CreateDatabase", "ConnectionString", new { databaseId = Model.DbServerId }, new { @class = "lnk" })
+        }
+    </h1>
+}
+@using (Html.BeginForm("Database", "ConnectionString", FormMethod.Get))
+{
+    <section id="filter-bar">
+        <div class="filter-form">
+            <div class="lbl-field width-auto">
+                @Html.Label(ViewResource.DatabaseServer)
+            </div>
+            <div class="edit-field">
+                @Html.DropDownListFor(m => m.DbServerId, Model.SelectListDatabaseServer, ViewResource.All)
+            </div>
+            <div class="submit">
+                <input type="submit" value="Submit" />
+            </div>
+        </div>
+    </section>
+}
+<table class="grid">
+    <thead>
+        <tr>
+            <th>
+                #
+            </th>
+            <th>
+                @ViewResource.Name
+            </th>
+            <th>
+                @ViewResource.DatabaseServer
+            </th>
+            <th>
+                @ViewResource.ServerAlias
+            </th>
+            <th>
+                @ViewResource.Server_IP
+            </th>
+            <th>
+                @ViewResource.Modifier
+            </th>
+            <th>
+                @ViewResource.Modified_Date
+            </th>
+            <th>
+                @ViewResource.Active
+            </th>
+            @if (Model.HasEditPermission)
+            { 
+                <th>
+                    @ViewResource.Edit
+                </th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @if (!ReferenceEquals(Model.Database, null))
+        {
+            int i = 0;
+            var disable = Model.HasEditPermission ? string.Empty : "disabled";
+            foreach (var item in Model.Database)
+            {
+                string rowCss = i % 2 == 0 ? string.Empty : "class=\"alt\"";
+                i++;
+            <tr class="@rowCss">
+                <td class="width-30 align-center">
+                    @i
+                </td>
+                <td>
+                    @item.Name
+                </td>
+                <td>
+                    @item.DatabaseServer.Name
+                </td>
+                <td>
+                    @item.ServerAlias
+                </td>
+                <td>
+                    @item.DatabaseServer.ServerIP
+                </td>
+                <td>
+                    @item.Modifier.Name
+                </td>
+                <td class="align-center">
+                    @item.ModifiedDate.ToFullDateString()
+                </td>
+                <td class="align-center">
+                    @if (item.IsActive)
+                    {
+                        <input type="checkbox" checked="checked" did="@item.Id" dname="@item.Name" class="update-status" @disable/>
+                    }
+                    else
+                    {
+                        <input type="checkbox"did="@item.Id" dname="@item.Name" class="update-status" @disable/>
+                    }
+                </td>
+                @if (Model.HasEditPermission)
+                { 
+                    <td class="align-center">
+                        @Html.ActionLink("Edit", "EditDatabase", new { id = item.Id })
+                    </td>
+                }
+            </tr>
+            }
+            if (i == 0)
+            {
+            <tr>
+                <td colspan="10" class="align-center">
+                    @ViewResource.NoInformationAvailable
+                </td>
+            </tr>
+            }
+        }
+    </tbody>
+</table>
+@section Foot {
+    @Scripts.Render("~/scripts/connectionstring-aliasdatabase")
+}

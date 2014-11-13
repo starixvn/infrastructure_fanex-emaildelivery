@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>MvcPager</id>
+    <version>1.0.0</version>
+    <title>MvcPager</title>
+    <authors>Huynh Hoa Dang</authors>
+    <owners>Huynh Hoa Dang</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>MvcPager is a class library of Paging MVC3 web site code that can be used as a
+      foundation for a new web site project.</description>
+    <releaseNotes />
+    <copyright />
+    <language />
+  </metadata>
+</package>

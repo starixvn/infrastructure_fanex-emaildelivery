@@ -1,0 +1,96 @@
+﻿@using Fanex.Maintenance.ViewModel.Connection
+@model DatabaseServerViewModel
+@{  
+    ViewBag.Title = ViewResource.Update + ViewResource.DatabaseServer;
+    Layout = "~/Views/Shared/_Layout.cshtml";    
+}
+@{
+    ViewBag.Title = string.Format("{0} {1}", ViewResource.Update, ViewResource.DatabaseServer);
+    bool success = ViewBag.Success != null && ViewBag.Success;    
+}
+@section Head {
+    @Styles.Render("~/css/manage")
+    <style type="text/css">
+        .form .form-row .rdo-field, .form .form-row .chk-field
+        {
+            padding: 3px 0 0;
+        }
+    </style>
+}
+@section Headline {
+    <h1>
+        <span class="title">@ViewBag.Title</span>
+        @Html.ActionLink("← " + ViewResource.Back_To_List, "DatabaseServer", "ConnectionString", null, new { @class = "lnk" })
+    </h1>
+}
+@using (Html.BeginForm())
+{
+    <div class="form">
+        <div class="form-row summary">
+            <div class="lbl-field">
+            </div>
+            <div class="edit-field">
+                @Html.ValidationSummary()
+            </div>
+        </div>
+        <div class="form-row required">
+            <div class="lbl-field">
+                @Html.LabelFor(m => m.Name)
+            </div>
+            <div class="edit-field">
+                @Html.TextBoxFor(m => m.Name)
+            </div>
+        </div>
+        <div class="form-row required">
+            <div class="lbl-field">
+                @Html.Label(ViewResource.Server_IP)
+            </div>
+            <div class="edit-field">
+                @Html.TextBoxFor(m => m.ServerIP)
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="lbl-field">
+                @Html.LabelFor(m => m.Description)
+            </div>
+            <div class="edit-field">
+                @Html.TextBoxFor(m => m.Description)
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="lbl-field">
+                @Html.Label(ViewResource.Status)
+            </div>
+            <div class="edit-field chk-field">
+                @Html.CheckBoxFor(m => m.IsActive)
+                @Html.LabelFor(m => m.IsActive, ViewResource.Active)
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="lbl-field">
+            </div>
+            <div class="edit-field">
+                @if (!success)
+                {
+                    <input type="button" value="@ViewResource.Save" id="btnSave"/>
+                    <button class="cancel" onclick="NAP.redirect('ConnectionString/DatabaseServer', 0); return false;">@ViewResource.Cancel</button> 
+                }
+            </div>
+        </div>
+    </div>    
+    @Html.HiddenFor(m => m.Id)
+}
+@section Foot
+{
+    @Scripts.Render("~/scripts/connectionstring-database")
+    @if (success)
+    {
+        string dialogMsg = string.Format(ViewResource.UpSuccessMsg, ViewResource.DatabaseServer, 3);
+
+        <script type="text/javascript">
+            $(function () {
+                NAP.showSuccessMsg('@dialogMsg', 'ConnectionString/DatabaseServer/', 2000);
+            });
+        </script>
+    }
+}

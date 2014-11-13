@@ -87,13 +87,15 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Fanex.MailDelivery.Client\Fanex.MailDelivery.Client.csproj">
       <Project>{708E1FCE-82C4-443B-B1E9-0E64BCABE80E}</Project>
-      <Name>Fanex.MailCentralized.Client</Name>
+      <Name>Fanex.MailDelivery.Client</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

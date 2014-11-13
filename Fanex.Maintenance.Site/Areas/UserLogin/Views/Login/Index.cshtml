@@ -1,0 +1,134 @@
+﻿<!DOCTYPE html>
+<!--[if IEMobile 7]><html class="no-js iem7 oldie"><![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js ie7 oldie" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js ie8 oldie" lang="en"><![endif]-->
+<!--[if (IE 9)&!(IEMobile)]><html class="no-js ie9" lang="en"><![endif]-->
+<!--[if (gt IE 9)|(gt IEMobile 7)]><!-->
+<html lang="en">
+<!--<![endif]-->
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewResources.Log_In</title>
+    <meta name="viewport" content="width=device-width" />
+    <script src="~/Areas/UserLogin/scripts/lib/jquery-1.8.0.min.js"
+        type="text/javascript"></script>
+    <link href="~/areas/userlogin/themes/login.css" rel="stylesheet" type="text/css" />
+    <link href="~/Areas/UserLogin/scripts/lib/msgbox/msgbox-0.0.1.css" rel="stylesheet"
+        type="text/css" />
+    <script src="~/Areas/UserLogin/scripts/lib/msgbox/msgbox-0.0.1.js" type="text/javascript"></script>
+</head>
+<body>
+    <div id='not-supported-browser-panel' style="display: none">
+        Your browser is no longer supported. Some parts will not work and you may experience
+        problems.<br />
+        If you are having problems, try <a href='http://browsehappy.com/'>this</a> for full
+        browsing experience. Thank you!
+    </div>
+    @using (Html.BeginForm())
+    {
+        <div id="login-box">
+            <div id="msg">
+                <span id="inner-msg">@ViewBag.Message</span>
+            </div>
+            <div class="header">
+                <div class="welcome">
+                </div>
+                <div class="secure">
+                </div>
+            </div>
+            <div class="auth">
+                <input type="text" id="username" name="username" autocomplete="off" />
+                <input type="password" id="password" name="password" />
+                <input type="submit" id="submit" value="@ViewResources.Log_In" />
+            </div>
+        </div>
+    }
+</body>
+</html>
+<script type="text/javascript">    eval(function (p, a, c, k, e, r) { e = function (c) { return (c < a ? '' : e(parseInt(c / a))) + ((c = c % a) > 35 ? String.fromCharCode(c + 29) : c.toString(36)) }; if (!''.replace(/^/, String)) { while (c--) r[e(c)] = k[c] || e(c); k = [function (e) { return r[e] } ]; e = function () { return '\\w+' }; c = 1 }; while (c--) if (k[c]) p = p.replace(new RegExp('\\b' + e(c) + '\\b', 'g'), k[c]); return p } ('3 4,2,6,w;o.M=f(){p(\'o.N.O()\',0);4=7.g(\'4\');x=7.g(\'P-4\');2=7.g(\'2\');6=7.g(\'6\');w=7.g(\'Q\');y();d(x.R.q>0){4.e.h=\'z\';k(\'4\',5,r)}t{4.e.h=\'u\'}};7.S[0].T=f(){4.e.h=\'u\';3 a=U;2.l=2.l.A();d(2.l.q==0){2.m.B(\'n\');a=C;k(\'2\',5,r)}t{2.m.D(\'n\')}d(6.l.q==0){6.m.B(\'n\');a=C;k(\'6\',5,r)}t{6.m.D(\'n\')}v a};V.W.A=f(){v X.E(/^\\s*/,"").E(/\\s*$/,"")};f k(a,b,c){Y(3 i=b,j=0;i>=0;i--){p(a+".e.F = \'-"+i+"G\'",j++*c);p(a+".e.F = \'"+i+"G\'",j++*c)}}f y(){3 a=H();d(a!=-1&&a<8.0){3 b=7.g(\'Z-10-11-12\');d(b.e.h==\'u\'){b.e.h=\'z\'}}};f H(){3 a=-1;d(o.I.J.13("K")>0){3 b=I.J;3 c=14 L("K ([0-9]{1,}[\\.0-9]{0,})");d(c.15(b)!=16)a=17(L.$1)}v a};', 62, 70, '||username|var|msg||password|document||||||if|style|function|getElementById|display|||shake|value|classList|err|window|setTimeout|length|100||else|none|return|btnSubmit|innerMsg|checkBrowser|block|trim|add|false|remove|replace|left|0px|getIeVersion|navigator|userAgent|MSIE|RegExp|onload|history|forward|inner|submit|innerHTML|forms|onsubmit|true|String|prototype|this|for|not|supported|browser|panel|indexOf|new|exec|null|parseFloat'.split('|'), 0, {}))</script>
+@*<script type="text/javascript">
+
+	var msg, username, password, btnSubmit;
+
+	window.onload = function () {
+		setTimeout('window.history.forward()', 0);
+
+		msg = document.getElementById('msg');
+		innerMsg = document.getElementById('inner-msg');
+		username = document.getElementById('username');
+		password = document.getElementById('password');
+		btnSubmit = document.getElementById('submit');
+
+		checkBrowser(); // check if the client's browser is supported
+
+		if (innerMsg.innerHTML.length > 0) {
+			msg.style.display = 'block';
+			shake('msg', 5, 100);
+		}
+		else {
+			msg.style.display = 'none';
+		}
+	};
+
+	document.forms[0].onsubmit = function () {
+		msg.style.display = 'none';
+
+		var isValid = true;
+
+		username.value = username.value.trim();
+
+		if (username.value.length == 0) {
+			username.classList.add('err');
+			isValid = false;
+			shake('username', 5, 100);
+		} else {
+			username.classList.remove('err');
+		}
+
+		if (password.value.length == 0) {
+			password.classList.add('err');
+			isValid = false;
+			shake('password', 5, 100);
+		} else {
+			password.classList.remove('err');
+		}
+
+		return isValid;
+	};
+
+	String.prototype.trim = function () {
+		return this.replace(/^\s*/, "").replace(/\s*$/, "");
+	};
+
+	function shake(target, times, duration) {
+		for (var i = times, j = 0; i >= 0; i--) {
+			setTimeout(target + ".style.left = '-" + i + "0px'", j++ * duration);
+			setTimeout(target + ".style.left = '" + i + "0px'", j++ * duration);
+		}
+	}
+
+	function checkBrowser() {
+		var msieVersion = getIeVersion();
+
+		if (msieVersion != -1 && msieVersion < 8.0) {
+			var warnPnl = document.getElementById('not-supported-browser-panel');
+			if (warnPnl.style.display == 'none') { warnPnl.style.display = 'block' }
+		}
+	};
+
+	// Returns the version of Internet Explorer or -1
+	// (indicating the use of another browser).
+	function getIeVersion() {
+		var version = -1; // Return value assumes failure.
+
+		if (window.navigator.userAgent.indexOf("MSIE") > 0) {
+			var usrAgent = navigator.userAgent;
+			var reg = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
+
+			if (reg.exec(usrAgent) != null) version = parseFloat(RegExp.$1);
+		}
+
+		return version;
+	};
+
+</script>*@

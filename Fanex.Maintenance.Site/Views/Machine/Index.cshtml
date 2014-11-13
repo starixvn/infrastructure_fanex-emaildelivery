@@ -1,0 +1,101 @@
+﻿@using Fanex.Maintenance.Repository.Criteria.Log
+@using Fanex.Maintenance.Core.Model
+@{
+    ViewBag.Title = ViewResource.AppLogs_MangeMachines;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var hasEditRight = (bool)ViewBag.HasEdit;
+}
+@section Head {
+    @Styles.Render("~/css/manage")
+}
+@section Headline {
+    <h1>
+        <span class="title">@ViewResource.AppLogs_MangeMachines</span>
+        @if (hasEditRight)
+        { 
+            @Html.ActionLink("+ Create New", "InsertMachine", "Machine", new { @class = "lnk" })
+        }
+    </h1>
+}
+@using (Html.BeginForm())
+{
+    <section id="filter-bar">
+        <div class="filter-form">
+            <div class="lbl-field width-auto">
+                @Html.Label(ViewResource.MachineType)
+            </div>
+            <div class="edit-field">
+                @Html.DropDownList("MachineType", (List<SelectListItem>)ViewBag.MachineTypes)
+            </div>
+            <div class="submit">
+                <input type="submit" value="@ViewResource.Submit" />
+            </div>
+        </div>
+    </section>
+}
+<table class="grid" style="width: 96.8%">
+    <thead>
+        <tr>
+            <th>
+                #
+            </th>
+            <th>
+                @ViewResource.Machine_Name
+            </th>
+            <th class="width-200">
+                @ViewResource.TimeZone
+            </th>
+            <th class="width-100">
+                @ViewResource.IsProduction
+            </th>
+            @if (hasEditRight)
+            { 
+                <th>
+                    @ViewResource.Edit
+                </th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            int i = 1;
+            IEnumerable<Machine> machineList = ViewBag.Machines as IEnumerable<Machine>;
+            if (!ReferenceEquals(machineList, null))
+            {
+                foreach (Machine machine in machineList)
+                {
+                    string row_class = i % 2 == 0 ? "alt" : string.Empty;
+
+            <tr class="@row_class">
+                <td class="align-center">@i
+                </td>
+                <td>@machine.MachineName
+                </td>
+                <td class="align-center">
+                    GMT (@(machine.TimeZone > 0 ? "+" + machine.TimeZone : machine.TimeZone.ToString()))
+                </td>
+                <td>@(machine.IsProduction ? Html.Raw("<span class='btn-check'/>") : Html.Raw(string.Empty))
+                </td>
+                @if (hasEditRight)
+                { 
+                    <td class="align-center">
+                        <div class="action-wrp">
+                            @Html.ActionLink("Machine", "EditMachine", new { id = machine.MachineId }, new { @class = "btn-edit" })
+                        </div>
+                    </td>
+                }
+            </tr>
+                i++;
+                }
+            }
+            else
+            {
+            <tr>
+                <td colspan="5">
+                    @ViewResource.NoInformationAvailable
+                </td>
+            </tr>
+            }
+        }
+    </tbody>
+</table>

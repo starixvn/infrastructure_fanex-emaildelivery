@@ -1,0 +1,134 @@
+﻿@using Fanex.Maintenance.ViewModel.Connection
+@model ConnectionViewModel
+@{  
+    ViewBag.Title = ViewResource.Create + ViewResource.Connection;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@{
+    ViewBag.Title = string.Format("{0} {1}", ViewResource.Create_New, ViewResource.Connection);
+    bool success = ViewBag.Success != null && ViewBag.Success;    
+}
+@section Head {
+    @Styles.Render("~/css/manage")
+    <style type="text/css">
+        .form .form-row .lbl-field
+        {
+            font-family: Tahoma;
+            padding: 5px 25px 0 0;
+            text-align: right;
+            text-shadow: 0 1px #FAFAFA;
+            vertical-align: top;
+            width: 130px;
+        }
+        
+        .form .form-row .rdo-field, .form .form-row .chk-field
+        {
+            padding: 3px 0 0;
+        }
+    </style>
+}
+@section Headline {
+    <h1>
+        <span class="title">@ViewBag.Title</span>
+        @Html.ActionLink("← " + ViewResource.Back_To_List, "Connection", "ConnectionString", null, new { @class = "lnk" })
+    </h1>
+}
+@using (Html.BeginForm())
+{
+    <div class="form">
+        <div class="form-row summary">
+            <div class="lbl-field">
+            </div>
+            <div class="edit-field">
+                @Html.ValidationSummary()
+            </div>
+        </div>
+        <div class="form-row required">
+            <div class="lbl-field">
+                @Html.LabelFor(m => m.Name)
+            </div>
+            <div class="edit-field">
+                @Html.TextBoxFor(m => m.Name, new { @disabled = "disabled" })
+            </div>
+        </div>
+        <div class="form-row required">
+            <div class="lbl-field">
+                @Html.Label(ViewResource.DatabaseServer)
+            </div>
+            <div class="edit-field">
+                @Html.DropDownListFor(m => m.DbServerId, Model.SelectListDatabaseServer)
+            </div>
+        </div>
+        <div class="form-row required">
+            <div class="lbl-field">
+                @Html.Label(ViewResource.Database)
+            </div>
+            <div class="edit-field">
+                <select id="DatabaseId" name="DatabaseId">
+                    @foreach (var item in Model.Databases)
+                    {
+                        <option value="@item.Id" data-serveralias="@item.ServerAlias">@item.Name</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="lbl-field">
+                @Html.Label(ViewResource.LoginName)
+            </div>
+            <div class="edit-field">
+                @Html.TextBoxFor(m => m.LoginName)
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="lbl-field">
+                @Html.LabelFor(m => m.Password)
+            </div>
+            <div class="edit-field">
+                @Html.TextBoxFor(m => m.Password)
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="lbl-field">
+                @Html.LabelFor(m => m.FreeText)
+            </div>
+            <div class="edit-field">
+                @Html.TextBoxFor(m => m.FreeText)
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="lbl-field">
+                @Html.Label(ViewResource.Status)
+            </div>
+            <div class="edit-field chk-field">
+                @Html.CheckBoxFor(m => m.IsActive)
+                @Html.LabelFor(m => m.IsActive, ViewResource.Active)
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="lbl-field">
+            </div>
+            <div class="edit-field">
+                @if (!success)
+                {
+                    <input type="submit" value="@ViewResource.Create" />
+                    <button class="cancel" onclick="NAP.redirect('ConnectionString/Connection/', 0); return false;">@ViewResource.Cancel</button>
+                }
+            </div>
+        </div>
+    </div>
+}
+@section Foot
+{
+    @if (success)
+    {
+        string dialogMsg = string.Format(ViewResource.AddSuccessMsg, ViewResource.Connection, 3);
+
+        <script type="text/javascript">
+            $(function () {
+                NAP.showSuccessMsg('@dialogMsg', 'ConnectionString/Connection/', 2000);
+            });
+        </script>
+    }
+    @Scripts.Render("~/scripts/connectionstring-connection")
+}

@@ -1,0 +1,85 @@
+﻿@using Fanex.Maintenance.Repository.Criteria.LrfDomain
+@using Fanex.Maintenance.Core.Model
+@model IEnumerable<LrfDomain>
+@{
+    ViewBag.Title = "Lrf Domain";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var success = false;
+    if (ViewBag.success != null && ViewBag.success == true)
+    { success = true; }
+    var hasEditRight = (bool)ViewBag.HasEdit;
+}
+@section Head {
+    @Styles.Render("~/css/log")
+}
+@section Headline {
+    <h1>
+        <span class="title">@ViewBag.Title</span>
+    </h1>
+}
+@section scripts
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#btnSubmit").click(function () {
+                var result = confirm("Are you sure you want to active this domain??");
+                if (result)
+                    return true;
+                return false;
+            });
+        });
+    </script>
+    @if (success)
+    {
+        ViewBag.success = false;
+        success = false;
+        <script type="text/javascript">
+            alert("Active domain success");
+        </script>
+        
+    }
+}
+@using (Html.BeginForm())
+{
+    <section id="filter-bar" style="width: 98%">
+        <div class="filter-form">
+            <div class="filter-row">
+                <div class="lbl-field width-auto">
+                    <span>Change current domain:</span>
+                    <ul>
+                        <li><br /></li>
+                        @{
+    if (Model.Any())
+    {
+        foreach (var item in Model)
+        { 
+                                    <li>                                    
+                                    @if (hasEditRight)
+                                    { 
+                                    @Html.RadioButton("Id", item.Id, item.IsActive, new { @id = "domain-" + item.Id })
+                                    }
+                                    else
+                                    {
+                                        @Html.RadioButton("Id", item.Id, item.IsActive, new { @id = "domain-" + item.Id, @disabled = "disabled" })
+                                    }
+                                    @item.DomainName
+                                    <br />
+                                    </li>
+        }
+    }
+                            <li>
+                            <br />
+                            @if (hasEditRight)
+                            { 
+                                <div class="submit">
+                                    <input id="btnSubmit" type="submit" value="Submit" />
+                                </div>
+                            }
+                            </li>
+                         }
+                     </ul>
+                 </div>
+            </div>
+        </div>
+</section>
+}

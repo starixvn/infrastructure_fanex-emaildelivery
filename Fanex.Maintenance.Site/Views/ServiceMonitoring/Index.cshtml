@@ -1,0 +1,102 @@
+﻿@using Fanex.Maintenance.Repository.Criteria.ServiceMonitoring
+@using Fanex.Maintenance.Core.Model
+@model ServiceMonitoringCriteria
+@{
+    ViewBag.Title = "Service Monitoring";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Head {
+    @Styles.Render("~/css/service-monitoring")
+}
+@section Headline {
+    <h1>
+        <span class="title">@ViewBag.Title</span>
+    </h1>
+}
+@using (Html.BeginForm("FormMain"))
+{
+    <section id="filter-bar" style="width: 98%" ng-controller="logController">
+        <div class="filter-form">
+            <div class="filter-row">
+                <div class="lbl-field width-100">
+                    @Html.Label("Server", "Server")
+                </div>
+                <div class="edit-field width-300">
+                    <select id="Server" class="width-140"></select>
+                    <input type="button" value="Add Server" id="AddServer" />
+                    @*@Html.DropDownList("Server", (IEnumerable<SelectListItem>)ViewBag.ListServer, new { @class = "width-180" })*@
+                </div>
+            </div>
+            <div class="filter-row">
+                <div class="lbl-field width-100">
+                    @Html.LabelFor(m => m.ServiceName, ViewResource.ServiceName)
+                </div>
+                <div class="edit-field width-180">
+                    @Html.TextBoxFor(m => m.ServiceName, new { @class = "width-180" })
+                </div>
+                <div class="lbl-field width-80">
+                    @Html.LabelFor(m => m.Status, ViewResource.Status)
+                </div>
+                <div class="edit-field width-180">
+                    <select id="Status" class="width-180">
+                        <option value='0'>All</option>
+                        <option value='4'>Running</option>
+                        <option value='1'>Stopped</option>
+                    </select>
+                    @*@Html.DropDownListFor(m => m.Status, (List<SelectListItem>)ViewBag.ListStatus, new { @class = "width-180" })*@
+                </div>
+                <div class="submit">
+                    <input type="button" value="@ViewResource.Submit" id="Submit" />
+                </div>
+            </div>
+        </div>
+    </section>
+    <div id="Grid-container" class="ui-helper-hidden clear-both">
+        <div id="Grid" class="freegrid  content-grid">
+        </div>
+    </div>
+    <div id="EditConfigGrid-container" class="ui-helper-hidden clear-both">
+        <div id="EditConfigGrid" class="freegrid  content-grid">
+        </div>
+    </div>
+}
+<div id="AddServerDialog" title="Add new Server">
+    <p id="ErrorServerLogin" class="ui-state-error" style="display: none">
+        Server login error. Please check your user name or password.</p>
+    @using (Html.BeginForm("AddServerForm"))
+    {
+        <div class="width-300 clear-both with-small-padding">
+            <div class="width-100 float-left">
+                <label for="IP">
+                    Server IP
+                </label>
+            </div>
+            <div class="width-100 float-left">
+                <input type="text" name="ip" id="IP" />
+            </div>
+        </div>
+        <div class="width-300 clear-both with-small-padding">
+            <div class="width-100 float-left">
+                <label for="UserName">
+                    User name
+                </label>
+            </div>
+            <div class="width-100 float-left">
+                <input type="text" name="username" id="UserName" />
+            </div>
+        </div>
+        <div class="width-300 clear-both with-small-padding">
+            <div class="width-100 float-left">
+                <label for="Password">
+                    Password</label>
+            </div>
+            <div class="width-100 float-left">
+                <input type="password" name="password" id="Password" />
+            </div>
+        </div>
+    }
+</div>
+<div id="EditConfigDialog" title="Edit Config" style="width: 1000px; height: 600px"></div>
+@section Foot {
+    @Scripts.Render("~/scripts/service-monitoring")
+}
