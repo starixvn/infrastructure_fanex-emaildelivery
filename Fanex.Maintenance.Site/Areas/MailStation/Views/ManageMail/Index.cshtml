@@ -1,0 +1,93 @@
+﻿@{
+    ViewBag.Title = "Manage Mail";
+    Layout = "~/Views/Shared/_Layout.cshtml";  
+}
+@section Head {
+    @Styles.Render("~/themes/sharedstyles")
+    @Styles.Render("~/themes/fanexgridstyles")
+    @Styles.Render("~/Areas/MailStation/ManageMail/ManageMailStyles")
+}
+@section Headline {
+    <h1>
+        <span class="title"><span class="first">Mail Delivery System</span> @ViewBag.Title</span>
+        <div class="button-action">
+            <a id="btnCreateMail" class="add-button" href="~/MailStation/Mail/InsertMail/Index">+ Create Mail</a>
+        </div>
+    </h1>
+}
+<section id="filter-bar">
+    <div class="filter-form">
+        <div class="filter-row">
+            <div class="form-group">
+                <div class="lbl-field width-80">
+                    <label for="mail-name">
+                        Mail Name</label>
+                </div>
+                <input id="mail-name" type="text" class="textbox" />
+            </div>
+            <div class="form-group">
+                <div class="lbl-field">
+                    <label for="status">
+                        Status</label>
+                </div>
+                <select id="status" name="status">
+                    <option>All</option>
+                    <option>Open</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <div class="lbl-field">
+                    <label for="group">
+                        Group</label>
+                </div>
+                <select id="group" name="group">
+                    <option>All</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Submit" />
+            </div>
+        </div>
+        <div class="filter-row">
+            <div class="form-group">
+                <div class="lbl-field width-80">
+                    <label for="site">
+                        Site</label>
+                </div>
+                <select id="site" name="site">
+                    <option>All Sites</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <div class="lbl-field">
+                    <label for="trigger">
+                        Trigger</label>
+                </div>
+                <select id="trigger" name="trigger">
+                    <option>All Types</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <div class="lbl-field">
+                    <label for="emails">
+                        Email(s)</label>
+                </div>
+                <input id="emails" type="text" class="textbox" />
+            </div>
+        </div>
+    </div>
+</section>
+<section id="body">
+    <div id="mail-list-container" class="mail-list-container">
+        <div id="mail-list" class="freegrid display-none">
+        </div>
+    </div>
+    <ul class="actions display-none">
+        <li><a class="edit-icon context-menu-item">Edit</a> </li>
+        <li><a class="delete-icon context-menu-item">Delete</a> </li>
+    </ul>
+</section>
+@section Foot {
+    @Scripts.Render("~/scripts/fanexgridscripts")
+    @Scripts.Render("~/Areas/MailStation/ManageMail/ManageMailScripts")
+}

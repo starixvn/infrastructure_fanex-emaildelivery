@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BundleTransformer.Core">
+      <HintPath>..\packages\BundleTransformer.Core.1.7.27\lib\net40\BundleTransformer.Core.dll</HintPath>
+    </Reference>
     <Reference Include="Common.Logging">
       <HintPath>..\packages\Common.Logging.2.1.2\lib\net40\Common.Logging.dll</HintPath>
     </Reference>
@@ -71,6 +74,11 @@
     </Reference>
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.0.0\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -86,6 +94,7 @@
     <Compile Include="Configurations\MailClientSection.cs" />
     <Compile Include="Configurations\ScheduleElement.cs" />
     <Compile Include="Configurations\ScheduleElementCollection.cs" />
+    <Compile Include="Controllers\MailController.cs" />
     <Compile Include="Enumerations\JobStatus.cs" />
     <Compile Include="Handlers\BaseHandler.cs" />
     <Compile Include="Handlers\Impl\MailClientLogger.cs" />
@@ -97,6 +106,7 @@
     <Compile Include="Handlers\Interface\IMailClientMessageBroker.cs" />
     <Compile Include="Handlers\MailClientHandler.cs" />
     <Compile Include="Jobs\JobBase.cs" />
+    <Compile Include="MailStationAreaRegistration.cs" />
     <Compile Include="Messages\JobResultMessage.cs" />
     <Compile Include="Messages\MailingListRequest.cs" />
     <Compile Include="Messages\ResultMessage.cs" />

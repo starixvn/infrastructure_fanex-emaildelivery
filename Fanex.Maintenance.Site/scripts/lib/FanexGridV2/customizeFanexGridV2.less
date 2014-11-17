@@ -1,0 +1,295 @@
+﻿@import "variables.less";
+@import "mixins.less";
+
+.grid-title {
+    .gradient-vertical(#ececec, #e1e1e1);
+    border-color: #b7b7b7;
+    border-bottom: none;
+    height: 30px;
+    margin-bottom: 0;
+
+    .grid-title-label {
+        color: @title-table-color;
+        font-size: @font-size + 1;
+        font-weight: bold;
+        background: none;
+        padding-left: 10px;
+    }
+
+    .grid-toolbox {
+        padding-top: 6px;
+    }
+    
+    .btnCharting, .btnViewDetail, .button-back, .btnGoBack {
+        margin: 0 2px;
+        padding: 0;
+        cursor: pointer;
+        height: 18px;
+        width: 18px;
+        border: none;
+    }
+
+    .btnCharting {
+        background: url(images/chart_bar.png) no-repeat;
+        height: 18px;
+        width: 17px;
+    }
+
+    .btnViewDetail {
+        background: url("images/view-detail.png") no-repeat;
+    }
+
+    .button-back, .btnGoBack {
+       background: url("images/back.png") no-repeat;
+    }
+
+    .btnExcel {
+        background: url(images/excel.png) no-repeat;
+        height: 18px;
+
+        &:hover {
+            background: url(images/excel.png) -20px 0 no-repeat;
+        }
+    }
+
+    .expanded, .expanded:hover {
+        background: url(images/ico-expand.png) 0 1px no-repeat;
+        height: 18px;
+        margin: 0 5px;
+    }
+
+    .collapsed, .collapsed:hover {
+        background: url(images/ico-collapse.png) 0 1px no-repeat;
+        height: 18px;
+        margin: 0 5px;
+    }
+}
+
+.freegrid {
+    border-color: #b7b7b7;
+    .box-sizing(content-box);
+
+    *, *:before, *:after {
+        .box-sizing(content-box);
+    }
+
+    .free-top-right {
+        *, *:before, *:after {
+            .box-sizing(border-box);
+        }
+    }
+
+    .grid-container.container {
+        margin: 0;
+        padding: 0;
+    }
+
+    .free-top-left table thead th, .col_header table thead th {
+        border-color: @header-table-border;
+        font-size: @font-size;
+    }
+
+    thead th, .grid-fixed-table thead th, td, .grid-fixed-table td {
+        font-size: @font-size;
+    }
+
+    td {
+        color: @table-color;
+    }
+
+    .free-top-right table {
+        thead th {
+            border-left: 1px solid @header-table-border;
+            height: 34px !important;
+        }
+    }
+
+    /* Status for datagrid */
+    .closed td, .row-closed td {
+        background: #ddd;
+    }
+
+    .checked td, .row-checked td,
+    .row-solved td  {
+        background: #f2f2f2;
+    }
+
+    .pending td, .row-pending td {
+        background: #f0edc4;
+    }
+
+    div.divSorter {
+        background: url(Images/sort-ico.png) no-repeat !important;
+        margin: 4px 2px 0;
+        height: 12px;
+
+        &.desc {
+            background-position: 0 -24px !important;
+        }
+
+        &.asc {
+            background-position: 0 -12px !important;
+        }
+    }
+
+   .freegrid-even td {
+        background-color: #ebf1f3;
+   }
+
+   .parent-level-0 td {
+        background-color: #e3e3e3;
+        color: #0054A6;
+   }
+
+   .subtotalrow td, .grid-fixed-table .subtotalrow td {
+        background: #e3e3e3;
+   }
+}
+
+.freegrid .row-footer-background {
+    border-color: @table-border;
+}
+
+.freegrid .row_footer table thead th, .freegrid .col_footer table thead th {
+    border-color: @table-border !important;
+}
+
+.freegrid .col_footer table thead th {
+    color: #363636;
+}
+
+/* Pager */
+.freegrid .grid-pager {
+
+    .grid-pager-content {
+        padding-top: 3px;
+    }
+
+    #pagination {
+        font-size: @font-size;
+
+        div.itemperpage {
+            color: @table-color;
+            font-weight: normal;
+            margin-top: 1px;
+        }
+
+        #itemperpage {
+            .border-radius(2px);
+            font-size: @font-size;
+            height: 19px;
+            border-color: @border-color;
+        }
+
+        .numberlist {
+            background-color: #fff;
+            .border-radius(2px);
+            height: 21px;
+            padding: 0;
+            border-color: @border-color;
+
+            ul li {
+                height: 100%;
+                padding: 0;
+
+                &.sep {
+                    background: none;
+                    border-right: 1px solid #cfcfcf;
+                }
+            }
+
+            .current.prev, .prev {
+                border-right: 1px solid #cfcfcf;
+            }
+
+            a:hover, .current {
+                background: #4869b8;
+                .border-radius(0);
+                margin: 0;
+            }
+
+            .current.prev, .current.next {
+                background: none;
+                color: @primary-color;
+            }
+
+            span, a, a:hover {
+                padding: 2px 7px;
+                height: 17px;
+                margin-right: 0;
+                font-weight: normal;
+            }
+        }
+
+        .gotopage_box {
+            td {
+                font-size: @font-size;
+            }
+
+            .go-to-page-text {
+                padding: 0 10px !important;
+            }
+        }
+
+        .txt {
+            padding: 0 5px !important;
+        }
+    }
+}
+
+
+.freegrid, .grid-fixed-table 
+{
+    td 
+    {
+        .editSetting, .deleteSetting, .addSetting {
+            display: block;
+            height: 16px;
+            margin: auto;
+            width: 16px;
+        }
+
+        .editSetting {
+            background: url(Images/icn_edit.png) no-repeat;
+        }
+
+        .deleteSetting {
+            background: url(Images/icn_del.png) no-repeat;
+        }
+
+        .addSetting {
+            background: url(Images/icn_add.png) no-repeat;
+        }
+    }
+}
+
+
+.freegrid, .grid-fixed-table 
+{
+    td 
+    {
+        .editSetting, .deleteSetting, .addSetting {
+            display: block;
+            height: 16px;
+            margin: auto;
+            width: 16px;
+        }
+
+        .editSetting {
+            background: url(Images/icn_edit.png) no-repeat;
+        }
+
+        .deleteSetting {
+            background: url(Images/icn_del.png) no-repeat;
+        }
+
+        .addSetting {
+            background: url(Images/icn_add.png) no-repeat;
+        }
+    }
+}
+
+.filter-frm .txtcalendar.disabled
+{
+    background-position: 84px -16px;
+}

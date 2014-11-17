@@ -213,6 +213,7 @@
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\BundleExtensions.cs" />
+    <Compile Include="App_Start\MailStationBundles.cs" />
     <Compile Include="Areas\UserLogin\Controllers\BaseController.cs" />
     <Compile Include="Areas\UserLogin\Controllers\CommonController.cs" />
     <Compile Include="Areas\UserLogin\Controllers\LoginController.cs" />
@@ -233,6 +234,12 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="App_Data\NAPCommonSpNames.xml" />
+    <Content Include="Areas\MailStation\Views\ManageMail\Scripts\ManageMailController.js" />
+    <Content Include="Areas\MailStation\Views\ManageMail\Styles\Images\trigger.png" />
+    <Content Include="themes\shared\Images\action-ico.png" />
+    <Content Include="themes\shared\Images\del-ico.png" />
+    <Content Include="themes\shared\Images\edit-ico.png" />
+    <Content Include="themes\shared\Images\tick-ico-16.png" />
     <Content Include="Areas\UserLogin\scripts\lib\jquery-1.8.0.min.js" />
     <Content Include="Areas\UserLogin\scripts\Plugin\jquery-1.6.2.js" />
     <Content Include="Areas\UserLogin\scripts\ReCheckIn.js" />
@@ -261,6 +268,51 @@
     <Content Include="scripts\Connection\Database.js" />
     <Content Include="scripts\Connection\Site.js" />
     <Content Include="scripts\lib\custom-datepicker.js" />
+    <Content Include="scripts\lib\FanexGridV2\Fanex.Grid.css" />
+    <Content Include="scripts\lib\FanexGridV2\Fanex.Grid.js" />
+    <Content Include="scripts\lib\FanexGridV2\Fanex.Pagination.css" />
+    <Content Include="scripts\lib\FanexGridV2\Fanex.Pagination.js" />
+    <Content Include="scripts\lib\FanexGridV2\images\1350530947_page_excel.png" />
+    <Content Include="scripts\lib\FanexGridV2\images\ajax-loader.gif" />
+    <Content Include="scripts\lib\FanexGridV2\images\back-icon.png" />
+    <Content Include="scripts\lib\FanexGridV2\images\bgtitle.png" />
+    <Content Include="scripts\lib\FanexGridV2\images\bg_gloss_wave.png" />
+    <Content Include="scripts\lib\FanexGridV2\images\check-box.png" />
+    <Content Include="scripts\lib\FanexGridV2\images\collapse-icon.png" />
+    <Content Include="scripts\lib\FanexGridV2\images\collapse-small.png" />
+    <Content Include="scripts\lib\FanexGridV2\images\email.png" />
+    <Content Include="scripts\lib\FanexGridV2\images\excel-icon.png" />
+    <Content Include="scripts\lib\FanexGridV2\images\expand-icon.png" />
+    <Content Include="scripts\lib\FanexGridV2\images\expand-small.png" />
+    <Content Include="scripts\lib\FanexGridV2\images\go-hover-icon.png" />
+    <Content Include="scripts\lib\FanexGridV2\images\icn_add.png" />
+    <Content Include="scripts\lib\FanexGridV2\images\icn_del.png" />
+    <Content Include="scripts\lib\FanexGridV2\images\icn_edit.png" />
+    <Content Include="scripts\lib\FanexGridV2\images\icon_page.gif" />
+    <Content Include="scripts\lib\FanexGridV2\images\refresh_icon.png" />
+    <Content Include="scripts\lib\FanexGridV2\images\report_check.png" />
+    <Content Include="scripts\lib\FanexGridV2\images\send-mail.png" />
+    <Content Include="scripts\lib\FanexGridV2\images\seperations.png" />
+    <Content Include="scripts\lib\FanexGridV2\images\setting.png" />
+    <Content Include="scripts\lib\FanexGridV2\images\sort-icon-new.png" />
+    <Content Include="scripts\lib\FanexGridV2\images\sort-icon-new1.png" />
+    <Content Include="scripts\lib\FanexGridV2\images\sort-icon-new3.png" />
+    <Content Include="scripts\lib\FanexGridV2\images\sort-icon.png" />
+    <Content Include="scripts\lib\FanexGridV2\images\sorting_asc.gif" />
+    <Content Include="scripts\lib\FanexGridV2\images\sorting_bg.gif" />
+    <Content Include="scripts\lib\FanexGridV2\images\sorting_desc.gif" />
+    <Content Include="scripts\lib\FanexGridV2\images\white-top-bottom.gif" />
+    <Content Include="scripts\lib\FanexGridV2\Language\Fanex.Gird.Lang.en-US.js" />
+    <Content Include="scripts\lib\FanexGridV2\Language\Fanex.Gird.Lang.ja-JP.js" />
+    <Content Include="scripts\lib\FanexGridV2\Language\Fanex.Gird.Lang.ko-KR.js" />
+    <Content Include="scripts\lib\FanexGridV2\Language\Fanex.Gird.Lang.th-TH.js" />
+    <Content Include="scripts\lib\FanexGridV2\Language\Fanex.Gird.Lang.vi-VN.js" />
+    <Content Include="scripts\lib\FanexGridV2\Language\Fanex.Gird.Lang.zh-CN.js" />
+    <Content Include="scripts\lib\FanexGridV2\Language\Fanex.Gird.Lang.zh-TW.js" />
+    <Content Include="scripts\lib\FanexGridV2\moment.js" />
+    <Content Include="scripts\lib\FanexGridV2\moment.min.js" />
+    <Content Include="scripts\lib\FanexGridV2\numeral.js" />
+    <Content Include="scripts\lib\FanexGridV2\numeral.min.js" />
     <Content Include="scripts\lib\jquery.blockUI.js" />
     <Content Include="scripts\lib\chosen\chosen-sprite.png" />
     <Content Include="scripts\lib\chosen\chosen.css" />
@@ -494,6 +546,8 @@
     <Content Include="themes\manage\img\ui-modal-btn.png" />
     <Content Include="themes\manage\img\warning.png" />
     <Content Include="themes\reset.css" />
+    <Content Include="themes\shared\img\bg_header.png" />
+    <Content Include="themes\shared\img\setting.png" />
     <Content Include="themes\style.css" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Login\Index.cshtml" />
@@ -625,6 +679,8 @@
     <Content Include="Views\Mail\ComposeEmail.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Areas\MailStation\Views\InsertMail\Scripts\" />
+    <Folder Include="Areas\MailStation\Views\InsertMail\Styles\" />
     <Folder Include="ServiceMonitoringCache\" />
   </ItemGroup>
   <ItemGroup>
@@ -632,6 +688,31 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\ServiceMonitoring\XMLEditor.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\MailStation\Views\ManageMail\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\MailStation\Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Fanex.MailDelivery.Client\Fanex.MailDelivery.Client.csproj">
+      <Project>{708E1FCE-82C4-443B-B1E9-0E64BCABE80E}</Project>
+      <Name>Fanex.MailDelivery.Client</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\MailStation\Views\InsertMail\Index.cshtml" />
+    <None Include="Areas\MailStation\Views\ManageMail\Styles\ManageMail.less" />
+    <Content Include="themes\shared\colors.less" />
+    <Content Include="themes\shared\grid.less" />
+    <Content Include="themes\shared\common.less" />
+    <None Include="scripts\lib\FanexGridV2\customizeFanexGridV2.less" />
+    <None Include="scripts\lib\FanexGridV2\Fanex.Grid.less" />
+    <None Include="scripts\lib\FanexGridV2\mixins.less" />
+    <None Include="scripts\lib\FanexGridV2\variables.less" />
+    <None Include="themes\shared\contextmenu.less" />
+    <None Include="themes\shared\sitestyle.less" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

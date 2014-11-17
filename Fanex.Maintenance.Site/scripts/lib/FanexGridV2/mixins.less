@@ -1,0 +1,36 @@
+// Border Radius
+.border-radius(@radius) {
+  -webkit-border-radius: @radius;
+     -moz-border-radius: @radius;
+          border-radius: @radius;
+}
+
+// Drop shadows
+.box-shadow(@shadow) {
+  -webkit-box-shadow: @shadow;
+     -moz-box-shadow: @shadow;
+          box-shadow: @shadow;
+}
+
+// Transitions
+.transition(@transition) {
+  -webkit-transition: @transition;
+     -moz-transition: @transition;
+       -o-transition: @transition;
+          transition: @transition;
+}
+
+// Box-sizing
+.box-sizing(@content) {
+    box-sizing: @content;
+    -moz-box-sizing: @content; /* Firefox */
+    -webkit-box-sizing: @content;
+}
+
+.gradient-vertical(@startColor: #555, @endColor: #333) {
+    background: @endColor;
+    background: -webkit-linear-gradient(@startColor, @endColor); /* For Safari */
+    background: -o-linear-gradient(@startColor, @endColor); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(@startColor, @endColor); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(@startColor, @endColor);
+}
