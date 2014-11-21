@@ -29,7 +29,7 @@
     left: 0;
     top: 0;
     z-index: 99;
-    min-width: 200px;
+    min-width: 150px;
     
     li {
         clear: both;
@@ -61,6 +61,14 @@
          
         .delete-icon {
             background: url("Images/del-ico.png") no-repeat scroll right 2px transparent;
+            &:hover
+            {
+                background-position: right -30px;
+            }
+        }
+         
+        .copy-icon {
+            background: url("Images/duplicate.png") no-repeat scroll right 2px transparent;
             &:hover
             {
                 background-position: right -30px;

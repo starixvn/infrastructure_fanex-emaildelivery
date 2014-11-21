@@ -9,6 +9,7 @@
 
 namespace Fanex.MailDelivery.Client.Controllers
 {
+    using System.Collections.Generic;
     using System.Web.Mvc;
 
     /// <summary>
@@ -24,6 +25,46 @@ namespace Fanex.MailDelivery.Client.Controllers
         public ActionResult InsertMail()
         {
             return View("~/Areas/MailStation/Views/InsertMail/Index.cshtml");
+        }
+
+        public ActionResult CopyMail()
+        {
+            return View("~/Areas/MailStation/Views/CopyMail/Index.cshtml");
+        }
+
+        public ActionResult MailList()
+        {
+            return Json(new List<int>() { 1, 2 }, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult DeleteMail()
+        {
+            return Json(new List<int>() { 3 }, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult EditMail(int mailId)
+        {
+            var mailInfo = new
+            {
+                Id = 1,
+                MailName = "Name 1",
+                Group = "Licensee",
+                Site = "System Configuration",
+                TriggerType = "By Function",
+                To = "abc@gmail.com",
+                CC = "",
+                BCC = "",
+                LastSent = "Sep 24,2014 06:08 AM",
+                Active = true
+            };
+
+            return View("~/Areas/MailStation/Views/EditMail/Index.cshtml", mailInfo);
+        }
+
+        [HttpPost]
+        public JsonResult EditMail()
+        {
+            return Json(new List<int>() { 3 }, JsonRequestBehavior.AllowGet);
         }
     }
 }

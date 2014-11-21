@@ -1,6 +1,8 @@
 ﻿@{
     ViewBag.Title = "Manage Mail";
-    Layout = "~/Views/Shared/_Layout.cshtml";  
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var hasEditRight = true;
+    var hasSiteRight = true;
 }
 @section Head {
     @Styles.Render("~/themes/sharedstyles")
@@ -9,10 +11,14 @@
 }
 @section Headline {
     <h1>
-        <span class="title"><span class="first">Mail Delivery System</span> @ViewBag.Title</span>
-        <div class="button-action">
-            <a id="btnCreateMail" class="add-button" href="~/MailStation/Mail/InsertMail/Index">+ Create Mail</a>
-        </div>
+        <span class="title"><span class="first">Mail Delivery System /</span> @ViewBag.Title</span>
+        @if (hasEditRight)
+        {
+            <div class="button-action">
+                <a id="btnCreateMail" class="add-button" href="~/MailStation/Mail/InsertMail">+ Create
+                    Mail</a>
+            </div>
+        }
     </h1>
 }
 <section id="filter-bar">
@@ -31,8 +37,6 @@
                         Status</label>
                 </div>
                 <select id="status" name="status">
-                    <option>All</option>
-                    <option>Open</option>
                 </select>
             </div>
             <div class="form-group">
@@ -41,30 +45,30 @@
                         Group</label>
                 </div>
                 <select id="group" name="group">
-                    <option>All</option>
                 </select>
             </div>
             <div class="form-group">
-                <input type="submit" value="Submit" />
+                <input id="button-search" type="submit" value="Submit" />
             </div>
         </div>
         <div class="filter-row">
+            @if (hasSiteRight)
+            {
+                <div class="form-group">
+                    <div class="lbl-field width-80">
+                        <label for="site">
+                            Site</label>
+                    </div>
+                    <select id="site" name="site">
+                    </select>
+                </div>
+            }
             <div class="form-group">
                 <div class="lbl-field width-80">
-                    <label for="site">
-                        Site</label>
-                </div>
-                <select id="site" name="site">
-                    <option>All Sites</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <div class="lbl-field">
                     <label for="trigger">
                         Trigger</label>
                 </div>
                 <select id="trigger" name="trigger">
-                    <option>All Types</option>
                 </select>
             </div>
             <div class="form-group">
@@ -84,10 +88,32 @@
     </div>
     <ul class="actions display-none">
         <li><a class="edit-icon context-menu-item">Edit</a> </li>
+        <li><a class="copy-icon context-menu-item">Copy</a> </li>
         <li><a class="delete-icon context-menu-item">Delete</a> </li>
     </ul>
 </section>
 @section Foot {
+    @Scripts.Render("~/scripts/sharedscripts")
     @Scripts.Render("~/scripts/fanexgridscripts")
     @Scripts.Render("~/Areas/MailStation/ManageMail/ManageMailScripts")
+    <script type="text/javascript">
+        window.rootUrl = '@Url.Content("~")';
+        var viewResources = {
+            hasEditRight: @(hasEditRight ? 1 : 0),
+            hasSiteRight: @(hasSiteRight ? 1 : 0),
+
+            Id: 'ID',
+            Mail_Name: 'Mail Name',
+            Group: 'Group',
+            Site: 'Site',
+            Trigger: 'Trigger',
+            To: 'To',
+            CC: 'CC',
+            BCC: 'BCC',
+            Last_Sent: 'Last Sent',
+            Active: 'Active',
+            Action: 'Action',
+            Confirm_DeleteMail: 'Do you want to delete the Mail?'
+        };
+    </script>
 }

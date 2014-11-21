@@ -1,0 +1,81 @@
+﻿<div class="daily-schedule display-none">
+    <div class="form-row">
+        <div class="lbl-field">
+            <label for="repeat-day-daily" class="bold-weight">
+                Repeat every
+            </label>
+        </div>
+        <div class="edit-field">
+            <select id="repeat-day-daily" name="repeat-day" class="repeat-day">
+            </select>
+        </div>
+        <div class="lbl-field day-time-separate-label">
+            <label>
+                days
+            </label>
+            <label for="repeat-time">
+                at
+            </label>
+        </div>
+        <div class="edit-field">
+            <input id="repeat-time" type="text" value="" name="repeat-time" />
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="lbl-field">
+            <label for="start-day-daily" class="bold-weight">
+                Start on:
+            </label>
+        </div>
+        <div class="edit-field">
+            <input id="start-day-daily" type="text" value="@DateTime.Now.ToString("MMM dd,yyyy")" />
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="lbl-field">
+            <label class="bold-weight">
+                Ends:
+            </label>
+        </div>
+        <div class="edit-field">
+            <label>
+                <input type="radio" value="1" name="is-end-limit-daily" />Never</label>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="lbl-field">
+        </div>
+        <div class="edit-field">
+            <label>
+                <input type="radio" value="2" name="is-end-limit-daily" checked="checked" />On</label>
+            <input id="end-day-daily" type="text" value="@DateTime.Now.ToString("MMM dd,yyyy")" />
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="lbl-field">
+            <label for="attempt-count-daily" class="bold-weight">
+                Attempt
+            </label>
+        </div>
+        <div class="edit-field">
+            <select id="attempt-count-daily" name="attempt-count" class="attempt-count">
+            </select>
+        </div>
+        <div class="lbl-field separate-label-group">
+            <label class="label-time">
+                times
+            </label>
+            <label>
+                Interval
+            </label>
+        </div>
+        <div class="edit-field">
+            <input id="interval-time" type="text" value="30" name="interval-time" />
+        </div>
+        <div class="lbl-field interval-time-label">
+            <label>
+                minute(s)
+            </label>
+        </div>
+    </div>
+</div>

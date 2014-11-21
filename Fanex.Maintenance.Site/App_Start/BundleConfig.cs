@@ -135,12 +135,15 @@ namespace Fanex.Maintenance.Site.App_Start
 
             RegisterSharedBundles(bundles);
             RegisterFanexGridBundles(bundles);
+             RegisterInputComboboxBundles(bundles);
             MailStationBundles.RegisterAllBundles(bundles);
             bundles.FileSetOrderList.Clear();
         }
 
         public static void RegisterSharedBundles(BundleCollection bundles)
         {
+            bundles.Add(new ScriptBundle("~/scripts/sharedscripts").Include(
+                "~/scripts/ShareScripts/SharedScriptManager.js"));
             bundles.AddAndInclude(
                 "~/themes/sharedstyles",
                 "~/themes/shared/sitestyle.less",
@@ -158,6 +161,15 @@ namespace Fanex.Maintenance.Site.App_Start
                 "~/scripts/lib/FanexGridV2/Fanex.Grid.css",
                 "~/scripts/lib/FanexGridV2/Fanex.Pagination.css",
                 "~/scripts/lib/FanexGridV2/customizeFanexGridV2.less");
+        }
+
+        public static void RegisterInputComboboxBundles(BundleCollection bundles)
+        {
+            bundles.Add(new ScriptBundle("~/scripts/inputcomboboxscripts").Include(
+                "~/scripts/lib/InputCombobox/jquery.combobox-ext.js"));
+            bundles.AddAndInclude(
+                "~/scripts/inputcomboboxstyles",
+                "~/scripts/lib/InputCombobox/jquery.combobox-ext.less");
         }
     }
 }

@@ -234,10 +234,17 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="App_Data\NAPCommonSpNames.xml" />
+    <Content Include="Areas\MailStation\Views\CopyMail\Scripts\CopyMailController.js" />
+    <Content Include="Areas\MailStation\Views\EditMail\Scripts\EditMailController.js" />
+    <Content Include="Areas\MailStation\Views\InsertMail\Scripts\InsertMailController.js" />
     <Content Include="Areas\MailStation\Views\ManageMail\Scripts\ManageMailController.js" />
     <Content Include="Areas\MailStation\Views\ManageMail\Styles\Images\trigger.png" />
+    <Content Include="scripts\lib\ContextMenu\ContextMenuController.js" />
+    <Content Include="scripts\lib\InputCombobox\jquery.combobox-ext.js" />
+    <Content Include="scripts\ShareScripts\SharedScriptManager.js" />
     <Content Include="themes\shared\Images\action-ico.png" />
     <Content Include="themes\shared\Images\del-ico.png" />
+    <Content Include="themes\shared\Images\duplicate.png" />
     <Content Include="themes\shared\Images\edit-ico.png" />
     <Content Include="themes\shared\Images\tick-ico-16.png" />
     <Content Include="Areas\UserLogin\scripts\lib\jquery-1.8.0.min.js" />
@@ -679,8 +686,6 @@
     <Content Include="Views\Mail\ComposeEmail.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Areas\MailStation\Views\InsertMail\Scripts\" />
-    <Folder Include="Areas\MailStation\Views\InsertMail\Styles\" />
     <Folder Include="ServiceMonitoringCache\" />
   </ItemGroup>
   <ItemGroup>
@@ -703,6 +708,20 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\MailStation\Views\InsertMail\Index.cshtml" />
+    <Content Include="Areas\MailStation\Views\EditMail\Index.cshtml" />
+    <Content Include="Areas\MailStation\Views\EditMail\DailyRepeat.cshtml" />
+    <Content Include="Areas\MailStation\Views\EditMail\MonthlyRepeat.cshtml" />
+    <Content Include="Areas\MailStation\Views\CopyMail\DailyRepeat.cshtml" />
+    <Content Include="Areas\MailStation\Views\CopyMail\Index.cshtml" />
+    <Content Include="Areas\MailStation\Views\CopyMail\MonthlyRepeat.cshtml" />
+    <None Include="Areas\MailStation\Views\CopyMail\Styles\CopyMail.less" />
+    <Content Include="Areas\MailStation\Views\CopyMail\WeeklyRepeat.cshtml" />
+    <None Include="Areas\MailStation\Views\EditMail\Styles\EditMail.less" />
+    <Content Include="Areas\MailStation\Views\EditMail\WeeklyRepeat.cshtml" />
+    <Content Include="Areas\MailStation\Views\InsertMail\DailyRepeat.cshtml" />
+    <Content Include="Areas\MailStation\Views\InsertMail\MonthlyRepeat.cshtml" />
+    <None Include="Areas\MailStation\Views\InsertMail\Styles\InsertMail.less" />
+    <Content Include="Areas\MailStation\Views\InsertMail\WeeklyRepeat.cshtml" />
     <None Include="Areas\MailStation\Views\ManageMail\Styles\ManageMail.less" />
     <Content Include="themes\shared\colors.less" />
     <Content Include="themes\shared\grid.less" />
@@ -711,7 +730,13 @@
     <None Include="scripts\lib\FanexGridV2\Fanex.Grid.less" />
     <None Include="scripts\lib\FanexGridV2\mixins.less" />
     <None Include="scripts\lib\FanexGridV2\variables.less" />
+    <None Include="scripts\lib\InputCombobox\colors.less" />
+    <None Include="scripts\lib\InputCombobox\common.less" />
+    <None Include="scripts\lib\InputCombobox\fonts.less" />
+    <None Include="scripts\lib\InputCombobox\fonts\YanoneKaffeesatz.woff" />
+    <None Include="scripts\lib\InputCombobox\jquery.combobox-ext.less" />
     <None Include="themes\shared\contextmenu.less" />
+    <None Include="themes\shared\formedit.less" />
     <None Include="themes\shared\sitestyle.less" />
   </ItemGroup>
   <PropertyGroup>
