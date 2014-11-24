@@ -95,6 +95,7 @@
     <Compile Include="Configurations\ScheduleElement.cs" />
     <Compile Include="Configurations\ScheduleElementCollection.cs" />
     <Compile Include="Controllers\MailController.cs" />
+    <Compile Include="Controllers\MailReportController.cs" />
     <Compile Include="Enumerations\JobStatus.cs" />
     <Compile Include="Handlers\BaseHandler.cs" />
     <Compile Include="Handlers\Impl\MailClientLogger.cs" />

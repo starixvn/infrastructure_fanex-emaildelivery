@@ -51,7 +51,7 @@ var SharedScriptManager = function () {
     };
     self.renderActionResult = function (result, successFunction) {
         var options = {
-            closeBtn: !result.Code,
+            closeBtn: result.Code,
             sticky: result.Code
         };
 

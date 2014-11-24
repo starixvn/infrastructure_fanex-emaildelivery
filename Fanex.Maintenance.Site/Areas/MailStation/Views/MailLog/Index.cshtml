@@ -1,0 +1,43 @@
+﻿@using Fanex.MailDelivery.Client.Models;
+@using Newtonsoft.Json
+@model List<Mail>
+@{
+    ViewBag.Title = "Log Details";
+    var mailLog = JsonConvert.SerializeObject(Model);
+}
+<!DOCTYPE html>
+<!--[if IEMobile 7]><html class="no-js iem7 oldie"><![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js ie7 oldie" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js ie8 oldie" lang="en"><![endif]-->
+<!--[if (IE 9)&!(IEMobile)]><html class="no-js ie9" lang="en"><![endif]-->
+<!--[if (gt IE 9)|(gt IEMobile 7)]><!-->
+<html lang="en" class="linen" ng-app="app">
+<!--<![endif]-->
+<head>
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/themes/sharedstyles")
+    @Styles.Render("~/themes/fanexgridstyles")
+    @Styles.Render("~/Areas/MailStation/MailLog/MailLogStyles")
+</head>
+<body id="body">
+    <div id="mail-log-container" class="mail-log-container">
+        <div id="mail-log" class="freegrid display-none">
+        </div>
+    </div>
+    @Scripts.Render("~/scripts/common")
+    @Scripts.Render("~/scripts/sharedscripts")
+    @Scripts.Render("~/scripts/fanexgridscripts")
+    @Scripts.Render("~/Areas/MailStation/MailLog/MailLogScripts")
+    <script type="text/javascript">
+        window.rootUrl = '@Url.Content("~")';
+        var mailLog= @Html.Raw(mailLog); 
+        var viewResources = {
+            Symbol_No: '#',
+            Status: 'Status',
+            Message: 'Message',
+            Log_Time: 'Log Time',
+            Stack_Trace: 'Stack Trace'
+        };
+    </script>
+</body>
+</html>

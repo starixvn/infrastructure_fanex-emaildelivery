@@ -23,6 +23,10 @@ namespace Fanex.Maintenance.Site.App_Start
             RegisterEditMailBundles(bundles);
             RegisterInsertMailBundles(bundles);
             RegisterCopyMailBundles(bundles);
+
+            RegisterMailReportBundles(bundles);
+            RegisterMailDetailBundles(bundles);
+            RegisterMailLogBundles(bundles);
         }
 
         private static void RegisterManageMailBundles(BundleCollection bundles)
@@ -71,6 +75,43 @@ namespace Fanex.Maintenance.Site.App_Start
                 "~/Areas/MailStation/CopyMail/CopyMailStyles",
                 "~/themes/shared/formedit.less",
                 "~/Areas/MailStation/Views/CopyMail/Styles/CopyMail.less");
+        }
+
+        private static void RegisterMailReportBundles(BundleCollection bundles)
+        {
+            bundles.Add(new ScriptBundle("~/Areas/MailStation/MailReport/MailReportScripts").Include(
+                "~/scripts/lib/ContextMenu/ContextMenuController.js",
+                "~/scripts/lib/custom-datepicker.js",
+                "~/scripts/lib/Countdown/CountdownController.js",
+                "~/scripts/lib/Popup/dialogbox.js",
+                "~/Areas/MailStation/Views/MailReport/Scripts/MailReportController.js"));
+
+            bundles.AddAndInclude(
+                "~/Areas/MailStation/MailReport/MailReportStyles",
+                "~/themes/shared/contextmenu.less",
+                "~/scripts/lib/Countdown/CountDown.less",
+                "~/Areas/MailStation/Views/MailReport/Styles/MailReport.less");
+        }
+
+        private static void RegisterMailDetailBundles(BundleCollection bundles)
+        {
+            bundles.Add(new ScriptBundle("~/Areas/MailStation/MailDetail/MailDetailScripts").Include(
+                "~/Areas/MailStation/Views/MailDetail/Scripts/MailDetailController.js"));
+
+            bundles.AddAndInclude(
+                "~/Areas/MailStation/MailDetail/MailDetailStyles",
+                "~/themes/shared/formedit.less",
+                "~/Areas/MailStation/Views/MailDetail/Styles/MailDetail.less");
+        }
+
+        private static void RegisterMailLogBundles(BundleCollection bundles)
+        {
+            bundles.Add(new ScriptBundle("~/Areas/MailStation/MailLog/MailLogScripts").Include(
+                "~/Areas/MailStation/Views/MailLog/Scripts/MailLogController.js"));
+
+            bundles.AddAndInclude(
+                "~/Areas/MailStation/MailLog/MailLogStyles",
+                "~/Areas/MailStation/Views/MailLog/Styles/MailLog.less");
         }
     }
 }

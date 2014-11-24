@@ -237,10 +237,18 @@
     <Content Include="Areas\MailStation\Views\CopyMail\Scripts\CopyMailController.js" />
     <Content Include="Areas\MailStation\Views\EditMail\Scripts\EditMailController.js" />
     <Content Include="Areas\MailStation\Views\InsertMail\Scripts\InsertMailController.js" />
+    <Content Include="Areas\MailStation\Views\MailDetail\Scripts\MailDetailController.js" />
+    <Content Include="Areas\MailStation\Views\MailLog\Scripts\MailLogController.js" />
+    <Content Include="Areas\MailStation\Views\MailReport\Scripts\MailReportController.js" />
     <Content Include="Areas\MailStation\Views\ManageMail\Scripts\ManageMailController.js" />
     <Content Include="Areas\MailStation\Views\ManageMail\Styles\Images\trigger.png" />
     <Content Include="scripts\lib\ContextMenu\ContextMenuController.js" />
+    <Content Include="scripts\lib\Countdown\CountdownController.js" />
+    <Content Include="scripts\lib\Countdown\Images\countdownCheck.png" />
+    <Content Include="scripts\lib\Countdown\Images\dropdown.png" />
+    <Content Include="scripts\lib\Countdown\Images\refresh.png" />
     <Content Include="scripts\lib\InputCombobox\jquery.combobox-ext.js" />
+    <Content Include="scripts\lib\Popup\dialogbox.js" />
     <Content Include="scripts\ShareScripts\SharedScriptManager.js" />
     <Content Include="themes\shared\Images\action-ico.png" />
     <Content Include="themes\shared\Images\del-ico.png" />
@@ -722,6 +730,12 @@
     <Content Include="Areas\MailStation\Views\InsertMail\MonthlyRepeat.cshtml" />
     <None Include="Areas\MailStation\Views\InsertMail\Styles\InsertMail.less" />
     <Content Include="Areas\MailStation\Views\InsertMail\WeeklyRepeat.cshtml" />
+    <Content Include="Areas\MailStation\Views\MailReport\Index.cshtml" />
+    <Content Include="Areas\MailStation\Views\MailDetail\Index.cshtml" />
+    <None Include="Areas\MailStation\Views\MailDetail\Styles\MailDetail.less" />
+    <Content Include="Areas\MailStation\Views\MailLog\Index.cshtml" />
+    <None Include="Areas\MailStation\Views\MailLog\Styles\MailLog.less" />
+    <None Include="Areas\MailStation\Views\MailReport\Styles\MailReport.less" />
     <None Include="Areas\MailStation\Views\ManageMail\Styles\ManageMail.less" />
     <Content Include="themes\shared\colors.less" />
     <Content Include="themes\shared\grid.less" />
@@ -737,6 +751,7 @@
     <None Include="scripts\lib\InputCombobox\jquery.combobox-ext.less" />
     <None Include="themes\shared\contextmenu.less" />
     <None Include="themes\shared\formedit.less" />
+    <None Include="scripts\lib\Countdown\CountDown.less" />
     <None Include="themes\shared\sitestyle.less" />
   </ItemGroup>
   <PropertyGroup>
