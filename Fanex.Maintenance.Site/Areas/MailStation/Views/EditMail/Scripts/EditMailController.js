@@ -369,24 +369,24 @@ var EditMailController = function () {
         return re.test(email);
     };
     self.saveEmail = function () {
-        //        NAP.headlineMsgBox.confirm(viewResources.Confirm_EditMail, function () {
-        sharedScriptManager.blockUI();
-        self.hideError();
-        var emailInfo = self.getEmailInfo();
-        var errorList = self.validateEmailInfo(emailInfo);
-        if (errorList.length === 0) {
+        NAP.headlineMsgBox.confirm(viewResources.Confirm_EditMail, function () {
+            sharedScriptManager.blockUI();
             self.hideError();
-            sharedScriptManager.callAjax(self,
+            var emailInfo = self.getEmailInfo();
+            var errorList = self.validateEmailInfo(emailInfo);
+            if (errorList.length === 0) {
+                self.hideError();
+                sharedScriptManager.callAjax(self,
                 window.rootUrl + "MailStation/Mail/EditMail",
                 emailInfo,
                 self.renderActionResult,
                 null,
                 null);
-        } else {
-            self.showError(errorList);
-            sharedScriptManager.unblockUI();
-        }
-        //        });
+            } else {
+                self.showError(errorList);
+                sharedScriptManager.unblockUI();
+            }
+        });
     };
     self.validateEmailInfo = function (emailInfo) {
         var isValid = true;

@@ -27,6 +27,10 @@ namespace Fanex.Maintenance.Site.App_Start
             RegisterMailReportBundles(bundles);
             RegisterMailDetailBundles(bundles);
             RegisterMailLogBundles(bundles);
+
+            RegisterManageRecipientBundles(bundles);
+            RegisterEditRecipientBundles(bundles);
+            RegisterInsertRecipientBundles(bundles);
         }
 
         private static void RegisterManageMailBundles(BundleCollection bundles)
@@ -112,6 +116,42 @@ namespace Fanex.Maintenance.Site.App_Start
             bundles.AddAndInclude(
                 "~/Areas/MailStation/MailLog/MailLogStyles",
                 "~/Areas/MailStation/Views/MailLog/Styles/MailLog.less");
+        }
+
+        private static void RegisterManageRecipientBundles(BundleCollection bundles)
+        {
+            bundles.Add(new ScriptBundle("~/Areas/MailStation/ManageRecipient/ManageRecipientScripts").Include(
+                "~/scripts/lib/ContextMenu/ContextMenuController.js",
+                "~/Areas/MailStation/Views/ManageRecipient/Scripts/ManageRecipientController.js"));
+
+            bundles.AddAndInclude(
+                "~/Areas/MailStation/ManageRecipient/ManageRecipientStyles",
+                "~/themes/shared/contextmenu.less",
+                "~/Areas/MailStation/Views/ManageRecipient/Styles/ManageRecipient.less");
+        }
+
+        private static void RegisterEditRecipientBundles(BundleCollection bundles)
+        {
+            bundles.Add(new ScriptBundle("~/Areas/MailStation/EditRecipient/EditRecipientScripts").Include(
+                "~/scripts/lib/ContextMenu/ContextMenuController.js",
+                "~/Areas/MailStation/Views/EditRecipient/Scripts/EditRecipientController.js"));
+
+            bundles.AddAndInclude(
+                "~/Areas/MailStation/EditRecipient/EditRecipientStyles",
+                "~/themes/shared/formedit.less",
+                "~/Areas/MailStation/Views/EditRecipient/Styles/EditRecipient.less");
+        }
+
+        private static void RegisterInsertRecipientBundles(BundleCollection bundles)
+        {
+            bundles.Add(new ScriptBundle("~/Areas/MailStation/InsertRecipient/InsertRecipientScripts").Include(
+                "~/scripts/lib/ContextMenu/ContextMenuController.js",
+                "~/Areas/MailStation/Views/InsertRecipient/Scripts/InsertRecipientController.js"));
+
+            bundles.AddAndInclude(
+                "~/Areas/MailStation/InsertRecipient/InsertRecipientStyles",
+                "~/themes/shared/formedit.less",
+                "~/Areas/MailStation/Views/InsertRecipient/Styles/InsertRecipient.less");
         }
     }
 }
