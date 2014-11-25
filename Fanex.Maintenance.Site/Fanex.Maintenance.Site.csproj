@@ -257,7 +257,9 @@
     <Content Include="themes\shared\Images\del-ico.png" />
     <Content Include="themes\shared\Images\duplicate.png" />
     <Content Include="themes\shared\Images\edit-ico.png" />
+    <Content Include="themes\shared\Images\ico-relevant-mail.png" />
     <Content Include="themes\shared\Images\icon-view-log.png" />
+    <Content Include="themes\shared\Images\loading-ico.gif" />
     <Content Include="themes\shared\Images\log-ico.png" />
     <Content Include="themes\shared\Images\tick-ico-16.png" />
     <Content Include="Areas\UserLogin\scripts\lib\jquery-1.8.0.min.js" />

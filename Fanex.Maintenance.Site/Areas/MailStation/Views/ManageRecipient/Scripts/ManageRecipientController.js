@@ -73,7 +73,10 @@ var ManageRecipientController = function () {
             rowColumns.push({ Name: "ColEmail1", Value: recipient.Email1 });
             rowColumns.push({ Name: "ColEmail2", Value: recipient.Email2 });
             rowColumns.push({ Name: "ColEmail3", Value: recipient.Email3 });
-            rowColumns.push({ Name: "ColNoRelevantMail", Value: recipient.NoRelevantMail });
+            rowColumns.push({
+                Name: "ColNoRelevantMail",
+                Value: '<div class="ico-relevant-mail">' + recipient.NoRelevantMail + '</div>'
+            });
             rowColumns.push({ Name: "ColActive", Value: recipient.Active ? '<div class="ico-tick"></div>' : '' });
             if (viewResources.hasEditRight) {
                 rowColumns.push({
@@ -138,7 +141,7 @@ var ManageRecipientController = function () {
             Email1: "starifix@nexcel.vn",
             Email2: '',
             EMail3: '',
-            NoRelevantMail: 3,
+            NoRelevantMail: 13,
             Active: true
         });
         result.push({
