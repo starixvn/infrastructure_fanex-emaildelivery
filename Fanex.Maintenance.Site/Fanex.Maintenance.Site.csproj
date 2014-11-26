@@ -213,6 +213,8 @@
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\BundleExtensions.cs" />
+    <Compile Include="App_Start\MailStationBundles.cs" />
+    <Compile Include="Areas\MailStation\MailStationAreaRegistration.cs" />
     <Compile Include="Areas\UserLogin\Controllers\BaseController.cs" />
     <Compile Include="Areas\UserLogin\Controllers\CommonController.cs" />
     <Compile Include="Areas\UserLogin\Controllers\LoginController.cs" />
@@ -233,6 +235,34 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="App_Data\NAPCommonSpNames.xml" />
+    <Content Include="Areas\MailStation\Views\CopyMail\Scripts\CopyMailController.js" />
+    <Content Include="Areas\MailStation\Views\EditMail\Scripts\EditMailController.js" />
+    <Content Include="Areas\MailStation\Views\EditRecipient\Scripts\EditRecipientController.js" />
+    <Content Include="Areas\MailStation\Views\InsertMail\Scripts\InsertMailController.js" />
+    <Content Include="Areas\MailStation\Views\InsertRecipient\Scripts\InsertRecipientController.js" />
+    <Content Include="Areas\MailStation\Views\MailDetail\Scripts\MailDetailController.js" />
+    <Content Include="Areas\MailStation\Views\MailLog\Scripts\MailLogController.js" />
+    <Content Include="Areas\MailStation\Views\MailReport\Scripts\MailReportController.js" />
+    <Content Include="Areas\MailStation\Views\ManageMail\Scripts\ManageMailController.js" />
+    <Content Include="Areas\MailStation\Views\ManageMail\Styles\Images\trigger.png" />
+    <Content Include="Areas\MailStation\Views\ManageRecipient\Scripts\ManageRecipientController.js" />
+    <Content Include="scripts\lib\ContextMenu\ContextMenuController.js" />
+    <Content Include="scripts\lib\Countdown\CountdownController.js" />
+    <Content Include="scripts\lib\Countdown\Images\countdownCheck.png" />
+    <Content Include="scripts\lib\Countdown\Images\dropdown.png" />
+    <Content Include="scripts\lib\Countdown\Images\refresh.png" />
+    <Content Include="scripts\lib\InputCombobox\jquery.combobox-ext.js" />
+    <Content Include="scripts\lib\Popup\dialogbox.js" />
+    <Content Include="scripts\ShareScripts\SharedScriptManager.js" />
+    <Content Include="themes\shared\Images\action-ico.png" />
+    <Content Include="themes\shared\Images\del-ico.png" />
+    <Content Include="themes\shared\Images\duplicate.png" />
+    <Content Include="themes\shared\Images\edit-ico.png" />
+    <Content Include="themes\shared\Images\ico-relevant-mail.png" />
+    <Content Include="themes\shared\Images\icon-view-log.png" />
+    <Content Include="themes\shared\Images\loading-ico.gif" />
+    <Content Include="themes\shared\Images\log-ico.png" />
+    <Content Include="themes\shared\Images\tick-ico-16.png" />
     <Content Include="Areas\UserLogin\scripts\lib\jquery-1.8.0.min.js" />
     <Content Include="Areas\UserLogin\scripts\Plugin\jquery-1.6.2.js" />
     <Content Include="Areas\UserLogin\scripts\ReCheckIn.js" />
@@ -261,6 +291,51 @@
     <Content Include="scripts\Connection\Database.js" />
     <Content Include="scripts\Connection\Site.js" />
     <Content Include="scripts\lib\custom-datepicker.js" />
+    <Content Include="scripts\lib\FanexGridV2\Fanex.Grid.css" />
+    <Content Include="scripts\lib\FanexGridV2\Fanex.Grid.js" />
+    <Content Include="scripts\lib\FanexGridV2\Fanex.Pagination.css" />
+    <Content Include="scripts\lib\FanexGridV2\Fanex.Pagination.js" />
+    <Content Include="scripts\lib\FanexGridV2\images\1350530947_page_excel.png" />
+    <Content Include="scripts\lib\FanexGridV2\images\ajax-loader.gif" />
+    <Content Include="scripts\lib\FanexGridV2\images\back-icon.png" />
+    <Content Include="scripts\lib\FanexGridV2\images\bgtitle.png" />
+    <Content Include="scripts\lib\FanexGridV2\images\bg_gloss_wave.png" />
+    <Content Include="scripts\lib\FanexGridV2\images\check-box.png" />
+    <Content Include="scripts\lib\FanexGridV2\images\collapse-icon.png" />
+    <Content Include="scripts\lib\FanexGridV2\images\collapse-small.png" />
+    <Content Include="scripts\lib\FanexGridV2\images\email.png" />
+    <Content Include="scripts\lib\FanexGridV2\images\excel-icon.png" />
+    <Content Include="scripts\lib\FanexGridV2\images\expand-icon.png" />
+    <Content Include="scripts\lib\FanexGridV2\images\expand-small.png" />
+    <Content Include="scripts\lib\FanexGridV2\images\go-hover-icon.png" />
+    <Content Include="scripts\lib\FanexGridV2\images\icn_add.png" />
+    <Content Include="scripts\lib\FanexGridV2\images\icn_del.png" />
+    <Content Include="scripts\lib\FanexGridV2\images\icn_edit.png" />
+    <Content Include="scripts\lib\FanexGridV2\images\icon_page.gif" />
+    <Content Include="scripts\lib\FanexGridV2\images\refresh_icon.png" />
+    <Content Include="scripts\lib\FanexGridV2\images\report_check.png" />
+    <Content Include="scripts\lib\FanexGridV2\images\send-mail.png" />
+    <Content Include="scripts\lib\FanexGridV2\images\seperations.png" />
+    <Content Include="scripts\lib\FanexGridV2\images\setting.png" />
+    <Content Include="scripts\lib\FanexGridV2\images\sort-icon-new.png" />
+    <Content Include="scripts\lib\FanexGridV2\images\sort-icon-new1.png" />
+    <Content Include="scripts\lib\FanexGridV2\images\sort-icon-new3.png" />
+    <Content Include="scripts\lib\FanexGridV2\images\sort-icon.png" />
+    <Content Include="scripts\lib\FanexGridV2\images\sorting_asc.gif" />
+    <Content Include="scripts\lib\FanexGridV2\images\sorting_bg.gif" />
+    <Content Include="scripts\lib\FanexGridV2\images\sorting_desc.gif" />
+    <Content Include="scripts\lib\FanexGridV2\images\white-top-bottom.gif" />
+    <Content Include="scripts\lib\FanexGridV2\Language\Fanex.Gird.Lang.en-US.js" />
+    <Content Include="scripts\lib\FanexGridV2\Language\Fanex.Gird.Lang.ja-JP.js" />
+    <Content Include="scripts\lib\FanexGridV2\Language\Fanex.Gird.Lang.ko-KR.js" />
+    <Content Include="scripts\lib\FanexGridV2\Language\Fanex.Gird.Lang.th-TH.js" />
+    <Content Include="scripts\lib\FanexGridV2\Language\Fanex.Gird.Lang.vi-VN.js" />
+    <Content Include="scripts\lib\FanexGridV2\Language\Fanex.Gird.Lang.zh-CN.js" />
+    <Content Include="scripts\lib\FanexGridV2\Language\Fanex.Gird.Lang.zh-TW.js" />
+    <Content Include="scripts\lib\FanexGridV2\moment.js" />
+    <Content Include="scripts\lib\FanexGridV2\moment.min.js" />
+    <Content Include="scripts\lib\FanexGridV2\numeral.js" />
+    <Content Include="scripts\lib\FanexGridV2\numeral.min.js" />
     <Content Include="scripts\lib\jquery.blockUI.js" />
     <Content Include="scripts\lib\chosen\chosen-sprite.png" />
     <Content Include="scripts\lib\chosen\chosen.css" />
@@ -494,6 +569,8 @@
     <Content Include="themes\manage\img\ui-modal-btn.png" />
     <Content Include="themes\manage\img\warning.png" />
     <Content Include="themes\reset.css" />
+    <Content Include="themes\shared\img\bg_header.png" />
+    <Content Include="themes\shared\img\setting.png" />
     <Content Include="themes\style.css" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Login\Index.cshtml" />
@@ -625,6 +702,9 @@
     <Content Include="Views\Mail\ComposeEmail.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Areas\MailStation\ManageMail\" />
+    <Folder Include="Areas\MailStation\ManageRecipient\" />
+    <Folder Include="Areas\MailStation\Report\" />
     <Folder Include="ServiceMonitoringCache\" />
   </ItemGroup>
   <ItemGroup>
@@ -632,6 +712,68 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\ServiceMonitoring\XMLEditor.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\MailStation\Views\ManageMail\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\MailStation\Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Fanex.MailDelivery.Client\Fanex.MailDelivery.Client.csproj">
+      <Project>{708E1FCE-82C4-443B-B1E9-0E64BCABE80E}</Project>
+      <Name>Fanex.MailDelivery.Client</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fanex.MailDelivery.MailStation\Fanex.MailDelivery.MailStation.csproj">
+      <Project>{108C1D8A-CAE1-46DA-B951-60E1FC67EF12}</Project>
+      <Name>Fanex.MailDelivery.MailStation</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\MailStation\Views\InsertMail\Index.cshtml" />
+    <Content Include="Areas\MailStation\Views\EditMail\Index.cshtml" />
+    <Content Include="Areas\MailStation\Views\EditMail\DailyRepeat.cshtml" />
+    <Content Include="Areas\MailStation\Views\EditMail\MonthlyRepeat.cshtml" />
+    <Content Include="Areas\MailStation\Views\CopyMail\DailyRepeat.cshtml" />
+    <Content Include="Areas\MailStation\Views\CopyMail\Index.cshtml" />
+    <Content Include="Areas\MailStation\Views\CopyMail\MonthlyRepeat.cshtml" />
+    <None Include="Areas\MailStation\Views\CopyMail\Styles\CopyMail.less" />
+    <Content Include="Areas\MailStation\Views\CopyMail\WeeklyRepeat.cshtml" />
+    <None Include="Areas\MailStation\Views\EditMail\Styles\EditMail.less" />
+    <Content Include="Areas\MailStation\Views\EditMail\WeeklyRepeat.cshtml" />
+    <Content Include="Areas\MailStation\Views\InsertMail\DailyRepeat.cshtml" />
+    <Content Include="Areas\MailStation\Views\InsertMail\MonthlyRepeat.cshtml" />
+    <Content Include="Areas\MailStation\Views\EditRecipient\Index.cshtml" />
+    <None Include="Areas\MailStation\Views\EditRecipient\Styles\EditRecipient.less" />
+    <None Include="Areas\MailStation\Views\InsertMail\Styles\InsertMail.less" />
+    <Content Include="Areas\MailStation\Views\InsertMail\WeeklyRepeat.cshtml" />
+    <Content Include="Areas\MailStation\Views\MailReport\Index.cshtml" />
+    <Content Include="Areas\MailStation\Views\MailDetail\Index.cshtml" />
+    <Content Include="Areas\MailStation\Views\InsertRecipient\Index.cshtml" />
+    <None Include="Areas\MailStation\Views\InsertRecipient\Styles\InsertRecipient.less" />
+    <None Include="Areas\MailStation\Views\MailDetail\Styles\MailDetail.less" />
+    <Content Include="Areas\MailStation\Views\MailLog\Index.cshtml" />
+    <None Include="Areas\MailStation\Views\MailLog\Styles\MailLog.less" />
+    <None Include="Areas\MailStation\Views\MailReport\Styles\MailReport.less" />
+    <None Include="Areas\MailStation\Views\ManageMail\Styles\ManageMail.less" />
+    <Content Include="themes\shared\colors.less" />
+    <Content Include="themes\shared\grid.less" />
+    <Content Include="themes\shared\common.less" />
+    <Content Include="Areas\MailStation\Views\ManageRecipient\Index.cshtml" />
+    <None Include="Areas\MailStation\Views\ManageRecipient\Styles\ManageRecipient.less" />
+    <None Include="scripts\lib\FanexGridV2\customizeFanexGridV2.less" />
+    <None Include="scripts\lib\FanexGridV2\Fanex.Grid.less" />
+    <None Include="scripts\lib\FanexGridV2\mixins.less" />
+    <None Include="scripts\lib\FanexGridV2\variables.less" />
+    <None Include="scripts\lib\InputCombobox\colors.less" />
+    <None Include="scripts\lib\InputCombobox\common.less" />
+    <None Include="scripts\lib\InputCombobox\fonts.less" />
+    <None Include="scripts\lib\InputCombobox\fonts\YanoneKaffeesatz.woff" />
+    <None Include="scripts\lib\InputCombobox\jquery.combobox-ext.less" />
+    <None Include="themes\shared\contextmenu.less" />
+    <None Include="themes\shared\formedit.less" />
+    <None Include="scripts\lib\Countdown\CountDown.less" />
+    <None Include="themes\shared\sitestyle.less" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

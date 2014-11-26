@@ -1,0 +1,93 @@
+﻿<div class="weekly-schedule display-none">
+    <div class="form-row">
+        <div class="lbl-field">
+            <label class="bold-weight">
+                Repeat every
+            </label>
+        </div>
+        <div class="repeat-day-group lbl-field">
+            <label>
+                <input class="check-box" type="checkbox" value="1" name="repeat-day-checkbox" />S</label>
+            <label>
+                <input class="check-box" type="checkbox" value="2" name="repeat-day-checkbox" />M</label>
+            <label>
+                <input class="check-box" type="checkbox" value="3" name="repeat-day-checkbox" />T</label>
+            <label>
+                <input class="check-box" type="checkbox" value="4" name="repeat-day-checkbox" />W</label>
+            <label>
+                <input class="check-box" type="checkbox" value="5" name="repeat-day-checkbox" />T</label>
+            <label>
+                <input class="check-box" type="checkbox" value="6" name="repeat-day-checkbox" />F</label>
+            <label>
+                <input class="check-box" type="checkbox" value="7" name="repeat-day-checkbox" />S</label>
+        </div>
+        <div class="lbl-field day-time-separate-label">
+            <label>
+                days
+            </label>
+            <label for="repeat-time">
+                at
+            </label>
+        </div>
+        <div class="edit-field">
+            <input id="repeat-time" type="text" value="" name="repeat-time" />
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="lbl-field">
+            <label for="start-day" class="bold-weight">
+                Start on:
+            </label>
+        </div>
+        <div class="edit-field">
+            <input id="start-day-weekly" type="text" value="@DateTime.Now.ToString("MMM dd,yyyy")" />
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="lbl-field">
+            <label class="bold-weight">
+                Ends:
+            </label>
+        </div>
+        <div class="edit-field">
+            <label>
+                <input type="radio" value="1" name="is-end-limit-weekly" />Never</label>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="lbl-field">
+        </div>
+        <div class="edit-field">
+            <label>
+                <input type="radio" value="2" name="is-end-limit-weekly" checked="checked" />On</label>
+            <input id="end-day-weekly" type="text" value="@DateTime.Now.ToString("MMM dd,yyyy")" />
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="lbl-field">
+            <label for="attempt-count-weekly" class="bold-weight">
+                Attempt
+            </label>
+        </div>
+        <div class="edit-field">
+            <select id="attempt-count-weekly" name="attempt-count" class="attempt-count">
+            </select>
+        </div>
+        <div class="lbl-field separate-label-group">
+            <label class="label-time">
+                times
+            </label>
+            <label>
+                Interval
+            </label>
+        </div>
+        <div class="edit-field">
+            <input id="interval-time" type="text" value="30" name="interval-time" />
+        </div>
+        <div class="lbl-field interval-time-label">
+            <label>
+                minute(s)
+            </label>
+        </div>
+    </div>
+</div>

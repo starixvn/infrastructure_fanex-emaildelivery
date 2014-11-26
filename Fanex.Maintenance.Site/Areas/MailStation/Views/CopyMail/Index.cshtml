@@ -1,0 +1,166 @@
+﻿@model dynamic
+@{
+    ViewBag.Title = "Copy Mail";
+    Layout = "~/Views/Shared/_Layout.cshtml";  
+}
+@section Head {
+    @Styles.Render("~/themes/sharedstyles")
+    @Styles.Render("~/scripts/inputcomboboxstyles")
+    @Styles.Render("~/Areas/MailStation/CopyMail/CopyMailStyles")
+}
+@section Headline {
+    <h1>
+        <span class="title"><span class="first">Mail Delivery System / </span><span class="second">
+            Manage Mail /</span>
+            @ViewBag.Title
+        </span>
+        <div class="button-action">
+            <a id="btnBackToList" class="back-button" href="~/MailStation/Mail/Index">← Back to
+                list</a>
+        </div>
+    </h1>
+}
+<section id="body">
+    <div class="form">
+        <div id="validation-summary-row" class="form-row display-none">
+            <div class="lbl-field width-100">
+            </div>
+            <div class="edit-field validation-summary">
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="lbl-field">
+                <label for="group">
+                    Group</label>
+            </div>
+            <select id="group" name="group" class="combobox-autocomplete">
+            </select>
+            <a id="btn-add-group">+</a>
+        </div>
+        <div class="form-row">
+            <div class="lbl-field width-100">
+                <label for="mail-name" class="bold-weight">
+                    Mail Name</label>
+            </div>
+            <div class="edit-field">
+                <input id="mail-name" type="text" value="" name="mail-name" />
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="lbl-field">
+                <label for="site">
+                    Site</label>
+            </div>
+            <select id="site" name="site">
+            </select>
+        </div>
+        <div class="form-row">
+            <div class="lbl-field">
+                <label for="trigger">
+                    Trigger</label>
+            </div>
+            <select id="trigger" name="trigger">
+            </select>
+        </div>
+        <div class="form-row schedule-row display-none">
+            <div class="lbl-field width-100">
+            </div>
+            <div class="schedule-container">
+                <div class="form-row">
+                    <div class="lbl-field">
+                        <label for="repeat-type" class="bold-weight">
+                            Repeats
+                        </label>
+                    </div>
+                    <div class="edit-field">
+                        <select id="repeat-type" name="repeat-type">
+                            <option>asdasd</option>
+                        </select>
+                    </div>
+                </div>
+                @Html.Partial("~/Areas/MailStation/Views/CopyMail/DailyRepeat.cshtml")
+                @Html.Partial("~/Areas/MailStation/Views/CopyMail/WeeklyRepeat.cshtml")
+                @Html.Partial("~/Areas/MailStation/Views/CopyMail/MonthlyRepeat.cshtml")
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="lbl-field width-100">
+                <label for="from-mail">
+                    From
+                </label>
+            </div>
+            <div class="edit-field">
+                <input id="from-mail" type="text" value="" name="from-mail" />
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="lbl-field width-100">
+                <label for="to-mail" class="bold-weight">
+                    To
+                </label>
+            </div>
+            <div class="edit-field">
+                <input id="to-mail" type="text" value="" name="to-mail" />
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="lbl-field width-100">
+                <label for="cc-mail">
+                    CC
+                </label>
+            </div>
+            <div class="edit-field">
+                <input id="cc-mail" type="text" value="" name="cc-mail" />
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="lbl-field width-100">
+                <label for="bcc-mail">
+                    BCC
+                </label>
+            </div>
+            <div class="edit-field">
+                <input id="bcc-mail" type="text" value="" name="bcc-mail" />
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="lbl-field width-100">
+                <label for="bcc-mail">
+                    Description
+                </label>
+            </div>
+            <div class="edit-field">
+                <textarea id="description" name="description"></textarea>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="lbl-field width-100">
+                <label for="status">
+                    Status
+                </label>
+            </div>
+            <div class="edit-field">
+                <input class="check-box" id="status" name="status" type="checkbox" value="false" />
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="lbl-field width-100">
+            </div>
+            <input id="button-save" type="submit" value="Save" />
+            <button id="button-cancel" class="cancel-button">
+                Cancel</button>
+        </div>
+    </div>
+    @Html.Hidden("imagePath", (string)@Url.Content("~/images/calendar.gif"))
+</section>
+@section Foot {
+    @Scripts.Render("~/scripts/sharedscripts")
+    @Scripts.Render("~/scripts/inputcomboboxscripts")
+    @Scripts.Render("~/Areas/MailStation/CopyMail/CopyMailScripts")
+    <script type="text/javascript">
+        var viewResources = {
+            Confirm_CancelEditMail: 'Do you want to cancel the Editing mail?',
+            Confirm_EditMail: 'Do you want to edit mail?'
+        };
+    </script>
+}

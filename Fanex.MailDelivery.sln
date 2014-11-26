@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Recipient", "Recipient\Reci
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fanex.Maintenance.Site", "Fanex.Maintenance.Site\Fanex.Maintenance.Site.csproj", "{D4312B0D-CC74-4AA1-979A-AF26702808A1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fanex.MailDelivery.MailStation", "Fanex.MailDelivery.MailStation\Fanex.MailDelivery.MailStation.csproj", "{108C1D8A-CAE1-46DA-B951-60E1FC67EF12}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -133,6 +135,16 @@ Global
 		{D4312B0D-CC74-4AA1-979A-AF26702808A1}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{D4312B0D-CC74-4AA1-979A-AF26702808A1}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{D4312B0D-CC74-4AA1-979A-AF26702808A1}.Release|x86.ActiveCfg = Release|Any CPU
+		{108C1D8A-CAE1-46DA-B951-60E1FC67EF12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{108C1D8A-CAE1-46DA-B951-60E1FC67EF12}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{108C1D8A-CAE1-46DA-B951-60E1FC67EF12}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{108C1D8A-CAE1-46DA-B951-60E1FC67EF12}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{108C1D8A-CAE1-46DA-B951-60E1FC67EF12}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{108C1D8A-CAE1-46DA-B951-60E1FC67EF12}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{108C1D8A-CAE1-46DA-B951-60E1FC67EF12}.Release|Any CPU.Build.0 = Release|Any CPU
+		{108C1D8A-CAE1-46DA-B951-60E1FC67EF12}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{108C1D8A-CAE1-46DA-B951-60E1FC67EF12}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{108C1D8A-CAE1-46DA-B951-60E1FC67EF12}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -141,5 +153,6 @@ Global
 		{1E6D055E-3ADA-46E8-9B9B-25210B184937} = {552249F9-8FBA-4A1D-A3CE-B06096B23E60}
 		{E52FE237-BB9E-47FC-BE86-0096D74B011B} = {552249F9-8FBA-4A1D-A3CE-B06096B23E60}
 		{368D1A58-A77A-4E46-84A8-C6A7C734F614} = {552249F9-8FBA-4A1D-A3CE-B06096B23E60}
+		{108C1D8A-CAE1-46DA-B951-60E1FC67EF12} = {552249F9-8FBA-4A1D-A3CE-B06096B23E60}
 	EndGlobalSection
 EndGlobal

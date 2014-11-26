@@ -1,0 +1,83 @@
+﻿@{
+    ViewBag.Title = "Manage Recipient";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var hasEditRight = true;
+}
+@section Head {
+    @Styles.Render("~/themes/sharedstyles")
+    @Styles.Render("~/themes/fanexgridstyles")
+    @Styles.Render("~/Areas/MailStation/ManageRecipient/ManageRecipientStyles")
+}
+@section Headline {
+    <h1>
+        <span class="title"><span class="first">Mail Delivery System /</span> @ViewBag.Title</span>
+        @if (hasEditRight)
+        {
+            <div class="button-action">
+                <a id="btnCreateNewUser" class="add-button" href="~/MailStation/MailRecipient/InsertRecipientView">
+                    + Create New User</a>
+            </div>
+        }
+    </h1>
+}
+<section id="filter-bar">
+    <div class="filter-form">
+        <div class="filter-row">
+            <div class="form-group">
+                <div class="lbl-field width-80">
+                    <label for="username">
+                        Username</label>
+                </div>
+                <input id="username" type="text" class="textbox" />
+            </div>
+            <div class="form-group">
+                <div class="lbl-field width-80">
+                    <label for="emails">
+                        Email(s)</label>
+                </div>
+                <input id="emails" type="text" class="textbox" />
+            </div>
+            <div class="form-group">
+                <div class="lbl-field">
+                    <label for="status">
+                        Status</label>
+                </div>
+                <select id="status" name="status">
+                </select>
+            </div>
+            <div class="form-group">
+                <input id="button-search" type="submit" value="Submit" />
+            </div>
+        </div>
+    </div>
+</section>
+<section id="body">
+    <div id="recipient-list-container" class="recipient-list-container">
+        <div id="recipient-list" class="freegrid display-none">
+        </div>
+    </div>
+    <ul class="actions display-none">
+        <li><a class="edit-icon context-menu-item">Edit</a> </li>
+    </ul>
+</section>
+@section Foot {
+    @Scripts.Render("~/scripts/sharedscripts")
+    @Scripts.Render("~/scripts/fanexgridscripts")
+    @Scripts.Render("~/Areas/MailStation/ManageRecipient/ManageRecipientScripts")
+    <script type="text/javascript">
+        window.rootUrl = '@Url.Content("~")';
+        var viewResources = {
+            hasEditRight: @(hasEditRight ? 1 : 0),
+
+            Id: 'ID',           
+            Username: 'Username',
+            Nap_User: 'NAP User',
+            Email1: 'Email1',
+            Email2: 'Email2',
+            Email3: 'Email3',
+            No_RelevantMail: 'No. Relevant Mail',
+            Active: 'Active',
+            Action: 'Action'
+        };
+    </script>
+}

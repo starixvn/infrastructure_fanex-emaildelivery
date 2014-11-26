@@ -133,7 +133,43 @@ namespace Fanex.Maintenance.Site.App_Start
                 "~/scripts/lib/XMLEditor/js/ext/GLR/GLR.js",
                 "~/scripts/lib/XMLEditor/js/ext/GLR/GLR.messenger.js"));
 
+            RegisterSharedBundles(bundles);
+            RegisterFanexGridBundles(bundles);
+             RegisterInputComboboxBundles(bundles);
+            MailStationBundles.RegisterAllBundles(bundles);
             bundles.FileSetOrderList.Clear();
+        }
+
+        public static void RegisterSharedBundles(BundleCollection bundles)
+        {
+            bundles.Add(new ScriptBundle("~/scripts/sharedscripts").Include(
+                "~/scripts/ShareScripts/SharedScriptManager.js"));
+            bundles.AddAndInclude(
+                "~/themes/sharedstyles",
+                "~/themes/shared/sitestyle.less",
+                "~/scripts/lib/Select2/select2.css",
+                "~/scripts/lib/Select2/select2-custom.css");
+        }
+
+        public static void RegisterFanexGridBundles(BundleCollection bundles)
+        {
+            bundles.Add(new ScriptBundle("~/scripts/fanexgridscripts").Include(
+                "~/scripts/lib/FanexGridV2/Fanex.Grid.js",
+                "~/scripts/lib/FanexGridV2/Fanex.Pagination.js"));
+            bundles.AddAndInclude(
+                "~/themes/fanexgridstyles",
+                "~/scripts/lib/FanexGridV2/Fanex.Grid.css",
+                "~/scripts/lib/FanexGridV2/Fanex.Pagination.css",
+                "~/scripts/lib/FanexGridV2/customizeFanexGridV2.less");
+        }
+
+        public static void RegisterInputComboboxBundles(BundleCollection bundles)
+        {
+            bundles.Add(new ScriptBundle("~/scripts/inputcomboboxscripts").Include(
+                "~/scripts/lib/InputCombobox/jquery.combobox-ext.js"));
+            bundles.AddAndInclude(
+                "~/scripts/inputcomboboxstyles",
+                "~/scripts/lib/InputCombobox/jquery.combobox-ext.less");
         }
     }
 }

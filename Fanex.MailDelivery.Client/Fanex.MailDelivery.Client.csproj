@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BundleTransformer.Core">
+      <HintPath>..\packages\BundleTransformer.Core.1.7.27\lib\net40\BundleTransformer.Core.dll</HintPath>
+    </Reference>
     <Reference Include="Common.Logging">
       <HintPath>..\packages\Common.Logging.2.1.2\lib\net40\Common.Logging.dll</HintPath>
     </Reference>
@@ -71,6 +74,11 @@
     </Reference>
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.0.0\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -102,8 +110,8 @@
     <Compile Include="Messages\ResultMessage.cs" />
     <Compile Include="Messages\ScheduleRequestMessage.cs" />
     <Compile Include="Enumerations\FileExtension.cs" />
-    <Compile Include="Models\MailAttachment.cs" />
     <Compile Include="Models\Mail.cs" />
+    <Compile Include="Models\MailAttachment.cs" />
     <Compile Include="Models\MailingList.cs" />
     <Compile Include="Models\MailLinkedResource.cs" />
     <Compile Include="Models\Schedule.cs" />

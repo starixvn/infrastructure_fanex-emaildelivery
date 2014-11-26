@@ -21,7 +21,7 @@
         <div class="logo">
             <a href="~/?ref=logo">mSite</a>
         </div>
-        @Html.Action("_Menu")
+        @Html.Action("_Menu", new RouteValueDictionary(new { controller = "Home", area = "" }))
         <div class="user-info">
             <div class="greeting">
                 <h2>
@@ -46,6 +46,9 @@
     </div>
     <div id="dialog-popup">
     </div>
+    <script type="text/javascript">
+        window.rootUrl = '@Url.Content("~")';
+    </script>
 </body>
 </html>
 @Html.Hidden("NapAdminRoot", Url.Content("~/"))
