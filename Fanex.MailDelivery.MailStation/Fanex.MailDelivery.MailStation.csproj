@@ -54,6 +54,7 @@
     <Compile Include="Controllers\MailRecipientController.cs" />
     <Compile Include="Controllers\MailReportController.cs" />
     <Compile Include="Criterias\GetMailListCriteria.cs" />
+    <Compile Include="Criterias\SuggestMailCriteria.cs" />
     <Compile Include="Criterias\GetAllMailGroupCriteria.cs" />
     <Compile Include="Criterias\GetAllSiteCriteria.cs" />
     <Compile Include="Models\MailModel.cs" />

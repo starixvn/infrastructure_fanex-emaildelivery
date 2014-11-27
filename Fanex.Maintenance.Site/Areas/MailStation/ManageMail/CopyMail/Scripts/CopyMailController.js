@@ -56,13 +56,14 @@ var CopyMailController = function () {
 
         $("#button-cancel").click(function () {
             NAP.headlineMsgBox.confirm(viewResources.Confirm_CancelCopyMail, function () {
-                NAP.redirect('MailStation/Mail/Index', 0);
+                NAP.redirect('MailStation/MailManage/Index', 0);
             });
         });
 
         $("#button-save").click(function () {
             self.saveEmail();
         });
+        self.bindMultiAutoComplete();
     };
     self.renderDropdownGroup = function () {
         var groups = self.cachedData.groups;
@@ -376,7 +377,7 @@ var CopyMailController = function () {
         if (errorList.length === 0) {
             self.hideError();
             sharedScriptManager.callAjax(self,
-                window.rootUrl + "MailStation/Mail/CopyMail",
+                window.rootUrl + "MailStation/MailManage/CopyMail",
                 emailInfo,
                 self.renderActionResult,
                 null,
@@ -393,6 +394,14 @@ var CopyMailController = function () {
         return isValid;
     };
     self.getEmailInfo = function () {
+        var toEmails = [];
+        var userName = "";
+        $('.multi-auto-suggest-container select option').each(function (i, option) {
+            toEmails[i] = $(option).text();
+        });
+
+        console.log(toEmails.join(";"));
+
         var email = {
             GroupName: $(".ui-autocomplete-input").val(),
             MailName: $("#mail-name").val(),
@@ -473,6 +482,22 @@ var CopyMailController = function () {
             Message: 'aaa'
         };
         sharedScriptManager.renderActionResult(result, null);
+    };
+
+    self.bindMultiAutoComplete = function () {
+        var autoCompleteElement = $("#to-mail");
+        autoCompleteElement.fcbkcomplete({
+            validateInputFunction: sharedScriptManager.isValidEmail,
+            json_url: window.rootUrl + 'MailStation/MailManage/SuggestMultiMail',
+            addontab: true,
+            maxitems: 500,
+            input_min_size: 1,
+            height: 10,
+            cache: false,
+            newel: true
+        });
+
+        $("#typeCust").attr("disabled", null);
     };
 };
 

@@ -56,7 +56,7 @@ var EditMailController = function () {
 
         $("#button-cancel").click(function () {
             NAP.headlineMsgBox.confirm(viewResources.Confirm_CancelEditMail, function () {
-                NAP.redirect('MailStation/Mail/Index', 0);
+                NAP.redirect('MailStation/MailManage/Index', 0);
             });
         });
 
@@ -377,7 +377,7 @@ var EditMailController = function () {
             if (errorList.length === 0) {
                 self.hideError();
                 sharedScriptManager.callAjax(self,
-                window.rootUrl + "MailStation/Mail/EditMail",
+                window.rootUrl + "MailStation/MailManage/EditMail",
                 emailInfo,
                 self.renderActionResult,
                 null,

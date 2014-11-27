@@ -15,7 +15,7 @@
             @ViewBag.Title
         </span>
         <div class="button-action">
-            <a id="btnBackToList" class="back-button" href="~/MailStation/Mail/Index">← Back to
+            <a id="btnBackToList" class="back-button" href="~/MailStation/MailManage/Index">← Back to
                 list</a>
         </div>
     </h1>
@@ -99,8 +99,9 @@
                     To
                 </label>
             </div>
-            <div class="edit-field">
-                <input id="to-mail" type="text" value="" name="to-mail" />
+            <div class="edit-field multi-auto-suggest-container">
+                <select type="text" class="textbox" id="to-mail" name="to-mail" disabled>
+                </select>
             </div>
         </div>
         <div class="form-row">

@@ -75,7 +75,7 @@ var ManageRecipientController = function () {
             rowColumns.push({ Name: "ColEmail3", Value: recipient.Email3 });
             rowColumns.push({
                 Name: "ColNoRelevantMail",
-                Value: '<div class="ico-relevant-mail">' + recipient.NoRelevantMail + '</div>'
+                Value: '<div class="ico-relevant-mail"' + recipientIndex + '>' + recipient.NoRelevantMail + '</div>'
             });
             rowColumns.push({ Name: "ColActive", Value: recipient.Active ? '<div class="ico-tick"></div>' : '' });
             if (viewResources.hasEditRight) {
@@ -177,11 +177,16 @@ var ManageRecipientController = function () {
             event.stopPropagation();
         });
 
-
         gridContainer.find(".link.username").click(function () {
             var $this = $(this);
             var recipientIndex = parseInt($this.attr("recipient-index"));
             self.editRecipient(recipientIndex);
+        });
+
+        gridContainer.find(".ico-relevant-mail").click(function () {
+            var $this = $(this);
+            var recipientIndex = parseInt($this.attr("recipient-index"));
+            self.viewRelevantMail(recipientIndex);
         });
     };
     self.editRecipient = function (recipientIndex) {
@@ -191,6 +196,23 @@ var ManageRecipientController = function () {
             $.param({
                 recipientId: recipient.Id
             });
+    };
+    self.viewRelevantMail = function (recipientIndex) {
+        var recipient = self.cachedData.recipientList[recipientIndex];
+        popUpManager.openPopup(
+            window.rootUrl + 'MailStation/MailRecipient/ViewRelevantMail?' + $.param({
+                recipientId: recipient.Id
+            }),
+            viewResources.Relevant_Mail,
+            $(window).width() - 200,
+            $(window).height() - 200,
+            true,
+            false,
+            parent.window,
+            3000,
+            null,
+            null,
+            ['center', 80]);
     };
 };
 

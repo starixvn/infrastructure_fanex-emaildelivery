@@ -92,6 +92,21 @@ var MailManageController = function () {
         $("#button-search").click(function () {
             self.buttonSearchClick();
         });
+
+        $("#emails").autocomplete({
+            serviceUrl: window.rootUrl + 'MailStation/MailManage/SuggestMail',
+            minChars: 2,
+            isCacheSuggestion: false,
+            zIndex: 9999,
+            width: 185,
+            deferRequestBy: 0,
+            params: {
+                mailName: $("#emails").val()
+            },
+
+            //aditional parameters
+            closeSuggestion: null
+        });
     };
 
     self.buttonSearchClick = function () {
