@@ -61,5 +61,10 @@ namespace Fanex.MailDelivery.MailStation.Controllers
         {
             return Json(new List<int>() { 1, 2 }, JsonRequestBehavior.AllowGet);
         }
+
+        public ActionResult ViewRelevantMail(int recipientId)
+        {
+            return View("~/Areas/MailStation/Views/RelevantMailByRecipient/Index.cshtml", recipientId);
+        }
     }
 }

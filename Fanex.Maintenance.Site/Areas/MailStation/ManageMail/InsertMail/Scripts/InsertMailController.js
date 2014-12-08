@@ -50,7 +50,7 @@ var InsertMailController = function () {
 
         $("#button-cancel").click(function () {
             NAP.headlineMsgBox.confirm(viewResources.Confirm_CancelInsertMail, function () {
-                NAP.redirect('MailStation/Mail/Index', 0);
+                NAP.redirect('MailStation/MailManage/Index', 0);
             });
         });
 
@@ -217,7 +217,7 @@ var InsertMailController = function () {
         if (errorList.length === 0) {
             self.hideError();
             sharedScriptManager.callAjax(self,
-                window.rootUrl + "MailStation/Mail/InsertMail",
+                window.rootUrl + "MailStation/MailManage/InsertMail",
                 emailInfo,
                 self.renderActionResult,
                 null,
