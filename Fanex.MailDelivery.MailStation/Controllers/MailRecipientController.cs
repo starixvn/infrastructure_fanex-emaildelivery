@@ -20,12 +20,12 @@ namespace Fanex.MailDelivery.MailStation.Controllers
     {
         public ActionResult Index()
         {
-            return View("~/Areas/MailStation/Views/ManageRecipient/Index.cshtml");
+            return View("~/Areas/MailStation/ManageRecipient/ManageRecipient/Index.cshtml");
         }
 
         public ActionResult InsertRecipientView()
         {
-            return View("~/Areas/MailStation/Views/InsertRecipient/Index.cshtml");
+            return View("~/Areas/MailStation/ManageRecipient/InsertRecipient/Index.cshtml");
         }
 
         public ActionResult RecipientList()
@@ -41,7 +41,7 @@ namespace Fanex.MailDelivery.MailStation.Controllers
                 Body = "<div class=\"bold-weight\">Dear all,</div><br> Please be informed the package is released:..."
             };
 
-            return View("~/Areas/MailStation/Views/EditRecipient/Index.cshtml", recipient);
+            return View("~/Areas/MailStation/ManageRecipient/EditRecipient/Index.cshtml", recipient);
         }
 
         [HttpPost]

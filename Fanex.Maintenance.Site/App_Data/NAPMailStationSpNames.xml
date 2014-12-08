@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Functions>
+  <Function Name="Managemail">
+    <Setting Key="MailStation_GetAllSites" SpName="NAP_Site_GetAll" DbName="DBNAP.bodb_NAP.bodbAdminNet">
+        <Mapping DataField="SiteId" ObjectProperty="Id" />
+        <Mapping DataField="SiteName" ObjectProperty="Name" />
+    </Setting>
+    <Setting Key="MailStation_GetAllMailGroup" SpName="Mail_MailManagement_GetAllMailGroup" DbName="DBMMS.bodb_MMS.bodbAdminNet">
+      <Mapping DataField="MailGroupID" ObjectProperty="Id" />
+      <Mapping DataField="MailGroupName" ObjectProperty="Name" />
+    </Setting>
+    
+  </Function>
+</Functions>

@@ -6,7 +6,8 @@
 @section Head {
     @Styles.Render("~/themes/sharedstyles")
     @Styles.Render("~/scripts/inputcomboboxstyles")
-    @Styles.Render("~/Areas/MailStation/InsertMail/InsertMailStyles")
+    @Styles.Render("~/Areas/MailStation/ManageMail/InsertMail/InsertMailStyles")
+    @Styles.Render("~/scripts/lib/NexCron/css")
 }
 @section Headline {
     <h1>
@@ -65,22 +66,7 @@
         <div class="form-row schedule-row display-none">
             <div class="lbl-field width-100">
             </div>
-            <div class="schedule-container">
-                <div class="form-row">
-                    <div class="lbl-field">
-                        <label for="repeat-type" class="bold-weight">
-                            Repeats
-                        </label>
-                    </div>
-                    <div class="edit-field">
-                        <select id="repeat-type" name="repeat-type">
-                            <option>asdasd</option>
-                        </select>
-                    </div>
-                </div>
-                @Html.Partial("~/Areas/MailStation/Views/InsertMail/DailyRepeat.cshtml")
-                @Html.Partial("~/Areas/MailStation/Views/InsertMail/WeeklyRepeat.cshtml")
-                @Html.Partial("~/Areas/MailStation/Views/InsertMail/MonthlyRepeat.cshtml")
+            <div id="nexcron">
             </div>
         </div>
         <div class="form-row">
@@ -156,7 +142,8 @@
 @section Foot {
     @Scripts.Render("~/scripts/sharedscripts")
     @Scripts.Render("~/scripts/inputcomboboxscripts")
-    @Scripts.Render("~/Areas/MailStation/InsertMail/InsertMailScripts")
+    @Scripts.Render("~/Areas/MailStation/ManageMail/InsertMail/InsertMailScripts")
+    @Scripts.Render("~/scripts/lib/NexCron/js")
     <script type="text/javascript">
         var viewResources = {
             Confirm_CancelEditMail: 'Do you want to cancel the Editing mail?',

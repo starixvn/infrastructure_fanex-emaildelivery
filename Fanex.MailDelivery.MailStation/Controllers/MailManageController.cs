@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------
-// <copyright file="MailController.cs" company="Nexcel Solutions Vietnam">
+// <copyright file="MailManageController.cs" company="Nexcel Solutions Vietnam">
 // Copyright (c) Nexcel Solutions Vietnam. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------
@@ -11,29 +11,46 @@ namespace Fanex.MailDelivery.MailStation.Controllers
 {
     using System.Collections.Generic;
     using System.Web.Mvc;
+    using Fanex.MailDelivery.MailStation.Services.ManageMail;
+using Fanex.MailDelivery.MailStation.Criterias;
 
     /// <summary>
     /// Mail Controller.
     /// </summary>
-    public class MailController : Controller
+    public class MailManageController : Controller
     {
+        private MailManageService mailManageService;
+        
         public ActionResult Index()
         {
-            return View("~/Areas/MailStation/Views/ManageMail/Index.cshtml");
+            return View("~/Areas/MailStation/ManageMail/Index.cshtml");
+        }
+
+        public JsonResult Sites()
+        {
+            mailManageService = new MailManageService();
+            return Json(mailManageService.Sites());
+        }
+
+        public JsonResult MailGroups()
+        {
+            mailManageService = new MailManageService();
+            return Json(mailManageService.MailGroups());
         }
 
         public ActionResult InsertMail()
         {
-            return View("~/Areas/MailStation/Views/InsertMail/Index.cshtml");
+            return View("~/Areas/MailStation/ManageMail/InsertMail/Index.cshtml");
         }
 
         public ActionResult CopyMail()
         {
-            return View("~/Areas/MailStation/Views/CopyMail/Index.cshtml");
+            return View("~/Areas/MailStation/ManageMail/CopyMail/Index.cshtml");
         }
 
-        public ActionResult MailList()
+        public ActionResult MailList(GetMailListCriteria criteria)
         {
+
             return Json(new List<int>() { 1, 2 }, JsonRequestBehavior.AllowGet);
         }
 
@@ -58,7 +75,7 @@ namespace Fanex.MailDelivery.MailStation.Controllers
                 Active = true
             };
 
-            return View("~/Areas/MailStation/Views/EditMail/Index.cshtml", mailInfo);
+            return View("~/Areas/MailStation/ManageMail/EditMail/Index.cshtml", mailInfo);
         }
 
         [HttpPost]
