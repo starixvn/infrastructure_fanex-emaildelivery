@@ -20,7 +20,7 @@ namespace Fanex.MailDelivery.MailStation.Controllers
     {
         public ActionResult Index()
         {
-            return View("~/Areas/MailStation/Views/MailReport/Index.cshtml");
+            return View("~/Areas/MailStation/Report/MailReport/Index.cshtml");
         }
 
         public ActionResult MailReport()
@@ -41,7 +41,7 @@ namespace Fanex.MailDelivery.MailStation.Controllers
                 Body = "<div class=\"bold-weight\">Dear all,</div><br> Please be informed the package is released:..."
             };
 
-            return View("~/Areas/MailStation/Views/MailDetail/Index.cshtml", mailDetail);
+            return View("~/Areas/MailStation/Report/MailDetail/Index.cshtml", mailDetail);
         }
 
         public ActionResult MailLog()
@@ -54,7 +54,7 @@ namespace Fanex.MailDelivery.MailStation.Controllers
                 }
             };
 
-            return View("~/Areas/MailStation/Views/MailLog/Index.cshtml", mailLog);
+            return View("~/Areas/MailStation/Report/MailLog/Index.cshtml", mailLog);
         }
     }
 }

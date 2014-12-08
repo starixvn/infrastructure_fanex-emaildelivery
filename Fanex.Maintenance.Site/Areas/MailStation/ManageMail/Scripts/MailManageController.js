@@ -1,8 +1,8 @@
 ﻿$(document).ready(function () {
-    manageMailController.initPage();
+    MailManageController.initPage();
 });
 
-var ManageMailController = function () {
+var MailManageController = function () {
     var self = this;
     self.cachedData = {
         mailList: [],
@@ -15,20 +15,30 @@ var ManageMailController = function () {
         contextMenuController.bindContextMenuEvents();
         self.buttonSearchClick();
     };
+
     self.loadFilter = function () {
         self.renderDropdownStatus();
-        self.renderDropdownGroup();
-        if (viewResources.hasSiteRight) {
-            self.renderDropdownSite();
-        }
+        sharedScriptManager.callAjax(self,
+            window.rootUrl + "MailStation/MailManage/MailGroups",
+            null,
+            self.renderDropdownGroup,
+            null,
+            sharedScriptManager.unblockUI);
 
-        self.renderDropdownTigger();
+        sharedScriptManager.callAjax(self,
+            window.rootUrl + "MailStation/MailManage/Sites",
+            null,
+            self.renderDropdownSite,
+            null,
+            sharedScriptManager.unblockUI);
+
+        self.renderDropdownTrigger();
     };
-    self.renderDropdownSite = function () {
-        var sites = [{ Id: 0, Name: 'All Sites' },
-            { Id: 1, Name: 'Site 1'}];
+
+    self.renderDropdownSite = function (sites) {
         var options = '';
         var siteLength = sites.length;
+        sites.unshift({ Id: -1, Name: "All" });
         for (var i = 0; i < siteLength; i++) {
             var site = sites[i];
             options += '<option value="' + site.Id + '">' + site.Name + '</option>'
@@ -36,10 +46,11 @@ var ManageMailController = function () {
 
         $("#site").empty().append(options);
     };
-    self.renderDropdownTigger = function () {
-        var triggers = [{ Id: 0, Name: 'All Types' },
-            { Id: 1, Name: 'By Schedule' },
-            { Id: 2, Name: 'By Function'}];
+
+    self.renderDropdownTrigger = function () {
+        var triggers = [{ Id: -1, Name: 'All Types' },
+            { Id: 0, Name: 'By Schedule' },
+            { Id: 1, Name: 'By Function'}];
         var options = '';
         var triggerLength = triggers.length;
         for (var i = 0; i < triggerLength; i++) {
@@ -49,10 +60,11 @@ var ManageMailController = function () {
 
         $("#trigger").empty().append(options);
     };
+
     self.renderDropdownStatus = function () {
-        var statuses = [{ Id: 0, Name: 'All' },
-            { Id: 1, Name: 'Active' },
-            { Id: 2, Name: 'Inactive'}];
+        var statuses = [{ Id: -1, Name: 'All' },
+            { Id: 0, Name: 'Active' },
+            { Id: 1, Name: 'Inactive'}];
         var options = '';
         var statusLength = statuses.length;
         for (var i = 0; i < statusLength; i++) {
@@ -62,23 +74,26 @@ var ManageMailController = function () {
 
         $("#status").empty().append(options);
     };
-    self.renderDropdownGroup = function () {
-        var groups = [{ Id: 0, Name: 'All'}];
+
+    self.renderDropdownGroup = function (mailGroupList) {
+        mailGroupList.unshift({ Id: -1, Name: "All" });
         var options = '';
-        var groupLength = groups.length;
+        var groupLength = mailGroupList.length;
         for (var i = 0; i < groupLength; i++) {
-            var group = groups[i];
+            var group = mailGroupList[i];
             options += '<option value="' + group.Id + '">' + group.Name + '</option>'
         }
 
         $("#group").empty().append(options);
 
     };
+
     self.bindEvents = function () {
         $("#button-search").click(function () {
             self.buttonSearchClick();
         });
     };
+
     self.buttonSearchClick = function () {
         sharedScriptManager.blockUI();
         NAP.headlineMsgBox.close();
@@ -92,12 +107,13 @@ var ManageMailController = function () {
         };
         self.cachedData.searchParams = searchParams;
         sharedScriptManager.callAjax(self,
-            window.rootUrl + "MailStation/Mail/MailList",
+            window.rootUrl + "MailStation/MailManage/MailList",
             searchParams,
             self.renderMailList,
             null,
             sharedScriptManager.unblockUI);
     };
+
     self.renderMailList = function (result) {
         result = self.dummyData();
         self.cachedData.mailList = result;
@@ -209,11 +225,12 @@ var ManageMailController = function () {
             self.editMail(mailIndex);
         });
     };
+
     self.refreshMailList = function () {
         sharedScriptManager.blockUI();
         NAP.headlineMsgBox.close();
         sharedScriptManager.callAjax(self,
-            window.rootUrl + "MailStation/Mail/MailList",
+            window.rootUrl + "MailStation/MailManage/MailList",
             self.cachedData.searchParams,
             self.renderMailList,
             null,
@@ -230,6 +247,7 @@ var ManageMailController = function () {
                 return '';
         }
     };
+
     self.deleteMail = function (mailIndex) {
         NAP.headlineMsgBox.confirm(viewResources.Confirm_DeleteMail, function () {
             sharedScriptManager.blockUI();
@@ -239,29 +257,32 @@ var ManageMailController = function () {
                 MailId: mail.Id
             };
             sharedScriptManager.callAjax(self,
-                window.rootUrl + "MailStation/Mail/DeleteMail",
+                window.rootUrl + "MailStation/MailManage/DeleteMail",
                 deleteParams,
                 self.renderActionResult,
                 null,
                 null);
         });
     };
+
     self.editMail = function (mailIndex) {
         var mail = self.cachedData.mailList[mailIndex];
         var editParams = mail;
-        window.location.href = window.rootUrl + "MailStation/Mail/EditMail?" +
+        window.location.href = window.rootUrl + "MailStation/MailManage/EditMail?" +
             $.param({
                 mailId: mail.Id
             });
     };
+
     self.copyMail = function (mailIndex) {
         var mail = self.cachedData.mailList[mailIndex];
         var copyParams = mail;
-        window.location.href = window.rootUrl + "MailStation/Mail/CopyMail?" +
+        window.location.href = window.rootUrl + "MailStation/MailManage/CopyMail?" +
             $.param({
                 mailId: mail.Id
             });
     };
+
     self.renderActionResult = function (result) {
         var result = {
             Code: 0,
@@ -274,7 +295,8 @@ var ManageMailController = function () {
                     self.refreshMailList();
                 }, sharedScriptManager.cachedData.alertSuccessTime);
             });
-        };
+    };
+
     self.dummyData = function () {
         var result = [];
         result.push({
@@ -310,4 +332,4 @@ var ManageMailController = function () {
     };
 };
 
-var manageMailController = new ManageMailController();
+var MailManageController = new MailManageController();
