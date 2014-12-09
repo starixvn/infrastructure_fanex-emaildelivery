@@ -11,48 +11,61 @@ namespace Fanex.MailDelivery.MailStation.Controllers
 {
     using System.Collections.Generic;
     using System.Web.Mvc;
-    using Fanex.MailDelivery.Client.Models;
+    using Fanex.MailDelivery.MailStation.Constants;
+    using Fanex.MailDelivery.MailStation.Criteria.MailReport;
+    using Fanex.MailDelivery.MailStation.Services.MailReport;
+    using Fanex.NAP.Core.Business;
+    using Fanex.NAP.Core.Web.Attribute;
 
     /// <summary>
     /// Mail Report Controller.
     /// </summary>
     public class MailReportController : Controller
     {
+        private IMailReportService _mailReportService;
+
+        public MailReportController()
+            : this(null)
+        {
+        }
+
+        public MailReportController(IMailReportService mailReportService)
+        {
+            _mailReportService = mailReportService ?? new MailReportService();
+        }
+
         public ActionResult Index()
         {
             return View("~/Areas/MailStation/Report/MailReport/Index.cshtml");
         }
 
-        public ActionResult MailReport()
+        public ActionResult MailReport(MailReportCriteria criteria)
         {
-            return Json(new List<int>() { 1, 2 }, JsonRequestBehavior.AllowGet);
+            return Json(_mailReportService.MailReport(criteria));
         }
 
-        public ActionResult RetrySendMail()
+        [NapAuth(FunctionKey = MailDeliveryFunctionKeys.MailReport, Policy = Constant.Policy.Read)]
+        public ActionResult RetrySendMail(RetrySendMailCriteria criteria)
         {
-            return Json(new List<int>() { 1, 2 }, JsonRequestBehavior.AllowGet);
+            return Json(_mailReportService.RetrySendMail(criteria));
         }
 
-        public ActionResult MailDetail()
+        public ActionResult MailDetail(int mailId)
         {
-            var mailDetail = new Mail
+            var mailDetail = _mailReportService.MailDetail(new MailDetailCriteria
             {
-                Subject = "asdasd adasd a",
-                Body = "<div class=\"bold-weight\">Dear all,</div><br> Please be informed the package is released:..."
-            };
+                MailId = mailId
+            });
 
             return View("~/Areas/MailStation/Report/MailDetail/Index.cshtml", mailDetail);
         }
 
-        public ActionResult MailLog()
+        public ActionResult MailLog(int mailId)
         {
-            var mailLog = new List<Mail>() {
-                new Mail
-                {
-                    Subject = "asdasd adasd a",
-                    Body = "<div class=\"bold-weight\">Dear all,</div><br> Please be informed the package is released:..."
-                }
-            };
+            var mailLog = _mailReportService.MailLog(new MailLogCriteria
+            {
+                MailId = mailId
+            });
 
             return View("~/Areas/MailStation/Report/MailLog/Index.cshtml", mailLog);
         }

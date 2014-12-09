@@ -4,23 +4,41 @@
 
 var MailReportController = function () {
     var self = this;
-    self.cachedData = {
-        searchParams: null,
-        mailReport: null
+    self.Enums = {
+        TaskStatus: {
+            All: -1,
+            Waiting: 0,
+            Running: 1,
+            Sent: 2,
+            DataNotReady: 3,
+            Failed: 4
+        }
     };
+
+    self.cachedData = {
+        searchParams: null
+    };
+
+
     self.initPage = function () {
         self.loadFilter();
+        self.bindEvents();
         self.getMailReport();
     };
+
     self.loadFilter = function () {
         self.renderDropdownStatus();
+        self.renderDropdownRefresh();
         self.initDatePicker();
-        self.bindEvents();
+        countdownController.initPage();
     };
     self.renderDropdownStatus = function () {
-        var statuses = [{ Id: 0, Name: 'All' },
-            { Id: 1, Name: 'Active' },
-            { Id: 2, Name: 'Inactive'}];
+        var statuses = [{ Id: -1, Name: viewResources.All },
+            { Id: 0, Name: viewResources.Waiting.toUpperCase() },
+            { Id: 1, Name: viewResources.Running.toUpperCase() },
+            { Id: 2, Name: viewResources.Sent.toUpperCase() },
+            { Id: 3, Name: viewResources.Data_not_ready.toUpperCase() },
+            { Id: 4, Name: viewResources.Failed.toUpperCase()}];
         var options = '';
         var statusLength = statuses.length;
         for (var i = 0; i < statusLength; i++) {
@@ -29,6 +47,29 @@ var MailReportController = function () {
         }
 
         $("#status").empty().append(options);
+    };
+    self.renderDropdownRefresh = function () {
+        var countDowns = [{ Id: 0, Value: viewResources.Not_Refresh },
+            { Id: 1, Value: 30 },
+            { Id: 2, Value: 60 },
+            { Id: 3, Value: 90 },
+            { Id: 4, Value: 120 },
+            { Id: 5, Value: 150 },
+            { Id: 6, Value: 180}];
+        var options = '';
+        var countDownsLength = countDowns.length;
+        for (var i = 0; i < countDownsLength; i++) {
+            var countDown = countDowns[i];
+            var displayName = countDown.Value === viewResources.Not_Refresh ?
+                countDown.Value :
+                countDown.Value + viewResources.Symbol_Second;
+            options += '<div class="countDownOption' + (i === 0 ? ' countDownOptionCheck' : '') +
+                '" value="' + countDown.Value + '">' +
+                    displayName +
+                '</div>'
+        }
+
+        $(".countDownOptionContainer").empty().append(options);
     };
     self.initDatePicker = function () {
         $("#from-date").datepicker({
@@ -57,6 +98,20 @@ var MailReportController = function () {
     };
     self.bindEvents = function () {
         countdownController.setRefreshEvent(self.refreshMailReport);
+        $("#mail-name").autocomplete({
+            serviceUrl: window.rootUrl + 'MailStation/MailManage/SuggestMail',
+            minChars: 2,
+            isCacheSuggestion: false,
+            zIndex: 9999,
+            width: 185,
+            deferRequestBy: 0,
+            params: {
+                mailName: $("#mail-name").val()
+            },
+
+            closeSuggestion: null
+        });
+
         $("#button-search").click(function () {
             self.getMailReport();
         });
@@ -87,14 +142,13 @@ var MailReportController = function () {
             sharedScriptManager.unblockUI);
     };
     self.renderMailReport = function (result) {
-        result = self.dummyData();
-        self.cachedData.mailReport = result;
+        //        result = self.dummyData();
         var mailReportLength = result.length;
         var bodyData = [];
         for (var i = 0; i < mailReportLength; i++) {
             var mail = result[i];
             var rowColumns = [];
-            var mailIndex = ' mail-index="' + i + '"';
+            var mailIndex = ' mail-index="' + mail.Id + '"';
             rowColumns.push({ Name: "ColId", Value: mail.Id });
             rowColumns.push({
                 Name: "ColMailName",
@@ -103,9 +157,9 @@ var MailReportController = function () {
                        '</a>'
             });
 
-            rowColumns.push({ Name: "ColSite", Value: mail.Site });
-            rowColumns.push({ Name: "ColScheduledTime", Value: mail.ScheduledTime });
-            rowColumns.push({ Name: "ColLastSent", Value: mail.LastSent });
+            rowColumns.push({ Name: "ColSite", Value: mail.SiteName });
+            rowColumns.push({ Name: "ColScheduledTime", Value: mail.ScheduledTimeString });
+            rowColumns.push({ Name: "ColLastSent", Value: mail.LastSentString });
             rowColumns.push({ Name: "ColStatus", Value: self.getStatusDisplay(mail, i) });
             if (viewResources.hasEditRight) {
                 rowColumns.push({ Name: "ColAction", Value: self.getActionColumn(mail, i) });
@@ -162,8 +216,8 @@ var MailReportController = function () {
             Id: 1,
             MailName: 'Name 1',
             Site: 'System Configuration',
-            ScheduledTime: "Sep 25, 2014 02:54 AM",
-            LastSent: 'Sep 24,2014 06:08 AM',
+            ScheduledTimeString: "Sep 25, 2014 02:54 AM",
+            LastSentString: 'Sep 24,2014 06:08 AM',
             Status: "WAITING",
             AttemptCount: 3
         });
@@ -171,8 +225,8 @@ var MailReportController = function () {
             Id: 2,
             MailName: 'Name 2',
             Site: 'System Configuration',
-            ScheduledTime: "Sep 25, 2014 02:54 AM",
-            LastSent: 'Sep 24,2014 06:08 AM',
+            ScheduledTimeString: "Sep 25, 2014 02:54 AM",
+            LastSentString: 'Sep 24,2014 06:08 AM',
             Status: "RUNNING",
             AttemptCount: 3
         });
@@ -180,32 +234,32 @@ var MailReportController = function () {
             Id: 2,
             MailName: 'Name 2',
             Site: 'System Configuration',
-            ScheduledTime: "Sep 25, 2014 02:54 AM",
-            LastSent: 'Sep 24,2014 06:08 AM',
+            ScheduledTimeString: "Sep 25, 2014 02:54 AM",
+            LastSentString: 'Sep 24,2014 06:08 AM',
             Status: "DATA NOT READY"
         });
         result.push({
             Id: 2,
             MailName: 'Name 2',
             Site: 'System Configuration',
-            ScheduledTime: "Sep 25, 2014 02:54 AM",
-            LastSent: 'Sep 24,2014 06:08 AM',
+            ScheduledTimeString: "Sep 25, 2014 02:54 AM",
+            LastSentString: 'Sep 24,2014 06:08 AM',
             Status: "SENT"
         });
         result.push({
             Id: 2,
             MailName: 'Name 2',
             Site: 'System Configuration',
-            ScheduledTime: "Sep 25, 2014 02:54 AM",
-            LastSent: 'Sep 24,2014 06:08 AM',
+            ScheduledTimeString: "Sep 25, 2014 02:54 AM",
+            LastSentString: 'Sep 24,2014 06:08 AM',
             Status: "FAILED"
         });
         result.push({
             Id: 2,
             MailName: 'Name 2',
             Site: 'System Configuration',
-            ScheduledTime: "Sep 25, 2014 02:54 AM",
-            LastSent: 'Sep 24,2014 06:08 AM',
+            ScheduledTimeString: "Sep 25, 2014 02:54 AM",
+            LastSentString: 'Sep 24,2014 06:08 AM',
             Status: "RUNNING",
             AttemptCount: 1
         });
@@ -217,39 +271,39 @@ var MailReportController = function () {
         return result;
     };
     self.getStatusDisplay = function (mail, index) {
-        var mailIndex = ' mail-index="' + index + '"';
-        switch (mail.Status) {
-            case "WAITING":
-                return '<div class="column-status waiting-status"' + mailIndex + '>' + mail.Status + '</div>';
-            case "RUNNING":
+        var mailIndex = ' mail-index="' + mail.Id + '"';
+        switch (mail.StatusId) {
+            case self.Enums.TaskStatus.Waiting:
+                return '<div class="column-status waiting-status"' + mailIndex + '>' + mail.StatusName + '</div>';
+            case self.Enums.TaskStatus.Running:
                 return '<div class="column-status running-status">' +
-                            '<span class="status">' + mail.Status + '</span>' +
-                            (mail.AttemptCount > 1 ? ' <span>(' + mail.AttemptCount + ')</span>' : '') +
+                            '<span class="status">' + mail.StatusName + '</span>' +
+                            (mail.AttemptCount > 0 ? ' <span>(' + mail.AttemptCount + ')</span>' : '') +
                         '</div>';
-            case "DATA NOT READY":
-                return '<div class="column-status data-not-ready-status"' + mailIndex + '>' + mail.Status + '</div>';
-            case "SENT":
-                return '<div class="column-status sent-status"' + mailIndex + '>' + mail.Status + '</div>';
-            case "FAILED":
-                return '<div class="column-status failed-status"' + mailIndex + '>' + mail.Status + '</div>';
+            case self.Enums.TaskStatus.DataNotReady:
+                return '<div class="column-status data-not-ready-status"' + mailIndex + '>' + mail.StatusName + '</div>';
+            case self.Enums.TaskStatus.Sent:
+                return '<div class="column-status sent-status"' + mailIndex + '>' + mail.StatusName + '</div>';
+            case self.Enums.TaskStatus.Failed:
+                return '<div class="column-status failed-status"' + mailIndex + '>' + mail.StatusName + '</div>';
         }
     };
     self.getActionColumn = function (mail, index) {
-        var mailIndex = ' mail-index="' + index + '"';
-        switch (mail.Status) {
-            case "DATA NOT READY":
-            case "SENT":
-            case "FAILED":
+        var mailIndex = ' mail-index="' + mail.Id + '"';
+        switch (mail.StatusId) {
+            case self.Enums.TaskStatus.DataNotReady:
+            case self.Enums.TaskStatus.Sent:
+            case self.Enums.TaskStatus.Failed:
                 return '<input type="submit" value="Retry" class="button-retry"' + mailIndex + '>';
         }
     };
     self.getLogColumn = function (mail, index) {
-        var mailIndex = ' mail-index="' + index + '"';
-        switch (mail.Status) {
-            case "RUNNING":
-            case "DATA NOT READY":
-            case "SENT":
-            case "FAILED":
+        var mailIndex = ' mail-index="' + mail.Id + '"';
+        switch (mail.StatusId) {
+            case self.Enums.TaskStatus.Running:
+            case self.Enums.TaskStatus.DataNotReady:
+            case self.Enums.TaskStatus.Sent:
+            case self.Enums.TaskStatus.Failed:
                 return '<div class="icon-view-log"' + mailIndex + '></div>';
         }
     };
@@ -265,8 +319,12 @@ var MailReportController = function () {
             var $this = $(this);
             var mailIndex = parseInt($this.attr("mail-index"));
             self.retrySendMail(mailIndex, function () {
-                self.updateRowStatus("RUNNING", mailIndex);
-                $this.remove();
+                //                self.updateRowStatus("RUNNING", mailIndex);
+                //                $this.remove();
+                setTimeout(function () {
+                    NAP.headlineMsgBox.close();
+                    self.refreshMailReport();
+                }, sharedScriptManager.cachedData.alertSuccessTime);
             });
         });
 
@@ -277,16 +335,16 @@ var MailReportController = function () {
         });
     };
     self.retrySendMail = function (mailIndex, afterRetryEvent) {
-        sharedScriptManager.blockUI();
-        var mail = self.cachedData.mailReport[mailIndex];
-        var searchParams = {
-            MailId: mail.Id
-        };
-        sharedScriptManager.callAjax(self,
+        NAP.headlineMsgBox.confirm(viewResources.Confirm_RetrySendMail, function () {
+            sharedScriptManager.blockUI();
+            var retryParams = {
+                MailId: mailIndex
+            };
+            sharedScriptManager.callAjax(self,
             window.rootUrl + "MailStation/MailReport/RetrySendMail",
-            searchParams,
+            retryParams,
             function (result) {
-                var result = {
+                result = {
                     Code: 0,
                     Message: 'aaa'
                 };
@@ -294,6 +352,7 @@ var MailReportController = function () {
             },
             null,
             sharedScriptManager.unblockUI);
+        });
     };
     self.renderActionResult = function (result) {
         sharedScriptManager.renderActionResult(
@@ -320,9 +379,11 @@ var MailReportController = function () {
         }
     };
     self.viewMailDetail = function (mailIndex) {
-        var mail = self.cachedData.mailReport[mailIndex];
         popUpManager.openPopup(
-             window.rootUrl + 'MailStation/MailReport/MailDetail',
+            window.rootUrl + 'MailStation/MailReport/MailDetail?' +
+            $.param({
+                mailId: mailIndex
+            }),
             viewResources.Details,
             $(window).width() - 200,
             $(window).height() - 200,
@@ -336,7 +397,10 @@ var MailReportController = function () {
     };
     self.viewMailLog = function (mailIndex) {
         popUpManager.openPopup(
-            window.rootUrl + 'MailStation/MailReport/MailLog',
+            window.rootUrl + 'MailStation/MailReport/MailLog?' +
+            $.param({
+                mailId: mailIndex
+            }),
             viewResources.Log_details,
             $(window).width() - 200,
             $(window).height() - 200,

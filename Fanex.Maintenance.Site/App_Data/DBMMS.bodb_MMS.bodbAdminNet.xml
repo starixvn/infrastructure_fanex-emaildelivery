@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Functions>
+  <Function Name="Mail Station - Mail Report">
+    <Setting Key="MailStation_MailReport_GetMailTaskList" SpName="Mail_Report_GetMailTaskList" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
+    <Setting Key="MailStation_MailReport_GetLogDetail" SpName="Mail_Report_GetLogDetails" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
+  </Function>
+  <Function Name="Mail Station - Manage Recipient">
+    <Setting Key="MailStation_MailReport_GetRecipientList" SpName="Mail_ManageRecipient_GetRecipientList" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
+    <Setting Key="MailStation_MailReport_GetRecipientById" SpName="Mail_ManageRecipient_GetRecipientByID" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
+    <Setting Key="MailStation_MailReport_UpdateRecipient" SpName="Mail_ManageRecipient_UpdateRecipient" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
+    <Setting Key="MailStation_MailReport_InsertRecipient" SpName="Mail_ManageRecipient_InsertRecipient" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
+    <Setting Key="MailStation_MailReport_CheckRecipient" SpName="Mail_ManageRecipient_InsertRecipient" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
+  </Function>
+</Functions>

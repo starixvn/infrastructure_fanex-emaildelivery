@@ -71,7 +71,7 @@ namespace Fanex.Maintenance.Site.App_Start
                 "~/themes/shared/contextmenu.less",
                 "~/scripts/lib/AutoComplete/autocomplete.css",
                 "~/Areas/MailStation/ManageMail/Styles/ManageMail.less");
-                
+
         }
 
         private static void RegisterUpdateMailBundles(BundleCollection bundles)
@@ -123,18 +123,30 @@ namespace Fanex.Maintenance.Site.App_Start
                 "~/scripts/lib/custom-datepicker.js",
                 "~/scripts/lib/Countdown/CountdownController.js",
                 "~/scripts/lib/Popup/dialogbox.js",
+                "~/scripts/lib/AutoComplete/jquery.autocomplete.js",
                 "~/Areas/MailStation/Report/MailReport/Scripts/MailReportController.js"));
 
             bundles.AddAndInclude(
                 "~/Areas/MailStation/MailReport/MailReportStyles",
                 "~/themes/shared/contextmenu.less",
                 "~/scripts/lib/Countdown/CountDown.less",
+                "~/scripts/lib/AutoComplete/autocomplete.css",
                 "~/Areas/MailStation/Report/MailReport/Styles/MailReport.less");
+        }
+
+        private static void RegisterMailLogBundles(BundleCollection bundles)
+        {
+            bundles.Add(new ScriptBundle("~/Areas/MailStation/Report/MailLog/MailLogScripts").Include(
+                "~/Areas/MailStation/Report/MailLog/Scripts/MailLogController.js"));
+
+            bundles.AddAndInclude(
+                "~/Areas/MailStation/Report/MailLog/MailLogStyles",
+                "~/Areas/MailStation/Report/MailLog/Styles/MailLog.less");
         }
 
         private static void RegisterMailDetailBundles(BundleCollection bundles)
         {
-            bundles.Add(new ScriptBundle("~/Areas/MailStation/MailDetail/MailDetailScripts").Include(
+            bundles.Add(new ScriptBundle("~/Areas/MailStation/Report/MailDetail/MailDetailScripts").Include(
                 "~/Areas/MailStation/Report/MailDetail/Scripts/MailDetailController.js"));
 
             bundles.AddAndInclude(
@@ -143,26 +155,22 @@ namespace Fanex.Maintenance.Site.App_Start
                 "~/Areas/MailStation/Report/MailDetail/Styles/MailDetail.less");
         }
 
-        private static void RegisterMailLogBundles(BundleCollection bundles)
-        {
-            bundles.Add(new ScriptBundle("~/Areas/MailStation/MailLog/MailLogScripts").Include(
-                "~/Areas/MailStation/Report/MailLog/Scripts/MailLogController.js"));
-
-            bundles.AddAndInclude(
-                "~/Areas/MailStation/Report/MailLog/MailLogStyles",
-                "~/Areas/MailStation/Report/MailLog/Styles/MailLog.less");
-        }
-
         private static void RegisterManageRecipientBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/Areas/MailStation/ManageRecipient/ManageRecipientScripts").Include(
                 "~/scripts/lib/ContextMenu/ContextMenuController.js",
                 "~/scripts/lib/Popup/dialogbox.js",
+                "~/scripts/lib/AutoComplete/jquery.highlight-3.js",
+                "~/scripts/lib/AutoComplete/jquery.autocomplete.client.js",
+                "~/scripts/lib/MultiAutoComplete/MultiAutoCompleteHelper.js",
+                "~/scripts/lib/MultiAutoComplete/jquery.fcbkcomplete.js",
                 "~/Areas/MailStation/ManageRecipient/ManageRecipient/Scripts/ManageRecipientController.js"));
 
             bundles.AddAndInclude(
                 "~/Areas/MailStation/ManageRecipient/ManageRecipientStyles",
                 "~/themes/shared/contextmenu.less",
+                "~/scripts/lib/AutoComplete/autocomplete.css",
+                "~/scripts/lib/MultiAutoComplete/MultiAutoComplete.less",
                 "~/Areas/MailStation/ManageRecipient/ManageRecipient/Styles/ManageRecipient.less");
         }
 
@@ -170,11 +178,13 @@ namespace Fanex.Maintenance.Site.App_Start
         {
             bundles.Add(new ScriptBundle("~/Areas/MailStation/EditRecipient/EditRecipientScripts").Include(
                 "~/scripts/lib/ContextMenu/ContextMenuController.js",
+                "~/scripts/lib/AutoComplete/jquery.autocomplete.js",
                 "~/Areas/MailStation/ManageRecipient/EditRecipient/Scripts/EditRecipientController.js"));
 
             bundles.AddAndInclude(
                 "~/Areas/MailStation/EditRecipient/EditRecipientStyles",
                 "~/themes/shared/formedit.less",
+                "~/scripts/lib/AutoComplete/autocomplete.css",
                 "~/Areas/MailStation/ManageRecipient/EditRecipient/Styles/EditRecipient.less");
         }
 
@@ -182,11 +192,13 @@ namespace Fanex.Maintenance.Site.App_Start
         {
             bundles.Add(new ScriptBundle("~/Areas/MailStation/InsertRecipient/InsertRecipientScripts").Include(
                 "~/scripts/lib/ContextMenu/ContextMenuController.js",
+                "~/scripts/lib/AutoComplete/jquery.autocomplete.js",
                 "~/Areas/MailStation/ManageRecipient/InsertRecipient/Scripts/InsertRecipientController.js"));
 
             bundles.AddAndInclude(
                 "~/Areas/MailStation/InsertRecipient/InsertRecipientStyles",
                 "~/themes/shared/formedit.less",
+                "~/scripts/lib/AutoComplete/autocomplete.css",
                 "~/Areas/MailStation/ManageRecipient/InsertRecipient/Styles/InsertRecipient.less");
         }
 

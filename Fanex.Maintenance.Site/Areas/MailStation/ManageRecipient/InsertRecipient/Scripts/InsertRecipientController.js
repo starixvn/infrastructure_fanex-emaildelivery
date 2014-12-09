@@ -20,6 +20,26 @@ var InsertRecipientController = function () {
         $("#username").blur(function () {
             self.checkRecipientInfo();
         });
+
+        $("#email1").autocomplete(self.autoSuggestMailOption($("#email1")));
+        $("#email2").autocomplete(self.autoSuggestMailOption($("#email2")));
+        $("#email3").autocomplete(self.autoSuggestMailOption($("#email3")));
+    };
+
+    self.autoSuggestMailOption = function (element) {
+        return {
+            serviceUrl: window.rootUrl + 'MailStation/MailManage/SuggestMail',
+            minChars: 2,
+            isCacheSuggestion: false,
+            zIndex: 9999,
+            width: 185,
+            deferRequestBy: 0,
+            params: {
+                mailName: element.val()
+            },
+
+            closeSuggestion: null
+        };
     };
     self.saveRecipient = function () {
         NAP.headlineMsgBox.confirm(viewResources.Confirm_InsertRecipient, function () {
@@ -127,22 +147,26 @@ var InsertRecipientController = function () {
         self.copyRecipientInfo(result);
     };
     self.copyRecipientInfo = function (result) {
-        result = {
-            Id: 1,
-            Username: 'sa',
-            IsNapUser: true,
-            Email1: "starifix@nexcel.vn",
-            Email2: '',
-            EMail3: '',
-            NoRelevantMail: 3,
-            Active: true
-        };
+        if (!result) {
+            return;
+        }
 
-        $("#email1").val(result.Email1);
-        $("#email2").val(result.Email2);
-        $("#email3").val(result.Email3);
-        $("#note").val(result.Note);
-        $("#status").attr("checked", result.Active ? "checked" : "");
+        //        result = {
+        //            Id: 1,
+        //            Username: 'sa',
+        //            IsNapUser: true,
+        //            Email1: "starifix@nexcel.vn",
+        //            Email2: '',
+        //            EMail3: '',
+        //            NoRelevantMail: 3,
+        //            Active: true
+        //        };
+
+        $("#email1").val(result.Email);
+        //        $("#email2").val(result.Email2);
+        //        $("#email3").val(result.Email3);
+        //        $("#note").val(result.Note);
+        //        $("#status").attr("checked", result.Active ? "checked" : "");
     };
 };
 

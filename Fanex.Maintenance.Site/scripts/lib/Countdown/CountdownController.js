@@ -1,11 +1,4 @@
-﻿$(document).ready(function () {
-    countdownController.initPage();
-});
-
-viewResources = {
-    Not_Refresh: 'Not Refresh'
-};
-
+﻿
 var CountdownController = function () {
     var self = this;
     self.cachedData = {
@@ -14,6 +7,9 @@ var CountdownController = function () {
         refreshIntervalCounter: 0,
         countdownTime: 0,
         refreshEvent: null
+    };
+    self.viewResources = {
+        Not_Refresh: 'Not Refresh'
     };
 
     self.initPage = function () {
@@ -64,7 +60,7 @@ var CountdownController = function () {
             $('.countDownOptionContainer').css("display", 'none');
             var refreshIcon = $(".refreshBox .refreshIcon");
             var coundownAfter = btnCountDownOption.attr("value");
-            if (coundownAfter === viewResources.Not_Refresh) {
+            if (coundownAfter === self.viewResources.Not_Refresh) {
                 refreshIcon.css("text-align", 'left');
                 refreshIcon.css("padding-left", '8px');
                 refreshIcon.css("width", '85px');
@@ -96,9 +92,10 @@ var CountdownController = function () {
                         self.cachedData.countdownTime = self.cachedData.refreshIntervalCounter / 1000;
                     }
 
-                    self.setRefreshIntervalEvent();
                     refreshIcon.html(self.cachedData.countdownTime);
                 }, 1000);
+
+                self.setRefreshIntervalEvent();
             }
         }, 200);
     };

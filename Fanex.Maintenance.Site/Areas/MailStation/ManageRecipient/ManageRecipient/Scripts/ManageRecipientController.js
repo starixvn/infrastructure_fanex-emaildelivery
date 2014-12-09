@@ -11,17 +11,16 @@ var ManageRecipientController = function () {
         contextMenuController.bindContextMenuEvents();
     };
     self.cachedData = {
-        searchParams: null,
-        recipientList: []
+        searchParams: null
     };
     self.loadFilter = function () {
         self.renderDropdownStatus();
     };
 
     self.renderDropdownStatus = function () {
-        var statuses = [{ Id: 0, Name: 'All' },
+        var statuses = [{ Id: -1, Name: 'All' },
             { Id: 1, Name: 'Active' },
-            { Id: 2, Name: 'Inactive'}];
+            { Id: 0, Name: 'Inactive'}];
         var options = '';
         var statusLength = statuses.length;
         for (var i = 0; i < statusLength; i++) {
@@ -32,15 +31,32 @@ var ManageRecipientController = function () {
         $("#status").empty().append(options);
     };
     self.bindEvents = function () {
+        $("#emails").fcbkcomplete({
+            validateInputFunction: sharedScriptManager.isValidEmail,
+            json_url: window.rootUrl + 'MailStation/MailManage/SuggestMultiMail',
+            addontab: true,
+            maxitems: 500,
+            input_min_size: 1,
+            height: 10,
+            cache: false,
+            newel: true
+        });
+
+        $("#typeCust").attr("disabled", null);
         $("#button-search").click(function () {
             self.buttonSearchClick();
         });
     };
     self.buttonSearchClick = function () {
         sharedScriptManager.blockUI();
+        var emails = [];
+        $('.multi-auto-suggest-container select option').each(function (i, option) {
+            emails[i] = $(option).text();
+        });
+
         var searchParams = {
             Username: $("#username").val(),
-            Emails: $("#emails").val(),
+            Emails: emails.join(","),
             Status: $("#status").val()
         };
         self.cachedData.searchParams = searchParams;
@@ -52,14 +68,13 @@ var ManageRecipientController = function () {
             sharedScriptManager.unblockUI);
     };
     self.renderRecipientList = function (result) {
-        result = self.dummyData();
-        self.cachedData.recipientList = result;
+        //        result = self.dummyData();
         var recipientListLength = result.length;
         var bodyData = [];
         for (var i = 0; i < recipientListLength; i++) {
             var recipient = result[i];
             var rowColumns = [];
-            var recipientIndex = ' recipient-index="' + i + '"';
+            var recipientIndex = ' recipient-index="' + recipient.Id + '"';
             rowColumns.push({ Name: "ColId", Value: recipient.Id });
             rowColumns.push({
                 Name: "ColUsername",
@@ -75,9 +90,9 @@ var ManageRecipientController = function () {
             rowColumns.push({ Name: "ColEmail3", Value: recipient.Email3 });
             rowColumns.push({
                 Name: "ColNoRelevantMail",
-                Value: '<div class="ico-relevant-mail"' + recipientIndex + '>' + recipient.NoRelevantMail + '</div>'
+                Value: '<div class="ico-relevant-mail"' + recipientIndex + '>' + recipient.NumberRelevantEmail + '</div>'
             });
-            rowColumns.push({ Name: "ColActive", Value: recipient.Active ? '<div class="ico-tick"></div>' : '' });
+            rowColumns.push({ Name: "ColActive", Value: recipient.IsActive ? '<div class="ico-tick"></div>' : '' });
             if (viewResources.hasEditRight) {
                 rowColumns.push({
                     Name: "ColAction",
@@ -190,18 +205,15 @@ var ManageRecipientController = function () {
         });
     };
     self.editRecipient = function (recipientIndex) {
-        var recipient = self.cachedData.recipientList[recipientIndex];
-        var editParams = recipient;
         window.location.href = window.rootUrl + "MailStation/MailRecipient/EditRecipientView?" +
             $.param({
-                recipientId: recipient.Id
+                recipientId: recipientIndex
             });
     };
     self.viewRelevantMail = function (recipientIndex) {
-        var recipient = self.cachedData.recipientList[recipientIndex];
         popUpManager.openPopup(
             window.rootUrl + 'MailStation/MailRecipient/ViewRelevantMail?' + $.param({
-                recipientId: recipient.Id
+                recipientId: recipientIndex
             }),
             viewResources.Relevant_Mail,
             $(window).width() - 200,

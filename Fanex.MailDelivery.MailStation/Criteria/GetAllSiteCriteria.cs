@@ -1,17 +1,17 @@
-﻿// --------------------------------------------------------------------------
-// <copyright file="GetAllMailGroupCriteria.cs" company="Nexcel Solutions Vietnam">
+// --------------------------------------------------------------------------
+// <copyright file="GetAllCategoryCriteria.cs" company="Nexcel Solutions Vietnam">
 // Copyright (c) Nexcel Solutions Vietnam. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------
 
-namespace Fanex.MailDelivery.MailStation.Criterias.MailManage
+namespace Fanex.MailDelivery.MailStation.Criterias
 {
     using Fanex.NAP.Framework.Data;
 
     /// <summary>
     /// Get all log category criteria.
     /// </summary>
-    public class GetAllMailGroupCriteria : CriteriaBase
+    public class GetAllSiteCriteria : CriteriaBase
     {
         public override bool IsValid()
         {
@@ -20,7 +20,7 @@ namespace Fanex.MailDelivery.MailStation.Criterias.MailManage
 
         public override string GetSettingKey()
         {
-            return "MailStation_GetAllMailGroup";
+            return "MailStation_GetAllSites";
         }
     }
 }

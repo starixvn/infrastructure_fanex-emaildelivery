@@ -1,10 +1,13 @@
-﻿@using Fanex.MailDelivery.MailStation.Criterias.MailManage;
-@model GetMailListCriteria
+﻿@using Newtonsoft.Json;
+@using Fanex.MailDelivery.MailStation.Resources;
+@using Fanex.MailDelivery.MailStation.Models;
+@model RecipientModel
 @{
     ViewBag.Title = "Manage Mail";
     Layout = "~/Views/Shared/_Layout.cshtml";
     var hasEditRight = true;
     var hasSiteRight = true;
+    var recipient = JsonConvert.SerializeObject(Model);
 }
 @section Head {
     @Styles.Render("~/themes/sharedstyles")
@@ -87,6 +90,7 @@
     @Scripts.Render("~/Areas/MailStation/ManageMail/ManageMailScripts")
     <script type="text/javascript">
         window.rootUrl = '@Url.Content("~")';
+        var recipient= @Html.Raw(recipient); 
         var viewResources = {
             hasEditRight: @(hasEditRight ? 1 : 0),
             hasSiteRight: @(hasSiteRight ? 1 : 0),

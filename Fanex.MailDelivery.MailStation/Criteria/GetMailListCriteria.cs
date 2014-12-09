@@ -1,10 +1,10 @@
-﻿// --------------------------------------------------------------------------
+// --------------------------------------------------------------------------
 // <copyright file="GetMailListCriteria.cs" company="Nexcel Solutions Vietnam">
 // Copyright (c) Nexcel Solutions Vietnam. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------
 
-namespace Fanex.MailDelivery.MailStation.Criterias.MailManage
+namespace Fanex.MailDelivery.MailStation.Criterias
 {
     using Fanex.NAP.Framework.Data;
 
@@ -32,7 +32,7 @@ namespace Fanex.MailDelivery.MailStation.Criterias.MailManage
 
         public override string GetSettingKey()
         {
-            return "MailStation_GetMailList";
+            return "MailStation_GetAllMailGroup";
         }
     }
 }

@@ -1,7 +1,10 @@
 ﻿@using Fanex.MailDelivery.Client.Models;
-@model Mail
+@using Fanex.MailDelivery.MailStation.Models;
+@using Fanex.MailDelivery.MailStation.Resources;
+@using Fanex.MailDeliver.Model;
+@model MailRecord
 @{
-    ViewBag.Title = "Mail Detail";
+    ViewBag.Title = Labels.Mail_Detail;
     Layout = "";  
 }
 <!DOCTYPE html>
@@ -15,74 +18,77 @@
 <head>
     <title>@ViewBag.Title</title>
     @Styles.Render("~/themes/sharedstyles")
-    @Styles.Render("~/Areas/MailStation/MailDetail/MailDetailStyles")
+    @Styles.Render("~/Areas/MailStation/Report/MailDetail/MailDetailStyles")
 </head>
 <body id="body">
     <div class="form">
         <div class="form-row">
             <div class="lbl-field label-column-1">
                 <label class="bold-weight">
-                    From</label>
+                    @Labels.From</label>
             </div>
             <div class="lbl-field label-column-2">
                 <label>
-                    forrest.nguyen@nexcel.vn</label>
+                    @Model.MailFrom</label>
             </div>
         </div>
         <div class="form-row">
             <div class="lbl-field label-column-1">
                 <label class="bold-weight">
-                    To</label>
+                    @Labels.To</label>
             </div>
             <div class="lbl-field label-column-2">
                 <label>
-                    forrest.nguyen@nexcel.vn</label>
+                    @Model.MailTo</label>
             </div>
         </div>
         <div class="form-row">
             <div class="lbl-field label-column-1">
                 <label class="bold-weight">
-                    CC</label>
+                    @Labels.CC</label>
             </div>
             <div class="lbl-field label-column-2">
                 <label>
+                    @Model.MailCc
                 </label>
             </div>
         </div>
         <div class="form-row">
             <div class="lbl-field label-column-1">
                 <label class="bold-weight">
-                    BCC</label>
+                    @Labels.BCC</label>
             </div>
             <div class="lbl-field label-column-2">
                 <label>
+                    @Model.MailBcc
                 </label>
             </div>
         </div>
         <div class="form-row">
             <div class="lbl-field label-column-1">
                 <label class="bold-weight">
-                    Mail Date</label>
+                    @Labels.Mail_Date</label>
             </div>
             <div class="lbl-field label-column-2">
                 <label>
-                    11/3/2014 2:43:47 AM</label>
+                    @Model.MailDate</label>
             </div>
         </div>
         <div class="form-row">
             <div class="lbl-field label-column-1">
                 <label class="bold-weight">
-                    Title</label>
+                    @Labels.Title</label>
             </div>
             <div class="lbl-field label-column-2">
                 <label>
-                    [WEB DEPLOYMENT TOOL]</label>
+                    @Model.Title
+                </label>
             </div>
         </div>
         <div class="form-row">
             <div class="lbl-field label-column-1">
                 <label class="bold-weight">
-                    Subject</label>
+                    @Labels.Subject</label>
             </div>
             <div class="lbl-field label-column-2">
                 <label>
@@ -92,7 +98,7 @@
         <div class="form-row">
             <div class="lbl-field label-column-1">
                 <label class="bold-weight">
-                    Body</label>
+                    @Labels.Body</label>
             </div>
             <div class="lbl-field label-column-2">
                 <label>
@@ -101,6 +107,6 @@
         </div>
     </div>
     @Scripts.Render("~/scripts/sharedscripts")
-    @Scripts.Render("~/Areas/MailStation/MailDetail/MailDetailScripts")
+    @Scripts.Render("~/Areas/MailStation/Report/MailDetail/MailDetailScripts")
 </body>
 </html>
