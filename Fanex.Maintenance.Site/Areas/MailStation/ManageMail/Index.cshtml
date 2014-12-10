@@ -1,4 +1,6 @@
-﻿@{
+﻿@using Fanex.MailDelivery.MailStation.Criterias.MailManage;
+@model GetMailListCriteria
+@{
     ViewBag.Title = "Manage Mail";
     Layout = "~/Views/Shared/_Layout.cshtml";
     var hasEditRight = true;
@@ -15,69 +17,59 @@
         @if (hasEditRight)
         {
             <div class="button-action">
-                <a id="btnCreateMail" class="add-button" href="~/MailStation/MailManage/InsertMail">+ Create
-                    Mail</a>
+                <a id="btnCreateMail" class="add-button" href="~/MailStation/MailManage/CreateMailView">
+                    + Create Mail</a>
             </div>
         }
     </h1>
 }
 <section id="filter-bar">
-    <div class="filter-form">
-        <div class="filter-row">
-            <div class="form-group">
-                <div class="lbl-field width-80">
-                    <label for="mail-name">
-                        Mail Name</label>
+        <div class="filter-form">
+            <div class="filter-row">
+                <div class="form-group">
+                    <div class="lbl-field width-80">
+                        @Html.LabelFor(m => m.MailName, "Mail Name")
+                    </div>
+                    @Html.TextBoxFor(m => m.MailName, new { @class = "textbox" })
                 </div>
-                <input id="mail-name" type="text" class="textbox" />
-            </div>
-            <div class="form-group">
-                <div class="lbl-field">
-                    <label for="status">
-                        Status</label>
+                <div class="form-group">
+                    <div class="lbl-field">
+                        @Html.LabelFor(m => m.IsActive, "Status")
+                    </div>
+                    @Html.DropDownListFor(m => m.IsActive, (IEnumerable<SelectListItem>)ViewBag.ListStatus)
                 </div>
-                <select id="status" name="status">
-                </select>
-            </div>
-            <div class="form-group">
-                <div class="lbl-field">
-                    <label for="group">
-                        Group</label>
+                <div class="form-group">
+                    <div class="lbl-field">
+                        @Html.LabelFor(m => m.MailGroupID, "Group")
+                    </div>
+                    @Html.DropDownListFor(m => m.MailGroupID, (IEnumerable<SelectListItem>)ViewBag.ListMailGroup)
                 </div>
-                <select id="group" name="group">
-                </select>
+                <div class="form-group form-group-right">
+                    <input id="button-search" type="submit" value="Submit" />
+                </div>
             </div>
-            <div class="form-group form-group-right">
-                <input id="button-search" type="submit" value="Submit" />
+            <div class="filter-row">
+                <div class="form-group">
+                    <div class="lbl-field width-80">
+                        @Html.LabelFor(m => m.SiteID, "Site")
+                    </div>
+                    @Html.DropDownListFor(m => m.SiteID, (IEnumerable<SelectListItem>)ViewBag.ListSite)
+                </div>
+                <div class="form-group">
+                    <div class="lbl-field width-80">
+                        @Html.LabelFor(m => m.TriggerType, "Trigger")
+                    </div>
+                    @Html.DropDownListFor(m => m.TriggerType, (IEnumerable<SelectListItem>)ViewBag.ListTriggerType)
+                </div>
+                <div class="form-group">
+                    <div class="lbl-field">
+                        @Html.LabelFor(m => m.Emails, "Email(s)")
+                    </div>
+                    @Html.TextBoxFor(m => m.Emails, new { @class = "textbox" })
+                </div>
             </div>
         </div>
-        <div class="filter-row">
-            <div class="form-group">
-                <div class="lbl-field width-80">
-                    <label for="site">
-                        Site</label>
-                </div>
-                <select id="site" name="site">
-                </select>
-            </div>
-            <div class="form-group">
-                <div class="lbl-field width-80">
-                    <label for="trigger">
-                        Trigger</label>
-                </div>
-                <select id="trigger" name="trigger">
-                </select>
-            </div>
-            <div class="form-group">
-                <div class="lbl-field">
-                    <label for="emails">
-                        Email(s)</label>
-                </div>
-                <input id="emails" type="text" class="textbox" autocomplete="off" />
-            </div>
-        </div>
-    </div>
-</section>
+    </section>
 <section id="body">
     <div id="mail-list-container" class="mail-list-container">
         <div id="mail-list" class="freegrid display-none">
@@ -98,7 +90,6 @@
         var viewResources = {
             hasEditRight: @(hasEditRight ? 1 : 0),
             hasSiteRight: @(hasSiteRight ? 1 : 0),
-
             Id: 'ID',
             Mail_Name: 'Mail Name',
             Group: 'Group',

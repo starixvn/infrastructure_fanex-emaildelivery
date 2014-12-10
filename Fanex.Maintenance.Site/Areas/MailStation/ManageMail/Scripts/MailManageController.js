@@ -4,141 +4,82 @@
 
 var MailManageController = function () {
     var self = this;
-    self.cachedData = {
-        mailList: [],
-        searchParams: null
+
+    var DOMElements = {
+        MailName: null,
+        IsActive: null,
+        MailGroupID: null,
+        SiteID: null,
+        TriggerType: null,
+        Emails: null,
+        btnSearch: null
+    };
+
+    self.reportParams = {
+        MailName: null,
+        IsActive: null,
+        MailGroupID: null,
+        SiteID: null,
+        TriggerType: null,
+        Emails: null,
+        btnSearch: null,
+        gridContainer: null
     };
 
     self.initPage = function () {
-        self.loadFilter();
+        self.cacheDOMElements();
         self.bindEvents();
+        DOMElements.TriggerType.val(-1);
         contextMenuController.bindContextMenuEvents();
-        self.buttonSearchClick();
+        DOMElements.btnSearch.click();
     };
 
-    self.loadFilter = function () {
-        self.renderDropdownStatus();
-        sharedScriptManager.callAjax(self,
-            window.rootUrl + "MailStation/MailManage/MailGroups",
-            null,
-            self.renderDropdownGroup,
-            null,
-            sharedScriptManager.unblockUI);
-
-        sharedScriptManager.callAjax(self,
-            window.rootUrl + "MailStation/MailManage/Sites",
-            null,
-            self.renderDropdownSite,
-            null,
-            sharedScriptManager.unblockUI);
-
-        self.renderDropdownTrigger();
-    };
-
-    self.renderDropdownSite = function (sites) {
-        var options = '';
-        var siteLength = sites.length;
-        sites.unshift({ Id: -1, Name: "All" });
-        for (var i = 0; i < siteLength; i++) {
-            var site = sites[i];
-            options += '<option value="' + site.Id + '">' + site.Name + '</option>'
-        }
-
-        $("#site").empty().append(options);
-    };
-
-    self.renderDropdownTrigger = function () {
-        var triggers = [{ Id: -1, Name: 'All Types' },
-            { Id: 0, Name: 'By Schedule' },
-            { Id: 1, Name: 'By Function'}];
-        var options = '';
-        var triggerLength = triggers.length;
-        for (var i = 0; i < triggerLength; i++) {
-            var trigger = triggers[i];
-            options += '<option value="' + trigger.Id + '">' + trigger.Name + '</option>'
-        }
-
-        $("#trigger").empty().append(options);
-    };
-
-    self.renderDropdownStatus = function () {
-        var statuses = [{ Id: -1, Name: 'All' },
-            { Id: 0, Name: 'Active' },
-            { Id: 1, Name: 'Inactive'}];
-        var options = '';
-        var statusLength = statuses.length;
-        for (var i = 0; i < statusLength; i++) {
-            var status = statuses[i];
-            options += '<option value="' + status.Id + '">' + status.Name + '</option>'
-        }
-
-        $("#status").empty().append(options);
-    };
-
-    self.renderDropdownGroup = function (mailGroupList) {
-        mailGroupList.unshift({ Id: -1, Name: "All" });
-        var options = '';
-        var groupLength = mailGroupList.length;
-        for (var i = 0; i < groupLength; i++) {
-            var group = mailGroupList[i];
-            options += '<option value="' + group.Id + '">' + group.Name + '</option>'
-        }
-
-        $("#group").empty().append(options);
-
+    self.cacheDOMElements = function () {
+        DOMElements.MailName = $("#MailName");
+        DOMElements.IsActive = $("#IsActive");
+        DOMElements.MailGroupID = $("#MailGroupID");
+        DOMElements.SiteID = $("#SiteID");
+        DOMElements.TriggerType = $("#TriggerType");
+        DOMElements.Emails = $("#Emails");
+        DOMElements.btnSearch = $('#button-search');
+        DOMElements.gridContainer = $('#mail-list');
+        DOMElements.btnSearch = $('#button-search');
     };
 
     self.bindEvents = function () {
-        $("#button-search").click(function () {
+        DOMElements.btnSearch.click(function () {
             self.buttonSearchClick();
-        });
-
-        $("#emails").autocomplete({
-            serviceUrl: window.rootUrl + 'MailStation/MailManage/SuggestMail',
-            minChars: 2,
-            isCacheSuggestion: false,
-            zIndex: 9999,
-            width: 185,
-            deferRequestBy: 0,
-            params: {
-                mailName: $("#emails").val()
-            },
-
-            //aditional parameters
-            closeSuggestion: null
         });
     };
 
     self.buttonSearchClick = function () {
         sharedScriptManager.blockUI();
         NAP.headlineMsgBox.close();
-        var searchParams = {
-            MailName: $("#mail-name").val(),
-            Status: $("#status").val(),
-            Group: $("#group").val(),
-            Site: viewResources.hasSiteRight ? $("#site").val() : 0,
-            TriggerType: $("#trigger").val(),
-            Emails: $("#emails").val()
+        self.reportParams = {
+            MailName: DOMElements.MailName.val(),
+            IsActive: DOMElements.IsActive.val(),
+            MailGroupID: DOMElements.MailGroupID.val(),
+            SiteID: DOMElements.SiteID.val(),
+            TriggerType: DOMElements.TriggerType.val(),
+            Emails: DOMElements.Emails.val()
         };
-        self.cachedData.searchParams = searchParams;
+
         sharedScriptManager.callAjax(self,
             window.rootUrl + "MailStation/MailManage/MailList",
-            searchParams,
+            self.reportParams,
             self.renderMailList,
             null,
             sharedScriptManager.unblockUI);
     };
 
     self.renderMailList = function (result) {
-        result = self.dummyData();
-        self.cachedData.mailList = result;
         var mailListLength = result.length;
         var bodyData = [];
         for (var i = 0; i < mailListLength; i++) {
             var mail = result[i];
             var rowColumns = [];
-            var mailIndex = ' mail-index="' + i + '"';
-            rowColumns.push({ Name: "ColId", Value: mail.Id });
+            var mailIndex = ' mailid="' + mail.MailId + '"';
+            rowColumns.push({ Name: "ColId", Value: mail.MailId });
             rowColumns.push({
                 Name: "ColMailName",
                 Value:
@@ -149,14 +90,14 @@ var MailManageController = function () {
                              mail.MailName
             });
 
-            rowColumns.push({ Name: "ColGroup", Value: mail.Group });
-            rowColumns.push({ Name: "ColSite", Value: mail.Site });
+            rowColumns.push({ Name: "ColGroup", Value: mail.MailGroupName });
+            rowColumns.push({ Name: "ColSite", Value: mail.SiteName });
             rowColumns.push({ Name: "ColTrigger", Value: self.getTriggerIcon(mail) });
-            rowColumns.push({ Name: "ColTo", Value: mail.To });
-            rowColumns.push({ Name: "ColCC", Value: mail.CC });
-            rowColumns.push({ Name: "ColBCC", Value: mail.BCC });
+            rowColumns.push({ Name: "ColTo", Value: mail.MailTo });
+            rowColumns.push({ Name: "ColCC", Value: mail.MailCc });
+            rowColumns.push({ Name: "ColBCC", Value: mail.MailBcc });
             rowColumns.push({ Name: "ColLastSent", Value: mail.LastSent });
-            rowColumns.push({ Name: "ColActive", Value: mail.Active ? '<div class="ico-tick"></div>' : '' });
+            rowColumns.push({ Name: "ColActive", Value: mail.IsActive ? '<div class="ico-tick"></div>' : '' });
             if (viewResources.hasEditRight) {
                 rowColumns.push({
                     Name: "ColAction",
@@ -181,10 +122,10 @@ var MailManageController = function () {
         headerColumns.push({ HeaderText: viewResources.To, Width: 120, Name: "ColTo", HeaderAlign: "center", CellAlign: "left" });
         headerColumns.push({ HeaderText: viewResources.CC, Width: 120, Name: "ColCC", HeaderAlign: "center", CellAlign: "left" });
         headerColumns.push({ HeaderText: viewResources.BCC, Width: 120, Name: "ColBCC", HeaderAlign: "center", CellAlign: "left" });
-        headerColumns.push({ HeaderText: viewResources.Last_Sent, Width: 120, Name: "ColLastSent", HeaderAlign: "center", CellAlign: "center" });
-        headerColumns.push({ HeaderText: viewResources.Active, Width: 120, Name: "ColActive", HeaderAlign: "center", CellAlign: "center" });
+        headerColumns.push({ HeaderText: viewResources.Last_Sent, Width: 150, Name: "ColLastSent", HeaderAlign: "center", CellAlign: "center", FormatDateTime: "MMM DD, YYYY hh:mm:ss A" });
+        headerColumns.push({ HeaderText: viewResources.Active, Width: 50, Name: "ColActive", HeaderAlign: "center", CellAlign: "center" });
         if (viewResources.hasEditRight) {
-            headerColumns.push({ HeaderText: viewResources.Action, Width: 120, Name: "ColAction", HeaderAlign: "center", CellAlign: "center" });
+            headerColumns.push({ HeaderText: viewResources.Action, Width: 50, Name: "ColAction", HeaderAlign: "center", CellAlign: "center" });
         }
 
         var gridOptions = {
@@ -209,16 +150,16 @@ var MailManageController = function () {
                 totalItem: 800
             }
         };
-        $("#mail-list").removeClass("display-none").fanexGrid(gridOptions);
+
+        DOMElements.gridContainer.removeClass("display-none").fanexGrid(gridOptions);
         self.bindGridEvent();
     };
     self.bindGridEvent = function () {
-        var gridContainer = $("#mail-list");
         $(".btn-action").click(function (event) {
             var $this = $(this);
             var position = $this.offset();
             contextMenuController.showContextMenu(position);
-            var mailIndex = parseInt($this.attr("mail-index"));
+            var mailIndex = parseInt($this.attr("mailid"));
             contextMenuController.bindEvents({
                 editEvent: function () {
                     self.editMail(mailIndex);
@@ -234,10 +175,10 @@ var MailManageController = function () {
             event.stopPropagation();
         });
 
-        gridContainer.find(".link.mail-name").click(function () {
+        DOMElements.gridContainer.find(".link.mail-name").click(function () {
             var $this = $(this);
-            var mailIndex = parseInt($this.attr("mail-index"));
-            self.editMail(mailIndex);
+            var mailid = parseInt($this.attr("mailid"));
+            self.editMail(mailid);
         });
     };
 
@@ -254,22 +195,21 @@ var MailManageController = function () {
 
     self.getTriggerIcon = function (mail) {
         switch (mail.TriggerType) {
-            case 'By Function':
+            case 0:
                 return '<div class="trigger-type trigger-function"></div>';
-            case 'By Schedule':
+            case 1:
                 return '<div class="trigger-type trigger-schedule"></div>';
             default:
                 return '';
         }
     };
 
-    self.deleteMail = function (mailIndex) {
+    self.deleteMail = function (mailid) {
         NAP.headlineMsgBox.confirm(viewResources.Confirm_DeleteMail, function () {
             sharedScriptManager.blockUI();
             NAP.headlineMsgBox.close();
-            var mail = self.cachedData.mailList[mailIndex];
             var deleteParams = {
-                MailId: mail.Id
+                MailId: mailid
             };
             sharedScriptManager.callAjax(self,
                 window.rootUrl + "MailStation/MailManage/DeleteMail",
@@ -280,21 +220,17 @@ var MailManageController = function () {
         });
     };
 
-    self.editMail = function (mailIndex) {
-        var mail = self.cachedData.mailList[mailIndex];
-        var editParams = mail;
-        window.location.href = window.rootUrl + "MailStation/MailManage/EditMail?" +
+    self.editMail = function (mailId) {
+        window.location.href = window.rootUrl + "MailStation/MailManage/UpdateMailView?" +
             $.param({
-                mailId: mail.Id
+                mailId: mailId
             });
     };
 
-    self.copyMail = function (mailIndex) {
-        var mail = self.cachedData.mailList[mailIndex];
-        var copyParams = mail;
-        window.location.href = window.rootUrl + "MailStation/MailManage/CopyMail?" +
+    self.copyMail = function (mailId) {
+        window.location.href = window.rootUrl + "MailStation/MailManage/CreateMailView?" +
             $.param({
-                mailId: mail.Id
+                mailId: mailId
             });
     };
 
@@ -310,40 +246,6 @@ var MailManageController = function () {
                     self.refreshMailList();
                 }, sharedScriptManager.cachedData.alertSuccessTime);
             });
-    };
-
-    self.dummyData = function () {
-        var result = [];
-        result.push({
-            Id: 1,
-            MailName: 'Name 1',
-            Group: 'Licensee',
-            Site: 'System Configuration',
-            TriggerType: 'By Function',
-            To: 'abc@gmail.com',
-            CC: '',
-            BCC: '',
-            LastSent: 'Sep 24,2014 06:08 AM',
-            Active: true
-        });
-        result.push({
-            Id: 2,
-            MailName: 'Name 2',
-            Group: 'Licensee',
-            Site: 'System Configuration',
-            TriggerType: 'By Schedule',
-            To: 'abc@gmail.com',
-            CC: '',
-            BCC: '',
-            LastSent: 'Sep 24,2014 06:08 AM',
-            Active: false
-        });
-
-        for (var i = 0; i < 5; i++) {
-            result.push(result[0]);
-        }
-
-        return result;
     };
 };
 

@@ -1,39 +1,54 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Fanex.MailDelivery.MailStation.Models;
-using Fanex.Data;
-using Fanex.MailDelivery.MailStation.Criterias;
-
-namespace Fanex.MailDelivery.MailStation.Services.ManageMail
+﻿namespace Fanex.MailDelivery.MailStation.Services.ManageMail
 {
-    public class MailManageService
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Linq;
+    using Fanex.Data;
+    using Fanex.MailDelivery.MailStation.Criterias.MailManage;
+    using Fanex.MailDelivery.MailStation.Models;
+    using Fanex.NAP.Core.Criteria.Misc;
+    using Fanex.NAP.Framework.Command;
+
+    public class MailManageService : MailStationBaseService
     {
-        public List<SiteModel> Sites()
+
+        public List<MailModel> MailList(GetMailListCriteria criteria)
         {
-            GetAllSiteCriteria criteria = new GetAllSiteCriteria();
-            List<SiteModel> result = new List<SiteModel>();
+            List<MailModel> result = new List<MailModel>();
             using (ObjectDb db = new ObjectDb(criteria.GetSettingKey()))
             {
-                result = db.Query<SiteModel>().ToList();
+                db.AssignParamValues(criteria.GetSpParams());
+                result = db.Query<MailModel>().ToList();
             }
 
             return result;
         }
 
-        public List<MailGroupModel> MailGroups()
+        public MailModel MailByID(ReadMailByIDCriteria criteria)
         {
-            GetAllMailGroupCriteria criteria = new GetAllMailGroupCriteria();
-            List<MailGroupModel> result = new List<MailGroupModel>();
+            MailModel result = new MailModel();
             using (ObjectDb db = new ObjectDb(criteria.GetSettingKey()))
             {
-                result = db.Query<MailGroupModel>().ToList();
+                db.AssignParamValues(criteria.GetSpParams());
+                result = db.Query<MailModel>().ToList().FirstOrDefault();
             }
 
             return result;
         }
 
-        
+        public CommandResult CreateMailGroup(CreateMailGroupCriteria criteria)
+        {
+            return ExecuteNonQuery(criteria);
+        }
+
+        public CommandResult CreateMail(CreateMailCriteria criteria)
+        {
+            return ExecuteNonQuery(criteria);
+        }
+
+        public CommandResult UpdateMail(UpdateMailCriteria criteria)
+        {
+            return ExecuteNonQuery(criteria);
+        }
     }
 }

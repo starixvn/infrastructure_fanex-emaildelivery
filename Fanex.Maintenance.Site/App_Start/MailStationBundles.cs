@@ -20,9 +20,10 @@ namespace Fanex.Maintenance.Site.App_Start
         public static void RegisterAllBundles(BundleCollection bundles)
         {
             RegisterNexCron(bundles);
+            RegisterMagicSuggest(bundles);
             RegisterManageMailBundles(bundles);
-            RegisterEditMailBundles(bundles);
-            RegisterInsertMailBundles(bundles);
+            RegisterUpdateMailBundles(bundles);
+            RegisterCreateMailBundles(bundles);
             RegisterCopyMailBundles(bundles);
 
             RegisterMailReportBundles(bundles);
@@ -46,6 +47,18 @@ namespace Fanex.Maintenance.Site.App_Start
                 );
         }
 
+        private static void RegisterMagicSuggest(BundleCollection bundles)
+        {
+            bundles.Add(new ScriptBundle("~/scripts/lib/MagicSuggest/js").Include(
+                "~/scripts/lib/MagicSuggest/js/magicsuggest-min.js"));
+
+            bundles.AddAndInclude(
+                "~/scripts/lib/MagicSuggest/css",
+                "~/scripts/lib/MagicSuggest/css/bootstrap.min.css",
+                "~/scripts/lib/MagicSuggest/css/magicsuggest-min.css"
+                );
+        }
+
         private static void RegisterManageMailBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/Areas/MailStation/ManageMail/ManageMailScripts").Include(
@@ -61,45 +74,45 @@ namespace Fanex.Maintenance.Site.App_Start
                 
         }
 
-        private static void RegisterEditMailBundles(BundleCollection bundles)
+        private static void RegisterUpdateMailBundles(BundleCollection bundles)
         {
-            bundles.Add(new ScriptBundle("~/Areas/MailStation/EditMail/EditMailScripts").Include(
+            bundles.Add(new ScriptBundle("~/Areas/MailStation/ManageMail/UpdateMail/UpdateMailScripts").Include(
                 "~/scripts/lib/custom-datepicker.js",
-                "~/Areas/MailStation/ManageMail/EditMail/Scripts/EditMailController.js"));
+                "~/Areas/MailStation/ManageMail/UpdateMail/Scripts/UpdateMailController.js"));
 
             bundles.AddAndInclude(
-                "~/Areas/MailStation/EditMail/EditMailStyles",
+                "~/Areas/MailStation/ManageMail/UpdateMail/UpdateMailStyles",
                 "~/themes/shared/formedit.less",
-                "~/Areas/MailStation/ManageMail/EditMail/Styles/EditMail.less");
+                "~/Areas/MailStation/ManageMail/UpdateMail/Styles/UpdateMail.less");
         }
 
-        private static void RegisterInsertMailBundles(BundleCollection bundles)
+        private static void RegisterCreateMailBundles(BundleCollection bundles)
         {
-            bundles.Add(new ScriptBundle("~/Areas/MailStation/ManageMail/InsertMail/InsertMailScripts").Include(
+            bundles.Add(new ScriptBundle("~/Areas/MailStation/ManageMail/CreateMail/CreateMailScripts").Include(
                 "~/scripts/lib/custom-datepicker.js",
-                "~/scripts/lib/AutoComplete/jquery.highlight-3.js",
-                "~/scripts/lib/AutoComplete/jquery.autocomplete.client.js",
-                "~/scripts/lib/MultiAutoComplete/MultiAutoCompleteHelper.js",
-                "~/scripts/lib/MultiAutoComplete/jquery.fcbkcomplete.js",
-                "~/Areas/MailStation/ManageMail/InsertMail/Scripts/InsertMailController.js"));
+                "~/Areas/MailStation/ManageMail/CreateMail/Scripts/CreateMailController.js"));
 
             bundles.AddAndInclude(
-                "~/Areas/MailStation/ManageMail/InsertMail/InsertMailStyles",
+                "~/Areas/MailStation/ManageMail/CreateMail/CreateMailStyles",
                 "~/themes/shared/formedit.less",
-                "~/scripts/lib/AutoComplete/autocomplete.css",
-                "~/scripts/lib/MultiAutoComplete/MultiAutoComplete.less",
-                "~/Areas/MailStation/ManageMail/InsertMail/Styles/InsertMail.less");
+                "~/Areas/MailStation/ManageMail/CreateMail/Styles/CreateMail.less");
         }
 
         private static void RegisterCopyMailBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/Areas/MailStation/CopyMail/CopyMailScripts").Include(
                 "~/scripts/lib/custom-datepicker.js",
+                "~/scripts/lib/AutoComplete/jquery.highlight-3.js",
+                "~/scripts/lib/AutoComplete/jquery.autocomplete.client.js",
+                "~/scripts/lib/MultiAutoComplete/MultiAutoCompleteHelper.js",
+                "~/scripts/lib/MultiAutoComplete/jquery.fcbkcomplete.js",
                 "~/Areas/MailStation/ManageMail/CopyMail/Scripts/CopyMailController.js"));
 
             bundles.AddAndInclude(
                 "~/Areas/MailStation/CopyMail/CopyMailStyles",
                 "~/themes/shared/formedit.less",
+                "~/scripts/lib/AutoComplete/autocomplete.css",
+                "~/scripts/lib/MultiAutoComplete/MultiAutoComplete.less",
                 "~/Areas/MailStation/ManageMail/CopyMail/Styles/CopyMail.less");
         }
 

@@ -2,13 +2,53 @@
 <Functions>
   <Function Name="Managemail">
     <Setting Key="MailStation_GetAllSites" SpName="NAP_Site_GetAll" DbName="DBNAP.bodb_NAP.bodbAdminNet">
-        <Mapping DataField="SiteId" ObjectProperty="Id" />
-        <Mapping DataField="SiteName" ObjectProperty="Name" />
+        <Mapping DataField="SiteId" ObjectProperty="Value" />
+        <Mapping DataField="SiteName" ObjectProperty="Text" />
     </Setting>
     <Setting Key="MailStation_GetAllMailGroup" SpName="Mail_MailManagement_GetAllMailGroup" DbName="DBMMS.bodb_MMS.bodbAdminNet">
-      <Mapping DataField="MailGroupID" ObjectProperty="Id" />
-      <Mapping DataField="MailGroupName" ObjectProperty="Name" />
+      <Mapping DataField="MailGroupID" ObjectProperty="Value" />
+      <Mapping DataField="MailGroupName" ObjectProperty="Text" />
     </Setting>
+    <Setting Key="MailStation_GetAllSuggestedMails" SpName="Mail_MailManagement_GetSuggesionEmailList" DbName="DBMMS.bodb_MMS.bodbAdminNet">
+      <Mapping DataField="EmailID" ObjectProperty="id" />
+      <Mapping DataField="EmailAddress" ObjectProperty="name" />
+    </Setting>
+    <Setting Key="MailStation_GetMailList" SpName="Mail_MailManagement_GetMailList" DbName="DBMMS.bodb_MMS.bodbAdminNet">
+      <Mapping DataField="MailId" ObjectProperty="MailId" />
+      <Mapping DataField="MailName" ObjectProperty="MailName" />
+      <Mapping DataField="MailGroupID" ObjectProperty="MailGroupID" />
+      <Mapping DataField="MailGroupName" ObjectProperty="MailGroupName" />
+      <Mapping DataField="SiteId" ObjectProperty="SiteId" />
+      <Mapping DataField="SiteName" ObjectProperty="SiteName" />
+      <Mapping DataField="TriggerType" ObjectProperty="TriggerType" />
+      <Mapping DataField="MailTo" ObjectProperty="MailTo" />
+      <Mapping DataField="MailCc" ObjectProperty="MailCc" />
+      <Mapping DataField="MailBcc" ObjectProperty="MailBcc" />
+      <Mapping DataField="LastSent" ObjectProperty="LastSent" />
+      <Mapping DataField="IsActive" ObjectProperty="IsActive" />
+    </Setting>
+    <Setting Key="MailStation_CreateMailGroup" SpName="Mail_MailManagement_InsertGroup" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
+    <Setting Key="MailStation_CreateMail" SpName="Mail_MailManagement_InsertMail" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
+
+    <Setting Key="MailStation_GetMailByID" SpName="Mail_MailManagement_GetMailByID" DbName="DBMMS.bodb_MMS.bodbAdminNet">
+      <Mapping DataField="MailId" ObjectProperty="MailId" />
+      <Mapping DataField="MailName" ObjectProperty="MailName" />
+      <Mapping DataField="MailGroupID" ObjectProperty="MailGroupID" />
+      <Mapping DataField="SiteId" ObjectProperty="SiteId" />
+      <Mapping DataField="TriggerType" ObjectProperty="TriggerType" />
+      <Mapping DataField="MailTo" ObjectProperty="MailTo" />
+      <Mapping DataField="MailCc" ObjectProperty="MailCc" />
+      <Mapping DataField="MailBcc" ObjectProperty="MailBcc" />
+      <Mapping DataField="LastSent" ObjectProperty="LastSent" />
+      <Mapping DataField="IsActive" ObjectProperty="IsActive" />
+      <Mapping DataField="CronExpression" ObjectProperty="CronExpression" />
+      <Mapping DataField="StartOn" ObjectProperty="StartOn" />
+      <Mapping DataField="EndOn" ObjectProperty="EndOn" />
+      <Mapping DataField="Attempt" ObjectProperty="Attempt" />
+      <Mapping DataField="Interval" ObjectProperty="Interval" />
+      <Mapping DataField="Description" ObjectProperty="Description" />
+    </Setting>
+    <Setting Key="MailStation_EditMail" SpName="Mail_MailManagement_UpdateMail" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
     
   </Function>
 </Functions>

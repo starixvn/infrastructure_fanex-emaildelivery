@@ -2,13 +2,12 @@
 /// <reference path="../jquery-1.8.0.min.js" />
 
 (function ($) {
-    //Khởi tạo mảng chứa các hàm 
     methods =
     {
         init: function () {
             var nexCron = new NexCron(this);
             nexCron.RenderScheduleContainer();
-            nexCron.RenderDailySchedule();
+            nexCron.RepeatTypeChange();
         },
         getCronExpression: function () {
             var nexCron = new NexCron(this);
@@ -21,19 +20,13 @@
     }
 
     $.fn.nexCron = function (m) {
-        //Khởi tạo hàm khi gọi $("selector").fly, nhận vào giá trị m 
         if (methods[m]) {
-            //Nếu hàm methods[m] tồn tại (phía trên) 
-            //Thực thi hàm cùng với tất cả các tham số 
             return methods[m].apply(this, Array.prototype.slice.call(arguments, 1));
         }
         else if (typeof m == "object" || !m) {
-            //Nếu như không có gì truyền vào 
-            //Thực thi methods["init"] 
             return methods.init.apply(this, arguments);
         }
         else {
-            //Thông báo hàm không tồn tại alert("Method "+m+" does not exist!");
             alert('Unknow Method.');
         }
     }
@@ -109,19 +102,29 @@
     }
 
     NexCron.prototype.RepeatTypeChange = function () {
-        switch (this.DOMElements.RepeatType.val()) {
+        var self = this;
+        switch (self.DOMElements.RepeatType.val()) {
             case "0": // Daily
-                this.RenderDailySchedule();
+                self.RenderDailySchedule();
                 break;
             case "1": // Weekly
-                this.RenderWeeklySchedule();
+                self.RenderWeeklySchedule();
                 break;
             case "2": // Monthly
-                this.RenderMonthlySchedule();
+                self.RenderMonthlySchedule();
                 break;
             default:
                 break;
         }
+
+        $('input:radio[name=' + self.DOMElements.EndRadioName + ']').change(function () {
+            if (this.value == '1') {
+                self.DOMElements.EndOn.datepicker('disable');
+            }
+            else if (this.value == '2') {
+                self.DOMElements.EndOn.datepicker('enable');
+            }
+        });
     }
 
     NexCron.prototype.RenderDatePicker = function () {

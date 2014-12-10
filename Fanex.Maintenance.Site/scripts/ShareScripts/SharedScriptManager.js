@@ -71,6 +71,30 @@ var SharedScriptManager = function () {
         var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return re.test(email);
     };
+
+    self.createErrorSummary = function (errorList) {
+        var validationSum = $('#validationSummary');
+        var html = ["<ul>"];
+        for (var i = 0; i < errorList.length; i++) {
+            html.push("<li>");
+            html.push(errorList[i]);
+            html.push("</li>");
+        }
+
+        html.push("</ul>");
+        validationSum.html(html.join(''));
+        validationSum.removeClass();
+        validationSum.addClass("validation-summary-errors");
+        $('#validation-summary-row').removeClass('display-none');
+    }
+
+    self.createSuccessSummary = function (msg, url, msec) {
+        var validationSum = $('#validationSummary');
+        validationSum.html("<ul><li>" + msg + "</li></ul>");
+        validationSum.removeClass();
+        validationSum.addClass("validation-summary-valid success");
+        $('#validation-summary-row').removeClass('display-none');
+    }
 };
 
 sharedScriptManager = new SharedScriptManager();
