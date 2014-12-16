@@ -231,15 +231,16 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Content Include="App_Data\ConnectionStringSpName.xml" />
-    <Content Include="App_Data\NAPMailStationSpNames.xml" />
+    <Content Include="App_Data\NAPMailStationSpNames.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="App_Data\mSiteSpNames.xml">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="App_Data\NAPCommonSpNames.xml" />
-    <Content Include="Areas\MailStation\ManageMail\CopyMail\Scripts\CopyMailController.js" />
-    <Content Include="Areas\MailStation\ManageMail\EditMail\Scripts\EditMailController.js" />
+    <Content Include="Areas\MailStation\ManageMail\UpdateMail\Scripts\UpdateMailController.js" />
     <Content Include="Areas\MailStation\ManageRecipient\EditRecipient\Scripts\EditRecipientController.js" />
-    <Content Include="Areas\MailStation\ManageMail\InsertMail\Scripts\InsertMailController.js" />
+    <Content Include="Areas\MailStation\ManageMail\CreateMail\Scripts\CreateMailController.js" />
     <Content Include="Areas\MailStation\ManageRecipient\InsertRecipient\Scripts\InsertRecipientController.js" />
     <Content Include="Areas\MailStation\Report\MailDetail\Scripts\MailDetailController.js" />
     <Content Include="Areas\MailStation\Report\MailLog\Scripts\MailLogController.js" />
@@ -262,6 +263,9 @@
     <Content Include="scripts\lib\Countdown\Images\dropdown.png" />
     <Content Include="scripts\lib\Countdown\Images\refresh.png" />
     <Content Include="scripts\lib\InputCombobox\jquery.combobox-ext.js" />
+    <Content Include="scripts\lib\MagicSuggest\css\bootstrap.min.css" />
+    <Content Include="scripts\lib\MagicSuggest\css\magicsuggest-min.css" />
+    <Content Include="scripts\lib\MagicSuggest\js\magicsuggest-min.js" />
     <Content Include="scripts\lib\MultiAutoComplete\close.gif" />
     <Content Include="scripts\lib\MultiAutoComplete\Images\close.gif" />
     <Content Include="scripts\lib\MultiAutoComplete\jquery.fcbkcomplete.js" />
@@ -721,7 +725,6 @@
     <Content Include="Views\Mail\ComposeEmail.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Areas\MailStation\Views\" />
     <Folder Include="ServiceMonitoringCache\" />
   </ItemGroup>
   <ItemGroup>
@@ -747,20 +750,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Areas\MailStation\ManageMail\InsertMail\Index.cshtml" />
-    <Content Include="Areas\MailStation\ManageMail\EditMail\Index.cshtml" />
-    <Content Include="Areas\MailStation\ManageMail\EditMail\DailyRepeat.cshtml" />
-    <Content Include="Areas\MailStation\ManageMail\EditMail\MonthlyRepeat.cshtml" />
-    <Content Include="Areas\MailStation\ManageMail\CopyMail\DailyRepeat.cshtml" />
-    <Content Include="Areas\MailStation\ManageMail\CopyMail\Index.cshtml" />
-    <Content Include="Areas\MailStation\ManageMail\CopyMail\MonthlyRepeat.cshtml" />
-    <None Include="Areas\MailStation\ManageMail\CopyMail\Styles\CopyMail.less" />
-    <Content Include="Areas\MailStation\ManageMail\CopyMail\WeeklyRepeat.cshtml" />
-    <None Include="Areas\MailStation\ManageMail\EditMail\Styles\EditMail.less" />
-    <Content Include="Areas\MailStation\ManageMail\EditMail\WeeklyRepeat.cshtml" />
+    <Content Include="Areas\MailStation\ManageMail\CreateMail\Index.cshtml" />
+    <Content Include="Areas\MailStation\ManageMail\UpdateMail\Index.cshtml" />
+    <None Include="Areas\MailStation\ManageMail\UpdateMail\Styles\UpdateMail.less" />
     <Content Include="Areas\MailStation\ManageRecipient\EditRecipient\Index.cshtml" />
     <None Include="Areas\MailStation\ManageRecipient\EditRecipient\Styles\EditRecipient.less" />
-    <None Include="Areas\MailStation\ManageMail\InsertMail\Styles\InsertMail.less" />
+    <None Include="Areas\MailStation\ManageMail\CreateMail\Styles\CreateMail.less" />
     <Content Include="Areas\MailStation\Report\MailReport\Index.cshtml" />
     <Content Include="Areas\MailStation\Report\MailDetail\Index.cshtml" />
     <Content Include="Areas\MailStation\ManageRecipient\InsertRecipient\Index.cshtml" />

@@ -12,7 +12,10 @@ namespace Fanex.MailDelivery.MailStation.Controllers
     using System.Collections.Generic;
     using System.Web.Mvc;
     using Fanex.MailDelivery.MailStation.Services.ManageMail;
-using Fanex.MailDelivery.MailStation.Criterias;
+    using Fanex.MailDelivery.MailStation.Criterias.MailManage;
+    using Fanex.Maintenance.Service;
+    using Fanex.MailDelivery.MailStation.Constants;
+    using Fanex.MailDelivery.MailStation.Models;
 
     /// <summary>
     /// Mail Controller.
@@ -20,9 +23,14 @@ using Fanex.MailDelivery.MailStation.Criterias;
     public class MailManageController : Controller
     {
         private MailManageService mailManageService;
-        
-        public ActionResult Index()
+
+        public ActionResult Index(GetMailListCriteria criteria)
         {
+            mailManageService = new MailManageService();
+            ViewBag.ListMailGroup = mailManageService.MailGroups();
+            ViewBag.ListSite = mailManageService.Sites();
+            ViewBag.ListStatus = mailManageService.Status();
+            ViewBag.ListTriggerType = mailManageService.Trigger();
             return View("~/Areas/MailStation/ManageMail/Index.cshtml");
         }
 
@@ -38,20 +46,34 @@ using Fanex.MailDelivery.MailStation.Criterias;
             return Json(mailManageService.MailGroups());
         }
 
-        public ActionResult InsertMail()
+        public JsonResult AddMailGroup(CreateMailGroupCriteria criteria)
         {
-            return View("~/Areas/MailStation/ManageMail/InsertMail/Index.cshtml");
+            mailManageService = new MailManageService();
+            return Json(mailManageService.CreateMailGroup(criteria));
         }
 
-        public ActionResult CopyMail()
+        public ActionResult CreateMailView(ReadMailByIDCriteria criteria)
         {
-            return View("~/Areas/MailStation/ManageMail/CopyMail/Index.cshtml");
+            mailManageService = new MailManageService();
+            ViewBag.ListMailGroup = mailManageService.MailGroups(false);
+            ViewBag.ListSite = mailManageService.Sites(false);
+            ViewBag.ListTriggerType = mailManageService.Trigger(false);
+            MailModel mail = mailManageService.MailByID(criteria);
+            CreateMailCriteria model = new CreateMailCriteria(mail);
+            return View("~/Areas/MailStation/ManageMail/CreateMail/Index.cshtml", model);
+        }
+
+        public JsonResult CreateMail(CreateMailCriteria criteria)
+        {
+            mailManageService = new MailManageService();
+            return Json(mailManageService.CreateMail(criteria));
         }
 
         public ActionResult MailList(GetMailListCriteria criteria)
         {
+            mailManageService = new MailManageService();
 
-            return Json(new List<int>() { 1, 2 }, JsonRequestBehavior.AllowGet);
+            return Json(mailManageService.MailList(criteria));
         }
 
         public ActionResult DeleteMail()
@@ -59,78 +81,30 @@ using Fanex.MailDelivery.MailStation.Criterias;
             return Json(new List<int>() { 3 }, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult EditMail(int mailId)
+        public ActionResult UpdateMailView(ReadMailByIDCriteria criteria)
         {
-            var mailInfo = new
-            {
-                Id = 1,
-                MailName = "Name 1",
-                Group = "Licensee",
-                Site = "System Configuration",
-                TriggerType = "By Function",
-                To = "abc@gmail.com",
-                CC = "",
-                BCC = "",
-                LastSent = "Sep 24,2014 06:08 AM",
-                Active = true
-            };
+            mailManageService = new MailManageService();
+            ViewBag.ListMailGroup = mailManageService.MailGroups(false);
+            ViewBag.ListSite = mailManageService.Sites(false);
+            ViewBag.ListTriggerType = mailManageService.Trigger(false);
+            MailModel mail = mailManageService.MailByID(criteria);
+            UpdateMailCriteria model = new UpdateMailCriteria(mail);
 
-            return View("~/Areas/MailStation/ManageMail/EditMail/Index.cshtml", mailInfo);
+            return View("~/Areas/MailStation/ManageMail/UpdateMail/Index.cshtml", model);
         }
 
         [HttpPost]
-        public JsonResult EditMail()
+        public JsonResult UpdateMail(UpdateMailCriteria criteria)
         {
-            return Json(new List<int>() { 3 }, JsonRequestBehavior.AllowGet);
+            mailManageService = new MailManageService();
+            return Json(mailManageService.UpdateMail(criteria));
         }
 
-        [HttpGet]
+        [HttpPost]
         public JsonResult SuggestMail(SuggestMailCriteria criteria)
         {
-            var jsonResult = new
-            {
-                query = criteria.Query,
-                suggestions = new List<string>()
-                {
-                    "louis1@nexcel.vn",
-                    "louis2@nexcel.vn",
-                    "louis3@nexcel.vn",
-                    "louis4@nexcel.vn",
-                    "louis5@nexcel.vn"
-                }
-            };
-
-            return Json(jsonResult, JsonRequestBehavior.AllowGet);
-        }
-
-        [HttpGet]
-        public JsonResult SuggestMultiMail(string tag)
-        {
-            var jsonResult = new List<dynamic>()
-            {
-               new {
-                    key = "1",
-                    value =   "louis1@nexcel.vn"
-               },
-               new {
-                    key = "2",
-                    value =   "louis2@nexcel.vn"
-               },
-               new {
-                    key = "3",
-                    value =   "louis3@nexcel.vn"
-               },
-               new {
-                    key = "4",
-                    value =   "louis4@nexcel.vn"
-               },
-               new {
-                    key = "5",
-                    value =   "louis5@nexcel.vn"
-               }
-            };
-
-            return Json(jsonResult, JsonRequestBehavior.AllowGet);
+            mailManageService = new MailManageService();
+            return Json(mailManageService.SuggestMails(criteria), JsonRequestBehavior.AllowGet);
         }
     }
 }
