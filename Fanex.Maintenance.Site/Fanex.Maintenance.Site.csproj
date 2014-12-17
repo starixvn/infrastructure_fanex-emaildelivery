@@ -232,9 +232,6 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Content Include="App_Data\ConnectionStringSpName.xml" />
     <Content Include="App_Data\DBMMS.bodb_MMS.bodbAdminNet.xml" />
-    <Content Include="App_Data\NAPMailStationSpNames.xml">
-      <SubType>Designer</SubType>
-    </Content>
     <Content Include="App_Data\mSiteSpNames.xml">
       <SubType>Designer</SubType>
     </Content>

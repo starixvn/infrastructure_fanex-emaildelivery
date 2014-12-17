@@ -20,24 +20,20 @@ namespace Fanex.MailDelivery.MailStation.Controllers
     /// </summary>
     public class MailRecipientController : Controller
     {
-        private IManageRecipientService _manageRecipientService;
+        private ManageRecipientService _manageRecipientService;
 
         public MailRecipientController()
-            : this(null)
         {
-        }
-
-        public MailRecipientController(IManageRecipientService manageRecipientService)
-        {
-            _manageRecipientService = manageRecipientService ?? new ManageRecipientService();
+            _manageRecipientService = _manageRecipientService ?? new ManageRecipientService();
         }
 
         public ActionResult Index()
         {
+            ViewBag.ListStatus = _manageRecipientService.Status(true);
             return View("~/Areas/MailStation/ManageRecipient/ManageRecipient/Index.cshtml");
         }
 
-        public ActionResult InsertRecipientView()
+        public ActionResult CreateRecipientView()
         {
             return View("~/Areas/MailStation/ManageRecipient/InsertRecipient/Index.cshtml");
         }
@@ -47,24 +43,21 @@ namespace Fanex.MailDelivery.MailStation.Controllers
             return Json(_manageRecipientService.RecipientList(criteria));
         }
 
-        public ActionResult EditRecipientView(int recipientId)
+        public ActionResult UpdateRecipientView(RecipientByIdCriteria criteria)
         {
-            var recipient = _manageRecipientService.RecipientById(new RecipientByIdCriteria
-            {
-                RecipientId = recipientId
-            });
+            var recipient = _manageRecipientService.RecipientById(criteria);
 
             return View("~/Areas/MailStation/ManageRecipient/EditRecipient/Index.cshtml", recipient);
         }
 
         [HttpPost]
-        public JsonResult EditRecipient(UpdateRecipientCriteria criteria)
+        public JsonResult UpdateRecipient(UpdateRecipientCriteria criteria)
         {
             return Json(_manageRecipientService.EditRecipient(criteria));
         }
 
         [HttpPost]
-        public JsonResult InsertRecipient(InsertRecipientCriteria criteria)
+        public JsonResult CreateRecipient(CreateRecipientCriteria criteria)
         {
             return Json(_manageRecipientService.InsertRecipient(criteria));
         }
@@ -75,25 +68,12 @@ namespace Fanex.MailDelivery.MailStation.Controllers
             return Json(_manageRecipientService.CheckRecipient(criteria));
         }
 
-        public ActionResult ViewRelevantMail(int recipientId)
+        public ActionResult ViewRelevantMail(RecipientByIdCriteria criteria)
         {
-            var recipient = _manageRecipientService.RecipientById(new RecipientByIdCriteria
-            {
-                RecipientId = recipientId
-            });
-
-            var mailManageService = new MailManageService();
-            ViewBag.ListMailGroup = mailManageService.MailGroups();
-            ViewBag.ListSite = mailManageService.Sites();
-            ViewBag.ListStatus = mailManageService.Status();
-            ViewBag.ListTriggerType = mailManageService.Trigger();
+            var recipient = _manageRecipientService.RecipientById(criteria);
             var emails = new string[] { recipient.Email1, recipient.Email2, recipient.Email3 };
-            return View(
-                "~/Areas/MailStation/ManageMail/Index.cshtml",
-                new GetMailListCriteria
-                {
-                    Emails = string.Join(";", emails).Trim(';')
-                });
+            
+            return RedirectToAction("Index", "MailManage", new { Emails = string.Join(";", emails).Trim(';') });
         }
     }
 }

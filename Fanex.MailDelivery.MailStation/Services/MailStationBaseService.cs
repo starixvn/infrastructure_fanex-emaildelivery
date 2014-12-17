@@ -59,6 +59,16 @@
             return MailStationConstants.Active;
         }
 
+        public List<SelectListItem> TaskStatus(bool hasAllElement = true)
+        {
+            if (hasAllElement)
+            {
+                return MailStationConstants.AllItem.Union(MailStationConstants.TaskStatus).ToList();
+            }
+
+            return MailStationConstants.AllItem;
+        }
+
         public List<SelectListItem> Trigger(bool hasAllElement = true)
         {
             if (hasAllElement)

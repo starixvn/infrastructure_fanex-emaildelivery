@@ -98,7 +98,7 @@ namespace Fanex.MailDelivery.MailStation.Controllers
             return Json(mailManageService.UpdateMail(criteria));
         }
 
-        [HttpPost]
+        // [HttpPost]
         public JsonResult SuggestMail(SuggestMailCriteria criteria)
         {
             mailManageService = new MailManageService();

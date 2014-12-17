@@ -13,6 +13,10 @@ var ManageRecipientController = function () {
     self.cachedData = {
         searchParams: null
     };
+    var DOMElements = {
+        emails: null
+    };
+
     self.loadFilter = function () {
         self.renderDropdownStatus();
     };
@@ -31,17 +35,6 @@ var ManageRecipientController = function () {
         $("#status").empty().append(options);
     };
     self.bindEvents = function () {
-        $("#emails").fcbkcomplete({
-            validateInputFunction: sharedScriptManager.isValidEmail,
-            json_url: window.rootUrl + 'MailStation/MailManage/SuggestMultiMail',
-            addontab: true,
-            maxitems: 500,
-            input_min_size: 1,
-            height: 10,
-            cache: false,
-            newel: true
-        });
-
         $("#typeCust").attr("disabled", null);
         $("#button-search").click(function () {
             self.buttonSearchClick();
@@ -49,14 +42,9 @@ var ManageRecipientController = function () {
     };
     self.buttonSearchClick = function () {
         sharedScriptManager.blockUI();
-        var emails = [];
-        $('.multi-auto-suggest-container select option').each(function (i, option) {
-            emails[i] = $(option).text();
-        });
-
         var searchParams = {
             Username: $("#username").val(),
-            Emails: emails.join(","),
+            Emails: $("#emails").val(),
             Status: $("#status").val()
         };
         self.cachedData.searchParams = searchParams;
@@ -74,15 +62,15 @@ var ManageRecipientController = function () {
         for (var i = 0; i < recipientListLength; i++) {
             var recipient = result[i];
             var rowColumns = [];
-            var recipientIndex = ' recipient-index="' + recipient.Id + '"';
-            rowColumns.push({ Name: "ColId", Value: recipient.Id });
+            var recipientIndex = ' recipient-index="' + recipient.RecipientId + '"';
+            rowColumns.push({ Name: "ColId", Value: recipient.RecipientId });
             rowColumns.push({
                 Name: "ColUsername",
                 Value: viewResources.hasEditRight ?
                             ('<a class="link username" href="javascript:;"' + recipientIndex + '>' +
-                               recipient.Username +
+                               recipient.RecipientName +
                             '</a>') :
-                             recipient.Username
+                             recipient.RecipientName
             });
             rowColumns.push({ Name: "ColNapUser", Value: recipient.IsNapUser ? '<div class="ico-tick"></div>' : '' });
             rowColumns.push({ Name: "ColEmail1", Value: recipient.Email1 });
@@ -90,7 +78,7 @@ var ManageRecipientController = function () {
             rowColumns.push({ Name: "ColEmail3", Value: recipient.Email3 });
             rowColumns.push({
                 Name: "ColNoRelevantMail",
-                Value: '<div class="ico-relevant-mail"' + recipientIndex + '>' + recipient.NumberRelevantEmail + '</div>'
+                Value: '<div class="ico-relevant-mail"' + recipientIndex + '>' + recipient.MailRelevant + '</div>'
             });
             rowColumns.push({ Name: "ColActive", Value: recipient.IsActive ? '<div class="ico-tick"></div>' : '' });
             if (viewResources.hasEditRight) {
@@ -147,35 +135,6 @@ var ManageRecipientController = function () {
         self.bindGridEvent();
     };
 
-    self.dummyData = function () {
-        var result = [];
-        result.push({
-            Id: 1,
-            Username: 'sa',
-            IsNapUser: true,
-            Email1: "starifix@nexcel.vn",
-            Email2: '',
-            EMail3: '',
-            NoRelevantMail: 13,
-            Active: true
-        });
-        result.push({
-            Id: 2,
-            Username: 'dbaThien',
-            IsNapUser: true,
-            Email1: "starifix@nexcel.vn",
-            Email2: '',
-            EMail3: '',
-            NoRelevantMail: 3,
-            Active: true
-        });
-
-        for (var i = 0; i < 5; i++) {
-            result.push(result[0]);
-        }
-
-        return result;
-    };
     self.bindGridEvent = function () {
         var gridContainer = $("#recipient-list");
         $(".btn-action").click(function (event) {
@@ -204,27 +163,18 @@ var ManageRecipientController = function () {
             self.viewRelevantMail(recipientIndex);
         });
     };
+
     self.editRecipient = function (recipientIndex) {
         window.location.href = window.rootUrl + "MailStation/MailRecipient/EditRecipientView?" +
             $.param({
                 recipientId: recipientIndex
             });
-    };
+        };
+
     self.viewRelevantMail = function (recipientIndex) {
-        popUpManager.openPopup(
-            window.rootUrl + 'MailStation/MailRecipient/ViewRelevantMail?' + $.param({
-                recipientId: recipientIndex
-            }),
-            viewResources.Relevant_Mail,
-            $(window).width() - 200,
-            $(window).height() - 200,
-            true,
-            false,
-            parent.window,
-            3000,
-            null,
-            null,
-            ['center', 80]);
+        window.location.href = window.rootUrl + 'MailStation/MailRecipient/ViewRelevantMail?' + $.param({
+            recipientId: recipientIndex
+        });
     };
 };
 

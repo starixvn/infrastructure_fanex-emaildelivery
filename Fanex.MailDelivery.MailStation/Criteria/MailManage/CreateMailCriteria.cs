@@ -55,7 +55,7 @@ namespace Fanex.MailDelivery.MailStation.Criteria.MailManage
             if (model != null)
             {
                 this.MailName = model.MailName;
-                this.MailGroupID = model.MailGroupID;
+                this.MailGroupID = model.MailGroupId;
                 this.SiteID = model.SiteId;
                 this.TriggerType = model.TriggerType;
                 this.CronExpression = model.CronExpression;

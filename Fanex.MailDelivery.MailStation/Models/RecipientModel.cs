@@ -14,9 +14,9 @@ namespace Fanex.MailDelivery.MailStation.Models
     /// </summary>
     public class RecipientModel
     {
-        public int Id { get; set; }
+        public int RecipientId { get; set; }
 
-        public string Username { get; set; }
+        public string RecipientName { get; set; }
 
         public bool IsNapUser { get; set; }
 
@@ -28,8 +28,6 @@ namespace Fanex.MailDelivery.MailStation.Models
 
         public bool IsActive { get; set; }
 
-        public int NumberRelevantEmail { get; set; }
-
-        public string Note { get; set; }
+        public int MailRelevant { get; set; }
     }
 }

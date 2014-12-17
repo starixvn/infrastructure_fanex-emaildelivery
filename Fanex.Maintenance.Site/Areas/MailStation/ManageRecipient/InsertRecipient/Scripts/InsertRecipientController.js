@@ -1,139 +1,116 @@
 ﻿$(document).ready(function () {
-    insertRecipientController.initPage();
+    createRecipientController.initPage();
 });
 
-var InsertRecipientController = function () {
+var CreateRecipientController = function () {
     var self = this;
+
+    var DOMElements = {
+        UserName: null,
+        Email1: null,
+        Email2: null,
+        Email3: null,
+        Note: null,
+        Status: null,
+        BtnSave: null,
+        BtnCancel: null,
+        BtnLoading: null
+    };
+
     self.initPage = function () {
+        self.cachedDOMElements();
         self.bindEvents();
     };
+
+    self.cachedDOMElements = function () {
+        DOMElements.UserName = $('#UserName');
+        DOMElements.Email1 = $('#Email1');
+        DOMElements.Email2 = $('#Email2');
+        DOMElements.Email3 = $('#Email3');
+        DOMElements.Note = $('#Note');
+        DOMElements.Status = $('#Status');
+        DOMElements.BtnSave = $('#button-save');
+        DOMElements.BtnCancel = $('#button-cancel');
+        DOMElements.BtnLoading = $('#btn-loading');
+    }
+
     self.bindEvents = function () {
-        $("#button-cancel").click(function () {
+        DOMElements.BtnCancel.click(function () {
             NAP.headlineMsgBox.confirm(viewResources.Confirm_CancelInsertRecipient, function () {
                 NAP.redirect('MailStation/MailRecipient/Index', 0);
             });
         });
 
-        $("#button-save").click(function () {
+        DOMElements.BtnSave.click(function () {
             self.saveRecipient();
         });
-        $("#username").blur(function () {
+        DOMElements.UserName.blur(function () {
             self.checkRecipientInfo();
         });
-
-        $("#email1").autocomplete(self.autoSuggestMailOption($("#email1")));
-        $("#email2").autocomplete(self.autoSuggestMailOption($("#email2")));
-        $("#email3").autocomplete(self.autoSuggestMailOption($("#email3")));
     };
 
-    self.autoSuggestMailOption = function (element) {
-        return {
-            serviceUrl: window.rootUrl + 'MailStation/MailManage/SuggestMail',
-            minChars: 2,
-            isCacheSuggestion: false,
-            zIndex: 9999,
-            width: 185,
-            deferRequestBy: 0,
-            params: {
-                mailName: element.val()
-            },
-
-            closeSuggestion: null
-        };
-    };
     self.saveRecipient = function () {
-        NAP.headlineMsgBox.confirm(viewResources.Confirm_InsertRecipient, function () {
+        if (self.validateRecipientInfo()) {
+            var recipientInfo = self.getParams();
             sharedScriptManager.blockUI();
-            self.hideError();
-            var recipientInfo = self.getRecipientInfo();
-            var errorList = self.validateRecipientInfo(recipientInfo);
-            if (errorList.length === 0) {
-                self.hideError();
-                sharedScriptManager.callAjax(self,
-                window.rootUrl + "MailStation/MailRecipient/InsertRecipient",
-                recipientInfo,
-                self.renderActionResult,
-                null,
-                null);
-            } else {
-                self.showError(errorList);
-                sharedScriptManager.unblockUI();
-            }
-        });
+            sharedScriptManager.callAjax(self,
+            window.rootUrl + "MailStation/MailRecipient/CreateRecipient",
+            recipientInfo,
+            function (result) {
+                if (result.IsSuccessful) {
+                    sharedScriptManager.createSuccessSummary(viewResources.CreateRecipientSuccessMsg);
+                    NAP.showSuccessMsg(viewResources.CreateRecipientSuccessMsg, "MailStation/MailRecipient/Index", 6000);
+                }
+                else {
+                    sharedScriptManager.createErrorSummary([result.Message]);
+                }
+            },
+            null,
+            sharedScriptManager.unblockUI);
+        }
     };
 
-    self.getRecipientInfo = function () {
+    self.getParams = function () {
         var recipient = {
-            Username: $("#username").val(),
-            Email1: $("#email1").val(),
-            Email2: $("#email2").val(),
-            Email3: $("#email3").val(),
-            Note: $("#note").val(),
-            Status: $("#status").attr("checked") ? 1 : 0
+            Username: DOMElements.UserName.val(),
+            Email1: DOMElements.Email1.val(),
+            Email2: DOMElements.Email2.val(),
+            Email3: DOMElements.Email3.val(),
+            Note: DOMElements.Note.val(),
+            Status: DOMElements.Status.attr("checked") ? 1 : 0
         };
 
         return recipient;
     };
-    self.validateRecipientInfo = function (recipientInfo) {
-        var errorList = [];
-        if (recipientInfo.Email1 !== '' && !sharedScriptManager.isValidEmail(recipientInfo.Email1)) {
-            errorList.push({
-                Id: "#email1",
-                Message: "Email 1 is invalid!"
-            });
+
+    self.validateRecipientInfo = function () {
+        $('.input-validation-error').removeClass('input-validation-error');
+        if (!sharedScriptManager.isValidEmail(DOMElements.Email1.val())) {
+            DOMElements.Email1.addClass('input-validation-error');
+            sharedScriptManager.createErrorSummary(['Email 1 is not a valid email.']);
+            return false;
         }
 
-        if (recipientInfo.Email2 !== '' && !sharedScriptManager.isValidEmail(recipientInfo.Email2)) {
-            errorList.push({
-                Id: "#email2",
-                Message: "Email 2 is invalid!"
-            });
-        }
-        if (recipientInfo.Email3 !== '' && !sharedScriptManager.isValidEmail(recipientInfo.Email3)) {
-            errorList.push({
-                Id: "#email3",
-                Message: "Email 3 is invalid!"
-            });
+        if (!sharedScriptManager.isValidEmail(DOMElements.Email2.val())) {
+            DOMElements.Email2.addClass('input-validation-error');
+            sharedScriptManager.createErrorSummary(['Email 2 is not a valid email.']);
+            return false;
         }
 
-        return errorList;
-    };
-
-    self.hideError = function () {
-        $("#validation-summary-row").addClass("display-none");
-        $(".validation-summary-errors-container").removeClass("validation-summary-errors-container");
-    };
-    self.showError = function (errorList) {
-        var errorLength = errorList.length;
-        var errorMessage = '';
-        for (var i = 0; i < errorLength; i++) {
-            var error = errorList[i];
-            errorMessage += '<li>' + error.Message + '</li>';
-            $(error.Id).addClass("validation-summary-errors-container");
+        if (!sharedScriptManager.isValidEmail(DOMElements.Email3.val())) {
+            DOMElements.Email3.addClass('input-validation-error');
+            sharedScriptManager.createErrorSummary(['Email 3 is not a valid email.']);
+            return false;
         }
+    };
 
-        var validationRow = $("#validation-summary-row");
-        validationRow.find(".validation-summary")
-            .addClass("validation-summary-errors")
-            .empty()
-            .append('<ul>' + errorMessage + '</ul>');
-        validationRow.removeClass("display-none");
-    };
-    self.renderActionResult = function (result) {
-        var result = {
-            Code: 0,
-            Message: 'aaa'
-        };
-        sharedScriptManager.renderActionResult(result, null);
-    };
     self.checkRecipientInfo = function () {
         var checkParams = {
-            Username: $("#username").val()
+            Username: DOMElements.UserName.val()
         };
 
         if (checkParams.Username !== '') {
-            $("#btn-loading").removeClass("display-none");
-            self.hideError();
+            DOMElements.BtnLoading.removeClass("display-none");
             sharedScriptManager.callAjax(self,
             window.rootUrl + "MailStation/MailRecipient/CheckRecipient",
             checkParams,
@@ -142,32 +119,19 @@ var InsertRecipientController = function () {
             null);
         }
     };
+
     self.renderCheckRecipientInfoResult = function (result) {
-        $("#btn-loading").addClass("display-none");
+        DOMElements.BtnLoading.addClass("display-none");
         self.copyRecipientInfo(result);
     };
+
     self.copyRecipientInfo = function (result) {
         if (!result) {
             return;
         }
 
-        //        result = {
-        //            Id: 1,
-        //            Username: 'sa',
-        //            IsNapUser: true,
-        //            Email1: "starifix@nexcel.vn",
-        //            Email2: '',
-        //            EMail3: '',
-        //            NoRelevantMail: 3,
-        //            Active: true
-        //        };
-
-        $("#email1").val(result.Email);
-        //        $("#email2").val(result.Email2);
-        //        $("#email3").val(result.Email3);
-        //        $("#note").val(result.Note);
-        //        $("#status").attr("checked", result.Active ? "checked" : "");
+        DOMElements.Email1.val(result.Email);
     };
 };
 
-var insertRecipientController = new InsertRecipientController();
+var createRecipientController = new CreateRecipientController();

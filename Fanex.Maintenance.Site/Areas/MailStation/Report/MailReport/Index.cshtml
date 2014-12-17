@@ -1,6 +1,8 @@
 ﻿@using Fanex.MailDelivery.MailStation.Resources;
 @using Fanex.MailDelivery.MailStation.Constants;
 @using Fanex.MailDelivery.MailStation.Services;
+@using Fanex.MailDelivery.MailStation.Criteria.MailReport;
+@model MailReportCriteria
 @{
     ViewBag.Title = Labels.Report;
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -21,38 +23,31 @@
         <div class="filter-row">
             <div class="form-group">
                 <div class="lbl-field width-80">
-                    <label for="mail-name">
-                        @Labels.Mail_Name</label>
+                    @Html.LabelFor(m => m.MailName, Labels.Mail_Name)
                 </div>
-                <input id="mail-name" type="text" class="textbox" />
+                @Html.TextBoxFor(m => m.MailName, new { width = "200px" })
             </div>
             <div class="form-group">
                 <div class="lbl-field width-40">
-                    <label for="from-date">
-                        @Labels.From
-                    </label>
+                    @Html.LabelFor(m => m.FromDate, Labels.From)
                 </div>
                 <div class="edit-field">
-                    <input id="from-date" type="text" value="@DateTime.Now.ToString("MMM dd,yyyy")" />
+                @Html.TextBoxFor(m => m.FromDate, new { @Value = DateTime.Now.ToString("MMM dd,yyyy"), style = "width: 100px" })
                 </div>
             </div>
             <div class="form-group">
                 <div class="lbl-field width-40">
-                    <label for="to-date">
-                        @Labels.To
-                    </label>
+                    @Html.LabelFor(m => m.ToDate, Labels.To)
                 </div>
                 <div class="edit-field">
-                    <input id="to-date" type="text" value="@DateTime.Now.ToString("MMM dd,yyyy")" />
+                @Html.TextBoxFor(m => m.ToDate, new { @Value = DateTime.Now.ToString("MMM dd,yyyy"), style = "width: 100px" })
                 </div>
             </div>
             <div class="form-group">
                 <div class="lbl-field">
-                    <label for="status">
-                        @Labels.Status</label>
+                    @Html.LabelFor(m => m.Status, Labels.Status)
                 </div>
-                <select id="status" name="status">
-                </select>
+                @Html.DropDownListFor(m => m.Status, (IEnumerable<SelectListItem>)ViewBag.ListStatus)
             </div>
             <div class="form-group">
                 <input id="button-search" type="submit" value="@Labels.Submit" />

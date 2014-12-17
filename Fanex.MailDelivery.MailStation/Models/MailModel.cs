@@ -16,11 +16,11 @@ namespace Fanex.MailDelivery.MailStation.Models
     /// </summary>
     public class MailModel
     {
-        public int MailId;
+        public int MailId { get; set; }
 
         public string MailName { get; set; }
 
-        public int MailGroupID { get; set; }
+        public int MailGroupId { get; set; }
 
         public string MailGroupName { get; set; }
 
@@ -45,9 +45,9 @@ namespace Fanex.MailDelivery.MailStation.Models
             }
         }
 
-        public string CronExpression;
+        public string CronExpression { get; set; }
 
-        public string MailFrom;
+        public string MailFrom { get; set; }
 
         public string MailTo { get; set; }
 
@@ -55,42 +55,18 @@ namespace Fanex.MailDelivery.MailStation.Models
 
         public string MailBcc { get; set; }
 
-        public bool IsActive;
+        public bool IsActive { get; set; }
 
         public DateTime LastSent { get; set; }
 
-        public DateTime StartOn;
+        public DateTime StartOn { get; set; }
 
-        public DateTime EndOn;
+        public DateTime EndOn { get; set; }
 
-        public int Attempt;
+        public int Attempt { get; set; }
 
-        public int Interval;
+        public int Interval { get; set; }
 
-        public string Description;
-
-        public string LastSentString { get; set; }
-
-        public int StatusId { get; set; }
-
-        public string StatusName { get; set; }
-
-        public string ScheduledTimeString { get; set; }
-
-        public string FromMail { get; set; }
-
-        public string ToMails { get; set; }
-
-        public string CCMails { get; set; }
-
-        public string BCCMails { get; set; }
-
-        public string MailDateString { get; set; }
-
-        public string Title { get; set; }
-
-        public string Subject { get; set; }
-
-        public string Body { get; set; }
+        public string Description { get; set; }
     }
 }

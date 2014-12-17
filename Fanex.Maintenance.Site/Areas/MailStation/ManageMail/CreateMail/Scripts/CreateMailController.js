@@ -108,31 +108,58 @@ var InsertMailController = function () {
         DOMElements.TriggerType.change(self.triggerChange);
 
         $("#button-cancel").click(function () {
-            NAP.confirm("Confirm", viewResources.CancelCreateMail, function () {
+            NAP.headlineMsgBox.confirm(viewResources.CancelCreateMail, function () {
                 NAP.redirect('MailStation/MailManage/Index', 0);
             });
         });
 
         $("#button-save").click(function () {
-            sharedScriptManager.callAjax(
-                self,
-                window.rootUrl + "MailStation/MailManage/CreateMail",
-                self.getParams(),
-                function (result) {
-                    if (result.IsSuccessful) {
-                        sharedScriptManager.createSuccessSummary(viewResources.CreateMailSuccessMsg);
-                        NAP.showSuccessMsg(viewResources.CreateMailSuccessMsg, "MailStation/MailManage/Index", 6000);
-                        self.refreshMailGroup();
-                    }
-                    else {
-                        sharedScriptManager.createErrorSummary([result.Message]);
-                    }
-                },
-                null,
-                sharedScriptManager.unblockUI
-            );
-
+            if (self.validateForm()) {
+                sharedScriptManager.callAjax(
+                    self,
+                    window.rootUrl + "MailStation/MailManage/CreateMail",
+                    self.getParams(),
+                    function (result) {
+                        if (result.IsSuccessful) {
+                            sharedScriptManager.createSuccessSummary(viewResources.CreateMailSuccessMsg);
+                            NAP.showSuccessMsg(viewResources.CreateMailSuccessMsg, "MailStation/MailManage/Index", 6000);
+                            self.refreshMailGroup();
+                        }
+                        else {
+                            sharedScriptManager.createErrorSummary([result.Message]);
+                        }
+                    },
+                    null,
+                    sharedScriptManager.unblockUI
+                );
+            }
         });
+    };
+
+    self.validateForm = function () {
+        $('.input-validation-error').removeClass('input-validation-error');
+        $('.magic-suggest-error').removeClass('magic-suggest-error');
+        if (DOMElements.MailName.val() === '') {
+            DOMElements.MailName.addClass('input-validation-error');
+            sharedScriptManager.createErrorSummary(['Mail Name cannot be empty.']);
+            return false;
+        }
+
+        if (!sharedScriptManager.isValidEmail(DOMElements.MailFrom.val())) {
+            DOMElements.MailFrom.addClass('input-validation-error');
+            sharedScriptManager.createErrorSummary(['Mail From is not a valid email.']);
+            return false;
+        }
+
+        if (DOMElements.MailTo.getValue().length === 0) {
+            $(DOMElements.MailTo).addClass('input-validation-error');
+            sharedScriptManager.createErrorSummary(['Mail To cannot be empty.']);
+            $('#MailTo').addClass('magic-suggest-error');
+            $('input', '#MailTo').addClass('magic-suggest-error');
+            return false;
+        }
+
+        return true;
     };
 
     self.getParams = function () {

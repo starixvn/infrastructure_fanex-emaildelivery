@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------
-// <copyright file="InsertRecipientCriteria.cs" company="Nexcel Solutions Vietnam">
+// <copyright file="CreateRecipientCriteria.cs" company="Nexcel Solutions Vietnam">
 // Copyright (c) Nexcel Solutions Vietnam. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------
@@ -14,10 +14,10 @@ namespace Fanex.MailDelivery.MailStation.Criteria.ManageRecipient
     /// <summary>
     /// Insert Recipient Criteria.
     /// </summary>
-    public class InsertRecipientCriteria : CriteriaBase
+    public class CreateRecipientCriteria : CriteriaBase
     {
         [SpParam(SqlParamName = "RecipientName")]
-        public string Username { get; set; }
+        public string UserName { get; set; }
 
         public string Email1 { get; set; }
 

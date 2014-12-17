@@ -12,26 +12,20 @@
 
         public List<MailModel> MailList(GetMailListCriteria criteria)
         {
-            List<MailModel> result = new List<MailModel>();
             using (ObjectDb db = new ObjectDb(criteria.GetSettingKey()))
             {
                 db.AssignParamValues(criteria.GetSpParams());
-                result = db.Query<MailModel>().ToList();
+                return db.Query<MailModel>().ToList();
             }
-
-            return result;
         }
 
         public MailModel MailByID(ReadMailByIDCriteria criteria)
         {
-            MailModel result = new MailModel();
             using (ObjectDb db = new ObjectDb(criteria.GetSettingKey()))
             {
                 db.AssignParamValues(criteria.GetSpParams());
-                result = db.Query<MailModel>().ToList().FirstOrDefault();
+                return db.Query<MailModel>().ToList().FirstOrDefault();
             }
-
-            return result;
         }
 
         public CommandResult CreateMailGroup(CreateMailGroupCriteria criteria)

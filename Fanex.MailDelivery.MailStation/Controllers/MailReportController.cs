@@ -9,11 +9,11 @@
 
 namespace Fanex.MailDelivery.MailStation.Controllers
 {
-    using System.Collections.Generic;
     using System.Web.Mvc;
     using Fanex.MailDelivery.MailStation.Constants;
     using Fanex.MailDelivery.MailStation.Criteria.MailReport;
     using Fanex.MailDelivery.MailStation.Services.MailReport;
+    using Fanex.MailDelivery.MailStation.Services.ManageMail;
     using Fanex.NAP.Core.Business;
     using Fanex.NAP.Core.Web.Attribute;
 
@@ -22,20 +22,17 @@ namespace Fanex.MailDelivery.MailStation.Controllers
     /// </summary>
     public class MailReportController : Controller
     {
-        private IMailReportService _mailReportService;
+        private MailReportService _mailReportService;
 
         public MailReportController()
-            : this(null)
         {
-        }
-
-        public MailReportController(IMailReportService mailReportService)
-        {
-            _mailReportService = mailReportService ?? new MailReportService();
+            _mailReportService = _mailReportService ?? new MailReportService();
         }
 
         public ActionResult Index()
         {
+            var mailManageService = new MailManageService();
+            ViewBag.ListStatus = mailManageService.TaskStatus();
             return View("~/Areas/MailStation/Report/MailReport/Index.cshtml");
         }
 
@@ -47,7 +44,8 @@ namespace Fanex.MailDelivery.MailStation.Controllers
         [NapAuth(FunctionKey = MailDeliveryFunctionKeys.MailReport, Policy = Constant.Policy.Read)]
         public ActionResult RetrySendMail(RetrySendMailCriteria criteria)
         {
-            return Json(_mailReportService.RetrySendMail(criteria));
+            _mailReportService.RetrySendMail(criteria);
+            return new EmptyResult();
         }
 
         public ActionResult MailDetail(int mailId)
