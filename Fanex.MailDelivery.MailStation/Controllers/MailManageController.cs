@@ -11,8 +11,7 @@ namespace Fanex.MailDelivery.MailStation.Controllers
 {
     using System.Collections.Generic;
     using System.Web.Mvc;
-    using Fanex.MailDelivery.MailStation.Criterias;
-    using Fanex.MailDelivery.MailStation.Criterias.MailManage;
+    using Fanex.MailDelivery.MailStation.Criteria.MailManage;
     using Fanex.MailDelivery.MailStation.Models;
     using Fanex.MailDelivery.MailStation.Services.ManageMail;
 

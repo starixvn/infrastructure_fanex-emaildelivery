@@ -4,11 +4,6 @@
 
 var MailManageController = function () {
     var self = this;
-        if (recipient) {
-            self.initRecipientInfo(recipient);
-        }
-
-
     var DOMElements = {
         MailName: null,
         IsActive: null,

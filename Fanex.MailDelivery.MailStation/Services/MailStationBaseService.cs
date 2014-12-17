@@ -7,7 +7,7 @@
     using System.Web.Mvc;
     using Fanex.Data;
     using Fanex.MailDelivery.MailStation.Constants;
-    using Fanex.MailDelivery.MailStation.Criterias;
+    using Fanex.MailDelivery.MailStation.Criteria.MailManage;
     using Fanex.MailDelivery.MailStation.Models;
     using Fanex.NAP.Core.Criteria.Misc;
     using Fanex.NAP.Framework.Command;

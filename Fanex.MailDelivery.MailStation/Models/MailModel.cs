@@ -67,7 +67,6 @@ namespace Fanex.MailDelivery.MailStation.Models
 
         public int Interval;
 
-
         public string Description;
 
         public string LastSentString { get; set; }

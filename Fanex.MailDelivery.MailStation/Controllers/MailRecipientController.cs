@@ -10,8 +10,10 @@
 namespace Fanex.MailDelivery.MailStation.Controllers
 {
     using System.Web.Mvc;
+    using Fanex.MailDelivery.MailStation.Criteria.MailManage;
     using Fanex.MailDelivery.MailStation.Criteria.ManageRecipient;
     using Fanex.MailDelivery.MailStation.Services.ManageRecipient;
+    using Fanex.MailDelivery.MailStation.Services.ManageMail;
 
     /// <summary>
     /// Mail Recipient Controller.
@@ -80,7 +82,18 @@ namespace Fanex.MailDelivery.MailStation.Controllers
                 RecipientId = recipientId
             });
 
-            return View("~/Areas/MailStation/ManageMail/Index.cshtml", recipient);
+            var mailManageService = new MailManageService();
+            ViewBag.ListMailGroup = mailManageService.MailGroups();
+            ViewBag.ListSite = mailManageService.Sites();
+            ViewBag.ListStatus = mailManageService.Status();
+            ViewBag.ListTriggerType = mailManageService.Trigger();
+            var emails = new string[] { recipient.Email1, recipient.Email2, recipient.Email3 };
+            return View(
+                "~/Areas/MailStation/ManageMail/Index.cshtml",
+                new GetMailListCriteria
+                {
+                    Emails = string.Join(";", emails).Trim(';')
+                });
         }
     }
 }

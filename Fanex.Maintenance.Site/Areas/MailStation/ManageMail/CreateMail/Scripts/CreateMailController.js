@@ -121,7 +121,7 @@ var InsertMailController = function () {
                 function (result) {
                     if (result.IsSuccessful) {
                         sharedScriptManager.createSuccessSummary(viewResources.CreateMailSuccessMsg);
-                        NAP.showSuccessMsg(viewResources.AddMailSuccessMsg, "MailStation/MailManage/Index", 6000);
+                        NAP.showSuccessMsg(viewResources.CreateMailSuccessMsg, "MailStation/MailManage/Index", 6000);
                         self.refreshMailGroup();
                     }
                     else {

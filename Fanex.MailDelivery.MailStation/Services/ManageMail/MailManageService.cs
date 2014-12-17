@@ -3,8 +3,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using Fanex.Data;
-    using Fanex.MailDelivery.MailStation.Criterias;
-    using Fanex.MailDelivery.MailStation.Criterias.MailManage;
+    using Fanex.MailDelivery.MailStation.Criteria.MailManage;
     using Fanex.MailDelivery.MailStation.Models;
     using Fanex.NAP.Framework.Command;
 

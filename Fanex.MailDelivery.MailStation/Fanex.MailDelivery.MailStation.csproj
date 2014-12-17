@@ -75,11 +75,11 @@
     <Compile Include="Controllers\MailManageController.cs" />
     <Compile Include="Controllers\MailRecipientController.cs" />
     <Compile Include="Controllers\MailReportController.cs" />
-    <Compile Include="Criterias\MailManage\ReadMailByIDCriteria.cs" />
-    <Compile Include="Criterias\MailManage\UpdateMailCriteria.cs" />
-    <Compile Include="Criterias\MailManage\CreateMailCriteria.cs" />
-    <Compile Include="Criterias\MailManage\CreateMailGroupCriteria.cs" />
-    <Compile Include="Criteria\GetMailListCriteria.cs" />
+    <Compile Include="Criteria\MailManage\ReadMailByIDCriteria.cs" />
+    <Compile Include="Criteria\MailManage\UpdateMailCriteria.cs" />
+    <Compile Include="Criteria\MailManage\CreateMailCriteria.cs" />
+    <Compile Include="Criteria\MailManage\CreateMailGroupCriteria.cs" />
+    <Compile Include="Criteria\MailManage\GetMailListCriteria.cs" />
     <Compile Include="Criteria\MailReport\MailDetailCriteria.cs" />
     <Compile Include="Criteria\MailReport\MailLogCriteria.cs" />
     <Compile Include="Criteria\MailReport\MailReportCriteria.cs" />
@@ -90,9 +90,9 @@
     <Compile Include="Criteria\ManageRecipient\RecipientListCriteria.cs" />
     <Compile Include="Models\SuggestMailModel.cs" />
     <Compile Include="Criteria\ManageRecipient\UpdateRecipientCriteria.cs" />
-    <Compile Include="Criteria\SuggestMailCriteria.cs" />
-    <Compile Include="Criteria\GetAllMailGroupCriteria.cs" />
-    <Compile Include="Criteria\GetAllSiteCriteria.cs" />
+    <Compile Include="Criteria\MailManage\SuggestMailCriteria.cs" />
+    <Compile Include="Criteria\MailManage\GetAllMailGroupCriteria.cs" />
+    <Compile Include="Criteria\MailManage\GetAllSiteCriteria.cs" />
     <Compile Include="Models\MailLogModel.cs" />
     <Compile Include="Models\MailModel.cs" />
     <Compile Include="Models\RecipientModel.cs" />
@@ -129,6 +129,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Criterias\" />
     <Folder Include="Extensions\" />
   </ItemGroup>
   <ItemGroup>
