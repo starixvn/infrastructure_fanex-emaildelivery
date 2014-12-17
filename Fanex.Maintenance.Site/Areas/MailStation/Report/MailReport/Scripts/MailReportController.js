@@ -148,8 +148,8 @@ var MailReportController = function () {
         for (var i = 0; i < mailReportLength; i++) {
             var mail = result[i];
             var rowColumns = [];
-            var mailIndex = ' mail-index="' + mail.Id + '"';
-            rowColumns.push({ Name: "ColId", Value: mail.Id });
+            var mailIndex = ' mail-index="' + mail.MailId + '"';
+            rowColumns.push({ Name: "ColId", Value: mail.MailId });
             rowColumns.push({
                 Name: "ColMailName",
                 Value: '<a class="link mail-name" href="javascript:;"' + mailIndex + '>' +
@@ -271,7 +271,7 @@ var MailReportController = function () {
         return result;
     };
     self.getStatusDisplay = function (mail, index) {
-        var mailIndex = ' mail-index="' + mail.Id + '"';
+        var mailIndex = ' mail-index="' + mail.MailId + '"';
         switch (mail.StatusId) {
             case self.Enums.TaskStatus.Waiting:
                 return '<div class="column-status waiting-status"' + mailIndex + '>' + mail.StatusName + '</div>';
@@ -289,7 +289,7 @@ var MailReportController = function () {
         }
     };
     self.getActionColumn = function (mail, index) {
-        var mailIndex = ' mail-index="' + mail.Id + '"';
+        var mailIndex = ' mail-index="' + mail.MailId + '"';
         switch (mail.StatusId) {
             case self.Enums.TaskStatus.DataNotReady:
             case self.Enums.TaskStatus.Sent:
@@ -298,7 +298,7 @@ var MailReportController = function () {
         }
     };
     self.getLogColumn = function (mail, index) {
-        var mailIndex = ' mail-index="' + mail.Id + '"';
+        var mailIndex = ' mail-index="' + mail.MailId + '"';
         switch (mail.StatusId) {
             case self.Enums.TaskStatus.Running:
             case self.Enums.TaskStatus.DataNotReady:

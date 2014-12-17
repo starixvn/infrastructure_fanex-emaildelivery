@@ -10,11 +10,24 @@
 
 namespace Fanex.MailDelivery.MailStation.Criterias
 {
+    using Fanex.NAP.Framework.Data;
+
     /// <summary>
     /// Suggest Mail Criteria.
     /// </summary>
-    public class SuggestMailCriteria
+    public class SuggestMailCriteria : CriteriaBase
     {
+        [SpParam(SqlParamName = "EmailAddress")]
         public string Query { get; set; }
+
+        public override bool IsValid()
+        {
+            return true;
+        }
+
+        public override string GetSettingKey()
+        {
+            return "MailStation_GetAllSuggestedMails";
+        }
     }
 }

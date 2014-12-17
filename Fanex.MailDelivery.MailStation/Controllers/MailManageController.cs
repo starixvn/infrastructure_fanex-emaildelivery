@@ -11,11 +11,10 @@ namespace Fanex.MailDelivery.MailStation.Controllers
 {
     using System.Collections.Generic;
     using System.Web.Mvc;
-    using Fanex.MailDelivery.MailStation.Services.ManageMail;
+    using Fanex.MailDelivery.MailStation.Criterias;
     using Fanex.MailDelivery.MailStation.Criterias.MailManage;
-    using Fanex.Maintenance.Service;
-    using Fanex.MailDelivery.MailStation.Constants;
     using Fanex.MailDelivery.MailStation.Models;
+    using Fanex.MailDelivery.MailStation.Services.ManageMail;
 
     /// <summary>
     /// Mail Controller.

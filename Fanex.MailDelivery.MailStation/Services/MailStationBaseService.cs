@@ -7,11 +7,11 @@
     using System.Web.Mvc;
     using Fanex.Data;
     using Fanex.MailDelivery.MailStation.Constants;
-    using Fanex.MailDelivery.MailStation.Criterias.MailManage;
+    using Fanex.MailDelivery.MailStation.Criterias;
+    using Fanex.MailDelivery.MailStation.Models;
+    using Fanex.NAP.Core.Criteria.Misc;
     using Fanex.NAP.Framework.Command;
     using Fanex.NAP.Framework.Data;
-    using Fanex.NAP.Core.Criteria.Misc;
-    using Fanex.MailDelivery.MailStation.Models;
 
     public class MailStationBaseService
     {

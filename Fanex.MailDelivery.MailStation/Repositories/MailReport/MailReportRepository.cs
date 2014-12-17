@@ -38,7 +38,7 @@ namespace Fanex.MailDelivery.MailStation.Repositories.MailReport
                     var statusId = Converter.ToInt(reader["Status"]);
                     var mailModel = new MailModel
                     {
-                        Id = Converter.ToInt(reader["ID"]),
+                        MailId = Converter.ToInt(reader["ID"]),
                         MailName = Converter.ToString2(reader["MailName"]),
                         SiteName = Converter.ToString2(reader["SiteName"]),
 
