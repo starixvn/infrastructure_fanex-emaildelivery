@@ -7,11 +7,11 @@
     using System.Web.Mvc;
     using Fanex.Data;
     using Fanex.MailDelivery.MailStation.Constants;
-    using Fanex.MailDelivery.MailStation.Criterias.MailManage;
+    using Fanex.MailDelivery.MailStation.Criteria.MailManage;
+    using Fanex.MailDelivery.MailStation.Models;
+    using Fanex.NAP.Core.Criteria.Misc;
     using Fanex.NAP.Framework.Command;
     using Fanex.NAP.Framework.Data;
-    using Fanex.NAP.Core.Criteria.Misc;
-    using Fanex.MailDelivery.MailStation.Models;
 
     public class MailStationBaseService
     {
@@ -57,6 +57,16 @@
             }
 
             return MailStationConstants.Active;
+        }
+
+        public List<SelectListItem> TaskStatus(bool hasAllElement = true)
+        {
+            if (hasAllElement)
+            {
+                return MailStationConstants.AllItem.Union(MailStationConstants.TaskStatus).ToList();
+            }
+
+            return MailStationConstants.AllItem;
         }
 
         public List<SelectListItem> Trigger(bool hasAllElement = true)

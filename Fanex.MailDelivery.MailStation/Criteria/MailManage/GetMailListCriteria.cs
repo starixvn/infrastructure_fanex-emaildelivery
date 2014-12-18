@@ -1,10 +1,10 @@
-﻿// --------------------------------------------------------------------------
+// --------------------------------------------------------------------------
 // <copyright file="GetMailListCriteria.cs" company="Nexcel Solutions Vietnam">
 // Copyright (c) Nexcel Solutions Vietnam. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------
 
-namespace Fanex.MailDelivery.MailStation.Criterias.MailManage
+namespace Fanex.MailDelivery.MailStation.Criteria.MailManage
 {
     using Fanex.NAP.Framework.Data;
 

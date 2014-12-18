@@ -1,6 +1,8 @@
-﻿@model dynamic
+﻿@using Fanex.MailDelivery.MailStation.Resources;
+@using Fanex.MailDelivery.MailStation.Models;
+@model RecipientModel
 @{
-    ViewBag.Title = "Edit Recipient";
+    ViewBag.Title = Labels.Edit_Recipient;
     Layout = "~/Views/Shared/_Layout.cshtml";  
 }
 @section Head {
@@ -10,13 +12,13 @@
 }
 @section Headline {
     <h1>
-        <span class="title"><span class="first">Mail Delivery System / </span><span class="second">
-            Manage Recipient /</span>
+        <span class="title"><span class="first">@Labels.Mail_Delivery_System / </span><span
+            class="second">@Labels.Manage_Recipient /</span>
             @ViewBag.Title
         </span>
         <div class="button-action">
             <a id="btnBackToList" class="back-button" href="~/MailStation/MailRecipient/Index">←
-                Back to list</a>
+                @Labels.Back_to_list</a>
         </div>
     </h1>
 }
@@ -25,71 +27,73 @@
         <div id="validation-summary-row" class="form-row display-none">
             <div class="lbl-field width-100">
             </div>
-            <div class="edit-field validation-summary">
+            <div class="edit-field">
+                <div id="validationSummary"></div>
             </div>
         </div>
         <div class="form-row">
             <div class="lbl-field">
                 <label for="username" class="bold-weight">
-                    Username</label>
+                    @Labels.Username</label>
             </div>
             <div class="edit-field">
-                <input id="username" type="text" value="" name="username" />
+                <input id="username" type="text" value="@Model.Username" name="username" disabled="disabled" />
             </div>
             <a id="btn-loading" class="ico-tick display-none"></a>
         </div>
         <div class="form-row">
             <div class="lbl-field">
                 <label for="email1">
-                    Email 1</label>
+                    @string.Format("{0} {1}", Labels.Email, 1)</label>
             </div>
             <div class="edit-field">
-                <input id="email1" type="text" value="" name="email1" />
+                <input id="email1" type="text" value="@Model.Email1" name="email1" />
             </div>
         </div>
         <div class="form-row">
             <div class="lbl-field">
                 <label for="email2">
-                    Email 2</label>
+                    @string.Format("{0} {1}", Labels.Email, 2)</label>
             </div>
             <div class="edit-field">
-                <input id="email2" type="text" value="" name="email2" />
+                <input id="email2" type="text" value="@Model.Email2" name="email2" />
             </div>
         </div>
         <div class="form-row">
             <div class="lbl-field">
                 <label for="email3">
-                    Email 3</label>
+                    @string.Format("{0} {1}", Labels.Email, 3)</label>
             </div>
             <div class="edit-field">
-                <input id="email3" type="text" value="" name="email3" />
+                <input id="email3" type="text" value="@Model.Email3" name="email3" />
             </div>
         </div>
         <div class="form-row">
             <div class="lbl-field">
                 <label for="note">
-                    Note</label>
+                    @Labels.Note</label>
             </div>
             <div class="edit-field">
-                <input id="note" type="text" value="" name="note" />
+                <input id="note" type="text" value="@Model.Note" name="note" />
             </div>
         </div>
         <div class="form-row">
             <div class="lbl-field width-100">
                 <label for="status">
-                    Status
+                    @Labels.Status
                 </label>
             </div>
             <div class="edit-field">
-                <input class="check-box" id="status" name="status" type="checkbox" value="false" />
+                <input class="check-box" id="status" name="status" type="checkbox" value="false" 
+                @(Model.IsActive ? "checked = \"checked\"" : "")/>
             </div>
         </div>
         <div class="form-row">
             <div class="lbl-field width-100">
             </div>
-            <input id="button-save" type="submit" value="Save" />
+            <input id="button-save" type="submit" value="@Labels.Save" />
             <button id="button-cancel" class="cancel-button">
-                Cancel</button>
+                @Labels.Cancel</button>
         </div>
     </div>
 </section>
@@ -98,8 +102,9 @@
     @Scripts.Render("~/Areas/MailStation/EditRecipient/EditRecipientScripts")
     <script type="text/javascript">
         var viewResources = {
-            Confirm_CancelEditRecipient: 'Do you want to cancel the Editing recipient?',
-            Confirm_EditRecipient: 'Do you want to edit recipient?'
+            RecipientId: @Model.Id,
+            Confirm_CancelEditRecipient: '@Labels.Confirm_CancelEditRecipient',
+            Confirm_EditRecipient: '@Labels.Confirm_EditRecipient'
         };
     </script>
 }

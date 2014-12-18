@@ -1,7 +1,12 @@
-﻿@{
-    ViewBag.Title = "Report";
+﻿@using Fanex.MailDelivery.MailStation.Resources;
+@using Fanex.MailDelivery.MailStation.Constants;
+@using Fanex.MailDelivery.MailStation.Services;
+@using Fanex.MailDelivery.MailStation.Criteria.MailReport;
+@model MailReportCriteria
+@{
+    ViewBag.Title = Labels.Report;
     Layout = "~/Views/Shared/_Layout.cshtml";
-    var hasEditRight = true;
+    var hasEditRight = PermissionService.HasHostPermission(MailDeliveryFunctionKeys.MailReport);
 }
 @section Head {
     @Styles.Render("~/themes/sharedstyles")
@@ -10,7 +15,7 @@
 }
 @section Headline {
     <h1>
-        <span class="title"><span class="first">Mail Delivery System /</span> @ViewBag.Title</span>
+        <span class="title"><span class="first">@Labels.Mail_Delivery_System /</span> @ViewBag.Title</span>
     </h1>
 }
 <section id="filter-bar">
@@ -18,65 +23,44 @@
         <div class="filter-row">
             <div class="form-group">
                 <div class="lbl-field width-80">
-                    <label for="mail-name">
-                        Mail Name</label>
+                    @Html.LabelFor(m => m.MailName, Labels.Mail_Name)
                 </div>
-                <input id="mail-name" type="text" class="textbox" />
+                @Html.TextBoxFor(m => m.MailName, new { width = "200px" })
             </div>
             <div class="form-group">
                 <div class="lbl-field width-40">
-                    <label for="from-date">
-                        From
-                    </label>
+                    @Html.LabelFor(m => m.FromDate, Labels.From)
                 </div>
                 <div class="edit-field">
-                    <input id="from-date" type="text" value="@DateTime.Now.ToString("MMM dd,yyyy")" />
+                @Html.TextBoxFor(m => m.FromDate, new { @Value = DateTime.Now.ToString("MMM dd,yyyy"), style = "width: 100px" })
                 </div>
             </div>
             <div class="form-group">
                 <div class="lbl-field width-40">
-                    <label for="to-date">
-                        To
-                    </label>
+                    @Html.LabelFor(m => m.ToDate, Labels.To)
                 </div>
                 <div class="edit-field">
-                    <input id="to-date" type="text" value="@DateTime.Now.ToString("MMM dd,yyyy")" />
+                @Html.TextBoxFor(m => m.ToDate, new { @Value = DateTime.Now.ToString("MMM dd,yyyy"), style = "width: 100px" })
                 </div>
             </div>
             <div class="form-group">
                 <div class="lbl-field">
-                    <label for="status">
-                        Status</label>
+                    @Html.LabelFor(m => m.Status, Labels.Status)
                 </div>
-                <select id="status" name="status">
-                </select>
+                @Html.DropDownListFor(m => m.Status, (IEnumerable<SelectListItem>)ViewBag.ListStatus)
             </div>
             <div class="form-group">
-                <input id="button-search" type="submit" value="Submit" />
+                <input id="button-search" type="submit" value="@Labels.Submit" />
             </div>
             <div class="form-group">
                 <div class="refreshBox">
-                    <div class="refreshIcon" title="Refresh">
-                        Not Refresh
+                    <div class="refreshIcon" title="@Labels.Refresh">
+                        @Labels.Not_Refresh
                     </div>
                     <div class="refreshDropdownIcon">
                     </div>
                 </div>
                 <div class="countDownOptionContainer">
-                    <div class="countDownOption countDownOptionCheck" value="Not Refresh">
-                        Not Refresh</div>
-                    <div class="countDownOption" value="5">
-                        5s</div>
-                    <div class="countDownOption" value="30">
-                        30s</div>
-                    <div class="countDownOption" value="60">
-                        60s</div>
-                    <div class="countDownOption" value="90">
-                        90s</div>
-                    <div class="countDownOption" value="120">
-                        120s</div>
-                    <div class="countDownOption" value="150">
-                        150s</div>
                 </div>
             </div>
         </div>
@@ -97,17 +81,29 @@
         window.rootUrl = '@Url.Content("~")';
         var viewResources = {
             hasEditRight: @(hasEditRight ? 1 : 0),
-            Id: 'ID',
-            Mail_Name: 'Mail Name',
-            Site: 'Site',
-            Scheduled_Time: 'Scheduled Time',
-            Last_Sent: 'Last Sent',
-            Status: 'Status',
-            Action: 'Action',
-            Log: 'Log',
+            Id: '@Labels.ID',
+            Mail_Name: '@Labels.Mail_Name',
+            Site: '@Labels.Site',
+            Scheduled_Time: '@Labels.Scheduled_Time',
+            Last_Sent: '@Labels.Last_Sent',
+            Status: '@Labels.Status',
+            Action: '@Labels.Action',
+            Log: '@Labels.Log',
 
-            Details: 'Details',
-            Log_details: 'Log details'
+            Details: '@Labels.Details',
+            Log_details: '@Labels.Log_details',
+            Not_Refresh: '@Labels.Not_Refresh',
+            Symbol_Second: '@Labels.Symbol_Second',
+            All: '@Labels.All',
+            Active: '@Labels.Active',
+            Inactive: '@Labels.Inactive',
+            Confirm_RetrySendMail: '@Labels.Confirm_RetrySendMail',
+
+            Waiting: '@Labels.Waiting',
+            Running: '@Labels.Running',
+            Sent: '@Labels.Sent',
+            Data_not_ready: '@Labels.Data_not_ready',
+            Failed: '@Labels.Failed',
         };
     </script>
 }

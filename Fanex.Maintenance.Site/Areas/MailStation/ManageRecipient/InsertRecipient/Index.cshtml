@@ -1,5 +1,11 @@
-﻿@{
-    ViewBag.Title = "Insert Recipient";
+﻿@using Fanex.MailDelivery.MailStation.Resources;
+@using Fanex.MailDelivery.MailStation.Models;
+@using Fanex.MailDelivery.MailStation.Criteria.ManageRecipient;
+@using Fanex.MailDelivery.MailStation.Resources;
+@using Fanex.Maintenance.Repository;
+@model CreateRecipientCriteria
+@{
+    ViewBag.Title = Labels.Insert_Recipient;
     Layout = "~/Views/Shared/_Layout.cshtml";  
 }
 @section Head {
@@ -9,13 +15,14 @@
 }
 @section Headline {
     <h1>
-        <span class="title"><span class="first">Mail Delivery System / </span><span class="second">
-            Manage Recipient /</span>
+        <span class="title"><span class="first">@Labels.Mail_Delivery_System / </span><span
+            class="second">
+            @Labels.Manage_Recipient /</span>
             @ViewBag.Title
         </span>
         <div class="button-action">
             <a id="btnBackToList" class="back-button" href="~/MailStation/MailRecipient/Index">←
-                Back to list</a>
+                @Labels.Back_to_list</a>
         </div>
     </h1>
 }
@@ -24,71 +31,65 @@
         <div id="validation-summary-row" class="form-row display-none">
             <div class="lbl-field width-100">
             </div>
-            <div class="edit-field validation-summary">
+            <div class="edit-field">
+                <div id="validationSummary"></div>
             </div>
         </div>
         <div class="form-row">
             <div class="lbl-field">
-                <label for="username" class="bold-weight">
-                    Username</label>
+                @Html.LabelFor(m => m.UserName, new { @class = "bold-weight" })
             </div>
             <div class="edit-field">
-                <input id="username" type="text" value="" name="username" />
+                @Html.EditorFor(m => m.UserName)
             </div>
             <a id="btn-loading" class="ico-loading display-none"></a>
         </div>
         <div class="form-row">
             <div class="lbl-field">
-                <label for="email1">
-                    Email 1</label>
+                @Html.LabelFor(m => m.Email1, string.Format("{0} {1}", Labels.Email, 1))
             </div>
             <div class="edit-field">
-                <input id="email1" type="text" value="" name="email1" />
+                @Html.EditorFor(m => m.Email1)
             </div>
         </div>
         <div class="form-row">
             <div class="lbl-field">
-                <label for="email2">
-                    Email 2</label>
+                @Html.LabelFor(m => m.Email2, string.Format("{0} {1}", Labels.Email, 2))
             </div>
             <div class="edit-field">
-                <input id="email2" type="text" value="" name="email2" />
+                @Html.EditorFor(m => m.Email2)
             </div>
         </div>
         <div class="form-row">
             <div class="lbl-field">
-                <label for="email3">
-                    Email 3</label>
+                @Html.LabelFor(m => m.Email3, string.Format("{0} {1}", Labels.Email, 3))
             </div>
             <div class="edit-field">
-                <input id="email3" type="text" value="" name="email3" />
+                @Html.EditorFor(m => m.Email3)
             </div>
         </div>
         <div class="form-row">
             <div class="lbl-field">
-                <label for="note">
-                    Note</label>
+                @Html.LabelFor(m => m.Note)
             </div>
             <div class="edit-field">
-                <input id="note" type="text" value="" name="note" />
+                @Html.EditorFor(m => m.Note)
             </div>
         </div>
         <div class="form-row">
             <div class="lbl-field width-100">
-                <label for="status">
-                    Status
-                </label>
+                @Html.LabelFor(m => m.Status)
             </div>
             <div class="edit-field">
-                <input class="check-box" id="status" name="status" type="checkbox" value="false" />
+                @Html.CheckBoxFor(m => m.Status, new { @class = "check-box" })
             </div>
         </div>
         <div class="form-row">
             <div class="lbl-field width-100">
             </div>
-            <input id="button-save" type="submit" value="Save" />
+            <input id="button-save" type="submit" value="@Labels.Save" />
             <button id="button-cancel" class="cancel-button">
-                Cancel</button>
+                @Labels.Cancel</button>
         </div>
     </div>
 </section>
@@ -97,8 +98,9 @@
     @Scripts.Render("~/Areas/MailStation/InsertRecipient/InsertRecipientScripts")
     <script type="text/javascript">
         var viewResources = {
-            Confirm_CancelInsertRecipient: 'Do you want to cancel the Inserting recipient?',
-            Confirm_InsertRecipient: 'Do you want to insert recipient?'
+            Confirm_CancelInsertRecipient: '@Labels.Confirm_CancelInsertRecipient',
+            Confirm_InsertRecipient: '@Labels.Confirm_InsertRecipient',
+            CreateRecipientSuccessMsg: '@string.Format(ViewResource.AddSuccessMsg, "Recipient", 5)',
         };
     </script>
 }

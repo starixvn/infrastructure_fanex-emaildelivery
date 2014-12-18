@@ -1,8 +1,9 @@
-﻿@using Fanex.MailDelivery.Client.Models;
-@using Newtonsoft.Json
-@model List<Mail>
+﻿@using Newtonsoft.Json;
+@using Fanex.MailDelivery.MailStation.Resources;
+@using Fanex.MailDelivery.MailStation.Models;
+@model List<MailLogModel>
 @{
-    ViewBag.Title = "Log Details";
+    ViewBag.Title = Labels.Log_details;
     var mailLog = JsonConvert.SerializeObject(Model);
 }
 <!DOCTYPE html>
@@ -17,7 +18,7 @@
     <title>@ViewBag.Title</title>
     @Styles.Render("~/themes/sharedstyles")
     @Styles.Render("~/themes/fanexgridstyles")
-    @Styles.Render("~/Areas/MailStation/MailLog/MailLogStyles")
+    @Styles.Render("~/Areas/MailStation/Report/MailLog/MailLogStyles")
 </head>
 <body id="body">
     <div id="mail-log-container" class="mail-log-container">
@@ -27,16 +28,16 @@
     @Scripts.Render("~/scripts/common")
     @Scripts.Render("~/scripts/sharedscripts")
     @Scripts.Render("~/scripts/fanexgridscripts")
-    @Scripts.Render("~/Areas/MailStation/MailLog/MailLogScripts")
+    @Scripts.Render("~/Areas/MailStation/Report/MailLog/MailLogScripts")
     <script type="text/javascript">
         window.rootUrl = '@Url.Content("~")';
         var mailLog= @Html.Raw(mailLog); 
         var viewResources = {
-            Symbol_No: '#',
-            Status: 'Status',
-            Message: 'Message',
-            Log_Time: 'Log Time',
-            Stack_Trace: 'Stack Trace'
+            Symbol_No: '@Labels.Symbol_No',
+            Status: '@Labels.Status',
+            Message: '@Labels.Message',
+            Log_Time: '@Labels.Log_Time',
+            Stack_Trace: '@Labels.Stack_Trace'
         };
     </script>
 </body>

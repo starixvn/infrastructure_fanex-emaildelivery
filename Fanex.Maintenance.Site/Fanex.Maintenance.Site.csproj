@@ -231,9 +231,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Content Include="App_Data\ConnectionStringSpName.xml" />
-    <Content Include="App_Data\NAPMailStationSpNames.xml">
-      <SubType>Designer</SubType>
-    </Content>
+    <Content Include="App_Data\DBMMS.bodb_MMS.bodbAdminNet.xml" />
     <Content Include="App_Data\mSiteSpNames.xml">
       <SubType>Designer</SubType>
     </Content>
@@ -248,8 +246,6 @@
     <Content Include="Areas\MailStation\ManageMail\Scripts\MailManageController.js" />
     <Content Include="Areas\MailStation\ManageMail\Styles\Images\trigger.png" />
     <Content Include="Areas\MailStation\ManageRecipient\ManageRecipient\Scripts\ManageRecipientController.js" />
-    <Content Include="Areas\MailStation\Views\RelevantMailByRecipient\Scripts\RelevantMailByRecipientController.js" />
-    <Content Include="Areas\MailStation\Views\RelevantMailByRecipient\Styles\Images\trigger.png" />
     <Content Include="scripts\lib\AutoComplete\autocomplete.css" />
     <Content Include="scripts\lib\AutoComplete\autocomplete.js" />
     <Content Include="scripts\lib\AutoComplete\jquery.autocomplete.client.js" />
@@ -770,8 +766,6 @@
     <Content Include="themes\shared\common.less" />
     <Content Include="Areas\MailStation\ManageRecipient\ManageRecipient\Index.cshtml" />
     <None Include="Areas\MailStation\ManageRecipient\ManageRecipient\Styles\ManageRecipient.less" />
-    <Content Include="Areas\MailStation\Views\RelevantMailByRecipient\Index.cshtml" />
-    <None Include="Areas\MailStation\Views\RelevantMailByRecipient\Styles\RelevantMailByRecipient.less" />
     <None Include="scripts\lib\FanexGridV2\customizeFanexGridV2.less" />
     <None Include="scripts\lib\FanexGridV2\Fanex.Grid.less" />
     <None Include="scripts\lib\FanexGridV2\mixins.less" />

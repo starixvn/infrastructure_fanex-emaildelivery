@@ -4,12 +4,11 @@
 // </copyright>
 // --------------------------------------------------------------------------
 
-namespace Fanex.MailDelivery.MailStation.Criterias.MailManage
+namespace Fanex.MailDelivery.MailStation.Criteria.MailManage
 {
     using Fanex.NAP.Framework.Data;
     using System;
     using Fanex.MailDelivery.MailStation.Models;
-    using Fanex.MailDelivery.MailStation.Criterias.MailManage;
 
     /// <summary>
     /// Get all log category criteria.

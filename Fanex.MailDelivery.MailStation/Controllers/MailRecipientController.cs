@@ -9,62 +9,71 @@
 
 namespace Fanex.MailDelivery.MailStation.Controllers
 {
-    using System.Collections.Generic;
     using System.Web.Mvc;
-    using Fanex.MailDelivery.Client.Models;
+    using Fanex.MailDelivery.MailStation.Criteria.MailManage;
+    using Fanex.MailDelivery.MailStation.Criteria.ManageRecipient;
+    using Fanex.MailDelivery.MailStation.Services.ManageRecipient;
+    using Fanex.MailDelivery.MailStation.Services.ManageMail;
 
     /// <summary>
     /// Mail Recipient Controller.
     /// </summary>
     public class MailRecipientController : Controller
     {
+        private ManageRecipientService _manageRecipientService;
+
+        public MailRecipientController()
+        {
+            _manageRecipientService = _manageRecipientService ?? new ManageRecipientService();
+        }
+
         public ActionResult Index()
         {
+            ViewBag.ListStatus = _manageRecipientService.Status(true);
             return View("~/Areas/MailStation/ManageRecipient/ManageRecipient/Index.cshtml");
         }
 
-        public ActionResult InsertRecipientView()
+        public ActionResult CreateRecipientView()
         {
             return View("~/Areas/MailStation/ManageRecipient/InsertRecipient/Index.cshtml");
         }
 
-        public ActionResult RecipientList()
+        public ActionResult RecipientList(RecipientListCriteria criteria)
         {
-            return Json(new List<int>() { 1, 2 }, JsonRequestBehavior.AllowGet);
+            return Json(_manageRecipientService.RecipientList(criteria));
         }
 
-        public ActionResult EditRecipientView()
+        public ActionResult UpdateRecipientView(RecipientByIdCriteria criteria)
         {
-            var recipient = new Mail
-            {
-                Subject = "asdasd adasd a",
-                Body = "<div class=\"bold-weight\">Dear all,</div><br> Please be informed the package is released:..."
-            };
+            var recipient = _manageRecipientService.RecipientById(criteria);
 
             return View("~/Areas/MailStation/ManageRecipient/EditRecipient/Index.cshtml", recipient);
         }
 
         [HttpPost]
-        public JsonResult EditRecipient()
+        public JsonResult UpdateRecipient(UpdateRecipientCriteria criteria)
         {
-            return Json(new List<int>() { 1, 2 }, JsonRequestBehavior.AllowGet);
+            return Json(_manageRecipientService.EditRecipient(criteria));
         }
 
         [HttpPost]
-        public JsonResult InsertRecipient()
+        public JsonResult CreateRecipient(CreateRecipientCriteria criteria)
         {
-            return Json(new List<int>() { 1, 2 }, JsonRequestBehavior.AllowGet);
+            return Json(_manageRecipientService.InsertRecipient(criteria));
         }
 
         [HttpPost]
-        public JsonResult CheckRecipient()
+        public JsonResult CheckRecipient(CheckRecipientInfoCriteria criteria)
         {
-            return Json(new List<int>() { 1, 2 }, JsonRequestBehavior.AllowGet);
+            return Json(_manageRecipientService.CheckRecipient(criteria));
         }
 
-        public ActionResult ViewRelevantMail(int recipientId)
+        public ActionResult ViewRelevantMail(RecipientByIdCriteria criteria)
         {
-            return View("~/Areas/MailStation/Views/RelevantMailByRecipient/Index.cshtml", recipientId);
+            var recipient = _manageRecipientService.RecipientById(criteria);
+            var emails = new string[] { recipient.Email1, recipient.Email2, recipient.Email3 };
+            
+            return RedirectToAction("Index", "MailManage", new { Emails = string.Join(";", emails).Trim(';') });
         }
     }
 }

@@ -16,6 +16,7 @@ namespace Fanex.NAP.Hub.Areas.UserLogin.Controllers
     using System.Web.Mvc;
     using System.Web.Security;
     using Fanex.Common;
+    using Fanex.MailDelivery.MailStation.Services;
     using Fanex.NAP.Core.Criteria.User;
     using Fanex.NAP.Core.Model;
     using Fanex.NAP.Core.Service.Impl;
@@ -116,6 +117,7 @@ namespace Fanex.NAP.Hub.Areas.UserLogin.Controllers
                     }
 
                     CreateAuthInfo(user);
+                    AppSession.CurrentUser = user;
 
                     return Redirect(FormsAuthentication.DefaultUrl);
                 }

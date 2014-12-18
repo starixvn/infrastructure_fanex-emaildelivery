@@ -1,0 +1,25 @@
+﻿namespace Fanex.MailDelivery.MailStation.Models
+{
+    using System;
+
+    public class MailTaskModel
+    {
+        public int MailTaskId { get; set; }
+
+        public string MailName { get; set; }
+
+        public int SiteId { get; set; }
+
+        public string SiteName { get; set; }
+
+        public DateTime ScheduledTime { get; set; }
+
+        public DateTime LastSent { get; set; }
+
+        public int Status { get; set; }
+
+        public int Attempt { get; set; }
+
+        public int MSiteMailID { get; set; }
+    }
+}

@@ -11,17 +11,20 @@ var ManageRecipientController = function () {
         contextMenuController.bindContextMenuEvents();
     };
     self.cachedData = {
-        searchParams: null,
-        recipientList: []
+        searchParams: null
     };
+    var DOMElements = {
+        emails: null
+    };
+
     self.loadFilter = function () {
         self.renderDropdownStatus();
     };
 
     self.renderDropdownStatus = function () {
-        var statuses = [{ Id: 0, Name: 'All' },
+        var statuses = [{ Id: -1, Name: 'All' },
             { Id: 1, Name: 'Active' },
-            { Id: 2, Name: 'Inactive'}];
+            { Id: 0, Name: 'Inactive'}];
         var options = '';
         var statusLength = statuses.length;
         for (var i = 0; i < statusLength; i++) {
@@ -32,6 +35,7 @@ var ManageRecipientController = function () {
         $("#status").empty().append(options);
     };
     self.bindEvents = function () {
+        $("#typeCust").attr("disabled", null);
         $("#button-search").click(function () {
             self.buttonSearchClick();
         });
@@ -52,22 +56,21 @@ var ManageRecipientController = function () {
             sharedScriptManager.unblockUI);
     };
     self.renderRecipientList = function (result) {
-        result = self.dummyData();
-        self.cachedData.recipientList = result;
+        //        result = self.dummyData();
         var recipientListLength = result.length;
         var bodyData = [];
         for (var i = 0; i < recipientListLength; i++) {
             var recipient = result[i];
             var rowColumns = [];
-            var recipientIndex = ' recipient-index="' + i + '"';
-            rowColumns.push({ Name: "ColId", Value: recipient.Id });
+            var recipientIndex = ' recipient-index="' + recipient.RecipientId + '"';
+            rowColumns.push({ Name: "ColId", Value: recipient.RecipientId });
             rowColumns.push({
                 Name: "ColUsername",
                 Value: viewResources.hasEditRight ?
                             ('<a class="link username" href="javascript:;"' + recipientIndex + '>' +
-                               recipient.Username +
+                               recipient.RecipientName +
                             '</a>') :
-                             recipient.Username
+                             recipient.RecipientName
             });
             rowColumns.push({ Name: "ColNapUser", Value: recipient.IsNapUser ? '<div class="ico-tick"></div>' : '' });
             rowColumns.push({ Name: "ColEmail1", Value: recipient.Email1 });
@@ -75,9 +78,9 @@ var ManageRecipientController = function () {
             rowColumns.push({ Name: "ColEmail3", Value: recipient.Email3 });
             rowColumns.push({
                 Name: "ColNoRelevantMail",
-                Value: '<div class="ico-relevant-mail"' + recipientIndex + '>' + recipient.NoRelevantMail + '</div>'
+                Value: '<div class="ico-relevant-mail"' + recipientIndex + '>' + recipient.MailRelevant + '</div>'
             });
-            rowColumns.push({ Name: "ColActive", Value: recipient.Active ? '<div class="ico-tick"></div>' : '' });
+            rowColumns.push({ Name: "ColActive", Value: recipient.IsActive ? '<div class="ico-tick"></div>' : '' });
             if (viewResources.hasEditRight) {
                 rowColumns.push({
                     Name: "ColAction",
@@ -132,35 +135,6 @@ var ManageRecipientController = function () {
         self.bindGridEvent();
     };
 
-    self.dummyData = function () {
-        var result = [];
-        result.push({
-            Id: 1,
-            Username: 'sa',
-            IsNapUser: true,
-            Email1: "starifix@nexcel.vn",
-            Email2: '',
-            EMail3: '',
-            NoRelevantMail: 13,
-            Active: true
-        });
-        result.push({
-            Id: 2,
-            Username: 'dbaThien',
-            IsNapUser: true,
-            Email1: "starifix@nexcel.vn",
-            Email2: '',
-            EMail3: '',
-            NoRelevantMail: 3,
-            Active: true
-        });
-
-        for (var i = 0; i < 5; i++) {
-            result.push(result[0]);
-        }
-
-        return result;
-    };
     self.bindGridEvent = function () {
         var gridContainer = $("#recipient-list");
         $(".btn-action").click(function (event) {
@@ -189,30 +163,18 @@ var ManageRecipientController = function () {
             self.viewRelevantMail(recipientIndex);
         });
     };
+
     self.editRecipient = function (recipientIndex) {
-        var recipient = self.cachedData.recipientList[recipientIndex];
-        var editParams = recipient;
         window.location.href = window.rootUrl + "MailStation/MailRecipient/EditRecipientView?" +
             $.param({
-                recipientId: recipient.Id
+                recipientId: recipientIndex
             });
-    };
+        };
+
     self.viewRelevantMail = function (recipientIndex) {
-        var recipient = self.cachedData.recipientList[recipientIndex];
-        popUpManager.openPopup(
-            window.rootUrl + 'MailStation/MailRecipient/ViewRelevantMail?' + $.param({
-                recipientId: recipient.Id
-            }),
-            viewResources.Relevant_Mail,
-            $(window).width() - 200,
-            $(window).height() - 200,
-            true,
-            false,
-            parent.window,
-            3000,
-            null,
-            null,
-            ['center', 80]);
+        window.location.href = window.rootUrl + 'MailStation/MailRecipient/ViewRelevantMail?' + $.param({
+            recipientId: recipientIndex
+        });
     };
 };
 

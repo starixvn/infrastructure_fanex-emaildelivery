@@ -4,7 +4,6 @@
 
 var MailManageController = function () {
     var self = this;
-
     var DOMElements = {
         MailName: null,
         IsActive: null,
@@ -247,6 +246,9 @@ var MailManageController = function () {
                 }, sharedScriptManager.cachedData.alertSuccessTime);
             });
     };
+    };
+    self.initRecipientInfo = function (recipient) {
+
 };
 
 var MailManageController = new MailManageController();

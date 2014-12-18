@@ -1,4 +1,4 @@
-﻿// --------------------------------------------------------------------------
+// --------------------------------------------------------------------------
 // <copyright file="SuggestMailCriteria.cs" company="Nexcel Solutions Vietnam">
 // Copyright (c) Nexcel Solutions Vietnam. All rights reserved.
 // </copyright>
@@ -8,7 +8,7 @@
 // </history>
 // --------------------------------------------------------------------------
 
-namespace Fanex.MailDelivery.MailStation.Criterias.MailManage
+namespace Fanex.MailDelivery.MailStation.Criteria.MailManage
 {
     using Fanex.NAP.Framework.Data;
 

@@ -1,7 +1,12 @@
-﻿@{
-    ViewBag.Title = "Manage Recipient";
+﻿@using Fanex.MailDelivery.MailStation.Resources;
+@using Fanex.MailDelivery.MailStation.Constants;
+@using Fanex.MailDelivery.MailStation.Services;
+@using Fanex.MailDelivery.MailStation.Criteria.ManageRecipient;
+@model RecipientListCriteria
+@{
+    ViewBag.Title = Labels.Manage_Recipient;
     Layout = "~/Views/Shared/_Layout.cshtml";
-    var hasEditRight = true;
+    var hasEditRight = PermissionService.HasHostPermission(MailDeliveryFunctionKeys.MailReport);
 }
 @section Head {
     @Styles.Render("~/themes/sharedstyles")
@@ -10,12 +15,12 @@
 }
 @section Headline {
     <h1>
-        <span class="title"><span class="first">Mail Delivery System /</span> @ViewBag.Title</span>
+        <span class="title"><span class="first">@Labels.Mail_Delivery_System /</span> @ViewBag.Title</span>
         @if (hasEditRight)
         {
             <div class="button-action">
-                <a id="btnCreateNewUser" class="add-button" href="~/MailStation/MailRecipient/InsertRecipientView">
-                    + Create New User</a>
+                <a id="btnCreateNewUser" class="add-button" href="~/MailStation/MailRecipient/CreateRecipientView">
+                    + @Labels.Create_New_User</a>
             </div>
         }
     </h1>
@@ -25,28 +30,25 @@
         <div class="filter-row">
             <div class="form-group">
                 <div class="lbl-field width-80">
-                    <label for="username">
-                        Username</label>
+                    @Html.LabelFor(m => m.Username)
                 </div>
-                <input id="username" type="text" class="textbox" />
+                @Html.EditorFor(m => m.Username, new { @class = "width-80" })
             </div>
             <div class="form-group">
                 <div class="lbl-field width-80">
-                    <label for="emails">
-                        Email(s)</label>
+                    @Html.LabelFor(m => m.Emails, Labels.Email_SymbolMulti)
                 </div>
-                <input id="emails" type="text" class="textbox" />
+                @Html.EditorFor(m => m.Emails)
             </div>
             <div class="form-group">
                 <div class="lbl-field">
                     <label for="status">
-                        Status</label>
+                    @Html.LabelFor(m => m.Status)
                 </div>
-                <select id="status" name="status">
-                </select>
+                @Html.DropDownListFor(m => m.Status, (IEnumerable<SelectListItem>)ViewBag.ListStatus)
             </div>
             <div class="form-group">
-                <input id="button-search" type="submit" value="Submit" />
+                <input id="button-search" type="submit" value="@Labels.Submit" />
             </div>
         </div>
     </div>
@@ -57,7 +59,7 @@
         </div>
     </div>
     <ul class="actions display-none">
-        <li><a class="edit-icon context-menu-item">Edit</a> </li>
+        <li><a class="edit-icon context-menu-item">@Labels.Edit</a> </li>
     </ul>
 </section>
 @section Foot {
@@ -69,16 +71,16 @@
         var viewResources = {
             hasEditRight: @(hasEditRight ? 1 : 0),
 
-            Id: 'ID',           
-            Username: 'Username',
-            Nap_User: 'NAP User',
-            Email1: 'Email1',
-            Email2: 'Email2',
-            Email3: 'Email3',
-            No_RelevantMail: 'No. Relevant Mail',
-            Active: 'Active',
-            Action: 'Action',
-            Relevant_Mail: 'Relevant Mail'
+            Id: '@Labels.ID',           
+            Username: '@Labels.Username',
+            Nap_User: '@Labels.NAP_User',
+            Email1: '@Labels.Email1',
+            Email2: '@Labels.Email2',
+            Email3: '@Labels.Email3',
+            No_RelevantMail: '@Labels.SymbolNumber_RelevantMail',
+            Active: '@Labels.Active',
+            Action: '@Labels.Action',
+            Relevant_Mail: '@Labels.Relevant_Mail'
         };
     </script>
 }

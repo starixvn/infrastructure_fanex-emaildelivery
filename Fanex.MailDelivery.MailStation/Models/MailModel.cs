@@ -1,22 +1,34 @@
-﻿namespace Fanex.MailDelivery.MailStation.Models
+﻿// --------------------------------------------------------------------------
+// <copyright file="MailModel.cs" company="Nexcel Solutions Vietnam">
+// Copyright (c) Nexcel Solutions Vietnam. All rights reserved.
+// </copyright>
+// --------------------------------------------------------------------------
+// <history>
+//   <change who="Louis.Nguyen" date="2014.10.03">Created</change>
+// </history>
+
+namespace Fanex.MailDelivery.MailStation.Models
 {
     using System;
 
+    /// <summary>
+    /// Mail Model.
+    /// </summary>
     public class MailModel
     {
-        public int MailId;
+        public int MailId { get; set; }
 
-        public string MailName;
+        public string MailName { get; set; }
 
-        public int MailGroupID;
+        public int MailGroupId { get; set; }
 
-        public string MailGroupName;
+        public string MailGroupName { get; set; }
 
-        public int SiteId;
+        public int SiteId { get; set; }
 
-        public string SiteName;
+        public string SiteName { get; set; }
 
-        public int TriggerType;
+        public int TriggerType { get; set; }
 
         public string TriggerTypeName
         {
@@ -33,28 +45,28 @@
             }
         }
 
-        public string CronExpression;
+        public string CronExpression { get; set; }
 
-        public string MailFrom;
+        public string MailFrom { get; set; }
 
-        public string MailTo;
+        public string MailTo { get; set; }
 
-        public string MailCc;
+        public string MailCc { get; set; }
 
-        public string MailBcc;
+        public string MailBcc { get; set; }
 
-        public bool IsActive;
+        public bool IsActive { get; set; }
 
-        public DateTime StartOn;
+        public DateTime LastSent { get; set; }
 
-        public DateTime EndOn;
+        public DateTime StartOn { get; set; }
 
-        public int Attempt;
+        public DateTime EndOn { get; set; }
 
-        public int Interval;
+        public int Attempt { get; set; }
 
-        public DateTime LastSent;
+        public int Interval { get; set; }
 
-        public string Description;
+        public string Description { get; set; }
     }
 }

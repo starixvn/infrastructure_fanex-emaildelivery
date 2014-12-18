@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Functions>
+  <Function Name="Managemail">
+    <Setting Key="MailStation_GetAllSites" SpName="NAP_Site_GetAll" DbName="DBNAP.bodb_NAP.bodbAdminNet">
+      <Mapping DataField="SiteId" ObjectProperty="Value" />
+      <Mapping DataField="SiteName" ObjectProperty="Text" />
+    </Setting>
+    <Setting Key="MailStation_GetAllMailGroup" SpName="Mail_MailManagement_GetAllMailGroup" DbName="DBMMS.bodb_MMS.bodbAdminNet">
+      <Mapping DataField="MailGroupID" ObjectProperty="Value" />
+      <Mapping DataField="MailGroupName" ObjectProperty="Text" />
+    </Setting>
+    <Setting Key="MailStation_GetAllSuggestedMails" SpName="Mail_MailManagement_GetSuggesionEmailList" DbName="DBMMS.bodb_MMS.bodbAdminNet">
+      <Mapping DataField="EmailID" ObjectProperty="id" />
+      <Mapping DataField="EmailAddress" ObjectProperty="name" />
+    </Setting>
+    <Setting Key="MailStation_GetMailList" SpName="Mail_MailManagement_GetMailList" DbName="DBMMS.bodb_MMS.bodbAdminNet">
+    </Setting>
+    <Setting Key="MailStation_CreateMailGroup" SpName="Mail_MailManagement_InsertGroup" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
+    <Setting Key="MailStation_CreateMail" SpName="Mail_MailManagement_InsertMail" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
+    <Setting Key="MailStation_GetMailByID" SpName="Mail_MailManagement_GetMailByID" DbName="DBMMS.bodb_MMS.bodbAdminNet">
+    </Setting>
+    <Setting Key="MailStation_EditMail" SpName="Mail_MailManagement_UpdateMail" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
+  </Function>
+  <Function Name="Mail Station - Mail Report">
+    <Setting Key="MailStation_MailReport_GetMailTaskList" SpName="Mail_Report_GetMailTaskList" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
+    <Setting Key="MailStation_MailReport_GetLogDetail" SpName="Mail_Report_GetLogDetails" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
+  </Function>
+  <Function Name="Mail Station - Manage Recipient">
+    <Setting Key="MailStation_MailReport_GetRecipientList" SpName="Mail_ManageRecipient_GetRecipientList" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
+    <Setting Key="MailStation_MailReport_GetRecipientById" SpName="Mail_ManageRecipient_GetRecipientByID" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
+    <Setting Key="MailStation_MailReport_UpdateRecipient" SpName="Mail_ManageRecipient_UpdateRecipient" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
+    <Setting Key="MailStation_MailReport_InsertRecipient" SpName="Mail_ManageRecipient_InsertRecipient" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
+    <Setting Key="MailStation_MailReport_CheckRecipient" SpName="Mail_ManageRecipient_InsertRecipient" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
+  </Function>
+</Functions>

@@ -14,6 +14,8 @@ namespace Fanex.MailDelivery.MailStation.Constants
 
         public readonly static List<SelectListItem> AllItem;
 
+        public readonly static List<SelectListItem> TaskStatus;
+
         static MailStationConstants()
         {
             AllItem = new List<SelectListItem>();
@@ -26,7 +28,13 @@ namespace Fanex.MailDelivery.MailStation.Constants
             TriggerTypes = new List<SelectListItem>();
             TriggerTypes.Add(new SelectListItem() { Selected = false, Text = "Function", Value = "0" });
             TriggerTypes.Add(new SelectListItem() { Selected = false, Text = "Schedule", Value = "1" });
-        }
 
+            TaskStatus = new List<SelectListItem>();
+            TaskStatus.Add(new SelectListItem() { Text = "Waiting".ToUpper(), Value = "0" });
+            TaskStatus.Add(new SelectListItem() { Text = "Running".ToUpper(), Value = "1" });
+            TaskStatus.Add(new SelectListItem() { Text = "Sent".ToUpper(), Value = "2" });
+            TaskStatus.Add(new SelectListItem() { Text = "Data not ready".ToUpper(), Value = "3" });
+            TaskStatus.Add(new SelectListItem() { Text = "Failed".ToUpper(), Value = "4" });
+        }
     }
 }
