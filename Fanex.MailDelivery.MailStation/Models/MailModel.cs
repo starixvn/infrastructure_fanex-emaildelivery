@@ -45,6 +45,8 @@ namespace Fanex.MailDelivery.MailStation.Models
             }
         }
 
+        public int RepeatType { get; set; }
+
         public string CronExpression { get; set; }
 
         public string MailFrom { get; set; }
@@ -57,11 +59,11 @@ namespace Fanex.MailDelivery.MailStation.Models
 
         public bool IsActive { get; set; }
 
-        public DateTime LastSent { get; set; }
+        public DateTime? LastSent { get; set; }
 
-        public DateTime StartOn { get; set; }
+        public DateTime? StartOn { get; set; }
 
-        public DateTime EndOn { get; set; }
+        public DateTime? EndOn { get; set; }
 
         public int Attempt { get; set; }
 

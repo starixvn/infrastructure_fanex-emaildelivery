@@ -69,7 +69,7 @@
         StartOn: null,
         EndOn: null,
         EndRadioName: null,
-        Attemp: null,
+        Attempt: null,
         Interval: null
     }
 
@@ -208,7 +208,7 @@
         this.DOMElements.StartOn = $('#nexcron-start-day-daily', this.$nexCron);
         this.DOMElements.EndOn = $('#nexcron-end-day-daily', this.$nexCron);
         this.DOMElements.EndRadioName = 'nexcron-is-end-limit-daily';
-        this.DOMElements.Attemp = $('#nexcron-attempt-count-daily', this.$nexCron);
+        this.DOMElements.Attempt = $('#nexcron-attempt-count-daily', this.$nexCron);
         this.DOMElements.Interval = $('#nexcron-interval-time', this.$nexCron);
         this.DOMElements.Interval.keydown(function (e) {
             self.OnlyNumericInput(e);
@@ -277,7 +277,7 @@
         this.DOMElements.StartOn = $('#nexcron-start-day-daily', this.$nexCron);
         this.DOMElements.EndOn = $('#nexcron-end-day-daily', this.$nexCron);
         this.DOMElements.EndRadioName = 'nexcron-is-end-limit-daily';
-        this.DOMElements.Attemp = $('#nexcron-attempt-count-daily', this.$nexCron);
+        this.DOMElements.Attempt = $('#nexcron-attempt-count-daily', this.$nexCron);
         this.DOMElements.Interval = $('#nexcron-interval-time', this.$nexCron);
         this.DOMElements.Interval.keydown(function (e) {
             self.OnlyNumericInput(e);
@@ -354,7 +354,7 @@
         this.DOMElements.StartOn = $('#nexcron-start-day-daily', this.$nexCron);
         this.DOMElements.EndOn = $('#nexcron-end-day-daily', this.$nexCron);
         this.DOMElements.EndRadioName = 'nexcron-is-end-limit-daily';
-        this.DOMElements.Attemp = $('#nexcron-attempt-count-daily', this.$nexCron);
+        this.DOMElements.Attempt = $('#nexcron-attempt-count-daily', this.$nexCron);
         this.DOMElements.Interval = $('#nexcron-interval-time', this.$nexCron);
         this.DOMElements.Interval.keydown(function (e) {
             self.OnlyNumericInput(e);
@@ -466,7 +466,7 @@
             CronExpression: '',
             StartOn: null,
             EndOn: null,
-            Attemp: null,
+            Attempt: null,
             Interval: null
         };
 
@@ -540,7 +540,7 @@
             cronResult.EndOn = this.DOMElements.EndOn.val();
         }
 
-        cronResult.Attemp = this.DOMElements.Attemp.val();
+        cronResult.Attempt = this.DOMElements.Attempt.val();
         cronResult.Interval = this.DOMElements.Interval.val();
         return cronResult;
     }
@@ -562,7 +562,7 @@
 
         this.DOMElements.RepeatMinute.val(cronExpression[1]);
         this.DOMElements.RepeatHour.val(cronExpression[2]);
-        this.DOMElements.Attemp.val(cronObject.Attemp);
+        this.DOMElements.Attempt.val(cronObject.Attempt);
         this.DOMElements.Interval.val(cronObject.Interval);
         switch (cronObject.RepeatType) {
             case "0":

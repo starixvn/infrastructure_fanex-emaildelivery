@@ -65,6 +65,11 @@
             return _messageBroker.UpdateScheduleMailingList(scheduleId, mailingList);
         }
 
+        public static JobResultMessage RequestAddMailTaskForRunningJob(JobResultMessage jobResult)
+        {
+            return _messageBroker.RequestAddMailTaskForRunningJob(jobResult);
+        }
+
         public static void RetryJob(Schedule schedule)
         {
             _jobHandler.RetryJob(schedule);

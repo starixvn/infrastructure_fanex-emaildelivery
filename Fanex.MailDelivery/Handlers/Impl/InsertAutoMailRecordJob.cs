@@ -36,7 +36,7 @@
             {
                 CronExpression cron = new CronExpression(schedule.RepeatExpression);
                 var nextRun = cron.GetNextValidTimeAfter(DateTimeOffset.Now).Value.LocalDateTime;
-
+                
                 //// Insert to DB new record for schedule with status is waiting
                 var autoMailRecord = new AutoMailRecord
                 {

@@ -154,14 +154,13 @@ namespace Fanex.Maintenance.Site.App_Start
         public static void RegisterFanexGridBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/scripts/fanexgridscripts").Include(
-                "~/scripts/lib/FanexGridV2/moment.min.js",
-                "~/scripts/lib/FanexGridV2/Fanex.Grid.js",
-                "~/scripts/lib/FanexGridV2/Fanex.Pagination.js"));
+                "~/scripts/lib/Fanex.Grid/moment.js",
+                "~/scripts/lib/Fanex.Grid/Fanex.Grid.js",
+                "~/scripts/lib/Fanex.Grid/Fanex.Pagination.js"));
             bundles.AddAndInclude(
                 "~/themes/fanexgridstyles",
-                "~/scripts/lib/FanexGridV2/Fanex.Grid.css",
-                "~/scripts/lib/FanexGridV2/Fanex.Pagination.css",
-                "~/scripts/lib/FanexGridV2/customizeFanexGridV2.less");
+                "~/scripts/lib/Fanex.Grid/Fanex.Grid.css",
+                "~/scripts/lib/Fanex.Grid/Fanex.Pagination.css");
         }
 
         public static void RegisterInputComboboxBundles(BundleCollection bundles)

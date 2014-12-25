@@ -10,6 +10,7 @@
 namespace Fanex.MailDelivery.MailStation.Criteria.MailReport
 {
     using Fanex.NAP.Framework.Data;
+    using System;
 
     /// <summary>
     /// Mail Report Criteria.
@@ -18,9 +19,9 @@ namespace Fanex.MailDelivery.MailStation.Criteria.MailReport
     {
         public string MailName { get; set; }
 
-        public string FromDate { get; set; }
+        public DateTime FromDate { get; set; }
 
-        public string ToDate { get; set; }
+        public DateTime ToDate { get; set; }
 
         public int Status { get; set; }
 

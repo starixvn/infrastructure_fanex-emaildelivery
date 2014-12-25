@@ -43,9 +43,9 @@ var ManageRecipientController = function () {
     self.buttonSearchClick = function () {
         sharedScriptManager.blockUI();
         var searchParams = {
-            Username: $("#username").val(),
-            Emails: $("#emails").val(),
-            Status: $("#status").val()
+            Username: $("#UserName").val(),
+            Emails: $("#Emails").val(),
+            Status: $("#Status").val()
         };
         self.cachedData.searchParams = searchParams;
         sharedScriptManager.callAjax(self,
@@ -165,7 +165,7 @@ var ManageRecipientController = function () {
     };
 
     self.editRecipient = function (recipientIndex) {
-        window.location.href = window.rootUrl + "MailStation/MailRecipient/EditRecipientView?" +
+        window.location.href = window.rootUrl + "MailStation/MailRecipient/UpdateRecipientView?" +
             $.param({
                 recipientId: recipientIndex
             });

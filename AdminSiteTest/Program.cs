@@ -18,7 +18,6 @@ namespace AdminSiteTest
             {
                 Id = 1,
                 SiteId = 1,
-                FunctionId = 1,
                 Name = "Trigger1",
                 RepeatExpression = "0/20 * * * * ?",
                 StartTime = DateTime.Now,

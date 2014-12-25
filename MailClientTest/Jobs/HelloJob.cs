@@ -11,6 +11,7 @@ namespace MailClientTest.Jobs
     using Fanex.MailDelivery.Client.Handlers;
     using Fanex.MailDelivery.Client.Enumerations;
     using Fanex.MailDelivery.Client.Messages;
+    using System.Threading;
 
     /// <summary>
     /// Hello Job.
@@ -20,30 +21,38 @@ namespace MailClientTest.Jobs
         protected override JobResultMessage Run(Schedule schedule, IJobExecutionContext jobContext)
         {
             var jobLog = string.Format(
-                "Run Hello Job: \n\tSite Id: {0}, Function Id: {1}, Schedule: {2}. \n\tSent at {3}",
+                "Run Hello Job: \n\tSite Id: {0}, Schedule: {1}. \n\tSent at {2}",
                 schedule.SiteId,
-                schedule.FunctionId,
                 schedule.Id,
                 DateTime.Now);
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine(jobLog);
             Console.ForegroundColor = ConsoleColor.White;
-
             //// Get Job init value here
             //jobContext.MergedJobDataMap
 
             //// Compose mail here.
             var mail = new Mail();
+            mail.Subject = "Mail Station Test.";
+            mail.Title = "Mail Station Test.";
+            mail.Body = "Hello world!";
+            mail.MailingListId = 2;
+            Thread.Sleep(5000);
+            //throw new InvalidCastException("Cannot Complete this Job.");
+            if (schedule.CurrentRetryTimes < schedule.MaxRetryTimes)
+            {
+                throw new InvalidCastException("Cannot Complete this Job.");
+            }
 
             return new JobResultMessage
                 {
                     Mail = mail,
                     Schedule = schedule,
-                    JobStatus = JobStatus.DataIsNotReady,
+                    JobStatus = JobStatus.Success,
                     Result = new ResultMessage
                     {
                         ErrCode = 0,
-                        ErrMsg = "Message"
+                        ErrMsg = string.Empty
                     }
                 };
         }

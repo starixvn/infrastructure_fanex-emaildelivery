@@ -29,7 +29,13 @@ var UpdateMailController = function () {
         MailName: null,
         SiteID: null,
         TriggerType: null,
+        RepeatType: null,
         CronExpression: null,
+        NexCron: null,
+        StartOn: null,
+        EndOn: null,
+        Attempt: null,
+        Interval: null,
         MailFrom: null,
         MailTo: null,
         MailCc: null,
@@ -71,9 +77,23 @@ var UpdateMailController = function () {
         DOMElements.MailTo = initualValueForMagicSuggestion(DOMElements.MailTo);
         DOMElements.MailCc = initualValueForMagicSuggestion(DOMElements.MailCc);
         DOMElements.MailBcc = initualValueForMagicSuggestion(DOMElements.MailBcc);
+        DOMElements.TriggerType.change(self.triggerChange);
+        DOMElements.TriggerType.change();
+
+        // Is Schedule Mail
+        if (DOMElements.TriggerType.val() === '1') {
+            var cronResult = {
+                RepeatType: DOMElements.RepeatType.val(),
+                CronExpression: DOMElements.CronExpression.val(),
+                StartOn: DOMElements.StartOn.val(),
+                EndOn: DOMElements.EndOn.val(),
+                Attempt: DOMElements.Attempt.val(),
+                Interval: DOMElements.Interval.val()
+            };
+
+            DOMElements.NexCron.nexCron('setCronExpression', cronResult);
+        }
     };
-
-
 
     self.cacheDOMElement = function () {
         DOMElements.MailGroupID = $('#MailGroupID');
@@ -81,7 +101,13 @@ var UpdateMailController = function () {
         DOMElements.MailName = $('#MailName');
         DOMElements.SiteID = $('#SiteID');
         DOMElements.TriggerType = $('#TriggerType');
-        DOMElements.CronExpression = $('#nexCron');
+        DOMElements.RepeatType = $('#RepeatType');
+        DOMElements.NexCron = $('#nexCron');
+        DOMElements.CronExpression = $('#CronExpression');
+        DOMElements.StartOn = $('#StartOn');
+        DOMElements.EndOn = $('#EndOn');
+        DOMElements.Attempt = $('#Attempt');
+        DOMElements.Interval = $('#Interval');
         DOMElements.MailFrom = $('#MailFrom');
         DOMElements.MailTo = $('#MailTo');
         DOMElements.MailCc = $('#MailCc');
@@ -109,8 +135,6 @@ var UpdateMailController = function () {
                 sharedScriptManager.showError(errorList);
             }
         });
-
-        DOMElements.TriggerType.change(self.triggerChange);
 
         $("#button-cancel").click(function () {
             NAP.headlineMsgBox.confirm(viewResources.CancelCreateMail, function () {
@@ -150,11 +174,11 @@ var UpdateMailController = function () {
             return false;
         }
 
-        if (!sharedScriptManager.isValidEmail(DOMElements.MailFrom.val())) {
-            DOMElements.MailFrom.addClass('input-validation-error');
-            sharedScriptManager.createErrorSummary(['Mail From is not a valid email.']);
-            return false;
-        }
+//        if (!sharedScriptManager.isValidEmail(DOMElements.MailFrom.val())) {
+//            DOMElements.MailFrom.addClass('input-validation-error');
+//            sharedScriptManager.createErrorSummary(['Mail From is not a valid email.']);
+//            return false;
+//        }
 
         if (DOMElements.MailTo.getValue().length === 0) {
             $(DOMElements.MailTo).addClass('input-validation-error');
@@ -185,21 +209,23 @@ var UpdateMailController = function () {
             };
         }
 
-        var cronResult = DOMElements.CronExpression.nexCron('getCronExpression');
+        var cronResult = DOMElements.NexCron.nexCron('getCronExpression');
         return {
+            MailID: DOMElements.MailID.val(),
             MailName: DOMElements.MailName.val(),
             MailGroupID: DOMElements.MailGroupID.val(),
             SiteID: DOMElements.SiteID.val(),
             TriggerType: DOMElements.TriggerType.val(),
+            RepeatType: cronResult.RepeatType,
             CronExpression: cronResult.CronExpression,
             MailFrom: DOMElements.MailFrom.val(),
             MailTo: DOMElements.MailTo.getValue().join(','),
             MailCc: DOMElements.MailCc.getValue().join(','),
             MailBcc: DOMElements.MailBcc.getValue().join(','),
-            IsActive: DOMElements.IsActive.val(),
+            IsActive: DOMElements.IsActive.is(":checked"),
             StartOn: cronResult.StartOn,
             EndOn: cronResult.EndOn,
-            Attemp: cronResult.Attemp,
+            Attempt: cronResult.Attempt,
             Interval: cronResult.Interval,
             Description: DOMElements.Description.val()
         };
@@ -244,7 +270,7 @@ var UpdateMailController = function () {
         var triggerId = DOMElements.TriggerType.val();
         if (triggerId === Enums.TriggerType.Schedule) {
             $(".schedule-row").removeClass("display-none");
-            DOMElements.CronExpression.nexCron();
+            DOMElements.NexCron.nexCron();
         } else {
             $(".schedule-row").addClass("display-none");
         }

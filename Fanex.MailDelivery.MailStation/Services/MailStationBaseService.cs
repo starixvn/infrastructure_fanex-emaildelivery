@@ -109,7 +109,8 @@
             hash = (new ResultCriteria()).AddSpParams(hash);
             using (var db = new ObjectDb(criteria.GetSettingKey()))
             {
-                db.ExecuteNonQuery(hash);
+                db.AssignParamValues(hash);
+                db.ExecuteNonQuery();
                 return GetCommandResult(hash);
             }
         }

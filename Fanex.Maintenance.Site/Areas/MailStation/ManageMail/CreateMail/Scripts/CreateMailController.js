@@ -27,6 +27,7 @@ var InsertMailController = function () {
         MailName: null,
         SiteID: null,
         TriggerType: null,
+        RepeatType: null,
         CronExpression: null,
         MailFrom: null,
         MailTo: null,
@@ -76,6 +77,7 @@ var InsertMailController = function () {
         DOMElements.MailName = $('#MailName');
         DOMElements.SiteID = $('#SiteID');
         DOMElements.TriggerType = $('#TriggerType');
+        DOMElements.RepeatType = $('#RepeatType');
         DOMElements.CronExpression = $('#nexCron');
         DOMElements.MailFrom = $('#MailFrom');
         DOMElements.MailTo = $('#MailTo');
@@ -98,7 +100,7 @@ var InsertMailController = function () {
             }
 
             if (errorList.length === 0) {
-                sharedScriptManager.hideValidateSummary();
+                //sharedScriptManager.hideValidateSummary();
                 self.addGroup(groupName);
             } else {
                 sharedScriptManager.showError(errorList);
@@ -145,11 +147,11 @@ var InsertMailController = function () {
             return false;
         }
 
-        if (!sharedScriptManager.isValidEmail(DOMElements.MailFrom.val())) {
-            DOMElements.MailFrom.addClass('input-validation-error');
-            sharedScriptManager.createErrorSummary(['Mail From is not a valid email.']);
-            return false;
-        }
+//        if (!sharedScriptManager.isValidEmail(DOMElements.MailFrom.val())) {
+//            DOMElements.MailFrom.addClass('input-validation-error');
+//            sharedScriptManager.createErrorSummary(['Mail From is not a valid email.']);
+//            return false;
+//        }
 
         if (DOMElements.MailTo.getValue().length === 0) {
             $(DOMElements.MailTo).addClass('input-validation-error');
@@ -185,6 +187,7 @@ var InsertMailController = function () {
             MailGroupID: DOMElements.MailGroupID.val(),
             SiteID: DOMElements.SiteID.val(),
             TriggerType: DOMElements.TriggerType.val(),
+            RepeatType: cronResult.RepeatType,
             CronExpression: cronResult.CronExpression,
             MailFrom: DOMElements.MailFrom.val(),
             MailTo: DOMElements.MailTo.getValue().join(','),

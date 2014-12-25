@@ -29,5 +29,7 @@ namespace Fanex.MailDelivery.MailStation.Models
         public bool IsActive { get; set; }
 
         public int MailRelevant { get; set; }
+
+        public string Note { get; set; }
     }
 }

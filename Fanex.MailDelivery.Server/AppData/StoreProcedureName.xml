@@ -2,9 +2,22 @@
 <Functions>
   <Function Name="MailDeliver">
     <Setting Key="StoreConfig" SpName="MailRecorder_InsConfig" DbName="DBMA.bodb_Maintenance.bodbAdminNet"  />
+    <Setting Key="Mail_MailManagement_GetScheduleByMailID" SpName="Mail_MailManagement_GetScheduleByMailID" DbName="DBMMS.bodb_MMS.bodbAdminNet" >
+      <Mapping DataField="MailID" ObjectProperty="Id" />
+      <Mapping DataField="SiteId" ObjectProperty="SiteId" />
+      <Mapping DataField="MailName" ObjectProperty="Name" />
+      <Mapping DataField="CronExpression" ObjectProperty="RepeatExpression" />
+      <Mapping DataField="StartOn" ObjectProperty="StartTime" />
+      <Mapping DataField="EndOn" ObjectProperty="EndTime" />
+      <Mapping DataField="IsActive" ObjectProperty="Active" />
+      <Mapping DataField="Interval" ObjectProperty="RetryIntervalInSeconds" />
+      <Mapping DataField="Attempt" ObjectProperty="MaxRetryTimes" />
+    </Setting>
+    <Setting Key="Mail_Core_InsertMailTask" SpName="Mail_Core_InsertMailTask" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
+    <Setting Key="Mail_Core_UpdateMailStatus" SpName="Mail_Core_UpdateMailStatus" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
+    <Setting Key="Mail_Core_UpdateRetry" SpName="Mail_Core_UpdateRetry" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
+    <Setting Key="Mail_Core_InsertMailLogs" SpName="Mail_Core_InsertMailLogs" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
+    <Setting Key="Mail_MailManagement_GetMailWithEmailAddressByMailID" SpName="Mail_MailManagement_GetMailWithEmailAddressByMailID" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
+    <Setting Key="Mail_Core_GetMailingListType" SpName="Mail_Core_GetMailingListType" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
   </Function>
 </Functions>
-
-
-
-

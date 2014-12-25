@@ -148,7 +148,8 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Web.Optimization">
+    <Reference Include="System.Web.Optimization, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.0\lib\net40\System.Web.Optimization.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.Linq" />
@@ -243,8 +244,8 @@
     <Content Include="Areas\MailStation\Report\MailDetail\Scripts\MailDetailController.js" />
     <Content Include="Areas\MailStation\Report\MailLog\Scripts\MailLogController.js" />
     <Content Include="Areas\MailStation\Report\MailReport\Scripts\MailReportController.js" />
-    <Content Include="Areas\MailStation\ManageMail\Scripts\MailManageController.js" />
-    <Content Include="Areas\MailStation\ManageMail\Styles\Images\trigger.png" />
+    <Content Include="Areas\MailStation\ManageMail\ManageMail\Scripts\MailManageController.js" />
+    <Content Include="Areas\MailStation\ManageMail\ManageMail\Styles\Images\trigger.png" />
     <Content Include="Areas\MailStation\ManageRecipient\ManageRecipient\Scripts\ManageRecipientController.js" />
     <Content Include="scripts\lib\AutoComplete\autocomplete.css" />
     <Content Include="scripts\lib\AutoComplete\autocomplete.js" />
@@ -730,12 +731,16 @@
     <Content Include="Views\ServiceMonitoring\XMLEditor.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Areas\MailStation\ManageMail\Index.cshtml" />
+    <Content Include="Areas\MailStation\ManageMail\ManageMail\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\MailStation\Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Fanex.MailDelivery.Admin\Fanex.MailDelivery.Admin.csproj">
+      <Project>{011C7F64-69E3-4867-9B3E-D6D1D931060B}</Project>
+      <Name>Fanex.MailDelivery.Admin</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Fanex.MailDelivery.Client\Fanex.MailDelivery.Client.csproj">
       <Project>{708E1FCE-82C4-443B-B1E9-0E64BCABE80E}</Project>
       <Name>Fanex.MailDelivery.Client</Name>
@@ -760,7 +765,7 @@
     <Content Include="Areas\MailStation\Report\MailLog\Index.cshtml" />
     <None Include="Areas\MailStation\Report\MailLog\Styles\MailLog.less" />
     <None Include="Areas\MailStation\Report\MailReport\Styles\MailReport.less" />
-    <None Include="Areas\MailStation\ManageMail\Styles\ManageMail.less" />
+    <None Include="Areas\MailStation\ManageMail\ManageMail\Styles\ManageMail.less" />
     <Content Include="themes\shared\colors.less" />
     <Content Include="themes\shared\grid.less" />
     <Content Include="themes\shared\common.less" />

@@ -113,16 +113,16 @@ var MailManageController = function () {
         }
 
         var headerColumns = [];
-        headerColumns.push({ HeaderText: viewResources.Id, Width: 40, Name: "ColId", HeaderAlign: "center", CellAlign: "center" });
-        headerColumns.push({ HeaderText: viewResources.Mail_Name, Width: 300, Name: "ColMailName", HeaderAlign: "center", CellAlign: "left" });
-        headerColumns.push({ HeaderText: viewResources.Group, Width: 120, Name: "ColGroup", HeaderAlign: "center", CellAlign: "left" });
-        headerColumns.push({ HeaderText: viewResources.Site, Width: 120, Name: "ColSite", HeaderAlign: "center", CellAlign: "left" });
-        headerColumns.push({ HeaderText: viewResources.Trigger, Width: 120, Name: "ColTrigger", HeaderAlign: "center", CellAlign: "center" });
-        headerColumns.push({ HeaderText: viewResources.To, Width: 120, Name: "ColTo", HeaderAlign: "center", CellAlign: "left" });
-        headerColumns.push({ HeaderText: viewResources.CC, Width: 120, Name: "ColCC", HeaderAlign: "center", CellAlign: "left" });
-        headerColumns.push({ HeaderText: viewResources.BCC, Width: 120, Name: "ColBCC", HeaderAlign: "center", CellAlign: "left" });
-        headerColumns.push({ HeaderText: viewResources.Last_Sent, Width: 150, Name: "ColLastSent", HeaderAlign: "center", CellAlign: "center", FormatDateTime: "MMM DD, YYYY hh:mm:ss A" });
-        headerColumns.push({ HeaderText: viewResources.Active, Width: 50, Name: "ColActive", HeaderAlign: "center", CellAlign: "center" });
+        headerColumns.push({ HeaderText: viewResources.Id, Width: 20, Name: "ColId", HeaderAlign: "center", CellAlign: "center" });
+        headerColumns.push({ HeaderText: viewResources.Mail_Name, Width: 250, Name: "ColMailName", HeaderAlign: "center", CellAlign: "left" });
+        headerColumns.push({ HeaderText: viewResources.Group, Width: 100, Name: "ColGroup", HeaderAlign: "center", CellAlign: "left", AllowTruncate: true });
+        headerColumns.push({ HeaderText: viewResources.Site, Width: 100, Name: "ColSite", HeaderAlign: "center", CellAlign: "left", AllowTruncate: true });
+        headerColumns.push({ HeaderText: viewResources.Trigger, Width: 100, Name: "ColTrigger", HeaderAlign: "center", CellAlign: "center" });
+        headerColumns.push({ HeaderText: viewResources.To, Width: 130, Name: "ColTo", HeaderAlign: "center", CellAlign: "left", AllowTruncate: true });
+        headerColumns.push({ HeaderText: viewResources.CC, Width: 130, Name: "ColCC", HeaderAlign: "center", CellAlign: "left", AllowTruncate: true });
+        headerColumns.push({ HeaderText: viewResources.BCC, Width: 130, Name: "ColBCC", HeaderAlign: "center", CellAlign: "left", AllowTruncate: true });
+        headerColumns.push({ HeaderText: viewResources.Last_Sent, Width: 150, Name: "ColLastSent", HeaderAlign: "center", CellAlign: "center", FormatDateTime: "MMM DD, YYYY hh:mm:ss A", AllowTruncate: true });
+        headerColumns.push({ HeaderText: viewResources.Active, Width: 40, Name: "ColActive", HeaderAlign: "center", CellAlign: "center" });
         if (viewResources.hasEditRight) {
             headerColumns.push({ HeaderText: viewResources.Action, Width: 50, Name: "ColAction", HeaderAlign: "center", CellAlign: "center" });
         }
@@ -153,6 +153,7 @@ var MailManageController = function () {
         DOMElements.gridContainer.removeClass("display-none").fanexGrid(gridOptions);
         self.bindGridEvent();
     };
+
     self.bindGridEvent = function () {
         $(".btn-action").click(function (event) {
             var $this = $(this);
@@ -186,7 +187,7 @@ var MailManageController = function () {
         NAP.headlineMsgBox.close();
         sharedScriptManager.callAjax(self,
             window.rootUrl + "MailStation/MailManage/MailList",
-            self.cachedData.searchParams,
+            self.reportParams,
             self.renderMailList,
             null,
             sharedScriptManager.unblockUI);
@@ -236,7 +237,7 @@ var MailManageController = function () {
     self.renderActionResult = function (result) {
         var result = {
             Code: 0,
-            Message: 'aaa'
+            Message: 'Mail is deleted successfully.'
         };
         sharedScriptManager.renderActionResult(
             result,
@@ -245,7 +246,7 @@ var MailManageController = function () {
                     self.refreshMailList();
                 }, sharedScriptManager.cachedData.alertSuccessTime);
             });
-    };
+        };
     };
     self.initRecipientInfo = function (recipient) {
 

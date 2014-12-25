@@ -17,10 +17,6 @@ var EditRecipientController = function () {
         $("#button-save").click(function () {
             self.saveRecipient();
         });
-
-        $("#email1").autocomplete(self.autoSuggestMailOption($("#email1")));
-        $("#email2").autocomplete(self.autoSuggestMailOption($("#email2")));
-        $("#email3").autocomplete(self.autoSuggestMailOption($("#email3")));
     };
 
     self.autoSuggestMailOption = function (element) {
@@ -48,7 +44,7 @@ var EditRecipientController = function () {
             if (errorList.length === 0) {
                 self.hideError();
                 sharedScriptManager.callAjax(self,
-                window.rootUrl + "MailStation/MailRecipient/EditRecipient",
+                window.rootUrl + "MailStation/MailRecipient/UpdateRecipient",
                     recipientInfo,
                     self.renderActionResult,
                     null,
@@ -63,12 +59,12 @@ var EditRecipientController = function () {
     self.getRecipientInfo = function () {
         var recipient = {
             RecipientId: viewResources.RecipientId,
-            Username: $("#username").val(),
-            Email1: $("#email1").val(),
-            Email2: $("#email2").val(),
-            Email3: $("#email3").val(),
-            Note: $("#note").val(),
-            Status: $("#status").attr("checked") ? 1 : 0
+            Username: $("#RecipientName").val(),
+            Email1: $("#Email1").val(),
+            Email2: $("#Email2").val(),
+            Email3: $("#Email3").val(),
+            Note: $("#Note").val(),
+            Status: $("#IsActive").is(':checked')
         };
 
         return recipient;
@@ -77,20 +73,20 @@ var EditRecipientController = function () {
         var errorList = [];
         if (recipientInfo.Email1 !== '' && !sharedScriptManager.isValidEmail(recipientInfo.Email1)) {
             errorList.push({
-                Id: "#email1",
+                Id: "#Email1",
                 Message: "Email 1 is invalid!"
             });
         }
 
         if (recipientInfo.Email2 !== '' && !sharedScriptManager.isValidEmail(recipientInfo.Email2)) {
             errorList.push({
-                Id: "#email2",
+                Id: "#Email2",
                 Message: "Email 2 is invalid!"
             });
         }
         if (recipientInfo.Email3 !== '' && !sharedScriptManager.isValidEmail(recipientInfo.Email3)) {
             errorList.push({
-                Id: "#email3",
+                Id: "#Email3",
                 Message: "Email 3 is invalid!"
             });
         }
@@ -102,6 +98,7 @@ var EditRecipientController = function () {
         $("#validation-summary-row").addClass("display-none");
         $(".validation-summary-errors-container").removeClass("validation-summary-errors-container");
     };
+
     self.showError = function (errorList) {
         var errorLength = errorList.length;
         var errorMessage = '';

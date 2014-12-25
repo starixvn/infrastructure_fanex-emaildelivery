@@ -61,16 +61,16 @@ namespace Fanex.Maintenance.Site.App_Start
 
         private static void RegisterManageMailBundles(BundleCollection bundles)
         {
-            bundles.Add(new ScriptBundle("~/Areas/MailStation/ManageMail/ManageMailScripts").Include(
+            bundles.Add(new ScriptBundle("~/Areas/MailStation/ManageMail/ManageMail/ManageMailScripts").Include(
                 "~/scripts/lib/ContextMenu/ContextMenuController.js",
                 "~/scripts/lib/AutoComplete/jquery.autocomplete.js",
-                "~/Areas/MailStation/ManageMail/Scripts/MailManageController.js"));
+                "~/Areas/MailStation/ManageMail/ManageMail/Scripts/MailManageController.js"));
 
             bundles.AddAndInclude(
-                "~/Areas/MailStation/ManageMail/ManageMailStyles",
+                "~/Areas/MailStation/ManageMail/ManageMail/ManageMailStyles",
                 "~/themes/shared/contextmenu.less",
                 "~/scripts/lib/AutoComplete/autocomplete.css",
-                "~/Areas/MailStation/ManageMail/Styles/ManageMail.less");
+                "~/Areas/MailStation/ManageMail/ManageMail/Styles/ManageMail.less");
 
         }
 

@@ -4,6 +4,7 @@
     using Fanex.MailDelivery.Client.Enumerations;
     using Fanex.MailDelivery.Client.Models;
     using Fanex.NAP.Framework.Command;
+using Fanex.MailDelivery.Client.Messages;
 
     /// <summary>
     /// Mail Service interface.
@@ -12,12 +13,14 @@
     {
         List<Schedule> GetSchedules(List<int> scheduleId);
 
-        CommandResult UpdateJobStatus(Schedule schedule, JobStatus jobStatus);
+        CommandResult UpdateJobStatus(JobResultMessage jobResultMessage);
 
         CommandResult SendMail(Mail mail);
 
         MailingList GetMailingList(int mailingListId);
 
         CommandResult UpdateMailingList(MailingList mailingList);
+
+        void AddMailTaskForRunningJob(JobResultMessage jobResultMessage);
     }
 }

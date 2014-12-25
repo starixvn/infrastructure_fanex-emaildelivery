@@ -17,7 +17,7 @@
             @ViewBag.Title
         </span>
         <div class="button-action">
-            <a id="btnBackToList" class="back-button" href="~/MailStation/MailRecipient/Index">←
+            <a id="btnBackToList" class="lnk" href="~/MailStation/MailRecipient/Index">←
                 @Labels.Back_to_list</a>
         </div>
     </h1>
@@ -33,67 +33,77 @@
         </div>
         <div class="form-row">
             <div class="lbl-field">
-                <label for="username" class="bold-weight">
-                    @Labels.Username</label>
+                @Html.LabelFor(m => m.RecipientName, new { @class = "bold-weight" })
+                @*<label for="username" class="bold-weight">
+                    @Labels.Username</label>*@
             </div>
             <div class="edit-field">
-                <input id="username" type="text" value="@Model.Username" name="username" disabled="disabled" />
+                @Html.TextBoxFor(m => m.RecipientName, new { disabled = "disabled" })
+                @*<input id="username" type="text" value="@Model.RecipientName" name="username" disabled="disabled" />*@
             </div>
             <a id="btn-loading" class="ico-tick display-none"></a>
         </div>
         <div class="form-row">
             <div class="lbl-field">
-                <label for="email1">
-                    @string.Format("{0} {1}", Labels.Email, 1)</label>
+                @Html.LabelFor(m => m.Email1, string.Format("{0} {1}", Labels.Email, 1))
             </div>
             <div class="edit-field">
-                <input id="email1" type="text" value="@Model.Email1" name="email1" />
+                @Html.EditorFor(m => m.Email1)
             </div>
         </div>
         <div class="form-row">
             <div class="lbl-field">
-                <label for="email2">
-                    @string.Format("{0} {1}", Labels.Email, 2)</label>
+                @Html.LabelFor(m => m.Email2, string.Format("{0} {1}", Labels.Email, 2))
+                @*<label for="email2">
+                    @string.Format("{0} {1}", Labels.Email, 2)</label>*@
             </div>
             <div class="edit-field">
-                <input id="email2" type="text" value="@Model.Email2" name="email2" />
+                @Html.EditorFor(m => m.Email2)
+                @*<input id="email2" type="text" value="@Model.Email2" name="email2" />*@
             </div>
         </div>
         <div class="form-row">
             <div class="lbl-field">
-                <label for="email3">
-                    @string.Format("{0} {1}", Labels.Email, 3)</label>
+                @Html.LabelFor(m => m.Email3, string.Format("{0} {1}", Labels.Email, 3))
+                @*<label for="email3">
+                    @string.Format("{0} {1}", Labels.Email, 3)</label>*@
             </div>
             <div class="edit-field">
-                <input id="email3" type="text" value="@Model.Email3" name="email3" />
+                @Html.EditorFor(m => m.Email3)
+                @*<input id="email3" type="text" value="@Model.Email3" name="email3" />*@
             </div>
         </div>
         <div class="form-row">
             <div class="lbl-field">
-                <label for="note">
-                    @Labels.Note</label>
+                @Html.LabelFor(m => m.Note, Labels.Note)
+                @*<label for="note">
+                    @Labels.Note</label>*@
             </div>
             <div class="edit-field">
-                <input id="note" type="text" value="@Model.Note" name="note" />
+                @Html.TextBoxFor(m => m.Note)
+                @*<input id="note" type="text" value="@Model.Note" name="note" />*@
             </div>
         </div>
         <div class="form-row">
             <div class="lbl-field width-100">
-                <label for="status">
+                @Html.LabelFor(m => m.IsActive, Labels.Status)
+                @*<label for="status">
                     @Labels.Status
-                </label>
+                </label>*@
             </div>
             <div class="edit-field">
-                <input class="check-box" id="status" name="status" type="checkbox" value="false" 
-                @(Model.IsActive ? "checked = \"checked\"" : "")/>
+                @Html.CheckBoxFor(m => m.IsActive)
+                @*<input class="check-box" id="status" name="status" type="checkbox" value="false" 
+                @(Model.IsActive ? "checked = \"checked\"" : "")/>*@
             </div>
         </div>
         <div class="form-row">
             <div class="lbl-field width-100">
             </div>
-            <input id="button-save" type="submit" value="@Labels.Save" />
-            <button id="button-cancel" class="cancel-button">
-                @Labels.Cancel</button>
+            <div class="edit-field">
+                <input id="button-save" type="submit" value="@Labels.Save" />
+                <input id="button-cancel" type="submit" value="@Labels.Cancel" />
+            </div>
         </div>
     </div>
 </section>
@@ -102,7 +112,7 @@
     @Scripts.Render("~/Areas/MailStation/EditRecipient/EditRecipientScripts")
     <script type="text/javascript">
         var viewResources = {
-            RecipientId: @Model.Id,
+            RecipientId: @Model.RecipientId,
             Confirm_CancelEditRecipient: '@Labels.Confirm_CancelEditRecipient',
             Confirm_EditRecipient: '@Labels.Confirm_EditRecipient'
         };
