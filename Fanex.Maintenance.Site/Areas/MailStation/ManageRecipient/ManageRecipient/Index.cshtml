@@ -19,7 +19,7 @@
         @if (hasEditRight)
         {
             <div class="button-action">
-                <a id="btnCreateNewUser" class="add-button" href="~/MailStation/MailRecipient/CreateRecipientView">
+                <a id="btnCreateNewUser" class="lnk" href="~/MailStation/MailRecipient/CreateRecipientView">
                     + @Labels.Create_New_User</a>
             </div>
         }
@@ -47,7 +47,7 @@
                 </div>
                 @Html.DropDownListFor(m => m.Status, (IEnumerable<SelectListItem>)ViewBag.ListStatus)
             </div>
-            <div class="form-group">
+            <div class="form-group submit">
                 <input id="button-search" type="submit" value="@Labels.Submit" />
             </div>
         </div>

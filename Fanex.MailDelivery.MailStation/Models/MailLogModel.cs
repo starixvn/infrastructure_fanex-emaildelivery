@@ -14,11 +14,13 @@ namespace Fanex.MailDelivery.MailStation.Models
     /// </summary>
     public class MailLogModel
     {
-        public int Id { get; set; }
+        public int LogId { get; set; }
 
-        public string StatusName { get; set; }
+        public int TaskId { get; set; }
 
-        public string Message { get; set; }
+        public int Status { get; set; }
+
+        public string ExceptionMessage { get; set; }
 
         public string LogTime { get; set; }
 

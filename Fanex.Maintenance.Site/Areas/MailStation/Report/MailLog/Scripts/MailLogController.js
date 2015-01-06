@@ -7,17 +7,46 @@ var MailLogController = function () {
     self.initPage = function () {
         self.renderMailLog(mailLog);
     };
+
+    self.Enums = {
+        TaskStatus: {
+            All: -1,
+            Waiting: 0,
+            Running: 4,
+            Sent: 3,
+            DataNotReady: 1,
+            Failed: 2
+        }
+    };
+
+    self.getStatusDisplay = function (statusid) {
+        switch (statusid) {
+            case self.Enums.TaskStatus.Waiting:
+                return '<div class="column-status waiting-status">' + viewResources.Waiting.toUpperCase() + '</div>';
+            case self.Enums.TaskStatus.Running:
+                return '<div class="column-status running-status">' +
+                            '<span class="status">' + viewResources.Running.toUpperCase() + '</span>' +
+                        '</div>';
+            case self.Enums.TaskStatus.DataNotReady:
+                return '<div class="column-status data-not-ready-status">' + viewResources.Data_not_ready.toUpperCase() + '</div>';
+            case self.Enums.TaskStatus.Sent:
+                return '<div class="column-status sent-status">' + viewResources.Sent.toUpperCase() + '</div>';
+            case self.Enums.TaskStatus.Failed:
+                return '<div class="column-status failed-status">' + viewResources.Failed.toUpperCase() + '</div>';
+        }
+    };
+
     self.renderMailLog = function (result) {
-        result = self.dummyData();
+       // result = self.dummyData();
         var mailLogLength = result.length;
         var bodyData = [];
         for (var i = 0; i < mailLogLength; i++) {
             var log = result[i];
 
             bodyData.push({
-                Columns: [{ Name: "ColId", Value: log.Id },
-                    { Name: "ColStatus", Value: log.Status },
-                    { Name: "ColMessage", Value: log.Message },
+                Columns: [{ Name: "ColId", Value: log.LogId },
+                    { Name: "ColStatus", Value: self.getStatusDisplay(log.Status) },
+                    { Name: "ColMessage", Value: log.ExceptionMessage },
                     { Name: "ColLogTime", Value: log.LogTime },
                     { Name: "ColStackTrace", Value: log.StackTrace}]
             });

@@ -48,6 +48,7 @@
             SubscribeFunctionMailingListUpdate();
             SubscribeScheduleMailingListRequest();
             SubscribeScheduleMailingListUpdate();
+            RespondAddMailTaskForRunningJob();
         }
 
         /// <summary>
@@ -59,6 +60,7 @@
                 MailDeliveryConstants.SendMailRoutingKey,
                     mail =>
                     {
+                        //Console.WriteLine("Mail" + mail.Subject + " Recieved");
                         _mailService.SendMail(mail);
                     },
                     config => config.WithTopic(MailDeliveryConstants.SendMailRoutingKey));
@@ -73,8 +75,7 @@
                 MailDeliveryConstants.JobResultRoutingKey,
                     jobStatus =>
                     {
-                        _mailService.UpdateJobStatus(jobStatus.Schedule, jobStatus.JobStatus);
-                        _mailService.SendMail(jobStatus.Mail);
+                        _mailService.UpdateJobStatus(jobStatus);
                     },
                     config => config.WithTopic(MailDeliveryConstants.JobResultRoutingKey));
         }
@@ -149,6 +150,17 @@
                          ErrMsg = commandResult.Message
                      };
                  });
+        }
+
+        public void RespondAddMailTaskForRunningJob()
+        {
+            _bus.Respond<JobResultMessage, JobResultMessage>(
+                jobResult =>
+                {
+                    _mailService.AddMailTaskForRunningJob(jobResult);
+                    return jobResult;
+                }
+                );
         }
 
         public void Dispose()

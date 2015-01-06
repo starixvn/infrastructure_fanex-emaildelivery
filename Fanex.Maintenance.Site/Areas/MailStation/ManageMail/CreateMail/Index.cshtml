@@ -4,7 +4,7 @@
 @model CreateMailCriteria
 @{
     
-    ViewBag.Title = "Insert Mail";
+    ViewBag.Title = "Create Mail";
     Layout = "~/Views/Shared/_Layout.cshtml";  
 }
 @section Head {
@@ -21,7 +21,7 @@
             @ViewBag.Title
         </span>
         <div class="button-action">
-            <a id="btnBackToList" class="back-button" href="~/MailStation/MailManage/Index">← Back to
+            <a id="btnBackToList" class="lnk" href="~/MailStation/MailManage/Index">← Back to
                 list</a>
         </div>
     </h1>
@@ -68,14 +68,14 @@
             <div id="nexCron">
             </div>
         </div>
-        <div class="form-row">
+        @*<div class="form-row">
             <div class="lbl-field width-100">
                 @Html.LabelFor(m => m.MailFrom, "From")
             </div>
             <div class="edit-field">
                 @Html.TextBoxFor(m => m.MailFrom)
             </div>
-        </div>
+        </div>*@
         <div class="form-row">
             <div class="lbl-field width-100">
                 @Html.LabelFor(m => m.MailTo, "To", new { @class = "bold-weight" })
@@ -113,16 +113,17 @@
                 @Html.LabelFor(m => m.IsActive, "Status")
             </div>
             <div class="edit-field">
-                @Html.CheckBoxFor(m => m.IsActive, new { value = "false" })
+                @Html.CheckBoxFor(m => m.IsActive)
                 @*<input class="check-box" id="status" name="status" type="checkbox" value="false" />*@
             </div>
         </div>
         <div class="form-row">
-            <div class="lbl-field width-100">
+            <div class="lbl-field">
             </div>
-            <input id="button-save" type="submit" value="Save" />
-            <button id="button-cancel" class="cancel-button">
-                Cancel</button>
+            <div class="edit-field">
+                <input id="button-save" type="submit" value="@ViewResource.Save" />
+                <input id="button-cancel" type="reset" value="@ViewResource.Cancel" />
+            </div>
         </div>
     </div>
     @Html.Hidden("imagePath", (string)@Url.Content("~/images/calendar.gif"))

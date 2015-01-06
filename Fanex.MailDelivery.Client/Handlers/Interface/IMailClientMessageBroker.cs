@@ -29,6 +29,8 @@
 
         List<Schedule> GetSchedules();
 
+        JobResultMessage RequestAddMailTaskForRunningJob(JobResultMessage jobResult);
+
         void SubscribeRetryJob();
     }
 }

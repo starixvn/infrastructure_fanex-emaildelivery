@@ -90,9 +90,20 @@
             return _bus.Request<ScheduleRequestMessage, List<Schedule>>(scheduleRequest);
         }
 
+        /// <summary>
+        /// For the first time Job is running, we need to get back the TaskID of the current running Job.
+        /// By insert new record at DB, it get back itself with additional TaskID's value.
+        /// </summary>
+        /// <param name="jobResult">Job Result Message.</param>
+        /// <returns></returns>
+        public JobResultMessage RequestAddMailTaskForRunningJob(JobResultMessage jobResult)
+        {
+            return _bus.Request<JobResultMessage, JobResultMessage>(jobResult);
+        }
+
         public void Publish(JobResultMessage jobStatus)
         {
-            if (jobStatus.Mail.ApplicationSendMailId == 0)
+            if (jobStatus.Mail != null && jobStatus.Mail.ApplicationSendMailId == 0)
             {
                 jobStatus.Mail.ApplicationSendMailId = AppSettings.MailCientConfig.ApplicationSendMailId;
             }

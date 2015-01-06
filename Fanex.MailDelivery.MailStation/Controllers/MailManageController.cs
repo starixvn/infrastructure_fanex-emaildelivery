@@ -29,7 +29,7 @@ namespace Fanex.MailDelivery.MailStation.Controllers
             ViewBag.ListSite = mailManageService.Sites();
             ViewBag.ListStatus = mailManageService.Status();
             ViewBag.ListTriggerType = mailManageService.Trigger();
-            return View("~/Areas/MailStation/ManageMail/Index.cshtml");
+            return View("~/Areas/MailStation/ManageMail/ManageMail/Index.cshtml");
         }
 
         public JsonResult Sites()
@@ -74,9 +74,10 @@ namespace Fanex.MailDelivery.MailStation.Controllers
             return Json(mailManageService.MailList(criteria));
         }
 
-        public ActionResult DeleteMail()
+        public ActionResult DeleteMail(DeleteMailCriteria criteria)
         {
-            return Json(new List<int>() { 3 }, JsonRequestBehavior.AllowGet);
+            mailManageService = new MailManageService();
+            return Json(mailManageService.DeleteMail(criteria));
         }
 
         public ActionResult UpdateMailView(ReadMailByIDCriteria criteria)

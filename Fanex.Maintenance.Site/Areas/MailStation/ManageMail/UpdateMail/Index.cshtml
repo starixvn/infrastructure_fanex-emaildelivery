@@ -21,7 +21,7 @@
             @ViewBag.Title
         </span>
         <div class="button-action">
-            <a id="btnBackToList" class="back-button" href="~/MailStation/MailManage/Index">← Back
+            <a id="btnBackToList" class="lnk" href="~/MailStation/MailManage/Index">← Back
                 to list</a>
         </div>
     </h1>
@@ -61,22 +61,28 @@
             <div class="lbl-field">
                 @Html.LabelFor(m => m.TriggerType, "Trigger")
             </div>
-            @Html.DropDownListFor(m => m.TriggerType, (IEnumerable<SelectListItem>)ViewBag.ListTriggerType)
+            @Html.DropDownListFor(m => m.TriggerType, (IEnumerable<SelectListItem>)ViewBag.ListTriggerType, new { disabled="disabled" })
         </div>
         <div class="form-row schedule-row display-none">
             <div class="lbl-field width-100">
             </div>
             <div id="nexCron">
             </div>
+            @Html.HiddenFor(m => m.RepeatType)
+            @Html.HiddenFor(m => m.CronExpression)
+            @Html.HiddenFor(m => m.StartOn)
+            @Html.HiddenFor(m => m.EndOn)
+            @Html.HiddenFor(m => m.Attempt)
+            @Html.HiddenFor(m => m.Interval)
         </div>
-        <div class="form-row">
+       @* <div class="form-row">
             <div class="lbl-field width-100">
                 @Html.LabelFor(m => m.MailFrom, "From")
             </div>
             <div class="edit-field">
                 @Html.TextBoxFor(m => m.MailFrom)
             </div>
-        </div>
+        </div>*@
         <div class="form-row">
             <div class="lbl-field width-100">
                 @Html.LabelFor(m => m.MailTo, "To", new { @class = "bold-weight" })
@@ -121,9 +127,10 @@
         <div class="form-row">
             <div class="lbl-field width-100">
             </div>
-            <input id="button-save" type="submit" value="Save" />
-            <button id="button-cancel" class="cancel-button">
-                Cancel</button>
+            <div class="edit-field">
+                <input id="button-save" type="submit" value="@ViewResource.Save" />
+                <input id="button-cancel" type="reset" value="@ViewResource.Cancel" />
+            </div>
         </div>
     </div>
     @Html.Hidden("imagePath", (string)@Url.Content("~/images/calendar.gif"))

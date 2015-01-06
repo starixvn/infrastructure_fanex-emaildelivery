@@ -12,11 +12,13 @@
 
         public int SiteId { get; set; }
 
-        public int FunctionId { get; set; }
+        public int TaskId { get; set; }
 
         public string Name { get; set; }
 
         public string RepeatExpression { get; set; }
+
+        public DateTime CurrentFireTime { get; set; }
 
         public DateTime StartTime { get; set; }
 
@@ -40,7 +42,7 @@
             {
                 Id = Id,
                 SiteId = SiteId,
-                FunctionId = FunctionId,
+                TaskId = TaskId,
                 Name = Name,
                 RepeatExpression = RepeatExpression,
                 StartTime = StartTime,

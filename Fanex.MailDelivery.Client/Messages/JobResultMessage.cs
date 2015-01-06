@@ -2,6 +2,7 @@
 {
     using Fanex.MailDelivery.Client.Enumerations;
     using Fanex.MailDelivery.Client.Models;
+    using System;
 
     /// <summary>
     /// Job Status Message.
@@ -16,6 +17,8 @@
 
         public ResultMessage Result { get; set; }
 
-        public int RunningTime { get; set; }
+        public TaskLog TaskLog { get; set; }
+
+        public DateTime RunningTime { get; set; }
     }
 }

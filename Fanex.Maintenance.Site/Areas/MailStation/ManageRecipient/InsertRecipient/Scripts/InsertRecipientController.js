@@ -91,17 +91,19 @@ var CreateRecipientController = function () {
             return false;
         }
 
-        if (!sharedScriptManager.isValidEmail(DOMElements.Email2.val())) {
+        if (DOMElements.Email2.val() !== undefined && DOMElements.Email2.val() !== '' && !sharedScriptManager.isValidEmail(DOMElements.Email2.val())) {
             DOMElements.Email2.addClass('input-validation-error');
             sharedScriptManager.createErrorSummary(['Email 2 is not a valid email.']);
             return false;
         }
 
-        if (!sharedScriptManager.isValidEmail(DOMElements.Email3.val())) {
+        if (DOMElements.Email3.val() !== undefined && DOMElements.Email3.val() !== '' && !sharedScriptManager.isValidEmail(DOMElements.Email3.val())) {
             DOMElements.Email3.addClass('input-validation-error');
             sharedScriptManager.createErrorSummary(['Email 3 is not a valid email.']);
             return false;
         }
+
+        return true;
     };
 
     self.checkRecipientInfo = function () {

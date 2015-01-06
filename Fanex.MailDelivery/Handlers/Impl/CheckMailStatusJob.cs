@@ -40,7 +40,6 @@
                     case MailStatus.DataIsNotReady:
                         //// Send mail notify
                         break;
-
                     case MailStatus.Waiting:
                     case MailStatus.Running:
                         if (record.SentTime < DateTime.Now)
@@ -49,7 +48,6 @@
                         }
 
                         break;
-
                     default:
                         //// Log
                         break;

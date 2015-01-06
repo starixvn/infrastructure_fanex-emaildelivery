@@ -21,7 +21,7 @@
             @ViewBag.Title
         </span>
         <div class="button-action">
-            <a id="btnBackToList" class="back-button" href="~/MailStation/MailRecipient/Index">←
+            <a id="btnBackToList" class="lnk" href="~/MailStation/MailRecipient/Index">←
                 @Labels.Back_to_list</a>
         </div>
     </h1>
@@ -87,9 +87,10 @@
         <div class="form-row">
             <div class="lbl-field width-100">
             </div>
-            <input id="button-save" type="submit" value="@Labels.Save" />
-            <button id="button-cancel" class="cancel-button">
-                @Labels.Cancel</button>
+            <div class="edit-field">
+                <input id="button-save" type="submit" value="@Labels.Save" />
+                <input id="button-cancel" type="submit" value="@Labels.Cancel" />
+            </div>
         </div>
     </div>
 </section>

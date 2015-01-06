@@ -7,6 +7,7 @@
     using Fanex.MailDelivery.Client.Models;
     using Quartz;
     using Quartz.Impl;
+    using Quartz.Spi;
 
     /// <summary>
     /// Handling job executing.
@@ -22,7 +23,7 @@
 
             // Tell quartz to schedule the job using our trigger
             _scheduler.ScheduleJob(job, trigger);
-            Console.WriteLine(string.Format("Retry Schedule {0}", schedule.Id));
+
         }
 
         /// <summary>
@@ -36,6 +37,7 @@
 
             // Tell quartz to schedule the job using our trigger
             _scheduler.ScheduleJob(job, trigger);
+
         }
 
         public void Start()
@@ -100,12 +102,10 @@
                 {
                     ITrigger newTrigger = GetTrigger(schedule);
                     _scheduler.RescheduleJob(triggerKey, newTrigger);
-                    Console.WriteLine(string.Format("Update Schedule {0}", schedule.Id));
                 }
                 else
                 {
                     _scheduler.UnscheduleJob(triggerKey);
-                    Console.WriteLine(string.Format("Unschedule {0}", schedule.Id));
                 }
             }
             else
@@ -116,7 +116,6 @@
                     ITrigger trigger = GetTrigger(schedule);
                     //// Tell quartz to schedule the job using our trigger
                     _scheduler.ScheduleJob(job, trigger);
-                    Console.WriteLine(string.Format("Started schedule {0} ", schedule.Id));
                 }
             }
         }
@@ -206,7 +205,7 @@
         {
             var jobDataMap = GetJobDataMap(schedule);
             ITrigger retryTrigger = TriggerBuilder.Create()
-                .StartAt(DateTimeOffset.Now.AddSeconds(schedule.RetryIntervalInSeconds))
+                .StartAt(DateTimeOffset.Now.AddSeconds(MailDeliveryConstants.RetryDelayInSecond))
                 .UsingJobData(jobDataMap)
                 .Build();
 

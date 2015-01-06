@@ -6,55 +6,23 @@
     using Fanex.MailDelivery.Client.Enumerations;
     using Fanex.MailDelivery.Client.Models;
     using Fanex.NAP.Framework.Command;
+    using Fanex.MailDeliver.MailClient.API;
+    using Fanex.MailDeliver.Model;
+    using Fanex.MailDelivery.Repositories;
+    using Fanex.MailDelivery.Criteria;
+    using Fanex.MailDelivery.Client.Messages;
 
     /// <summary>
     /// Mail Service.
     /// </summary>
     public class MailService : ServiceBase, IMailService
     {
-        /// <summary>
-        /// Data stimulate, should get data from database here.
-        /// </summary>
-        private static List<Schedule> _schedules = new List<Schedule>
+        private IMailRepository _mailRepository;
+
+        public MailService()
         {
-            new Schedule
-            {
-                Id = 1,
-                SiteId = 1,
-                FunctionId = 1,
-                Name = "Trigger1",
-                RepeatExpression = "0/15 * * * * ?",
-                StartTime = DateTime.Now,
-                EndTime = DateTime.Now.AddMinutes(10),
-                RetryIntervalInSeconds = 2,
-                MaxRetryTimes = 2,
-                Active = true
-            },
-            new Schedule
-            {
-                Id = 2,
-                SiteId = 2,
-                FunctionId = 2,
-                Name = "Trigger2",
-                RepeatExpression = "0/30 * * * * ?",
-                StartTime = DateTime.Now,
-                RetryIntervalInSeconds = 5,
-                MaxRetryTimes = 2,
-                Active = true
-            },
-            new Schedule
-            {
-                Id = 3,
-                SiteId = 3,
-                FunctionId = 3,
-                Name = "Trigger3",
-                RepeatExpression = "0/45 * * * * ?",
-                StartTime = DateTime.Now,
-                RetryIntervalInSeconds = 5,
-                MaxRetryTimes = 2,
-                Active = true
-            }
-        };
+            this._mailRepository = this._mailRepository ?? new MailRepository();
+        }
 
         /// <summary>
         /// Gets the schedules.
@@ -69,7 +37,7 @@
             {
                 foreach (int scheduleId in scheduleIds)
                 {
-                    schedules.Add(_schedules.Where(sc => sc.Id == scheduleId).FirstOrDefault());
+                    schedules.Add(this._mailRepository.GetScheduleByID(new GetScheduleByIDCriteria() { MailId = scheduleId }));
                 }
             }
             catch (Exception ex)
@@ -82,48 +50,88 @@
 
         /// <summary>
         /// Updates the job status.
+        /// Just incase of status is Running, Retry, DataIsNotReady using this function.
         /// </summary>
         /// <param name="schedule">The schedule.</param>
         /// <param name="jobStatus">The job status.</param>
         /// <returns>Command Result.</returns>
-        public CommandResult UpdateJobStatus(Schedule schedule, JobStatus jobStatus)
+        public CommandResult UpdateJobStatus(JobResultMessage jobResultMessage)
         {
             try
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                switch (jobStatus)
+                switch (jobResultMessage.JobStatus)
                 {
-                    case JobStatus.Success:
-                        var jobLog = string.Format(
-                                           "Job Completed: \n\tSite Id: {0}, Function Id: {1}, Schedule: {2}. \n\tSent at {3}",
-                                           schedule.SiteId,
-                                           schedule.FunctionId,
-                                           schedule.Id,
-                                           DateTime.Now);
-
-                        Console.WriteLine(jobLog);
-
-                        break;
-
-                    case JobStatus.Running:
-                    case JobStatus.DataIsNotReady:
-                        var jobRetryLog = string.Format(
-                                           "Job Retry: \n\tSite Id: {0}, Function Id: {1}, Schedule: {2}. \n\tRetrytimes: {3}.\n\tMaxRetrytimes: {4}.",
-                                           schedule.SiteId,
-                                           schedule.FunctionId,
-                                           schedule.Id,
-                                           schedule.CurrentRetryTimes,
-                                           schedule.MaxRetryTimes);
-                        Console.WriteLine(jobRetryLog);
-                        if (!schedule.IsRunning())
+                    case JobStatus.Running: 
+                        this._mailRepository.UpdateMailTaskStatus(new UpdateMailTaskStatusCriteria()
                         {
-                            Console.WriteLine("Data is not ready, completed running!");
+                            TaskID = jobResultMessage.Schedule.TaskId,
+                            Status = (int)JobStatus.Running
+                        });
+
+                        this._mailRepository.UpdateRetryCounter(new UpdateTaskRetryCounterCriteria()
+                        {
+                            TaskID = jobResultMessage.Schedule.TaskId,
+                            RetryCount = jobResultMessage.Schedule.CurrentRetryTimes
+                        });
+
+                        if (jobResultMessage.Schedule.CurrentRetryTimes > 0 && jobResultMessage.TaskLog != null)
+                        {
+                            // If is retried then write log.
+                            this._mailRepository.AddMailLog(new AddMailLogCriteria()
+                            {
+                                LogTime = jobResultMessage.TaskLog.LogTime,
+                                ExceptionMessage = jobResultMessage.TaskLog.Message,
+                                StackTrace = jobResultMessage.TaskLog.StackTrace,
+                                Status = (int)jobResultMessage.JobStatus,
+                                TaskID = jobResultMessage.Schedule.TaskId
+                            });
                         }
 
                         break;
+                    case JobStatus.Retry:
+                        this._mailRepository.UpdateRetryCounter(new UpdateTaskRetryCounterCriteria()
+                        {
+                            TaskID = jobResultMessage.Schedule.TaskId,
+                            RetryCount = jobResultMessage.Schedule.CurrentRetryTimes
+                        });
 
+                        break;
+                    case JobStatus.DataIsNotReady:
+                        this._mailRepository.UpdateMailTaskStatus(new UpdateMailTaskStatusCriteria()
+                        {
+                            TaskID = jobResultMessage.Schedule.TaskId,
+                            Status = (int)JobStatus.DataIsNotReady
+                        });
+
+                        this._mailRepository.AddMailLog(new AddMailLogCriteria() {
+                            LogTime = jobResultMessage.TaskLog.LogTime,
+                            ExceptionMessage = jobResultMessage.TaskLog.Message,
+                            StackTrace = jobResultMessage.TaskLog.StackTrace,
+                            Status = (int)jobResultMessage.JobStatus,
+                            TaskID = jobResultMessage.Schedule.TaskId
+                        });
+
+                        break;
+                    case JobStatus.Success:
+                        this._mailRepository.UpdateMailTaskStatus(new UpdateMailTaskStatusCriteria()
+                        {
+                            TaskID = jobResultMessage.Schedule.TaskId,
+                            Status = (int)JobStatus.Success,
+                            LastSent = DateTime.Now
+                        });
+
+                        this.SendMail(jobResultMessage.Mail);
+                        break;
                     case JobStatus.Failed:
+                        this._mailRepository.UpdateMailTaskStatus(new UpdateMailTaskStatusCriteria()
+                        {
+                            TaskID = jobResultMessage.Schedule.TaskId,
+                            Status = (int)JobStatus.Failed
+                        });
 
+                        break;
+                    default:
                         break;
                 }
 
@@ -137,6 +145,18 @@
             return null;
         }
 
+        public void AddMailTaskForRunningJob(JobResultMessage jobResultMessage)
+        {
+            jobResultMessage.Schedule.TaskId = this._mailRepository.AddMailTask(new AddMailTaskCriteria()
+            {
+                MailId = jobResultMessage.Schedule.Id,
+                SiteId = jobResultMessage.Schedule.SiteId,
+                ScheduledTime = jobResultMessage.RunningTime,
+                Status = (int)JobStatus.Running,
+                Attempt = jobResultMessage.Schedule.CurrentRetryTimes
+            });
+        }
+
         /// <summary>
         /// Sends the mail.
         /// </summary>
@@ -146,11 +166,26 @@
         {
             try
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine(string.Format("Sent {0}", mail.Subject));
-                Console.ForegroundColor = ConsoleColor.White;
+                var mailService = new MailDeliver();
+                var mailRecord = this.ConvertFromMailToMailRecord(mail);
 
-                //// Read email from database and use old email service for sending mail here
+                // If is function mail
+                // Insert a MailTask record to database
+                // else
+                // Leave the MailTask record for Job to handle.
+                var mailType = _mailRepository.GetMailingListType(new GetMailingListTypeCriteria() { MailID = mail.MailingListId });
+                if (mailType == MailType.Function)
+                {
+                    _mailRepository.AddMailTask(new AddMailTaskCriteria() {
+                        MailId = mail.MailingListId,
+                        SiteId = mail.SiteId,
+                        ScheduledTime = DateTime.Now,
+                        LastSent = DateTime.Now,
+                        Status =(int)JobStatus.Success
+                    });
+                }
+
+                mailService.SendMail(mailRecord);
             }
             catch (Exception ex)
             {
@@ -164,14 +199,7 @@
         {
             try
             {
-                return new MailingList
-                {
-                    TOs = new List<string>
-                            {
-                                "aaa",
-                                "bbb"
-                            }
-                };
+                return _mailRepository.GetMailingList(new GetMailWithEmailAddressByMailID() { MailId = mailingListId });
             }
             catch (Exception ex)
             {
@@ -215,6 +243,59 @@
                     Message = "Update unsuccessfully!"
                 };
             }
+        }
+
+        private MailRecord ConvertFromMailToMailRecord(Mail mail)
+        {
+            var mailRecord = new MailRecord();
+            mailRecord.AppID = mail.ApplicationSendMailId;
+            mailRecord.Config = new MailConfig();
+            mailRecord.Config.AppID = mail.ApplicationSendMailId;
+            mailRecord.Body = mail.Body;
+            mailRecord.Subject = mail.Subject;
+            mailRecord.Title = mail.Title;
+
+            if (mail.Attachments != null && mail.Attachments.Count > 0)
+            {
+                int mailAttachCount = mail.Attachments.Count;
+                for (int i = 0; i < mailAttachCount; i++)
+                {
+                    var attach = mail.Attachments[i];
+                    mailRecord.Attachments.Add(new Fanex.MailDeliver.Model.MailAttachment()
+                    {
+                        AttachmentID = attach.Id,
+                        Content = new System.IO.MemoryStream(attach.FileContent),
+                        ContentType = (FileExtentions)((int)attach.FileExtension),
+                        FileName = attach.FileName,
+                        MailID = attach.MailId
+                    });
+                }
+            }
+
+            if (mail.AlternativeViews != null && mail.AlternativeViews.Count > 0)
+            {
+                int alternativeViewsCount = mail.AlternativeViews.Count;
+                for (int i = 0; i < alternativeViewsCount; i++)
+                {
+                    var alternativeView = mail.AlternativeViews[i];
+                    mailRecord.AlternateView.Add(new Fanex.MailDeliver.Model.MailLinkedResource()
+                    {
+                        ContentCID = alternativeView.ContentId,
+                        FileName = alternativeView.FileName,
+                        ImageType = (FileExtentions)((int)alternativeView.FileExtension),
+                        LinkedID = alternativeView.Id,
+                        MailID = alternativeView.MailId,
+                        StreamContent = new System.IO.MemoryStream(alternativeView.FileContent)
+                    });
+                }
+            }
+
+            // Get Mailing List from database
+            var mailingList = _mailRepository.GetMailingList(new GetMailWithEmailAddressByMailID() { MailId = mail.MailingListId });
+            mailRecord.MailTo = string.Join(";", mailingList.TOs);
+            mailRecord.MailCc = string.Join(";", mailingList.CCs);
+            mailRecord.MailBcc = string.Join(";", mailingList.BCCs);
+            return mailRecord;
         }
     }
 }

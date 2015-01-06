@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
-using Fanex.MailDelivery.Client.Enumerations;
+    using Fanex.MailDelivery.Client.Enumerations;
 
     /// <summary>
     /// Function Mailing List Request.

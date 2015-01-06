@@ -6,6 +6,8 @@
     {
         public int MailTaskId { get; set; }
 
+        public int MailId { get; set; }
+
         public string MailName { get; set; }
 
         public int SiteId { get; set; }
@@ -14,7 +16,7 @@
 
         public DateTime ScheduledTime { get; set; }
 
-        public DateTime LastSent { get; set; }
+        public DateTime? LastSent { get; set; }
 
         public int Status { get; set; }
 

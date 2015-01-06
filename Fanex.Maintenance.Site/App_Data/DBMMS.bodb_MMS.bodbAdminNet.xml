@@ -20,10 +20,24 @@
     <Setting Key="MailStation_GetMailByID" SpName="Mail_MailManagement_GetMailByID" DbName="DBMMS.bodb_MMS.bodbAdminNet">
     </Setting>
     <Setting Key="MailStation_EditMail" SpName="Mail_MailManagement_UpdateMail" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
+    <Setting Key="MailStation_DeleteMail" SpName="Mail_MailManagement_DeleteMail" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
+    <Setting Key="Mail_MailManagement_GetScheduleByMailID" SpName="Mail_MailManagement_GetScheduleByMailID" DbName="DBMMS.bodb_MMS.bodbAdminNet" >
+      <Mapping DataField="MailID" ObjectProperty="Id" />
+      <Mapping DataField="SiteId" ObjectProperty="SiteId" />
+      <Mapping DataField="MailName" ObjectProperty="Name" />
+      <Mapping DataField="CronExpression" ObjectProperty="RepeatExpression" />
+      <Mapping DataField="StartOn" ObjectProperty="StartTime" />
+      <Mapping DataField="EndOn" ObjectProperty="EndTime" />
+      <Mapping DataField="IsActive" ObjectProperty="Active" />
+      <Mapping DataField="Interval" ObjectProperty="RetryIntervalInSeconds" />
+      <Mapping DataField="Attempt" ObjectProperty="MaxRetryTimes" />
+    </Setting>
   </Function>
   <Function Name="Mail Station - Mail Report">
     <Setting Key="MailStation_MailReport_GetMailTaskList" SpName="Mail_Report_GetMailTaskList" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
     <Setting Key="MailStation_MailReport_GetLogDetail" SpName="Mail_Report_GetLogDetails" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
+    <Setting Key="Mail_Report_GetMailTaskByID" SpName="Mail_Report_GetMailTaskByID" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
+    <Setting Key="Mail_Report_GetAllSchedule" SpName="Mail_Report_GetAllSchedule" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
   </Function>
   <Function Name="Mail Station - Manage Recipient">
     <Setting Key="MailStation_MailReport_GetRecipientList" SpName="Mail_ManageRecipient_GetRecipientList" DbName="DBMMS.bodb_MMS.bodbAdminNet" />

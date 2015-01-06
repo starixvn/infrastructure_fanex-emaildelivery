@@ -11,7 +11,12 @@
     public enum JobStatus : int
     {
         /// <summary>
-        /// The data is no ready status.
+        /// The waiting status.
+        /// </summary>
+        Waiting = 0,
+
+        /// <summary>
+        /// The data is not ready status.
         /// </summary>
         DataIsNotReady = 1,
 
@@ -28,6 +33,11 @@
         /// <summary>
         /// The running status.
         /// </summary>
-        Running = 4
+        Running = 4,
+
+        /// <summary>
+        /// The retry status.
+        /// </summary>
+        Retry = 5
     }
 }

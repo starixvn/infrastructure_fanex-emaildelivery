@@ -110,8 +110,9 @@
     <Compile Include="Messages\ResultMessage.cs" />
     <Compile Include="Messages\ScheduleRequestMessage.cs" />
     <Compile Include="Enumerations\FileExtension.cs" />
-    <Compile Include="Models\Mail.cs" />
+    <Compile Include="Messages\TaskLog.cs" />
     <Compile Include="Models\MailAttachment.cs" />
+    <Compile Include="Models\Mail.cs" />
     <Compile Include="Models\MailingList.cs" />
     <Compile Include="Models\MailLinkedResource.cs" />
     <Compile Include="Models\Schedule.cs" />

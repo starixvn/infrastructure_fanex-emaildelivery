@@ -8,17 +8,16 @@ var MailReportController = function () {
         TaskStatus: {
             All: -1,
             Waiting: 0,
-            Running: 1,
-            Sent: 2,
-            DataNotReady: 3,
-            Failed: 4
+            Running: 4,
+            Sent: 3,
+            DataNotReady: 1,
+            Failed: 2
         }
     };
 
     self.cachedData = {
         searchParams: null
     };
-
 
     self.initPage = function () {
         self.loadFilter();
@@ -253,7 +252,7 @@ var MailReportController = function () {
         NAP.headlineMsgBox.confirm(viewResources.Confirm_RetrySendMail, function () {
             sharedScriptManager.blockUI();
             var retryParams = {
-                MailId: mailIndex
+                TaskId: mailIndex
             };
             sharedScriptManager.callAjax(self,
             window.rootUrl + "MailStation/MailReport/RetrySendMail",
@@ -261,7 +260,7 @@ var MailReportController = function () {
             function (result) {
                 result = {
                     Code: 0,
-                    Message: 'aaa'
+                    Message: 'Job has been retried.'
                 };
                 sharedScriptManager.renderActionResult(result, afterRetryEvent);
             },

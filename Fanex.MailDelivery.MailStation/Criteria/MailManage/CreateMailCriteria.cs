@@ -23,6 +23,8 @@ namespace Fanex.MailDelivery.MailStation.Criteria.MailManage
 
         public int TriggerType { get; set; }
 
+        public int RepeatType { get; set; }
+
         public string CronExpression { get; set; }
 
         public string MailFrom { get; set; }
@@ -47,6 +49,7 @@ namespace Fanex.MailDelivery.MailStation.Criteria.MailManage
 
         public CreateMailCriteria()
         {
+            this.IsActive = true;
         }
 
         public CreateMailCriteria(MailModel model)
@@ -58,6 +61,7 @@ namespace Fanex.MailDelivery.MailStation.Criteria.MailManage
                 this.MailGroupID = model.MailGroupId;
                 this.SiteID = model.SiteId;
                 this.TriggerType = model.TriggerType;
+                this.RepeatType = model.RepeatType;
                 this.CronExpression = model.CronExpression;
                 this.MailFrom = model.MailFrom;
                 this.MailTo = model.MailTo;

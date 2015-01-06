@@ -47,6 +47,12 @@
     <Reference Include="Fanex.Logging">
       <HintPath>..\packages\Fanex.Logging.1.0.0.0\lib\net40\Fanex.Logging.dll</HintPath>
     </Reference>
+    <Reference Include="Fanex.MailDeliver.MailClient">
+      <HintPath>..\_Dependencies\MailService\Fanex.MailDeliver.MailClient.dll</HintPath>
+    </Reference>
+    <Reference Include="Fanex.NAP.Core">
+      <HintPath>..\_Dependencies\Fanex\Fanex.NAP.Core.dll</HintPath>
+    </Reference>
     <Reference Include="Fanex.NAP.Framework">
       <HintPath>..\packages\Fanex.NAP.Framework.1.0.0.3\lib\net40\Fanex.NAP.Framework.dll</HintPath>
     </Reference>
@@ -92,6 +98,13 @@
   <ItemGroup>
     <Compile Include="Configurations\AppSettings.cs" />
     <Compile Include="Configurations\MailServiceSection.cs" />
+    <Compile Include="Criteria\AddMailTaskCriteria.cs" />
+    <Compile Include="Criteria\AddMailLogCriteria.cs" />
+    <Compile Include="Criteria\GetMailWithEmailAddressByMailIDCriteria.cs" />
+    <Compile Include="Criteria\GetMailByIDCriteria.cs" />
+    <Compile Include="Criteria\UpdateTaskRetryCounterCriteria.cs" />
+    <Compile Include="Criteria\UpdateMailTaskStatusCriteria.cs" />
+    <Compile Include="Criteria\GetScheduleByIDCriteria.cs" />
     <Compile Include="Enumerations\MailStatus.cs" />
     <Compile Include="Handlers\Impl\InsertAutoMailRecordJob.cs" />
     <Compile Include="Handlers\Impl\CheckMailStatusJob.cs" />
@@ -102,6 +115,8 @@
     <Compile Include="Models\AutoMailRecord.cs" />
     <Compile Include="Models\MailRecord.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\IMailRepository.cs" />
+    <Compile Include="Repositories\MailRepository.cs" />
     <Compile Include="Services\IMailService.cs" />
     <Compile Include="Services\MailService.cs" />
     <Compile Include="Services\ServiceBase.cs" />
@@ -111,9 +126,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Criteria\" />
     <Folder Include="Messages\" />
-    <Folder Include="Repositories\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Fanex.MailDelivery.Client\Fanex.MailDelivery.Client.csproj">

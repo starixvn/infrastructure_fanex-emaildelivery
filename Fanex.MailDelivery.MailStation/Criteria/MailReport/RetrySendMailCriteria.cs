@@ -16,7 +16,7 @@ namespace Fanex.MailDelivery.MailStation.Criteria.MailReport
     /// </summary>
     public class RetrySendMailCriteria : CriteriaBase
     {
-        public string MailId { get; set; }
+        public int TaskId { get; set; }
 
         public override string GetSettingKey()
         {

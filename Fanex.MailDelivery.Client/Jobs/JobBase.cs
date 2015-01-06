@@ -30,34 +30,43 @@
             try
             {
                 var schedule = context.MergedJobDataMap[MailDeliveryConstants.ScheduleJobDataKey] as Schedule;
+
                 if (schedule != null)
                 {
-                    JobResultMessage jobResult = null;
+                    int taskID = schedule.TaskId;
+                    JobResultMessage jobResult = new JobResultMessage();
+                    jobResult.JobStatus = JobStatus.Running;
+                    jobResult.RunningTime = context.FireTimeUtc.GetValueOrDefault().DateTime.ToLocalTime();
+                    jobResult.Schedule = schedule.Clone();
+                    if (schedule != null && schedule.TaskId == 0)
+                    {
+                        jobResult = MailClientHandler.RequestAddMailTaskForRunningJob(jobResult);
+                        taskID = jobResult.Schedule.TaskId;
+                    }
+
+                    MailClientHandler.ReportJob(jobResult);
                     try
                     {
                         jobResult = Run(schedule, context);
                     }
                     catch (Exception ex)
                     {
-                        BaseHandler.LogError(ex);
-                        jobResult = new JobResultMessage
+                        jobResult.TaskLog = new TaskLog()
                         {
-                            Schedule = schedule,
-                            JobStatus = JobStatus.Failed,
-                            Result = new ResultMessage
-                            {
-                                ErrCode = MailDeliveryConstants.JobFailedErrorCode,
-                                ErrMsg = ex.ToString()
-                            }
+                            LogTime = DateTime.Now,
+                            Message = ex.Message,
+                            StackTrace = ex.StackTrace
                         };
                     }
 
-                    MailClientHandler.ReportJob(jobResult);
-
+                    jobResult.Schedule.TaskId = taskID;
                     if (jobResult.JobStatus != JobStatus.Success)
                     {
-                        RetryJob(schedule.Clone(), context.MergedJobDataMap);
+                        RetryJob(jobResult.Schedule, context.MergedJobDataMap);
+                        jobResult.JobStatus = jobResult.Schedule.IsRunning() ? JobStatus.Running : JobStatus.DataIsNotReady;
                     }
+
+                    MailClientHandler.ReportJob(jobResult);
                 }
             }
             catch (Exception ex)
