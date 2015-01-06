@@ -8,6 +8,7 @@ var MailManageController = function () {
         MailName: null,
         IsActive: null,
         MailGroupID: null,
+        MailGroup: null,
         SiteID: null,
         TriggerType: null,
         Emails: null,
@@ -27,10 +28,7 @@ var MailManageController = function () {
 
     self.initPage = function () {
         self.cacheDOMElements();
-        self.bindEvents();
-        DOMElements.TriggerType.val(-1);
-        contextMenuController.bindContextMenuEvents();
-        DOMElements.btnSearch.click();
+        self.renderMailGroupFilter();
     };
 
     self.cacheDOMElements = function () {
@@ -43,21 +41,84 @@ var MailManageController = function () {
         DOMElements.btnSearch = $('#button-search');
         DOMElements.gridContainer = $('#mail-list');
         DOMElements.btnSearch = $('#button-search');
+        DOMElements.MailGroup = $('#dropdownMailGroup');
     };
 
     self.bindEvents = function () {
         DOMElements.btnSearch.click(function () {
-            self.buttonSearchClick();
+            self.getMailList();
+        });
+
+        $([DOMElements.MailName, DOMElements.Emails]).each(function () {
+            $(this).keypress(function (e) {
+                if (e.which == 13) {
+                    self.getMailList();
+                }
+            });
         });
     };
 
-    self.buttonSearchClick = function () {
+    self.renderMailGroupFilter = function (result) {
+        sharedScriptManager.callAjax(self,
+            window.rootUrl + "MailStation/MailManage/MailGroups",
+            null,
+            function (result) {
+                var mailGroupID = parseInt(DOMElements.MailGroupID.val());
+                DOMElements.MailGroup.empty();
+                if (result && result.length > 0) {
+                    var optionLength = result.length;
+                    var ddlData = [];
+                    var prefixId = 'ddlGroup_';
+                    for (var i = 1; i < optionLength; i++) {
+                        var info = result[i];
+                        ddlData.push({
+                            Id: prefixId + info.Value,
+                            Value: info.Value,
+                            Text: info.Text,
+                            Checked: isNaN(mailGroupID) ? true : parseInt(info.Value) === mailGroupID,
+                            Enable: true,
+                            CssClass: "",
+                            Items: []
+                        });
+                    }
+
+                    DOMElements.MailGroup.multiSelect(
+                    {
+                        minWidth: 158,
+                        maxHeight: 450,
+                        shadow: true,
+                        showHeader: true,
+                        isCheckAll: isNaN(mailGroupID),
+                        showFooter: false,
+                        showTooltip: false,
+                        checkAllText: "All",
+                        isUsedCustomCheckAllText: true,
+                        customCheckAllText: "All",
+                        noItemText: "No Group is selected",
+                        selectedList: 3,
+                        listData: ddlData
+                    });
+
+                    DOMElements.MailGroup = $('#dropdownMailGroup');
+                }
+
+                self.bindEvents();
+                DOMElements.TriggerType.val(-1);
+                contextMenuController.bindContextMenuEvents();
+                DOMElements.btnSearch.click();
+            },
+            null,
+            sharedScriptManager.unblockUI);
+
+    };
+
+    self.getMailList = function () {
         sharedScriptManager.blockUI();
         NAP.headlineMsgBox.close();
         self.reportParams = {
             MailName: DOMElements.MailName.val(),
             IsActive: DOMElements.IsActive.val(),
-            MailGroupID: DOMElements.MailGroupID.val(),
+            MailGroupID: DOMElements.MailGroup.multiSelect('getCheckedItems').join(','),
             SiteID: DOMElements.SiteID.val(),
             TriggerType: DOMElements.TriggerType.val(),
             Emails: DOMElements.Emails.val()
@@ -83,7 +144,7 @@ var MailManageController = function () {
                 Name: "ColMailName",
                 Value:
                         viewResources.hasEditRight ?
-                            ('<a class="link mail-name" href="javascript:;"' + mailIndex + '>' +
+                            ('<a title="' + mail.MailName + '" class="link mail-name" href="javascript:;"' + mailIndex + '>' +
                                 mail.MailName +
                             '</a>') :
                              mail.MailName
@@ -95,7 +156,7 @@ var MailManageController = function () {
             rowColumns.push({ Name: "ColTo", Value: mail.MailTo });
             rowColumns.push({ Name: "ColCC", Value: mail.MailCc });
             rowColumns.push({ Name: "ColBCC", Value: mail.MailBcc });
-            rowColumns.push({ Name: "ColLastSent", Value: mail.LastSent });
+            rowColumns.push({ Name: "ColLastSent", Value: mail.LastSent === null || mail.LastSent === '' ? 'N/A' : mail.LastSent });
             rowColumns.push({ Name: "ColActive", Value: mail.IsActive ? '<div class="ico-tick"></div>' : '' });
             if (viewResources.hasEditRight) {
                 rowColumns.push({
@@ -114,8 +175,8 @@ var MailManageController = function () {
 
         var headerColumns = [];
         headerColumns.push({ HeaderText: viewResources.Id, Width: 20, Name: "ColId", HeaderAlign: "center", CellAlign: "center" });
-        headerColumns.push({ HeaderText: viewResources.Mail_Name, Width: 250, Name: "ColMailName", HeaderAlign: "center", CellAlign: "left" });
-        headerColumns.push({ HeaderText: viewResources.Group, Width: 100, Name: "ColGroup", HeaderAlign: "center", CellAlign: "left", AllowTruncate: true });
+        headerColumns.push({ HeaderText: viewResources.Mail_Name, Width: 230, Name: "ColMailName", HeaderAlign: "center", CellAlign: "left" });
+        headerColumns.push({ HeaderText: viewResources.Group, Width: 90, Name: "ColGroup", HeaderAlign: "center", CellAlign: "left", AllowTruncate: true });
         headerColumns.push({ HeaderText: viewResources.Site, Width: 100, Name: "ColSite", HeaderAlign: "center", CellAlign: "left", AllowTruncate: true });
         headerColumns.push({ HeaderText: viewResources.Trigger, Width: 100, Name: "ColTrigger", HeaderAlign: "center", CellAlign: "center" });
         headerColumns.push({ HeaderText: viewResources.To, Width: 130, Name: "ColTo", HeaderAlign: "center", CellAlign: "left", AllowTruncate: true });
@@ -131,17 +192,10 @@ var MailManageController = function () {
             columns: headerColumns,
             showTitle: false,
             bodyRows: bodyData,
-            numberOfFrozenColumn: 0,
-            fullWidth: true,
-            fullHeight: false,
-            gridHeight: 10000,
             showDistinctRow: false,
             showHighlightRow: true,
-            showTree: true,
-            treeParentPaddingLeft: 5,
-            headerColumnHeight: 29,
-            bodyRowHeight: 30,
             showPager: true,
+            gridExpandHeight: 350,
             pagerOption: {
                 itemsPerPage: sharedScriptManager.cachedData.defaultItemsPerPage,
                 currentPage: 0,
@@ -152,6 +206,8 @@ var MailManageController = function () {
 
         DOMElements.gridContainer.removeClass("display-none").fanexGrid(gridOptions);
         self.bindGridEvent();
+        $('.mail-name').parent().addClass('column-truncate');
+        DOMElements.gridContainer.fanexGrid('resizeGrid');
     };
 
     self.bindGridEvent = function () {
@@ -246,9 +302,9 @@ var MailManageController = function () {
                     self.refreshMailList();
                 }, sharedScriptManager.cachedData.alertSuccessTime);
             });
-        };
     };
-    self.initRecipientInfo = function (recipient) {
+};
+self.initRecipientInfo = function (recipient) {
 
 };
 

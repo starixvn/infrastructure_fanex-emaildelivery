@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Fanex.MailDelivery.Client.Messages
+﻿namespace Fanex.MailDelivery.Client.Messages
 {
+    using System;
+
+    /// <summary>
+    /// The Task Log.
+    /// </summary>
     public class TaskLog
     {
         public string Message { get; set; }

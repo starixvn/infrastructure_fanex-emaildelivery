@@ -23,7 +23,6 @@
 
             // Tell quartz to schedule the job using our trigger
             _scheduler.ScheduleJob(job, trigger);
-
         }
 
         /// <summary>
@@ -37,7 +36,6 @@
 
             // Tell quartz to schedule the job using our trigger
             _scheduler.ScheduleJob(job, trigger);
-
         }
 
         public void Start()
@@ -45,7 +43,7 @@
             ISchedulerFactory schedFact = new StdSchedulerFactory();
             _scheduler = schedFact.GetScheduler();
             _scheduler.Start();
-            
+
             if (AppSettings.MailCientConfig.HasSchedule())
             {
                 StartJobs(MailClientHandler.GetSchedules());
@@ -60,11 +58,13 @@
         {
             foreach (var schedule in schedules)
             {
-                if (schedule.Active && !schedule.IsScheduleEnd())
+                if (schedule != null && schedule.Active && !schedule.IsScheduleEnd())
                 {
                     IJobDetail job = GetJob(schedule);
                     ITrigger trigger = GetTrigger(schedule);
-                    //// Tell quartz to schedule the job using our trigger
+                    //// Unschedule all redundant job.
+                    _scheduler.UnscheduleJob(trigger.Key);
+                    //// Tell quartz to schedule the job using our trigger.
                     _scheduler.ScheduleJob(job, trigger);
                     if (schedule.SiteId != AppSettings.MailCientConfig.SiteId)
                     {
@@ -92,30 +92,35 @@
         /// <param name="schedule">The schedule contains information need be updated.</param>
         public void UpdateSchedule(Schedule schedule)
         {
-            var triggerKey = new TriggerKey(schedule.Name, MailDeliveryConstants.MailCentralizedTriggerGroup);
-            var oldTrigger = _scheduler.GetTrigger(triggerKey);
-
-            if (oldTrigger != null)
+            // If the schedule is belong to current Client.
+            // We just manage the Schedule belong to us (in appconfig).
+            if (AppSettings.HasScheduleId(schedule.Id))
             {
-                //// If schedule still active, then update schedule, opposite case then un-schedule job.
-                if (schedule.Active && !schedule.IsScheduleEnd())
+                var triggerKey = new TriggerKey(schedule.Id.ToString(), MailDeliveryConstants.MailCentralizedTriggerGroup);
+                var oldTrigger = _scheduler.GetTrigger(triggerKey);
+
+                if (oldTrigger != null)
                 {
-                    ITrigger newTrigger = GetTrigger(schedule);
-                    _scheduler.RescheduleJob(triggerKey, newTrigger);
+                    //// If schedule still active, then update schedule, opposite case then un-schedule job.
+                    if (schedule.Active && !schedule.IsScheduleEnd())
+                    {
+                        ITrigger newTrigger = GetTrigger(schedule);
+                        _scheduler.RescheduleJob(triggerKey, newTrigger);
+                    }
+                    else
+                    {
+                        _scheduler.UnscheduleJob(triggerKey);
+                    }
                 }
                 else
                 {
-                    _scheduler.UnscheduleJob(triggerKey);
-                }
-            }
-            else
-            {
-                if (!schedule.IsScheduleEnd())
-                {
-                    IJobDetail job = GetJob(schedule);
-                    ITrigger trigger = GetTrigger(schedule);
-                    //// Tell quartz to schedule the job using our trigger
-                    _scheduler.ScheduleJob(job, trigger);
+                    if (!schedule.IsScheduleEnd())
+                    {
+                        IJobDetail job = GetJob(schedule);
+                        ITrigger trigger = GetTrigger(schedule);
+                        //// Tell quartz to schedule the job using our trigger
+                        _scheduler.ScheduleJob(job, trigger);
+                    }
                 }
             }
         }
@@ -185,6 +190,7 @@
         /// <returns>Job details.</returns>
         private IJobDetail GetRetryJob(Schedule schedule)
         {
+            schedule.ConvertToServerTime();
             string jobName = string.Format(
                 MailDeliveryConstants.AutoMailJobNameFormat,
                 schedule.Id.ToString() + Guid.NewGuid().ToString());
@@ -203,6 +209,7 @@
         /// <returns>Trigger details.</returns>
         private ITrigger GetRetryTrigger(Schedule schedule)
         {
+            schedule.ConvertToServerTime();
             var jobDataMap = GetJobDataMap(schedule);
             ITrigger retryTrigger = TriggerBuilder.Create()
                 .StartAt(DateTimeOffset.Now.AddSeconds(MailDeliveryConstants.RetryDelayInSecond))
@@ -219,6 +226,7 @@
         /// <returns>Trigger starts job.</returns>
         private ITrigger GetTrigger(Schedule schedule)
         {
+            schedule.ConvertToServerTime();
             var jobData = GetJobDataMap(schedule);
 
             TriggerBuilder triggerBuilder = TriggerBuilder.Create();
@@ -240,7 +248,7 @@
             }
 
             ITrigger trigger = triggerBuilder
-                .WithIdentity(schedule.Name, MailDeliveryConstants.MailCentralizedTriggerGroup)
+                .WithIdentity(schedule.Id.ToString(), MailDeliveryConstants.MailCentralizedTriggerGroup)
                 .WithCronSchedule(schedule.RepeatExpression)
                 .UsingJobData(jobData)
                 .Build();

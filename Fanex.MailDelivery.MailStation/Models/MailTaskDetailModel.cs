@@ -2,6 +2,9 @@
 {
     using System;
 
+    /// <summary>
+    /// Mail Task Detail Model.
+    /// </summary>
     public class MailTaskDetailModel
     {
         public int ScheduleID { get; set; }
@@ -27,5 +30,7 @@
         public string SiteName { get; set; }
 
         public DateTime? LastSent { get; set; }
+
+        public DateTime LastScheduledTime { get; set; }
     }
 }

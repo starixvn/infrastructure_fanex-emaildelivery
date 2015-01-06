@@ -47,6 +47,10 @@
     <Reference Include="Fanex.Logging">
       <HintPath>..\packages\Fanex.Logging.1.0.0.0\lib\net40\Fanex.Logging.dll</HintPath>
     </Reference>
+    <Reference Include="Fanex.MailDeliver.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\_Dependencies\MailService\Fanex.MailDeliver.Core.dll</HintPath>
+    </Reference>
     <Reference Include="Fanex.MailDeliver.MailClient">
       <HintPath>..\_Dependencies\MailService\Fanex.MailDeliver.MailClient.dll</HintPath>
     </Reference>
@@ -100,6 +104,7 @@
     <Compile Include="Configurations\MailServiceSection.cs" />
     <Compile Include="Criteria\AddMailTaskCriteria.cs" />
     <Compile Include="Criteria\AddMailLogCriteria.cs" />
+    <Compile Include="Criteria\UpdateMailTaskMailRecordIDCriteria.cs" />
     <Compile Include="Criteria\GetMailWithEmailAddressByMailIDCriteria.cs" />
     <Compile Include="Criteria\GetMailByIDCriteria.cs" />
     <Compile Include="Criteria\UpdateTaskRetryCounterCriteria.cs" />

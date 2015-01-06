@@ -18,8 +18,6 @@
                 ISchedulerFactory schedFact = new StdSchedulerFactory();
                 _scheduler = schedFact.GetScheduler();
                 _scheduler.Start();
-                // StartInsertAutoMailRecordJob();
-                // StartCheckAutoMailStatusJob();
             }
         }
 

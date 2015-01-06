@@ -146,7 +146,7 @@ namespace Fanex.Maintenance.Site.App_Start
                 "~/scripts/ShareScripts/SharedScriptManager.js"));
             bundles.AddAndInclude(
                 "~/themes/sharedstyles",
-                "~/themes/shared/sitestyle.less",
+                "~/themes/manage/manage.less",
                 "~/scripts/lib/Select2/select2.css",
                 "~/scripts/lib/Select2/select2-custom.css");
         }
@@ -154,7 +154,7 @@ namespace Fanex.Maintenance.Site.App_Start
         public static void RegisterFanexGridBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/scripts/fanexgridscripts").Include(
-                "~/scripts/lib/Fanex.Grid/moment.js",
+                "~/scripts/lib/Fanex.Grid/moment.min.js",
                 "~/scripts/lib/Fanex.Grid/Fanex.Grid.js",
                 "~/scripts/lib/Fanex.Grid/Fanex.Pagination.js"));
             bundles.AddAndInclude(

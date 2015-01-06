@@ -1,20 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Web.Mvc;
-
-namespace Fanex.MailDelivery.MailStation.Constants
+﻿namespace Fanex.MailDelivery.MailStation.Constants
 {
+    using System.Collections.Generic;
+    using System.Web.Mvc;
+
+    /// <summary>
+    /// Mail Station Constants.
+    /// </summary>
     public static class MailStationConstants
     {
-        public readonly static List<SelectListItem> Active;
+        public static readonly List<SelectListItem> Active;
 
-        public readonly static List<SelectListItem> TriggerTypes;
+        public static readonly List<SelectListItem> TriggerTypes;
 
-        public readonly static List<SelectListItem> AllItem;
+        public static readonly List<SelectListItem> AllItem;
 
-        public readonly static List<SelectListItem> TaskStatus;
+        public static readonly List<SelectListItem> TaskStatus;
 
         static MailStationConstants()
         {
@@ -32,9 +32,9 @@ namespace Fanex.MailDelivery.MailStation.Constants
             TaskStatus = new List<SelectListItem>();
             TaskStatus.Add(new SelectListItem() { Text = "Waiting".ToUpper(), Value = "0" });
             TaskStatus.Add(new SelectListItem() { Text = "Running".ToUpper(), Value = "1" });
-            TaskStatus.Add(new SelectListItem() { Text = "Sent".ToUpper(), Value = "2" });
-            TaskStatus.Add(new SelectListItem() { Text = "Data not ready".ToUpper(), Value = "3" });
-            TaskStatus.Add(new SelectListItem() { Text = "Failed".ToUpper(), Value = "4" });
+            TaskStatus.Add(new SelectListItem() { Text = "Data not ready".ToUpper(), Value = "2" });
+            ////TaskStatus.Add(new SelectListItem() { Text = "Failed".ToUpper(), Value = "3" });
+            TaskStatus.Add(new SelectListItem() { Text = "Sent".ToUpper(), Value = "4" });
         }
     }
 }

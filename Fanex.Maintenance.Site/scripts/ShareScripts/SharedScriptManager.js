@@ -72,29 +72,46 @@ var SharedScriptManager = function () {
         return re.test(email);
     };
 
-    self.createErrorSummary = function (errorList) {
+    self.createValidationSummary = function (errorList, isSuccess) {
         var validationSum = $('#validationSummary');
         var html = ["<ul>"];
         for (var i = 0; i < errorList.length; i++) {
             html.push("<li>");
-            html.push(errorList[i]);
+            html.push(NAP.htmlDecode(errorList[i]));
             html.push("</li>");
         }
 
         html.push("</ul>");
         validationSum.html(html.join(''));
         validationSum.removeClass();
-        validationSum.addClass("validation-summary-errors");
+        if (isSuccess) {
+            validationSum.addClass("validation-summary-valid success");
+        } else {
+            validationSum.addClass("validation-summary-errors");
+        }
+
         $('#validation-summary-row').removeClass('display-none');
     }
 
-    self.createSuccessSummary = function (msg, url, msec) {
-        var validationSum = $('#validationSummary');
-        validationSum.html("<ul><li>" + msg + "</li></ul>");
-        validationSum.removeClass();
-        validationSum.addClass("validation-summary-valid success");
-        $('#validation-summary-row').removeClass('display-none');
+    self.hideValidateSummary = function () {
+        $('#validationSummary').empty();
     }
+
+    self.showNonQueryResult = function (result, url, msec, callback) {
+        var msg = [];
+        msg.push(result.Message);
+        self.createValidationSummary(msg, result.IsSuccessful);
+        if (result.IsSuccessful) {
+            if ($.isFunction(callback)) {
+                callback();
+            }
+
+            if (url !== null && url !== undefined && url !== '') {
+                NAP.showSuccessMsgCountDown(url, msec / 1000);
+            }
+        }
+    }
+
 };
 
 sharedScriptManager = new SharedScriptManager();

@@ -1,18 +1,21 @@
 ﻿namespace Fanex.MailDelivery.MailStation.Services.ManageMail
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using Fanex.Data;
+    using Fanex.MailDelivery.Admin.Handlers;
+    using Fanex.MailDelivery.Client.Models;
+    using Fanex.MailDelivery.MailStation.Criteria.MailGroup;
     using Fanex.MailDelivery.MailStation.Criteria.MailManage;
     using Fanex.MailDelivery.MailStation.Models;
     using Fanex.NAP.Framework.Command;
-    using Fanex.MailDelivery.Client.Models;
-    using Fanex.MailDelivery.Admin.Handlers;
-    using System;
 
+    /// <summary>
+    /// Mail Manage Service.
+    /// </summary>
     public class MailManageService : MailStationBaseService
     {
-
         public List<MailModel> MailList(GetMailListCriteria criteria)
         {
             using (ObjectDb db = new ObjectDb(criteria.GetSettingKey()))
@@ -41,6 +44,11 @@
             return ExecuteNonQuery(criteria);
         }
 
+        /// <summary>
+        /// Updates the mail.
+        /// </summary>
+        /// <param name="criteria">The criteria.</param>
+        /// <returns>Command Result.</returns>
         public CommandResult UpdateMail(UpdateMailCriteria criteria)
         {
             MailAdminHandler.Start();

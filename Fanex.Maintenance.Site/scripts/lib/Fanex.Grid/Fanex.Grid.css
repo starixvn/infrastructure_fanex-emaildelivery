@@ -1,10 +1,4 @@
-﻿body
-{
-    overflow: hidden;
-    margin: 0;
-    padding: 0;
-}
-
+﻿
 .freegrid
 {
     overflow: hidden;
@@ -12,7 +6,7 @@
     z-index: 0;
     border: solid 1px #c5c5c5;
     font-size: 0.9em;
-    clear: both;
+    
 }
 .freegrid .grid-toolbox input[type='button']:hover
 {
@@ -159,7 +153,10 @@
 .freegrid .table-cell
 {
     display: table-cell;
-    vertical-align: middle; /*-webkit-box-sizing: border-box;     -moz-box-sizing: border-box;       box-sizing: border-box;   */
+    vertical-align: middle;
+    /*-webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;  
+    box-sizing: border-box;   */   
 }
 .freegrid .wordwarp
 {
@@ -211,10 +208,13 @@
     z-index: 4;
 }
 
-.freegrid .y-scrollbar-fix-width
-{
-    width: 17.5px !important;
-}
+.freegrid .y-scrollbar-fix-width {
+        width: 17.1px !important;
+    }
+
+.freegrid .x-scrollbar-fix-height {
+        height: 17.1px !important;
+    }
 
 .freegrid .x-scrollbar
 {
@@ -293,14 +293,21 @@
     font-weight: normal;
     font-size: 1.0em;
     padding: 2px;
-    font-weight: bold; /*height: 21px;*/
+    font-weight: bold;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+    /*height: 21px;*/
 }
 .freegrid .free-top-left table thead th, .freegrid .col_header table thead th
 {
-    background: #549CBA;
-    background: -moz-linear-gradient(#549CBA, #549CBA) #549CBA;
-    background: -webkit-linear-gradient(#549CBA, #549CBA) #549CBA;
+    background: #3c5ea5;
+    background: -moz-linear-gradient(#3c5ea5, #3c5ea5) #3c5ea5;
+    background: -webkit-linear-gradient(#3c5ea5, #3c5ea5) #3c5ea5;
     color: #fff;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
 }
 
 .freegrid .row_footer table thead th, .freegrid .col_footer table thead th
@@ -309,11 +316,13 @@
     background: -moz-linear-gradient(#dce2bc, #dbe1bb) #dbe1bb !important;
     background: -webkit-linear-gradient(#dce2bc, #dbe1bb) #dbe1bb !important;
     color: #4F4F4F;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
 }
 
-.freegrid .free-bottom-right table thead th, .freegrid .free-top-right table thead th
-{
-    background-color: #F1F1F1;
+.freegrid .free-bottom-right table thead th, .freegrid .free-top-right table thead th {
+	background-color: #F1F1F1;
 }
 
 .freegrid .col_header_content th, .freegrid .col_body_content th, .freegrid .grid-fixed-table thead th
@@ -336,8 +345,12 @@
     border-color: #c5c5c5;
     border-style: solid;
     border-width: 0 1px 1px 0;
-    padding: 2px; /*height: 21px;*/
+    padding: 2px;
+    /*height: 21px;*/
     font-size: 1.0em;
+    /*-webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;*/
 }
 
 .freegrid div.row-headers-background
@@ -407,7 +420,7 @@
 
 .freegrid .two-row-text
 {
-    height: 35px;
+  height: 35px;  
 }
 
 .freegrid .height55
@@ -444,8 +457,7 @@ div.divSorter.desc
     background-image: url(images/sort-icon.png);
     background-position: right 10px top 7px ;
 }*/
-.freegrid div.divSorter
-{
+.freegrid div.divSorter {
     background-image: url("images/sort-icon-new3.png") !important;
     background-position: 0 -5px;
     background-repeat: no-repeat !important;
@@ -456,136 +468,205 @@ div.divSorter.desc
     margin-right: 10px;
     width: 10px;
 }
-.freegrid div.divSorter.asc
-{
+.freegrid div.divSorter.asc {
     background-position: 0 -32px !important;
 }
-div.divSorter.desc
-{
+div.divSorter.desc {
     background-position: 0 -53px !important;
 }
 
-.freegrid .parent-row td
-{
+.freegrid .parent-row td {
     color: #30465D;
     font-weight: bold;
 }
-.freegrid .parent-level-0 td
-{
+.freegrid .parent-level-0 td {
     background-color: #C2D9EC;
 }
 
-.freegrid .parent-level-1 td
-{
+.freegrid .parent-level-1 td {
     background-color: #D4EDFB;
 }
 
-.freegrid .parent-level-2 td
-{
+.freegrid .parent-level-2 td {
     background-color: #EBFDFD;
 }
 
-.freegrid .parent-level-3 td
-{
+.freegrid .parent-level-3 td {
     background-color: #EFFEFD;
 }
 
-.freegrid .parent-level-4 td
-{
+.freegrid .parent-level-4 td {
     background-color: #FFFEFD;
 }
 
-.freegrid .parent-level-5 td
-{
+.freegrid .parent-level-5 td {
     background-color: #FFFFFD;
 }
-.freegrid .parent-row .tr-grid-collapse-expand
-{
+.freegrid .parent-row .tr-grid-collapse-expand {
     cursor: pointer;
 }
 
 
-.freegrid span.grid-expand
-{
+.freegrid span.grid-expand {
     background: url("images/expand-small.png") no-repeat scroll 4px center transparent;
     padding: 8px;
 }
 
-.freegrid span.grid-collapse
-{
-    padding: 8px;
-    background: url(images/collapse-small.png) 4px center no-repeat;
+.freegrid span.grid-collapse{
+	padding:8px;
+	background: url(images/collapse-small.png) 4px center no-repeat;
 }
-.freegrid span.grid-collapse-expand-noitem
-{
-    padding: 8px;
+.freegrid span.grid-collapse-expand-noitem{
+	padding:8px;
 }
-.freegrid .freegrid-even td
+.freegrid .freegrid-even td 
 {
-    background-color: #E4F2FD;
+     background-color: #E4F2FD;
 }
 
-.freegrid .display-inline-block
-{
+.freegrid .display-inline-block {
     display: inline-block;
 }
 
-.freegrid .no-data-not-frozen
-{
-    color: red;
+.freegrid .no-data-not-frozen {
+	color: red;
     font-weight: bold;
     text-align: center !important;
+	
 }
 
-.freegrid .no-data-frozen
-{
-    color: red;
-    font-weight: bold; /*margin-left: 35px;*/
+.freegrid .no-data-frozen {
+	color: red;
+    font-weight: bold;
+    /*margin-left: 35px;*/
     text-align: left !important;
 }
 
-.freegrid .grid-show-hide-column
-{
-    display: none;
+.freegrid .grid-show-hide-column {
+	display:none;
 }
 
-.freegrid .highlight-row
-{
+.freegrid .highlight-row {
+	
 }
 
 
-.freegrid tr.highlight-row:hover td
-{
-    background-color: #E2FFFF;
+.freegrid tr.highlight-row:hover td {
+	 background-color: #E2FFFF;
 }
 
-.freegrid .mousehoverbeyond td
-{
-    background-color: #E2FFFF !important;
+.freegrid .mousehoverbeyond td {
+    	background-color: #E2FFFF !important;
 }
 
-.freegrid .border-right-highlight
-{
-    border-right-width: 2px !important;
+.freegrid .border-right-highlight {
+	 border-right-width: 2px !important;
 }
 
-.freegrid .colSorter
-{
-    cursor: pointer;
+.freegrid .colSorter {
+	cursor: pointer;
 }
 
-.freegrid .format-negative, .freegrid .format-positive
-{
-    color: Red;
+.freegrid .format-negative, .freegrid .format-positive {
+	color: Red;
 }
 
-.freegrid .column-truncate
-{
-    display: inline-block;
+.freegrid .column-truncate {
+	display: inline-block;
     position: relative;
     white-space: pre;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
-.freegrid .freegrid-active-row td
+.freegrid .freegrid-active-row td 
 {
-    background-color: #9EB2DC;
+     background-color: #9EB2DC;
+}
+
+
+
+::-webkit-scrollbar
+{
+	height: 18px;
+	overflow: visible;
+	width: 18px;
+}
+::-webkit-scrollbar-button
+{
+	height: 0;
+	width: 0;
+}
+
+::-webkit-scrollbar-track
+{
+	background-clip: padding-box;
+	border: solid transparent;
+	border-width: 0 0 0 1px;
+}
+::-webkit-scrollbar:vertical
+{
+	width: 18px;
+}
+::-webkit-scrollbar:horizontal
+{
+	height: 18px;
+}
+::-webkit-scrollbar-track:horizontal
+{
+	border-width: 1px 0 0;
+}
+::-webkit-scrollbar-track:hover
+{
+	background-color: rgba(0,0,0,.05);
+	box-shadow: inset 1px 0 0 rgba(0,0,0,.1);
+}
+::-webkit-scrollbar-track:horizontal:hover
+{
+	box-shadow: inset 0 1px 0 rgba(0,0,0,.1);
+}
+::-webkit-scrollbar-track:active
+{
+	background-color: rgba(0,0,0,.05);
+	box-shadow: inset 1px 0 0 rgba(0,0,0,.14),inset -1px 0 0 rgba(0,0,0,.07);
+}
+::-webkit-scrollbar-track:horizontal:active
+{
+	box-shadow: inset 0 1px 0 rgba(0,0,0,.14),inset 0 -1px 0 rgba(0,0,0,.07);
+}
+::-webkit-scrollbar-thumb
+{
+	background-color: rgba(0,0,0,.2);
+	background-clip: padding-box;
+	border: solid transparent;
+	border-width: 3px 1px 1px 3px;
+	min-height: 28px;
+	padding: 100px 0 0;
+	box-shadow: inset 1px 1px 0 rgba(0,0,0,.1),inset 0 -1px 0 rgba(0,0,0,.07);
+}
+::-webkit-scrollbar-thumb:horizontal
+{
+	border-width: 3px 1px 1px;
+	padding: 0 0 0 100px;
+	box-shadow: inset 1px 1px 0 rgba(0,0,0,.1),inset -1px 0 0 rgba(0,0,0,.07);
+}
+::-webkit-scrollbar-thumb:hover
+{
+	background-color: rgba(0,0,0,.4);
+	box-shadow: inset 1px 1px 1px rgba(0,0,0,.25);
+}
+::-webkit-scrollbar-thumb:active
+{
+	background-color: rgba(0,0,0,0.5);
+	box-shadow: inset 1px 1px 3px rgba(0,0,0,0.35);
+}
+::-webkit-scrollbar-corner
+{
+	background: transparent;
+}
+
+.fanex-grid-show-parent-block
+{
+   position: absolute; 
+   visibility: hidden; 
+   display: block;
 }

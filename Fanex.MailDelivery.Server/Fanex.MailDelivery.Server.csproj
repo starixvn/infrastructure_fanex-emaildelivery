@@ -6,7 +6,7 @@
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{DC29B2D8-1460-403E-873B-63B55372F45E}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Fanex.MailDelivery.Server</RootNamespace>
     <AssemblyName>Fanex.MailDelivery.Server</AssemblyName>
@@ -36,6 +36,9 @@
   <ItemGroup>
     <Reference Include="Fanex.Data">
       <HintPath>..\packages\Fanex.Data.0.5.404.63\lib\net40\Fanex.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\_Dependencies\Others\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Practices.EnterpriseLibrary.Common">
       <HintPath>..\packages\EnterpriseLibrary.Common.5.0.414.0\lib\net40\Microsoft.Practices.EnterpriseLibrary.Common.dll</HintPath>
@@ -90,12 +93,16 @@
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Fanex.MailDelivery.Server.UAT.exe.config" />
     <None Include="Installer\InstallMailService.bat" />
     <None Include="Installer\UnInstallMailService.bat" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="AppData\StoreProcedureName.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AppData\UAT\StoreProcedureName.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

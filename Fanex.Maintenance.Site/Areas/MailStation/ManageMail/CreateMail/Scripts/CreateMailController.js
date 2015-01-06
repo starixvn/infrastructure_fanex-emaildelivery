@@ -29,6 +29,11 @@ var InsertMailController = function () {
         TriggerType: null,
         RepeatType: null,
         CronExpression: null,
+        NexCron: null,
+        StartOn: null,
+        EndOn: null,
+        Attempt: null,
+        Interval: null,
         MailFrom: null,
         MailTo: null,
         MailCc: null,
@@ -70,6 +75,8 @@ var InsertMailController = function () {
         DOMElements.MailTo = initualValueForMagicSuggestion(DOMElements.MailTo);
         DOMElements.MailCc = initualValueForMagicSuggestion(DOMElements.MailCc);
         DOMElements.MailBcc = initualValueForMagicSuggestion(DOMElements.MailBcc);
+        DOMElements.TriggerType.change(self.triggerChange);
+        DOMElements.TriggerType.change();
     };
 
     self.cacheDOMElement = function () {
@@ -78,7 +85,12 @@ var InsertMailController = function () {
         DOMElements.SiteID = $('#SiteID');
         DOMElements.TriggerType = $('#TriggerType');
         DOMElements.RepeatType = $('#RepeatType');
-        DOMElements.CronExpression = $('#nexCron');
+        DOMElements.NexCron = $('#nexCron');
+        DOMElements.CronExpression = $('#CronExpression');
+        DOMElements.StartOn = $('#StartOn');
+        DOMElements.EndOn = $('#EndOn');
+        DOMElements.Attempt = $('#Attempt');
+        DOMElements.Interval = $('#Interval');
         DOMElements.MailFrom = $('#MailFrom');
         DOMElements.MailTo = $('#MailTo');
         DOMElements.MailCc = $('#MailCc');
@@ -91,20 +103,7 @@ var InsertMailController = function () {
 
     self.bindEvents = function () {
         $("#btn-add-group").click(function () {
-            var groupName = $(".ui-autocomplete-input").val();
-            var errorList = [];
-            if (groupName === undefined || groupName === '') {
-                errorList.push({
-                    Message: "The group name cannot be empty, please try again!"
-                });
-            }
-
-            if (errorList.length === 0) {
-                //sharedScriptManager.hideValidateSummary();
-                self.addGroup(groupName);
-            } else {
-                sharedScriptManager.showError(errorList);
-            }
+            self.addGroup($(".ui-autocomplete-input").val());
         });
 
         DOMElements.TriggerType.change(self.triggerChange);
@@ -116,20 +115,18 @@ var InsertMailController = function () {
         });
 
         $("#button-save").click(function () {
-            if (self.validateForm()) {
+            var params = self.getParams();
+            if (self.validateForm(params)) {
                 sharedScriptManager.callAjax(
                     self,
                     window.rootUrl + "MailStation/MailManage/CreateMail",
-                    self.getParams(),
+                    params,
                     function (result) {
                         if (result.IsSuccessful) {
-                            sharedScriptManager.createSuccessSummary(viewResources.CreateMailSuccessMsg);
-                            NAP.showSuccessMsg(viewResources.CreateMailSuccessMsg, "MailStation/MailManage/Index", 6000);
-                            self.refreshMailGroup();
+                            result.Message = viewResources.CreateMailSuccessMsg;
                         }
-                        else {
-                            sharedScriptManager.createErrorSummary([result.Message]);
-                        }
+
+                        sharedScriptManager.showNonQueryResult(result, "MailStation/MailManage/Index", 6000);
                     },
                     null,
                     sharedScriptManager.unblockUI
@@ -138,27 +135,37 @@ var InsertMailController = function () {
         });
     };
 
-    self.validateForm = function () {
+    self.validateForm = function (reportParams) {
         $('.input-validation-error').removeClass('input-validation-error');
+        $('.nexcron-validation-error').removeClass('nexcron-validation-error');
         $('.magic-suggest-error').removeClass('magic-suggest-error');
         if (DOMElements.MailName.val() === '') {
             DOMElements.MailName.addClass('input-validation-error');
-            sharedScriptManager.createErrorSummary(['Mail Name cannot be empty.']);
+            sharedScriptManager.createValidationSummary(['Mail Name cannot be empty.'], false);
             return false;
         }
 
-//        if (!sharedScriptManager.isValidEmail(DOMElements.MailFrom.val())) {
-//            DOMElements.MailFrom.addClass('input-validation-error');
-//            sharedScriptManager.createErrorSummary(['Mail From is not a valid email.']);
-//            return false;
-//        }
-
         if (DOMElements.MailTo.getValue().length === 0) {
             $(DOMElements.MailTo).addClass('input-validation-error');
-            sharedScriptManager.createErrorSummary(['Mail To cannot be empty.']);
+            sharedScriptManager.createValidationSummary(['Mail To cannot be empty.'], false);
             $('#MailTo').addClass('magic-suggest-error');
             $('input', '#MailTo').addClass('magic-suggest-error');
             return false;
+        }
+
+        if (DOMElements.TriggerType.val() === Enums.TriggerType.Schedule) {
+            var cronExpression = DOMElements.NexCron.nexCron('getCronExpression');
+            if (cronExpression.RepeatType === '2') {
+                var repeaton = $('#nexcron-repeat-on-day').val().split(',');
+                for (var i = 0; i < repeaton.length; i++) {
+                    var day = repeaton[i];
+                    if (parseInt(day) > 28) {
+                        $('#nexcron-repeat-on-day').addClass('nexcron-validation-error');
+                        sharedScriptManager.createValidationSummary(['Date should not be greated than 28.'], false);
+                        return false;
+                    }
+                }
+            } 
         }
 
         return true;
@@ -181,7 +188,7 @@ var InsertMailController = function () {
             };
         }
 
-        var cronResult = DOMElements.CronExpression.nexCron('getCronExpression');
+        var cronResult = DOMElements.NexCron.nexCron('getCronExpression');
         return {
             MailName: DOMElements.MailName.val(),
             MailGroupID: DOMElements.MailGroupID.val(),
@@ -193,7 +200,7 @@ var InsertMailController = function () {
             MailTo: DOMElements.MailTo.getValue().join(','),
             MailCc: DOMElements.MailCc.getValue().join(','),
             MailBcc: DOMElements.MailBcc.getValue().join(','),
-            IsActive: DOMElements.IsActive.val(),
+            IsActive: DOMElements.IsActive.is(':checked'),
             StartOn: cronResult.StartOn,
             EndOn: cronResult.EndOn,
             Attemp: cronResult.Attemp,
@@ -203,22 +210,30 @@ var InsertMailController = function () {
     };
 
     self.addGroup = function (groupName) {
-        sharedScriptManager.callAjax(
-            self,
-            window.rootUrl + "MailStation/MailManage/AddMailGroup",
-            { MailGroupName: groupName },
-            function (result) {
-                if (result.IsSuccessful) {
-                    sharedScriptManager.createSuccessSummary(viewResources.AddMailGroupSuccessMsg);
-                    self.refreshMailGroup();
-                }
-                else {
-                    sharedScriptManager.createErrorSummary([result.Message]);
-                }
-            },
-            null,
-            sharedScriptManager.unblockUI
-        );
+        var groupName = $('span[id="MailGroupID"]>input').val();
+        if (groupName === undefined || groupName === null || groupName === '') {
+            sharedScriptManager.createValidationSummary(['The group name cannot be empty, please try again!'], false);
+        }
+        else {
+            sharedScriptManager.callAjax(
+                self,
+                window.rootUrl + "MailStation/MailManage/AddMailGroup",
+                { MailGroupName: groupName },
+                function (result) {
+                    if (!result.IsSuccessful) {
+                        result.Message = 'The group exists, please try again!';
+                        sharedScriptManager.showNonQueryResult(result, null, null);
+                    }
+                    else {
+                        result.Message = 'Group is added successfully.';
+                        sharedScriptManager.showNonQueryResult(result, null, null);
+                        self.refreshMailGroup();
+                    }
+                },
+                null,
+                sharedScriptManager.unblockUI
+            );
+        }
     };
 
     self.refreshMailGroup = function () {
@@ -241,7 +256,7 @@ var InsertMailController = function () {
         var triggerId = DOMElements.TriggerType.val();
         if (triggerId === Enums.TriggerType.Schedule) {
             $(".schedule-row").removeClass("display-none");
-            DOMElements.CronExpression.nexCron();
+            DOMElements.NexCron.nexCron();
         } else {
             $(".schedule-row").addClass("display-none");
         }

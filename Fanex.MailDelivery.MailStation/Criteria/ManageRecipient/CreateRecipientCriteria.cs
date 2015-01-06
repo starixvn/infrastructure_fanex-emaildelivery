@@ -25,6 +25,10 @@ namespace Fanex.MailDelivery.MailStation.Criteria.ManageRecipient
 
         public string Email3 { get; set; }
 
+        public bool IsNAPUser { get; set; }
+
+        public int NAPUserID { get; set; }
+
         public string Note { get; set; }
 
         [SpParam(SqlParamName = "IsActive")]

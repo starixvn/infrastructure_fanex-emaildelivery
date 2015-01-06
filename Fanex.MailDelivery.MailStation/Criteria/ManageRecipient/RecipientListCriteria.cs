@@ -17,7 +17,7 @@ namespace Fanex.MailDelivery.MailStation.Criteria.ManageRecipient
     public class RecipientListCriteria : CriteriaBase
     {
         [SpParam(SqlParamName = "RecipientName")]
-        public string Username { get; set; }
+        public string UserName { get; set; }
 
         [SpParam(SqlParamName = "Email")]
         public string Emails { get; set; }

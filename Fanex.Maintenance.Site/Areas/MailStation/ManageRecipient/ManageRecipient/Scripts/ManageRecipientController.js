@@ -7,7 +7,7 @@ var ManageRecipientController = function () {
     self.initPage = function () {
         self.loadFilter();
         self.bindEvents();
-        self.buttonSearchClick();
+        self.getRecipientList();
         contextMenuController.bindContextMenuEvents();
     };
     self.cachedData = {
@@ -37,10 +37,19 @@ var ManageRecipientController = function () {
     self.bindEvents = function () {
         $("#typeCust").attr("disabled", null);
         $("#button-search").click(function () {
-            self.buttonSearchClick();
+            self.getRecipientList();
+        });
+
+        $([$("#UserName"), $("#Emails")]).each(function () {
+            $(this).keypress(function (e) {
+                if (e.which == 13) {
+                    self.getRecipientList();
+                }
+            });
         });
     };
-    self.buttonSearchClick = function () {
+
+    self.getRecipientList = function () {
         sharedScriptManager.blockUI();
         var searchParams = {
             Username: $("#UserName").val(),
@@ -55,6 +64,7 @@ var ManageRecipientController = function () {
             null,
             sharedScriptManager.unblockUI);
     };
+
     self.renderRecipientList = function (result) {
         //        result = self.dummyData();
         var recipientListLength = result.length;
@@ -99,30 +109,25 @@ var ManageRecipientController = function () {
         var headerColumns = [];
         headerColumns.push({ HeaderText: viewResources.Id, Width: 40, Name: "ColId", HeaderAlign: "center", CellAlign: "center" });
         headerColumns.push({ HeaderText: viewResources.Username, Width: 300, Name: "ColUsername", HeaderAlign: "center", CellAlign: "left" });
-        headerColumns.push({ HeaderText: viewResources.Nap_User, Width: 120, Name: "ColNapUser", HeaderAlign: "center", CellAlign: "center" });
-        headerColumns.push({ HeaderText: viewResources.Email1, Width: 120, Name: "ColEmail1", HeaderAlign: "center", CellAlign: "left" });
-        headerColumns.push({ HeaderText: viewResources.Email2, Width: 120, Name: "ColEmail2", HeaderAlign: "center", CellAlign: "left" });
-        headerColumns.push({ HeaderText: viewResources.Email3, Width: 120, Name: "ColEmail3", HeaderAlign: "center", CellAlign: "left" });
-        headerColumns.push({ HeaderText: viewResources.No_RelevantMail, Width: 120, Name: "ColNoRelevantMail", HeaderAlign: "center", CellAlign: "center" });
-        headerColumns.push({ HeaderText: viewResources.Active, Width: 120, Name: "ColActive", HeaderAlign: "center", CellAlign: "center" });
+        headerColumns.push({ HeaderText: viewResources.Nap_User, Width: 85, Name: "ColNapUser", HeaderAlign: "center", CellAlign: "center" });
+        headerColumns.push({ HeaderText: viewResources.Email1, Width: 180, Name: "ColEmail1", HeaderAlign: "center", CellAlign: "left" });
+        headerColumns.push({ HeaderText: viewResources.Email2, Width: 180, Name: "ColEmail2", HeaderAlign: "center", CellAlign: "left" });
+        headerColumns.push({ HeaderText: viewResources.Email3, Width: 180, Name: "ColEmail3", HeaderAlign: "center", CellAlign: "left" });
+        headerColumns.push({ HeaderText: viewResources.No_RelevantMail, Width: 110, Name: "ColNoRelevantMail", HeaderAlign: "center", CellAlign: "center" });
+        headerColumns.push({ HeaderText: viewResources.Active, Width: 50, Name: "ColActive", HeaderAlign: "center", CellAlign: "center" });
         if (viewResources.hasEditRight) {
-            headerColumns.push({ HeaderText: viewResources.Action, Width: 120, Name: "ColAction", HeaderAlign: "center", CellAlign: "center" });
+            headerColumns.push({ HeaderText: viewResources.Action, Width: 50, Name: "ColAction", HeaderAlign: "center", CellAlign: "center" });
         }
 
         var gridOptions = {
             columns: headerColumns,
             showTitle: false,
             bodyRows: bodyData,
-            numberOfFrozenColumn: 0,
-            fullWidth: true,
-            fullHeight: false,
-            gridHeight: 10000,
             showDistinctRow: false,
             showHighlightRow: true,
-            showTree: true,
-            treeParentPaddingLeft: 5,
             headerColumnHeight: 29,
             bodyRowHeight: 30,
+            gridExpandHeight: 350,
             showPager: true,
             pagerOption: {
                 itemsPerPage: sharedScriptManager.cachedData.defaultItemsPerPage,
@@ -160,7 +165,9 @@ var ManageRecipientController = function () {
         gridContainer.find(".ico-relevant-mail").click(function () {
             var $this = $(this);
             var recipientIndex = parseInt($this.attr("recipient-index"));
-            self.viewRelevantMail(recipientIndex);
+            if ($this.text() !== "0") {
+                self.viewRelevantMail(recipientIndex);
+            }
         });
     };
 
@@ -169,7 +176,7 @@ var ManageRecipientController = function () {
             $.param({
                 recipientId: recipientIndex
             });
-        };
+    };
 
     self.viewRelevantMail = function (recipientIndex) {
         window.location.href = window.rootUrl + 'MailStation/MailRecipient/ViewRelevantMail?' + $.param({

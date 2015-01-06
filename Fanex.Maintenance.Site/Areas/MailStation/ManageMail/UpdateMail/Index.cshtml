@@ -8,15 +8,15 @@
     Layout = "~/Views/Shared/_Layout.cshtml";  
 }
 @section Head {
+    @Styles.Render("~/scripts/lib/MagicSuggest/css")
     @Styles.Render("~/themes/sharedstyles")
     @Styles.Render("~/scripts/inputcomboboxstyles")
     @Styles.Render("~/Areas/MailStation/ManageMail/UpdateMail/UpdateMailStyles")
     @Styles.Render("~/scripts/lib/NexCron/css")
-    @Styles.Render("~/scripts/lib/MagicSuggest/css")
 }
 @section Headline {
     <h1>
-        <span class="title"><span class="first">Mail Delivery System / </span><span class="second">
+        <span class="title"><span class="first">@Labels.SystemName / </span><span class="second">
             Manage Mail /</span>
             @ViewBag.Title
         </span>
@@ -55,13 +55,13 @@
             <div class="lbl-field">
                 @Html.LabelFor(m => m.SiteID, "Site")
             </div>
-            @Html.DropDownListFor(m => m.SiteID, (IEnumerable<SelectListItem>)ViewBag.ListSite)
+            @Html.DropDownListFor(m => m.SiteID, (IEnumerable<SelectListItem>)ViewBag.ListSite, new { disabled = "disabled" })
         </div>
         <div class="form-row">
             <div class="lbl-field">
                 @Html.LabelFor(m => m.TriggerType, "Trigger")
             </div>
-            @Html.DropDownListFor(m => m.TriggerType, (IEnumerable<SelectListItem>)ViewBag.ListTriggerType, new { disabled="disabled" })
+            @Html.DropDownListFor(m => m.TriggerType, (IEnumerable<SelectListItem>)ViewBag.ListTriggerType, new { disabled = "disabled" })
         </div>
         <div class="form-row schedule-row display-none">
             <div class="lbl-field width-100">
@@ -120,7 +120,12 @@
                 @Html.LabelFor(m => m.IsActive, "Status")
             </div>
             <div class="edit-field">
-                @Html.CheckBoxFor(m => m.IsActive, new { value = "false" })
+                <div class="check-box" >
+                    @Html.CheckBoxFor(m => m.IsActive, new { value = "false" })
+                </div>
+                <div class="check-box-text" >
+                    Active
+                </div>
                 @*<input class="check-box" id="status" name="status" type="checkbox" value="false" />*@
             </div>
         </div>
@@ -146,7 +151,7 @@
             AddMailGroupSuccessMsg: '@MailStationResources.AddMailGroupSuccessMsg',
             UpdateMailSuccessMsg: '@string.Format(ViewResource.UpSuccessMsg, "Mail", 5)',
             InvalidEmailMsg: '@MailStationResources.InvalidEmailMsg',
-            CancelCreateMail: '@MailStationResources.CancelCreateMail'
+            CancelUpdateMail: '@MailStationResources.CancelUpdateMail'
         };
     </script>
 }

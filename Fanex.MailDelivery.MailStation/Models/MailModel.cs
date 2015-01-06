@@ -34,7 +34,8 @@ namespace Fanex.MailDelivery.MailStation.Models
         {
             get 
             {
-                switch (this.TriggerType) { 
+                switch (this.TriggerType) 
+                { 
                     case 0:
                         return "Function";
                     case 1:

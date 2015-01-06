@@ -48,6 +48,7 @@
                     try
                     {
                         jobResult = Run(schedule, context);
+                        jobResult.Mail.MailingListId = schedule.Id;
                     }
                     catch (Exception ex)
                     {

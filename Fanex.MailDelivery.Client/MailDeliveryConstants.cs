@@ -27,5 +27,7 @@
         public const int JobFailedErrorCode = 1000;
         public const int RetryDelayInSecond = 5;
 
+        // Server Time is UTC -4.
+        public const string ServerTimeZone = "Atlantic Standard Time";
     }
 }

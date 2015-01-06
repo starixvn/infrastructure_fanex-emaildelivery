@@ -35,6 +35,7 @@
 
     NexCron = function (nexCron, options) {
         this.Options = options;
+
         this.$nexCron = $(nexCron);
 
         var url = '';
@@ -73,6 +74,40 @@
         Interval: null
     }
 
+    NexCron.prototype.OnlyNumericAndCommaInput = function (e) {
+        // Allow: backspace, delete, tab, escape, enter and comma
+        if ($.inArray(e.keyCode, [44, 8, 46, 9, 27, 13, 110, 188]) !== -1 ||
+        // Allow: Ctrl+A
+            (e.keyCode == 65 && e.ctrlKey === true) ||
+        // Allow: home, end, left, right
+            (e.keyCode >= 35 && e.keyCode <= 39)) {
+            // let it happen, don't do anything
+            return;
+        }
+
+        // Ensure that it is a number and stop the keypress
+        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+            e.preventDefault();
+        }
+    }
+
+    NexCron.prototype.OnlyNumericInput = function (e, value) {
+        // Allow: backspace, delete, tab, escape, enter and comma
+        if ($.inArray(e.keyCode, [8, 46, 9, 27, 13, 110]) !== -1 ||
+        // Allow: Ctrl+A
+            (e.keyCode == 65 && e.ctrlKey === true) ||
+        // Allow: home, end, left, right
+            (e.keyCode >= 35 && e.keyCode <= 39)) {
+            // let it happen, don't do anything
+            return;
+        }
+
+        // Ensure that it is a number and stop the keypress
+        if (value.length >= 4 || (e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+            e.preventDefault();
+        }
+    }
+
     NexCron.prototype.RenderScheduleContainer = function () {
         var containerhtml = [];
         containerhtml.push('<div id="schedule-container" class="nexcron-schedule-container">');
@@ -103,14 +138,42 @@
 
     NexCron.prototype.RepeatTypeChange = function () {
         var self = this;
+        var defaultCron = null;
+
         switch (self.DOMElements.RepeatType.val()) {
             case "0": // Daily
-                self.RenderDailySchedule();
-                break;
+                {
+                    defaultCron = {
+                        RepeatType: '0',
+                        CronExpression: '0 0 1 * * ?',
+                        StartOn: new Date(),
+                        EndOn: '',
+                        Attempt: 1,
+                        Interval: 30
+                    };
+                    self.RenderDailySchedule();
+                    break;
+                }
             case "1": // Weekly
+                defaultCron = {
+                    RepeatType: '1',
+                    CronExpression: '0 0 1 ? * ',
+                    StartOn: new Date(),
+                    EndOn: '',
+                    Attempt: 1,
+                    Interval: 30
+                };
                 self.RenderWeeklySchedule();
                 break;
             case "2": // Monthly
+                defaultCron = {
+                    RepeatType: '2',
+                    CronExpression: '0 0 1  * ',
+                    StartOn: new Date(),
+                    EndOn: '',
+                    Attempt: 1,
+                    Interval: 30
+                };
                 self.RenderMonthlySchedule();
                 break;
             default:
@@ -125,6 +188,10 @@
                 self.DOMElements.EndOn.datepicker('enable');
             }
         });
+
+        if (defaultCron !== null) {
+            self.SetCron(defaultCron);
+        }
     }
 
     NexCron.prototype.RenderDatePicker = function () {
@@ -202,6 +269,7 @@
         dailyhtml.push('</div>');
         this.DOMElements.ScheduleTypeContainer.html(dailyhtml.join(''));
         this.RenderDatePicker();
+        var self = this;
         this.DOMElements.RepeatDaily = $('#nexcron-repeat-day-daily', this.$nexCron);
         this.DOMElements.RepeatHour = $('#nexcron-repeat-time', this.$nexCron);
         this.DOMElements.RepeatMinute = $('#nexcron-repeat-minute', this.$nexCron);
@@ -211,7 +279,7 @@
         this.DOMElements.Attempt = $('#nexcron-attempt-count-daily', this.$nexCron);
         this.DOMElements.Interval = $('#nexcron-interval-time', this.$nexCron);
         this.DOMElements.Interval.keydown(function (e) {
-            self.OnlyNumericInput(e);
+            self.OnlyNumericInput(e, $(this).val());
         });
     }
 
@@ -265,6 +333,7 @@
         weeklyhtml.push('</div>');
         this.DOMElements.ScheduleTypeContainer.html(weeklyhtml.join(''));
         this.RenderDatePicker();
+        var self = this;
         this.DOMElements.RepeatWeeklyMonday = $('#nexcron-weekly-monday', this.$nexCron);
         this.DOMElements.RepeatWeeklyTuesday = $('#nexcron-weekly-tuesday', this.$nexCron);
         this.DOMElements.RepeatWeeklyWednesday = $('#nexcron-weekly-wednesday', this.$nexCron);
@@ -280,7 +349,7 @@
         this.DOMElements.Attempt = $('#nexcron-attempt-count-daily', this.$nexCron);
         this.DOMElements.Interval = $('#nexcron-interval-time', this.$nexCron);
         this.DOMElements.Interval.keydown(function (e) {
-            self.OnlyNumericInput(e);
+            self.OnlyNumericInput(e, $(this).val());
         });
     }
 
@@ -357,7 +426,7 @@
         this.DOMElements.Attempt = $('#nexcron-attempt-count-daily', this.$nexCron);
         this.DOMElements.Interval = $('#nexcron-interval-time', this.$nexCron);
         this.DOMElements.Interval.keydown(function (e) {
-            self.OnlyNumericInput(e);
+            self.OnlyNumericInput(e, $(this).val());
         });
     }
 
@@ -411,11 +480,13 @@
         }
 
         htmlArray.push('            </select>');
+
+        htmlArray.push('            <label class="nexcron-label-time">');
+        htmlArray.push('                time(s)');
+        htmlArray.push('            </label>');
         htmlArray.push('        </div>');
         htmlArray.push('        <div class="nexcron-lbl-field nexcron-separate-label-group">');
-        htmlArray.push('            <label class="nexcron-label-time">');
-        htmlArray.push('                times');
-        htmlArray.push('            </label>');
+
         htmlArray.push('            <label>');
         htmlArray.push('                Interval');
         htmlArray.push('            </label>');
@@ -424,40 +495,6 @@
         htmlArray.push('            <input id="nexcron-interval-time" type="text" value="30" name="nexcron-interval-time" />   minute(s)');
         htmlArray.push('        </div>');
         htmlArray.push('    </div>');
-    }
-
-    NexCron.prototype.OnlyNumericAndCommaInput = function (e) {
-        // Allow: backspace, delete, tab, escape, enter and comma
-        if ($.inArray(e.keyCode, [44, 8, 9, 27, 13, 110, 188]) !== -1 ||
-        // Allow: Ctrl+A
-            (e.keyCode == 65 && e.ctrlKey === true) ||
-        // Allow: home, end, left, right
-            (e.keyCode >= 35 && e.keyCode <= 39)) {
-            // let it happen, don't do anything
-            return;
-        }
-
-        // Ensure that it is a number and stop the keypress
-        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
-            e.preventDefault();
-        }
-    }
-
-    NexCron.prototype.OnlyNumericInput = function (e) {
-        // Allow: backspace, delete, tab, escape, enter and comma
-        if ($.inArray(e.keyCode, [8, 9, 27, 13, 110]) !== -1 ||
-        // Allow: Ctrl+A
-            (e.keyCode == 65 && e.ctrlKey === true) ||
-        // Allow: home, end, left, right
-            (e.keyCode >= 35 && e.keyCode <= 39)) {
-            // let it happen, don't do anything
-            return;
-        }
-
-        // Ensure that it is a number and stop the keypress
-        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
-            e.preventDefault();
-        }
     }
 
     NexCron.prototype.GetCron = function () {
@@ -546,8 +583,11 @@
     }
 
     NexCron.prototype.SetCron = function (cronObject) {
-        this.DOMElements.RepeatType.val(cronObject.RepeatType);
-        this.DOMElements.RepeatType.change();
+        if (this.DOMElements.RepeatType.val() !== cronObject.RepeatType) {
+            this.DOMElements.RepeatType.val(cronObject.RepeatType);
+            this.DOMElements.RepeatType.change();
+        }
+
         var cronExpression = cronObject.CronExpression.split(' ');
         if (cronObject.StartOn !== undefined && cronObject.StartOn !== '') {
             this.DOMElements.StartOn.datepicker('setDate', new Date(cronObject.StartOn));

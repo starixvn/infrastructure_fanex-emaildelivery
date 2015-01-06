@@ -88,11 +88,56 @@ namespace Fanex.MailDelivery.MailStation.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure to cancel create new Mail Group? All your inputs will be discarded..
+        /// </summary>
+        public static string CancelCreateMailGroup {
+            get {
+                return ResourceManager.GetString("CancelCreateMailGroup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure to cancel update Mail? All your inputs will be discarded..
+        /// </summary>
+        public static string CancelUpdateMail {
+            get {
+                return ResourceManager.GetString("CancelUpdateMail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure to cancel update Mail Group? All your inputs will be discarded..
+        /// </summary>
+        public static string CancelUpdateMailGroup {
+            get {
+                return ResourceManager.GetString("CancelUpdateMailGroup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All mails belong to this group will be moved to &quot;Others&quot; group, do you want to delete this group?.
+        /// </summary>
+        public static string ConfirmDeleteMailGroup {
+            get {
+                return ResourceManager.GetString("ConfirmDeleteMailGroup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to E0026: Email is invalid..
         /// </summary>
         public static string InvalidEmailMsg {
             get {
                 return ResourceManager.GetString("InvalidEmailMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mail Group is updated successfully..
+        /// </summary>
+        public static string UpdateMailGroupSuccessMsg {
+            get {
+                return ResourceManager.GetString("UpdateMailGroupSuccessMsg", resourceCulture);
             }
         }
     }

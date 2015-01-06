@@ -1,10 +1,5 @@
 ﻿namespace Fanex.MailDelivery.Client.Enumerations
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-
     /// <summary>
     /// Job Status.
     /// </summary>
@@ -16,24 +11,24 @@
         Waiting = 0,
 
         /// <summary>
+        /// The running status.
+        /// </summary>
+        Running = 1,
+
+        /// <summary>
         /// The data is not ready status.
         /// </summary>
-        DataIsNotReady = 1,
+        DataIsNotReady = 2,
 
         /// <summary>
         /// The failed status.
         /// </summary>
-        Failed = 2,
+        Failed = 3,
 
         /// <summary>
         /// The success status.
         /// </summary>
-        Success = 3,
-
-        /// <summary>
-        /// The running status.
-        /// </summary>
-        Running = 4,
+        Success = 4,
 
         /// <summary>
         /// The retry status.

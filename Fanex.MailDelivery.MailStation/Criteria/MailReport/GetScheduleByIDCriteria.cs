@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Fanex.MailDelivery.MailStation.Criteria.MailReport
+﻿namespace Fanex.MailDelivery.MailStation.Criteria.MailReport
 {
     using Fanex.NAP.Framework.Data;
 

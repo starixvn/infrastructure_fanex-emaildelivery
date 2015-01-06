@@ -63,5 +63,52 @@
         {
             return EndTime != null && EndTime < DateTime.Now;
         }
+
+        /// <summary>
+        /// Converts to server time.
+        /// </summary>
+        public void ConvertToServerTime()
+        {
+            int hoursDifferent = this.CalculateHoursDifferentBeetweenLocalAndServer();
+            this.StartTime = this.StartTime.AddHours(hoursDifferent);
+            this.CurrentFireTime = this.CurrentFireTime.AddHours(hoursDifferent);
+            if (this.EndTime != null)
+            {
+                this.EndTime = this.EndTime.Value.AddHours(hoursDifferent);
+            }
+
+            this.ConvertCronExpressionToServerTime(hoursDifferent);
+        }
+
+        /// <summary>
+        /// Converts the CRON expression to server time.
+        /// </summary>
+        /// <param name="hoursDifferent">The hours different.</param>
+        private void ConvertCronExpressionToServerTime(int hoursDifferent)
+        {
+            try
+            {
+                var cron = this.RepeatExpression.Split(' ');
+                var hour = int.Parse(cron[2]);
+                hour += hoursDifferent;
+                while (hour > 23)
+                {
+                    hour -= 24;
+                }
+
+                cron[2] = hour.ToString();
+                this.RepeatExpression = string.Join(" ", cron);
+            }
+            catch (Exception ex)
+            {
+                Logging.Logger.Log.Error(ex.Message);
+            }
+        }
+
+        private int CalculateHoursDifferentBeetweenLocalAndServer()
+        {
+            var nowDate = DateTime.Now;
+            return -(TimeZoneInfo.ConvertTime(nowDate, TimeZoneInfo.FindSystemTimeZoneById(MailDeliveryConstants.ServerTimeZone)) - nowDate).Hours;
+        }
     }
 }
