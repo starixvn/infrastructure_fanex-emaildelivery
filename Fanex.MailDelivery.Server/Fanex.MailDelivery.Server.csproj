@@ -93,7 +93,9 @@
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Fanex.MailDelivery.Server.UAT.exe.config" />
+    <Content Include="Fanex.MailDelivery.Server.UAT.exe.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="Installer\InstallMailService.bat" />
     <None Include="Installer\UnInstallMailService.bat" />
     <None Include="packages.config" />
