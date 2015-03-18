@@ -41,6 +41,10 @@
     <Reference Include="Fanex.Logging">
       <HintPath>..\_Dependencies\Fanex\Fanex.Logging.dll</HintPath>
     </Reference>
+    <Reference Include="Fanex.Maintenance.Controller, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\_Dependencies\mSite\Fanex.Maintenance.Controller.dll</HintPath>
+    </Reference>
     <Reference Include="Fanex.Maintenance.Service">
       <HintPath>..\_Dependencies\mSite\Fanex.Maintenance.Service.dll</HintPath>
     </Reference>

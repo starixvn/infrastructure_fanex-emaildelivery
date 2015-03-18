@@ -15,11 +15,12 @@ namespace Fanex.MailDelivery.MailStation.Controllers
     using Fanex.MailDelivery.MailStation.Models;
     using Fanex.MailDelivery.MailStation.Resources;
     using Fanex.MailDelivery.MailStation.Services.ManageMail;
+    using Fanex.Maintenance.Controller;
 
     /// <summary>
     /// Mail Controller.
     /// </summary>
-    public class MailManageController : Controller
+    public class MailManageController : BaseController
     {
         private MailManageService _mailManageService;
 

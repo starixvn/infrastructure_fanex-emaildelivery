@@ -12,11 +12,12 @@ namespace Fanex.MailDelivery.MailStation.Controllers
     using System.Web.Mvc;
     using Fanex.MailDelivery.MailStation.Criteria.ManageRecipient;
     using Fanex.MailDelivery.MailStation.Services.ManageRecipient;
+    using Fanex.Maintenance.Controller;
 
     /// <summary>
     /// Mail Recipient Controller.
     /// </summary>
-    public class MailRecipientController : Controller
+    public class MailRecipientController : BaseController
     {
         private ManageRecipientService _manageRecipientService;
 

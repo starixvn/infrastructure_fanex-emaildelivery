@@ -14,13 +14,14 @@ namespace Fanex.MailDelivery.MailStation.Controllers
     using Fanex.MailDelivery.MailStation.Criteria.MailReport;
     using Fanex.MailDelivery.MailStation.Services.MailReport;
     using Fanex.MailDelivery.MailStation.Services.ManageMail;
+    using Fanex.Maintenance.Controller;
     using Fanex.NAP.Core.Business;
     using Fanex.NAP.Core.Web.Attribute;
 
     /// <summary>
     /// Mail Report Controller.
     /// </summary>
-    public class MailReportController : Controller
+    public class MailReportController : BaseController
     {
         private MailReportService _mailReportService;
 

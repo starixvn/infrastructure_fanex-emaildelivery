@@ -13,11 +13,12 @@ namespace Fanex.MailDelivery.MailStation.Controllers
     using Fanex.MailDelivery.MailStation.Criteria.MailGroup;
     using Fanex.MailDelivery.MailStation.Criteria.MailManage;
     using Fanex.MailDelivery.MailStation.Services.MailGroup;
+    using Fanex.Maintenance.Controller;
 
     /// <summary>
     /// Mail Controller.
     /// </summary>
-    public class MailGroupManageController : Controller
+    public class MailGroupManageController : BaseController
     {
         private MailGroupService _mailGroupService;
 

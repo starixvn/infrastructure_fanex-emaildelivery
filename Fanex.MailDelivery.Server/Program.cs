@@ -21,29 +21,30 @@
                 new MailDeliveryService()
             };
 
-            if (Environment.UserInteractive)
-            {
-                Type type = typeof(ServiceBase);
-                BindingFlags flags = BindingFlags.Instance | BindingFlags.NonPublic;
-                MethodInfo method = type.GetMethod("OnStart", flags);
-                foreach (ServiceBase service in servicesToRun)
-                {
-                    method.Invoke(service, new object[] { args });
-                }
+            ServiceBase.Run(servicesToRun);
+            //if (Environment.UserInteractive)
+            //{
+            //    Type type = typeof(ServiceBase);
+            //    BindingFlags flags = BindingFlags.Instance | BindingFlags.NonPublic;
+            //    MethodInfo method = type.GetMethod("OnStart", flags);
+            //    foreach (ServiceBase service in servicesToRun)
+            //    {
+            //        method.Invoke(service, new object[] { args });
+            //    }
 
-                Console.WriteLine("Mail service has been started.");
-                Console.WriteLine("Press any key to exit!");
-                Console.ReadLine();
+            //    Console.WriteLine("Mail service has been started.");
+            //    Console.WriteLine("Press any key to exit!");
+            //    Console.ReadLine();
 
-                foreach (ServiceBase service in servicesToRun)
-                {
-                    service.Stop();
-                }
-            }
-            else
-            {
-                ServiceBase.Run(servicesToRun);
-            }
+            //    foreach (ServiceBase service in servicesToRun)
+            //    {
+            //        service.Stop();
+            //    }
+            //}
+            //else
+            //{
+                
+            //}
         }
     }
 }
