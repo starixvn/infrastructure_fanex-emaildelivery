@@ -6,7 +6,7 @@
 @{
     ViewBag.Title = Labels.Manage_Recipient;
     Layout = "~/Views/Shared/_Layout.cshtml";
-    var hasEditRight = PermissionService.HasHostPermission(MailDeliveryFunctionKeys.MailReport);
+    var hasEditRight = PermissionService.HasHostPermission(MailDeliveryFunctionKeys.ManageRecipient);
 }
 @section Head {
     @Styles.Render("~/themes/sharedstyles")

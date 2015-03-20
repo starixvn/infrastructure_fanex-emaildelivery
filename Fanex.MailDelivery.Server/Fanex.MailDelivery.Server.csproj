@@ -95,6 +95,7 @@
     </None>
     <Content Include="Fanex.MailDelivery.Server.UAT.exe.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <None Include="Installer\InstallMailService.bat" />
     <None Include="Installer\UnInstallMailService.bat" />

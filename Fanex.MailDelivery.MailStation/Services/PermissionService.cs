@@ -16,6 +16,7 @@ namespace Fanex.MailDelivery.MailStation.Services
     using Fanex.NAP.Core.Model.ValueObject;
     using Fanex.NAP.Core.Service.Impl;
     using Fanex.NAP.Core.Service.Interface;
+    using Fanex.NAP.Core.Web.Session;
 
     /// <summary>
     /// TODO: Update summary.
@@ -26,12 +27,15 @@ namespace Fanex.MailDelivery.MailStation.Services
 
         private static IUserService _userService;
 
+        private static ICurrentSession _currentSession;
+
         private static Dictionary<string, int> _roleAccess;
 
         static PermissionService()
         {
             _userService = new UserService();
             _functionService = new FunctionService();
+            _currentSession = new CurrentSession();
         }
 
         /// <summary>
@@ -92,13 +96,13 @@ namespace Fanex.MailDelivery.MailStation.Services
         /// </summary>
         private static void UpdateRoleAccess()
         {
-            if (AppSession.CurrentUser == null)
+            if (_currentSession == null)
             {
                 return;
             }
 
             _roleAccess = GetRoleAccess(_functionService.GetByUserAndSiteIncludeGroup(
-                AppSession.CurrentUser.Id,
+                _currentSession.UserId,
                 NapSettings.Settings.SiteId,
                 NapSettings.Settings.Environment));
         }

@@ -2,11 +2,13 @@
 @using Fanex.MailDelivery.MailStation.Resources;
 @using Fanex.MailDelivery.MailStation.Models;
 ﻿@using Fanex.MailDelivery.MailStation.Criteria.MailManage;
+@using Fanex.MailDelivery.MailStation.Services;
+@using Fanex.MailDelivery.MailStation.Constants;
 @model GetMailListCriteria
 @{
     ViewBag.Title = "Manage Mail";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    var hasEditRight = true;
+    var hasEditRight = PermissionService.HasHostPermission(MailDeliveryFunctionKeys.ManageMail);
     var hasSiteRight = true;
     var recipient = JsonConvert.SerializeObject(Model);
 }
