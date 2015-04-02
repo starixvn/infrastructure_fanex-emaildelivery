@@ -5,6 +5,7 @@
 // --------------------------------------------------------------------------
 // <history>
 //   <change who="Louis.Nguyen" date="2014.10.03">Created</change>
+//   <change who="Andy.Nguyen" date="2015.04.01">Update Email IDs param.</change>
 // </history>
 
 namespace Fanex.MailDelivery.MailStation.Criteria.ManageRecipient
@@ -18,6 +19,12 @@ namespace Fanex.MailDelivery.MailStation.Criteria.ManageRecipient
     {
         [SpParam(SqlParamName = "RecipientID")]
         public int RecipientId { get; set; }
+
+        public int EmailID1 { get; set; }
+
+        public int EmailID2 { get; set; }
+
+        public int EmailID3 { get; set; }
 
         public string Email1 { get; set; }
 

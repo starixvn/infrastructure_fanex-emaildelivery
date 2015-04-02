@@ -1,4 +1,4 @@
-﻿// --------------------------------------------------------------------------
+﻿﻿// --------------------------------------------------------------------------
 // <copyright file="MailRecipientController.cs" company="Nexcel Solutions Vietnam">
 // Copyright (c) Nexcel Solutions Vietnam. All rights reserved.
 // </copyright>
@@ -56,6 +56,12 @@ namespace Fanex.MailDelivery.MailStation.Controllers
         }
 
         [HttpPost]
+        public JsonResult DeleteRecipient(DeleteRecipientCriteria criteria)
+        {
+            return Json(_manageRecipientService.DeleteRecipient(criteria));
+        }
+
+        [HttpPost]
         public JsonResult CreateRecipient(CreateRecipientCriteria criteria)
         {
             return Json(_manageRecipientService.InsertRecipient(criteria));
@@ -71,7 +77,7 @@ namespace Fanex.MailDelivery.MailStation.Controllers
         {
             var recipient = _manageRecipientService.RecipientById(criteria);
             var emails = new string[] { recipient.Email1, recipient.Email2, recipient.Email3 };
-            
+
             return RedirectToAction("Index", "MailManage", new { Emails = string.Join(",", emails).Trim(',') });
         }
     }

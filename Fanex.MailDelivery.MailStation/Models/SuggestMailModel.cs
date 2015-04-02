@@ -1,12 +1,11 @@
 ﻿namespace Fanex.MailDelivery.MailStation.Models
 {
-    /// <summary>
-    /// Suggest Mail Model.
-    /// </summary>
     public class SuggestMailModel
     {
-        public int id { get; set; }
+        public int id;
 
-        public string name { get; set; }
+        public string name;
+
+        public bool active { get; set; }
     }
 }

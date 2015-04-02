@@ -150,6 +150,9 @@ var ManageRecipientController = function () {
             contextMenuController.bindEvents({
                 editEvent: function () {
                     self.editRecipient(recipientIndex);
+                },
+                deleteEvent: function () {
+                    self.deleteRecipient(recipientIndex);
                 }
             });
 
@@ -175,6 +178,39 @@ var ManageRecipientController = function () {
         window.location.href = window.rootUrl + "MailStation/MailRecipient/UpdateRecipientView?" +
             $.param({
                 recipientId: recipientIndex
+            });
+    };
+
+    self.deleteRecipient = function (recipientIndex) {
+        NAP.headlineMsgBox.confirm('Are you sure you want to delete Recipient?', function () {
+            sharedScriptManager.blockUI();
+            NAP.headlineMsgBox.close();
+            var deleteParams = {
+                RecipientId: recipientIndex
+            };
+
+            var url = window.rootUrl + "MailStation/MailRecipient/DeleteRecipient";
+
+            sharedScriptManager.callAjax(self,
+            url,
+            deleteParams,
+            self.renderActionResult,
+            null,
+            sharedScriptManager.unblockUI);
+        });
+    };
+
+    self.renderActionResult = function (result) {
+        if (result.Code == 0) {
+            result.Message = 'Recipient is deleted successfully.';
+        }
+
+        sharedScriptManager.renderActionResult(
+            result,
+            function () {
+                setTimeout(function () {
+                    self.getRecipientList();
+                }, sharedScriptManager.cachedData.alertSuccessTime);
             });
     };
 
