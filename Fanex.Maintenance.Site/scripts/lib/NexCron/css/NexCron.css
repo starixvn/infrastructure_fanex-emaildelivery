@@ -57,7 +57,7 @@
 {
     display: block;
     float: left;
-    width: 100px;
+    width: 110px;
     vertical-align: top;
     text-align: right;
     padding: 5px 10px 0 0;
@@ -119,6 +119,7 @@
 
 .nexcron-label-time
 {
+    font-weight: normal;
 }
 
 #nexcron-interval-time
@@ -147,4 +148,9 @@
     float: left;
     vertical-align: middle;
     padding-top: 3px;
+}
+
+.nexcron-validation-error {
+	border: solid 1px #aa0000 !important;
+	background-color: #ffeeee;
 }

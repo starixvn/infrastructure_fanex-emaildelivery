@@ -33,7 +33,6 @@
         {
             string retryJobPublishId = string.Format(MailDeliveryConstants.RetryJobRoutingKeyFormat, schedule.SiteId);
             _bus.Publish<Schedule>(schedule, retryJobPublishId);
-            // Console.WriteLine("Retry Schedule " + schedule.Id);
         }
 
         public void PublishScheduleChangeMessage(Schedule schedule)
@@ -41,7 +40,6 @@
             string updateSchedulePublishId = string.Format(MailDeliveryConstants.UpdateScheduleRoutingKeyFormat, schedule.SiteId);
 
             _bus.Publish<Schedule>(schedule, updateSchedulePublishId);
-            // Console.WriteLine("Updated Schedule " + schedule.Id);
         }
     }
 }

@@ -126,7 +126,22 @@
   <data name="CancelCreateMail" xml:space="preserve">
     <value>Are you sure to cancel create new Mail? All your inputs will be discarded.</value>
   </data>
+  <data name="CancelCreateMailGroup" xml:space="preserve">
+    <value>Are you sure to cancel create new Mail Group? All your inputs will be discarded.</value>
+  </data>
+  <data name="CancelUpdateMail" xml:space="preserve">
+    <value>Are you sure to cancel update Mail? All your inputs will be discarded.</value>
+  </data>
+  <data name="CancelUpdateMailGroup" xml:space="preserve">
+    <value>Are you sure to cancel update Mail Group? All your inputs will be discarded.</value>
+  </data>
+  <data name="ConfirmDeleteMailGroup" xml:space="preserve">
+    <value>All mails belong to this group will be moved to "Others" group, do you want to delete this group?</value>
+  </data>
   <data name="InvalidEmailMsg" xml:space="preserve">
     <value>E0026: Email is invalid.</value>
+  </data>
+  <data name="UpdateMailGroupSuccessMsg" xml:space="preserve">
+    <value>Mail Group is updated successfully.</value>
   </data>
 </root>

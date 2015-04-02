@@ -17,7 +17,7 @@ namespace Fanex.MailDelivery.MailStation.Criteria.MailManage
 
         public int IsActive { get; set; }
 
-        public int MailGroupID { get; set; }
+        public string MailGroupID { get; set; }
 
         public int SiteID { get; set; }
 

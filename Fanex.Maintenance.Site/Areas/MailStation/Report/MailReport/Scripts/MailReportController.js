@@ -8,10 +8,14 @@ var MailReportController = function () {
         TaskStatus: {
             All: -1,
             Waiting: 0,
-            Running: 4,
-            Sent: 3,
-            DataNotReady: 1,
-            Failed: 2
+            Running: 1,
+            DataNotReady: 2,
+            Failed: 3,
+            Sent: 4
+        },
+        TriggerType: {
+            FunctionMail: 0,
+            ScheduleMail: 1
         }
     };
 
@@ -86,6 +90,12 @@ var MailReportController = function () {
         $("#button-search").click(function () {
             self.getMailReport();
         });
+
+        $("#MailName").keypress(function (e) {
+            if (e.which == 13) {
+                self.getMailReport();
+            }
+        });
     };
     self.refreshMailReport = function () {
         sharedScriptManager.blockUI();
@@ -119,11 +129,11 @@ var MailReportController = function () {
         for (var i = 0; i < mailReportLength; i++) {
             var mail = result[i];
             var rowColumns = [];
-            var mailIndex = ' mail-index="' + mail.MailTaskId + '"';
+            var mailIndex = ' mail-index="' + mail.MSiteMailID + '"';
             rowColumns.push({ Name: "ColId", Value: mail.MailTaskId });
             rowColumns.push({
                 Name: "ColMailName",
-                Value: '<a class="link mail-name" href="javascript:;"' + mailIndex + '>' +
+                Value: mail.MSiteMailID == 0 ? mail.MailName : '<a class="link mail-name" href="javascript:;"' + mailIndex + '>' +
                            mail.MailName +
                        '</a>'
             });
@@ -145,10 +155,10 @@ var MailReportController = function () {
 
         var headerColumns = [];
         headerColumns.push({ HeaderText: viewResources.Id, Width: 40, Name: "ColId", HeaderAlign: "center", CellAlign: "center" });
-        headerColumns.push({ HeaderText: viewResources.Mail_Name, Width: 300, Name: "ColMailName", HeaderAlign: "center", CellAlign: "left" });
-        headerColumns.push({ HeaderText: viewResources.Site, Width: 120, Name: "ColSite", HeaderAlign: "center", CellAlign: "left" });
-        headerColumns.push({ HeaderText: viewResources.Scheduled_Time, Width: 140, Name: "ColScheduledTime", HeaderAlign: "center", CellAlign: "center", FormatDateTime: "MMM DD, YYYY hh:mm:ss A" });
-        headerColumns.push({ HeaderText: viewResources.Last_Sent, Width: 120, Name: "ColLastSent", HeaderAlign: "center", CellAlign: "center", FormatDateTime: "MMM DD, YYYY hh:mm:ss A" });
+        headerColumns.push({ HeaderText: viewResources.Mail_Name, Width: 340, Name: "ColMailName", HeaderAlign: "center", CellAlign: "left" });
+        headerColumns.push({ HeaderText: viewResources.Site, Width: 150, Name: "ColSite", HeaderAlign: "center", CellAlign: "left" });
+        headerColumns.push({ HeaderText: viewResources.Scheduled_Time, Width: 150, Name: "ColScheduledTime", HeaderAlign: "center", CellAlign: "center", FormatDateTime: "MMM DD, YYYY hh:mm:ss A" });
+        headerColumns.push({ HeaderText: viewResources.Last_Sent, Width: 150, Name: "ColLastSent", HeaderAlign: "center", CellAlign: "center", FormatDateTime: "MMM DD, YYYY hh:mm:ss A" });
         headerColumns.push({ HeaderText: viewResources.Status, Width: 120, Name: "ColStatus", HeaderAlign: "center", CellAlign: "center" });
         if (viewResources.hasEditRight) {
             headerColumns.push({ HeaderText: viewResources.Action, Width: 120, Name: "ColAction", HeaderAlign: "center", CellAlign: "center" });
@@ -159,17 +169,13 @@ var MailReportController = function () {
             columns: headerColumns,
             showTitle: false,
             bodyRows: bodyData,
-            numberOfFrozenColumn: 0,
-            fullWidth: true,
-            fullHeight: false,
-            gridHeight: 10000,
             showDistinctRow: false,
             showHighlightRow: true,
-            showTree: true,
-            treeParentPaddingLeft: 5,
+            gridExpandHeight: 350,
             headerColumnHeight: 29,
             bodyRowHeight: 30,
             showPager: true,
+            timeZone: "-04:00",
             pagerOption: {
                 itemsPerPage: sharedScriptManager.cachedData.defaultItemsPerPage,
                 currentPage: 0,
@@ -202,12 +208,14 @@ var MailReportController = function () {
     };
 
     self.getActionColumn = function (mail, index) {
-        var mailIndex = ' mail-index="' + mail.MailTaskId + '"';
-        switch (mail.Status) {
-            case self.Enums.TaskStatus.DataNotReady:
-            case self.Enums.TaskStatus.Sent:
-            case self.Enums.TaskStatus.Failed:
-                return '<input type="submit" value="Retry" class="button-retry"' + mailIndex + '>';
+        if (mail.TriggerType === self.Enums.TriggerType.ScheduleMail) {
+            var mailIndex = ' mail-index="' + mail.MailTaskId + '"';
+            switch (mail.Status) {
+                case self.Enums.TaskStatus.DataNotReady:
+                case self.Enums.TaskStatus.Sent:
+                case self.Enums.TaskStatus.Failed:
+                    return '<input type="submit" value="Retry" class="button-retry"' + mailIndex + '>';
+            }
         }
     };
 

@@ -6,8 +6,6 @@
 
 namespace Fanex.MailDelivery.MailStation.Criteria.MailManage
 {
-    using Fanex.NAP.Framework.Data;
-    using System;
     using Fanex.MailDelivery.MailStation.Models;
 
     /// <summary>
@@ -15,8 +13,6 @@ namespace Fanex.MailDelivery.MailStation.Criteria.MailManage
     /// </summary>
     public class UpdateMailCriteria : CreateMailCriteria
     {
-        public int MailID { get; set; }
-
         public UpdateMailCriteria()
             : base()
         {
@@ -30,6 +26,8 @@ namespace Fanex.MailDelivery.MailStation.Criteria.MailManage
                 this.MailID = model.MailId;
             }
         }
+
+        public int MailID { get; set; }
 
         public override string GetSettingKey()
         {

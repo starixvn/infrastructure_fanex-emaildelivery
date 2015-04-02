@@ -1,17 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Fanex.MailDelivery.Client.Models;
-using Fanex.Data;
-using Fanex.MailDelivery.Criteria;
-using Fanex.Common;
-using System.Collections;
-using Fanex.NAP.Core.Criteria.Misc;
-using Fanex.MailDelivery.Client.Enumerations;
-
-namespace Fanex.MailDelivery.Repositories
+﻿namespace Fanex.MailDelivery.Repositories
 {
+    using System.Collections;
+    using System.Linq;
+    using Fanex.Common;
+    using Fanex.Data;
+    using Fanex.MailDelivery.Client.Enumerations;
+    using Fanex.MailDelivery.Client.Models;
+    using Fanex.MailDelivery.Criteria;
+    using Fanex.NAP.Core.Criteria.Misc;
+
+    /// <summary>
+    /// Mail Repository.
+    /// </summary>
     public class MailRepository : IMailRepository
     {
         public Schedule GetScheduleByID(GetScheduleByIDCriteria criteria)
@@ -64,6 +64,11 @@ namespace Fanex.MailDelivery.Repositories
             }
         }
 
+        /// <summary>
+        /// Gets the mailing list.
+        /// </summary>
+        /// <param name="criteria">The criteria.</param>
+        /// <returns>Mailing List.</returns>
         public MailingList GetMailingList(GetMailWithEmailAddressByMailID criteria)
         {
             var result = new MailingList();
@@ -93,6 +98,16 @@ namespace Fanex.MailDelivery.Repositories
                 db.ExecuteNonQuery();
                 var result = (int)db.GetParameterValue("MailType");
                 return result == 0 ? MailType.Function : MailType.Schedule;
+            }
+        }
+
+        public void UpdateMailTask(UpdateMailTaskMSiteMailIDCriteria criteria)
+        {
+            Hashtable hash = criteria.GetSpParams();
+            hash = (new ResultCriteria()).AddSpParams(hash);
+            using (var db = new ObjectDb(criteria.GetSettingKey()))
+            {
+                db.ExecuteNonQuery(hash);
             }
         }
     }

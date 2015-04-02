@@ -82,7 +82,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Jobs\HelloJob.cs" />
+    <Compile Include="Jobs\UnstableJob.cs" />
+    <Compile Include="Jobs\ErrorJob.cs" />
+    <Compile Include="Jobs\NormalJob.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

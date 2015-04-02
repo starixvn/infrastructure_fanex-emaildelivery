@@ -8,17 +8,21 @@
     /// </summary>
     public class MailAttachment
     {
+        public MailAttachment()
+        { 
+        }
+
         public MailAttachment(string filePath, FileExtension fileExtension)
         {
             ReadFileContent(filePath);
-            FileExtension = FileExtension;
+            FileExtension = fileExtension;
         }
 
         public MailAttachment(string fileName, byte[] fileContent, FileExtension fileExtension)
         {
-            FileName = FileName;
-            FileContent = FileContent;
-            FileExtension = FileExtension;
+            FileName = fileName;
+            FileContent = fileContent;
+            FileExtension = fileExtension;
         }
 
         public int Id { get; set; }

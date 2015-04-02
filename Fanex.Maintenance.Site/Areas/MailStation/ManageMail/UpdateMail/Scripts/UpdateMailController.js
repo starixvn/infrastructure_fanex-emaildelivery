@@ -1,4 +1,5 @@
-﻿$(document).ready(function () {
+﻿/// <reference path="../../../../../scripts/ShareScripts/SharedScriptManager.js" />
+$(document).ready(function () {
     updateMailController.initPage();
 });
 
@@ -120,24 +121,11 @@ var UpdateMailController = function () {
 
     self.bindEvents = function () {
         $("#btn-add-group").click(function () {
-            var groupName = $(".ui-autocomplete-input").val();
-            var errorList = [];
-            if (groupName === undefined || groupName === '') {
-                errorList.push({
-                    Message: "The group name cannot be empty, please try again!"
-                });
-            }
-
-            if (errorList.length === 0) {
-                sharedScriptManager.hideValidateSummary();
-                self.addGroup(groupName);
-            } else {
-                sharedScriptManager.showError(errorList);
-            }
+            self.addGroup($(".ui-autocomplete-input").val());
         });
 
         $("#button-cancel").click(function () {
-            NAP.headlineMsgBox.confirm(viewResources.CancelCreateMail, function () {
+            NAP.headlineMsgBox.confirm(viewResources.CancelUpdateMail, function () {
                 NAP.redirect('MailStation/MailManage/Index', 0);
             });
         });
@@ -150,13 +138,10 @@ var UpdateMailController = function () {
                     self.getParams(),
                     function (result) {
                         if (result.IsSuccessful) {
-                            sharedScriptManager.createSuccessSummary(viewResources.UpdateMailSuccessMsg);
-                            NAP.showSuccessMsg(viewResources.UpdateMailSuccessMsg, "MailStation/MailManage/Index", 6000);
-                            self.refreshMailGroup();
+                            result.Message = viewResources.UpdateMailSuccessMsg;
                         }
-                        else {
-                            sharedScriptManager.createErrorSummary([result.Message]);
-                        }
+
+                        sharedScriptManager.showNonQueryResult(result, "MailStation/MailManage/Index", 6000);
                     },
                     null,
                     sharedScriptManager.unblockUI
@@ -167,25 +152,41 @@ var UpdateMailController = function () {
 
     self.validateForm = function () {
         $('.input-validation-error').removeClass('input-validation-error');
+        $('.nexcron-validation-error').removeClass('nexcron-validation-error');
         $('.magic-suggest-error').removeClass('magic-suggest-error');
         if (DOMElements.MailName.val() === '') {
             DOMElements.MailName.addClass('input-validation-error');
-            sharedScriptManager.createErrorSummary(['Mail Name cannot be empty.']);
+            sharedScriptManager.createValidationSummary(['Mail Name cannot be empty.'], false);
             return false;
         }
 
-//        if (!sharedScriptManager.isValidEmail(DOMElements.MailFrom.val())) {
-//            DOMElements.MailFrom.addClass('input-validation-error');
-//            sharedScriptManager.createErrorSummary(['Mail From is not a valid email.']);
-//            return false;
-//        }
+        //        if (!sharedScriptManager.isValidEmail(DOMElements.MailFrom.val())) {
+        //            DOMElements.MailFrom.addClass('input-validation-error');
+        //            sharedScriptManager.createErrorSummary(['Mail From is not a valid email.']);
+        //            return false;
+        //        }
 
         if (DOMElements.MailTo.getValue().length === 0) {
             $(DOMElements.MailTo).addClass('input-validation-error');
-            sharedScriptManager.createErrorSummary(['Mail To cannot be empty.']);
+            sharedScriptManager.createValidationSummary(['Mail To cannot be empty.'], false);
             $('#MailTo').addClass('magic-suggest-error');
             $('input', '#MailTo').addClass('magic-suggest-error');
             return false;
+        }
+
+        if (DOMElements.TriggerType.val() === Enums.TriggerType.Schedule) {
+            var cronExpression = DOMElements.NexCron.nexCron('getCronExpression');
+            if (cronExpression.RepeatType === '2') {
+                var repeaton = $('#nexcron-repeat-on-day').val().split(',');
+                for (var i = 0; i < repeaton.length; i++) {
+                    var day = repeaton[i];
+                    if (parseInt(day) > 28) {
+                        $('#nexcron-repeat-on-day').addClass('nexcron-validation-error');
+                        sharedScriptManager.createValidationSummary(['Date should not be greated than 28.'], false);
+                        return false;
+                    }
+                }
+            }
         }
 
         return true;
@@ -238,11 +239,11 @@ var UpdateMailController = function () {
             { MailGroupName: groupName },
             function (result) {
                 if (result.IsSuccessful) {
-                    sharedScriptManager.createSuccessSummary(viewResources.AddMailGroupSuccessMsg);
-                    self.refreshMailGroup();
+                    result.Message = viewResources.AddMailGroupSuccessMsg;
+                    sharedScriptManager.showNonQueryResult(result, null, null, self.refreshMailGroup());
                 }
                 else {
-                    sharedScriptManager.createErrorSummary([result.Message]);
+                    sharedScriptManager.showNonQueryResult(result, null, null);
                 }
             },
             null,

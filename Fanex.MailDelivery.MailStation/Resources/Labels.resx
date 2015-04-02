@@ -303,4 +303,10 @@
   <data name="Waiting" xml:space="preserve">
     <value>Waiting</value>
   </data>
+  <data name="CopyPrefix" xml:space="preserve">
+    <value>_Copy</value>
+  </data>
+  <data name="SystemName" xml:space="preserve">
+    <value>Mail Station</value>
+  </data>
 </root>

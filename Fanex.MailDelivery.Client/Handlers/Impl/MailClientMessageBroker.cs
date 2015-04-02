@@ -94,8 +94,10 @@
         /// For the first time Job is running, we need to get back the TaskID of the current running Job.
         /// By insert new record at DB, it get back itself with additional TaskID's value.
         /// </summary>
-        /// <param name="jobResult">Job Result Message.</param>
-        /// <returns></returns>
+        /// <param name="jobResult">Job Result.</param>
+        /// <returns>
+        /// Job Result Message.
+        /// </returns>
         public JobResultMessage RequestAddMailTaskForRunningJob(JobResultMessage jobResult)
         {
             return _bus.Request<JobResultMessage, JobResultMessage>(jobResult);

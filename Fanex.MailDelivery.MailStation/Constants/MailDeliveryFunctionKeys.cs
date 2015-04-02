@@ -1,11 +1,8 @@
-﻿// --------------------------------------------------------------------------
+﻿// ---------------------------------------------------------------------------------
 // <copyright file="MailDeliveryFunctionKeys.cs" company="Nexcel Solutions Vietnam">
 // Copyright (c) Nexcel Solutions Vietnam. All rights reserved.
 // </copyright>
-// --------------------------------------------------------------------------
-// <history>
-//   <change who="Louis" date="2012.12.07">Created</change>
-// </history>
+// ---------------------------------------------------------------------------------
 
 namespace Fanex.MailDelivery.MailStation.Constants
 {
@@ -14,6 +11,10 @@ namespace Fanex.MailDelivery.MailStation.Constants
     /// </summary>
     public class MailDeliveryFunctionKeys
     {
+        public const string MailStation = "MailStation";
+        public const string ManageMail = "ManageMail";
         public const string MailReport = "MailReport";
+        public const string ManageMailGroup = "ManageMailGroup";
+        public const string ManageRecipient = "ManageRecipient";
     }
 }

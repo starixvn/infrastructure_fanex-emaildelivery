@@ -1,8 +1,8 @@
 ﻿namespace Fanex.MailDelivery.Client.Messages
 {
+    using System;
     using Fanex.MailDelivery.Client.Enumerations;
     using Fanex.MailDelivery.Client.Models;
-    using System;
 
     /// <summary>
     /// Job Status Message.

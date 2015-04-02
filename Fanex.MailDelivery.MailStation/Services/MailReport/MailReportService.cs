@@ -14,16 +14,15 @@ namespace Fanex.MailDelivery.MailStation.Services.MailReport
     using System.Linq;
     using Fanex.Data;
     using Fanex.MailDeliver.Model;
+    using Fanex.MailDelivery.Admin.Handlers;
+    using Fanex.MailDelivery.Client.Enumerations;
+    using Fanex.MailDelivery.Client.Models;
     using Fanex.MailDelivery.MailStation.Criteria.MailReport;
     using Fanex.MailDelivery.MailStation.Models;
     using Fanex.Maintenance.Service.Impl.Mail;
     using Fanex.Maintenance.Service.Interface.Mail;
-    using Fanex.MailDelivery.Client.Handlers;
-    using Fanex.MailDelivery.Client.Models;
-    using Fanex.MailDelivery.Admin.Handlers;
     using Quartz;
     using Quartz.Spi;
-    using Fanex.MailDelivery.Client.Enumerations;
 
     /// <summary>
     /// Mail Report Service.
@@ -59,36 +58,47 @@ namespace Fanex.MailDelivery.MailStation.Services.MailReport
                 listMailTaskDetail = db.Query<MailTaskDetailModel>().ToList();
             }
 
-            foreach (MailTaskDetailModel schedule in listMailTaskDetail)
+            if (criteria.Status == (int)JobStatus.Waiting || criteria.Status == -1)
             {
-                if (schedule.LastSent != null && schedule.LastSent < criteria.ToDate)
+                foreach (MailTaskDetailModel schedule in listMailTaskDetail)
                 {
-                    ITrigger trigger = TriggerBuilder.Create().WithCronSchedule(schedule.CronExpression).Build();
-                    var listtriggerdate = TriggerUtils.ComputeFireTimesBetween(
-                        (IOperableTrigger)trigger,
-                        null,
-                        new DateTimeOffset(this.MaxDateTime(criteria.FromDate, schedule.LastSent)),
-                        new DateTimeOffset(this.MinDateTime(criteria.ToDate, schedule.EndOn)));
-                    foreach (var triggertime in listtriggerdate)
+                    if (schedule.LastSent == null || schedule.LastSent < criteria.ToDate)
                     {
-                        MailTaskModel waitingTask = new MailTaskModel()
+                        TimeSpan ts = new TimeSpan(0, 0, 0);
+                        DateTime fromDate = this.MaxDateTime(criteria.FromDate, DateTime.Today);
+                        fromDate = fromDate.Date + ts;
+                        DateTime toDate = this.MaxDateTime(criteria.ToDate, DateTime.Today);
+                        ts = new TimeSpan(23, 59, 59);
+                        toDate = toDate.Date + ts;
+                        ITrigger trigger = TriggerBuilder.Create().WithCronSchedule(schedule.CronExpression).Build();
+                        //// Add 5 seconds to remove delay time between Scheduled Time and real Trigger Time.
+                        DateTime lastSent = schedule.LastSent == null ? schedule.LastScheduledTime.AddSeconds(5) : schedule.LastSent.Value;
+                        var listtriggerdate = TriggerUtils.ComputeFireTimesBetween(
+                            (IOperableTrigger)trigger,
+                            null,
+                            new DateTimeOffset(this.MaxDateTime(fromDate, lastSent).ToUniversalTime()),
+                            new DateTimeOffset(this.MinDateTime(toDate, schedule.EndOn).ToUniversalTime()));
+                        foreach (var triggertime in listtriggerdate)
                         {
-                            MailName = schedule.MailName,
-                            MailId = schedule.MailID,
-                            Attempt = schedule.Attempt,
-                            LastSent = null,
-                            ScheduledTime = triggertime.LocalDateTime,
-                            SiteId = schedule.SiteId,
-                            SiteName = schedule.SiteName,
-                            Status = (int)JobStatus.Waiting
-                        };
+                            MailTaskModel waitingTask = new MailTaskModel()
+                            {
+                                MailName = schedule.MailName,
+                                MailId = schedule.MailID,
+                                Attempt = schedule.Attempt,
+                                LastSent = null,
+                                ScheduledTime = triggertime.LocalDateTime,
+                                SiteId = schedule.SiteId,
+                                SiteName = schedule.SiteName,
+                                Status = (int)JobStatus.Waiting
+                            };
 
-                        result.Add(waitingTask);
+                            result.Add(waitingTask);
+                        }
                     }
                 }
             }
 
-            return result.OrderBy(m => m.MailName).ToList();
+            return result.OrderBy(m => m.Status).ThenByDescending(m => m.ScheduledTime).ToList();
         }
 
         /// <summary>
@@ -145,7 +155,6 @@ namespace Fanex.MailDelivery.MailStation.Services.MailReport
         /// Retry send mail.
         /// </summary>
         /// <param name="criteria">The criteria.</param>
-        /// <returns>Retry result.</returns>
         public void RetrySendMail(RetrySendMailCriteria criteria)
         {
             MailAdminHandler.Start();
@@ -156,11 +165,18 @@ namespace Fanex.MailDelivery.MailStation.Services.MailReport
             MailAdminHandler.Stop();
         }
 
+        /// <summary>
+        /// Get maximum date time.
+        /// </summary>
+        /// <param name="date1">The date1.</param>
+        /// <param name="date2">The date2.</param>
+        /// <returns>The max date.</returns>
         private DateTime MaxDateTime(DateTime date1, DateTime? date2)
         {
             if (date2.HasValue)
             {
-                return date1 >= date2.Value ? date1 : date2.Value;
+                // Add 5 seconds for the number ratio.
+                return date1 >= date2.Value ? date1 : date2.Value.AddSeconds(5);
             }
             else
             {
@@ -168,17 +184,23 @@ namespace Fanex.MailDelivery.MailStation.Services.MailReport
             }
         }
 
+        /// <summary>
+        /// Get minimum date time.
+        /// </summary>
+        /// <param name="date1">The date1.</param>
+        /// <param name="date2">The date2.</param>
+        /// <returns>The min date.</returns>
         private DateTime MinDateTime(DateTime date1, DateTime? date2)
         {
             if (date2.HasValue)
             {
-                return date1 < date2.Value ? date1 : date2.Value;
+                // Add 5 seconds for the number ratio.
+                return date1 < date2.Value ? date1 : date2.Value.AddSeconds(5);
             }
             else
             {
                 return date1;
             }
-
         }
     }
 }

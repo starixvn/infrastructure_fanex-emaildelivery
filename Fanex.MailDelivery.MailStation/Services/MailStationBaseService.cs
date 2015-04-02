@@ -7,14 +7,25 @@
     using System.Web.Mvc;
     using Fanex.Data;
     using Fanex.MailDelivery.MailStation.Constants;
+    using Fanex.MailDelivery.MailStation.Criteria.MailGroup;
     using Fanex.MailDelivery.MailStation.Criteria.MailManage;
     using Fanex.MailDelivery.MailStation.Models;
     using Fanex.NAP.Core.Criteria.Misc;
     using Fanex.NAP.Framework.Command;
     using Fanex.NAP.Framework.Data;
 
+    /// <summary>
+    /// Mail Station Base Service.
+    /// </summary>
     public class MailStationBaseService
     {
+        /// <summary>
+        /// Sites the specified has all element.
+        /// </summary>
+        /// <param name="hasAllElement">If set to <c>true</c> [has all element].</param>
+        /// <returns>
+        /// List sites.
+        /// </returns>
         public List<SelectListItem> Sites(bool hasAllElement = true)
         {
             GetAllSiteCriteria criteria = new GetAllSiteCriteria();
@@ -32,6 +43,13 @@
             return result;
         }
 
+        /// <summary>
+        /// Mails the groups.
+        /// </summary>
+        /// <param name="hasAllElement">If set to <c>true</c> [has all element].</param>
+        /// <returns>
+        /// Mail Groups.
+        /// </returns>
         public List<SelectListItem> MailGroups(bool hasAllElement = true)
         {
             GetAllMailGroupCriteria criteria = new GetAllMailGroupCriteria();
@@ -109,8 +127,7 @@
             hash = (new ResultCriteria()).AddSpParams(hash);
             using (var db = new ObjectDb(criteria.GetSettingKey()))
             {
-                db.AssignParamValues(hash);
-                db.ExecuteNonQuery();
+                db.ExecuteNonQuery(hash);
                 return GetCommandResult(hash);
             }
         }

@@ -15,29 +15,34 @@ namespace MailClientTest
         {
             MailClientHandler.Start();
             Console.WriteLine("Mail Client Service Site: {0} started.", AppSettings.MailCientConfig.SiteId);
-
-           // SendFunctionMail();
-            //ModifyMailingList();
+            //SendFunctionMail();
             Console.Read();
             MailClientHandler.Stop();
+
+            //TimeZoneInfo timeZone = TimeZoneInfo.FindSystemTimeZoneById("Atlantic Standard Time");
+            //DateTime utcDate = DateTime.UtcNow;
+            //DateTime now = DateTime.Now;
+            //DateTime negative4FMT = new DateTime(2015, 1, 15, 13, 5, 55, DateTimeKind.Unspecified);
+            //negative4FMT = TimeZoneInfo.ConvertTime(negative4FMT, timeZone);
+            //DateTime localDate = negative4FMT.ToLocalTime();
+            //DateTimeOffset dateOffset = DateTimeOffset.Now;
         }
 
         private static void SendFunctionMail()
         {
-            var mailSubject = string.Empty;
-            Console.WriteLine("Enter a mail subject. 'Quit' to quit.");
-            while ((mailSubject = Console.ReadLine()) != "Quit")
-            {
-                var mail = new Mail
-                    {
-                        Subject = mailSubject,
-                        Title = "Mail Station Test.",
-                        Body = "Hello world!",
-                    };
+            //var mailSubject = string.Empty;
+            //Console.WriteLine("Enter a mail subject. 'Quit' to quit.");
+            //while ((mailSubject = Console.ReadLine()) != "Quit")
+            //{
+            var mail = new Mail
+                {
+                    Subject = "Mail Station Test (Function Mail).",
+                    Title = "Mail Station Test (Function Mail).",
+                    Body = "Email Body.",
+                };
 
-                mail.MailingListId = AppSettings.GetFunctionId("FuntionA");
-                MailClientHandler.SendMail(mail);
-            }
+            mail.MailingListId = AppSettings.GetFunctionId("FuntionA");
+            MailClientHandler.SendMail(mail);
         }
 
         private static void ModifyMailingList()

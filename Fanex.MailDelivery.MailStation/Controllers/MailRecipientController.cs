@@ -10,15 +10,14 @@
 namespace Fanex.MailDelivery.MailStation.Controllers
 {
     using System.Web.Mvc;
-    using Fanex.MailDelivery.MailStation.Criteria.MailManage;
     using Fanex.MailDelivery.MailStation.Criteria.ManageRecipient;
     using Fanex.MailDelivery.MailStation.Services.ManageRecipient;
-    using Fanex.MailDelivery.MailStation.Services.ManageMail;
+    using Fanex.Maintenance.Controller;
 
     /// <summary>
     /// Mail Recipient Controller.
     /// </summary>
-    public class MailRecipientController : Controller
+    public class MailRecipientController : BaseController
     {
         private ManageRecipientService _manageRecipientService;
 
@@ -35,7 +34,7 @@ namespace Fanex.MailDelivery.MailStation.Controllers
 
         public ActionResult CreateRecipientView()
         {
-            return View("~/Areas/MailStation/ManageRecipient/InsertRecipient/Index.cshtml");
+            return View("~/Areas/MailStation/ManageRecipient/CreateRecipient/Index.cshtml");
         }
 
         public ActionResult RecipientList(RecipientListCriteria criteria)
@@ -47,7 +46,7 @@ namespace Fanex.MailDelivery.MailStation.Controllers
         {
             var recipient = _manageRecipientService.RecipientById(criteria);
 
-            return View("~/Areas/MailStation/ManageRecipient/EditRecipient/Index.cshtml", recipient);
+            return View("~/Areas/MailStation/ManageRecipient/UpdateRecipient/Index.cshtml", recipient);
         }
 
         [HttpPost]
@@ -73,7 +72,7 @@ namespace Fanex.MailDelivery.MailStation.Controllers
             var recipient = _manageRecipientService.RecipientById(criteria);
             var emails = new string[] { recipient.Email1, recipient.Email2, recipient.Email3 };
             
-            return RedirectToAction("Index", "MailManage", new { Emails = string.Join(";", emails).Trim(';') });
+            return RedirectToAction("Index", "MailManage", new { Emails = string.Join(",", emails).Trim(',') });
         }
     }
 }

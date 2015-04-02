@@ -9,8 +9,8 @@
 
 namespace Fanex.MailDelivery.MailStation.Criteria.MailReport
 {
-    using Fanex.NAP.Framework.Data;
     using System;
+    using Fanex.NAP.Framework.Data;
 
     /// <summary>
     /// Mail Report Criteria.

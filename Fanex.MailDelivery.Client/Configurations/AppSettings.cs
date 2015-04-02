@@ -53,5 +53,24 @@
 
             return null;
         }
+
+        /// <summary>
+        /// Determines whether [has schedule identifier] [the specified schedule identifier].
+        /// </summary>
+        /// <param name="scheduleId">The schedule identifier.</param>
+        /// <returns>Has schedule id or not.</returns>
+        public static bool HasScheduleId(int scheduleId)
+        {
+            var schedules = MailCientConfig.Schedules;
+            foreach (ScheduleElement schedule in schedules)
+            {
+                if (schedule.Id == scheduleId)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
     }
 }

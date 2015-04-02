@@ -1,10 +1,9 @@
 ﻿namespace Fanex.MailDelivery.Services
 {
     using System.Collections.Generic;
-    using Fanex.MailDelivery.Client.Enumerations;
+    using Fanex.MailDelivery.Client.Messages;
     using Fanex.MailDelivery.Client.Models;
     using Fanex.NAP.Framework.Command;
-using Fanex.MailDelivery.Client.Messages;
 
     /// <summary>
     /// Mail Service interface.
@@ -15,7 +14,7 @@ using Fanex.MailDelivery.Client.Messages;
 
         CommandResult UpdateJobStatus(JobResultMessage jobResultMessage);
 
-        CommandResult SendMail(Mail mail);
+        int SendMail(Mail mail);
 
         MailingList GetMailingList(int mailingListId);
 

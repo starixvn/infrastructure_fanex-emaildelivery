@@ -2,27 +2,30 @@
 @using Fanex.MailDelivery.MailStation.Resources;
 @using Fanex.MailDelivery.MailStation.Models;
 ﻿@using Fanex.MailDelivery.MailStation.Criteria.MailManage;
+@using Fanex.MailDelivery.MailStation.Services;
+@using Fanex.MailDelivery.MailStation.Constants;
 @model GetMailListCriteria
 @{
     ViewBag.Title = "Manage Mail";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    var hasEditRight = true;
+    var hasEditRight = PermissionService.HasHostPermission(MailDeliveryFunctionKeys.ManageMail);
     var hasSiteRight = true;
     var recipient = JsonConvert.SerializeObject(Model);
 }
 @section Head {
     @Styles.Render("~/themes/sharedstyles")
     @Styles.Render("~/themes/fanexgridstyles")
+    @Styles.Render("~/scripts/lib/MultipleSelect/css")
     @Styles.Render("~/Areas/MailStation/ManageMail/ManageMail/ManageMailStyles")
 }
 @section Headline {
     <h1>
-        <span class="title"><span class="first">Mail Delivery System /</span> @ViewBag.Title</span>
+        <span class="title"><span class="first">@Labels.SystemName /</span> @ViewBag.Title</span>
         @if (hasEditRight)
         {
             <div class="button-action">
-                <a id="btnCreateMail" class="lnk" href="~/MailStation/MailManage/CreateMailView">
-                    + Create Mail</a>
+                <a id="btnCreateMail" class="lnk" href="~/MailStation/MailManage/CreateMailView">+ Create
+                    Mail</a>
             </div>
         }
     </h1>
@@ -30,45 +33,46 @@
 <section id="filter-bar">
         <div class="filter-form">
             <div class="filter-row">
-                <div class="form-group">
-                    <div class="lbl-field width-80">
-                        @Html.LabelFor(m => m.MailName, "Mail Name")
-                    </div>
-                    @Html.TextBoxFor(m => m.MailName, new { @class = "textbox" })
+                <div class="lbl-field width-100">
+                    @Html.LabelFor(m => m.MailName, "Mail Name")
                 </div>
-                <div class="form-group ">
-                    <div class="lbl-field">
-                        @Html.LabelFor(m => m.IsActive, "Status")
-                    </div>
+                <div class="edit-field width-300">
+                    @Html.TextBoxFor(m => m.MailName, new { @class = "width-300" })
+                </div>
+                <div class="lbl-field">
+                    @Html.LabelFor(m => m.IsActive, "Status")
+                </div>
+                <div class="edit-field">
                     @Html.DropDownListFor(m => m.IsActive, (IEnumerable<SelectListItem>)ViewBag.ListStatus, new { @class = "width-80" })
                 </div>
-                <div class="form-group">
-                    <div class="lbl-field">
-                        @Html.LabelFor(m => m.MailGroupID, "Group")
-                    </div>
-                    @Html.DropDownListFor(m => m.MailGroupID, (IEnumerable<SelectListItem>)ViewBag.ListMailGroup, new { @class = "width-160" })
+                <div class="lbl-field">
+                    @Html.LabelFor(m => m.MailGroupID, "Group")
                 </div>
-                <div class="form-group">
-                    <div class="lbl-field">
-                        @Html.LabelFor(m => m.TriggerType, "Trigger")
-                    </div>
+                <div class="edit-field">
+                    @Html.HiddenFor(m => m.MailGroupID)
+                    <select id="dropdownMailGroup"></select>
+                </div>
+                <div class="lbl-field">
+                    @Html.LabelFor(m => m.TriggerType, "Trigger")
+                </div>
+                <div class="edit-field">
                     @Html.DropDownListFor(m => m.TriggerType, (IEnumerable<SelectListItem>)ViewBag.ListTriggerType)
                 </div>
             </div>
             <div class="filter-row">
-                <div class="form-group">
-                    <div class="lbl-field width-80">
-                        @Html.LabelFor(m => m.Emails, "Email(s)")
-                    </div>
-                    @Html.TextBoxFor(m => m.Emails, new { @class = "textbox" })
+                <div class="lbl-field width-100">
+                    @Html.LabelFor(m => m.Emails, "Email(s)")
                 </div>
-                <div class="form-group">
-                    <div class="lbl-field">
-                        @Html.LabelFor(m => m.SiteID, "Site")
-                    </div>
-                    @Html.DropDownListFor(m => m.SiteID, (IEnumerable<SelectListItem>)ViewBag.ListSite, new { @class = "width-300" })
+                <div class="edit-field width-300">
+                    @Html.TextBoxFor(m => m.Emails, new { @class = "width-300" })
                 </div>
-                <div class="form-group form-group-right submit">
+                <div class="lbl-field">
+                    @Html.LabelFor(m => m.SiteID, "Site")
+                </div>
+                <div class="edit-field site-box">
+                    @Html.DropDownListFor(m => m.SiteID, (IEnumerable<SelectListItem>)ViewBag.ListSite, new { @class = "site-box" })
+                </div>
+                <div class="submit">
                     <input id="button-search" type="submit" value="Submit" />
                 </div>
             </div>
@@ -88,6 +92,7 @@
 @section Foot {
     @Scripts.Render("~/scripts/sharedscripts")
     @Scripts.Render("~/scripts/fanexgridscripts")
+    @Scripts.Render("~/scripts/lib/MultipleSelect/js")
     @Scripts.Render("~/Areas/MailStation/ManageMail/ManageMail/ManageMailScripts")
     <script type="text/javascript">
         window.rootUrl = '@Url.Content("~")';

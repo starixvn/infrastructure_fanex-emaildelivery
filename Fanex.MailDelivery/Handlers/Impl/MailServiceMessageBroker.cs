@@ -60,7 +60,6 @@
                 MailDeliveryConstants.SendMailRoutingKey,
                     mail =>
                     {
-                        //Console.WriteLine("Mail" + mail.Subject + " Recieved");
                         _mailService.SendMail(mail);
                     },
                     config => config.WithTopic(MailDeliveryConstants.SendMailRoutingKey));
@@ -159,8 +158,7 @@
                 {
                     _mailService.AddMailTaskForRunningJob(jobResult);
                     return jobResult;
-                }
-                );
+                });
         }
 
         public void Dispose()
