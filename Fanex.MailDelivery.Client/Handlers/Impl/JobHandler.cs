@@ -66,6 +66,7 @@
                     _scheduler.UnscheduleJob(trigger.Key);
                     //// Tell quartz to schedule the job using our trigger.
                     _scheduler.ScheduleJob(job, trigger);
+                    LogInfo(string.Format("Cron string: {0}", schedule.RepeatExpression));
                     if (schedule.SiteId != AppSettings.MailCientConfig.SiteId)
                     {
                         LogInfo(

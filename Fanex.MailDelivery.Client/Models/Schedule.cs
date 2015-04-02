@@ -1,6 +1,7 @@
 ﻿namespace Fanex.MailDelivery.Client.Models
 {
     using System;
+using Fanex.MailDelivery.Client.Configurations;
 
     /// <summary>
     /// Schedule information.
@@ -107,8 +108,11 @@
 
         private int CalculateHoursDifferentBeetweenLocalAndServer()
         {
+            string environment = MailClientSection.GetConfig().Environment ?? string.Empty ;
+            bool isLocal = environment.Length == 0 || environment.Trim().Equals("local") ? true : false;
+            string timezoneName = isLocal ? MailDeliveryConstants.LocalServerTimeZone : MailDeliveryConstants.LiveServerTimeZone;
             var nowDate = DateTime.Now;
-            return -(TimeZoneInfo.ConvertTime(nowDate, TimeZoneInfo.FindSystemTimeZoneById(MailDeliveryConstants.ServerTimeZone)) - nowDate).Hours;
+            return -(TimeZoneInfo.ConvertTime(nowDate, TimeZoneInfo.FindSystemTimeZoneById(timezoneName)) - nowDate).Hours;
         }
     }
 }

@@ -28,6 +28,8 @@
         public const int RetryDelayInSecond = 5;
 
         // Server Time is UTC -4.
-        public const string ServerTimeZone = "Atlantic Standard Time";
+        public const string LocalServerTimeZone = "Atlantic Standard Time";
+
+        public const string LiveServerTimeZone = "SA Western Standard Time";
     }
 }

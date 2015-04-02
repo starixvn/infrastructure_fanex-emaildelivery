@@ -14,6 +14,13 @@
             set { this["applicationSendMailId"] = value; }
         }
 
+        [ConfigurationProperty("environment", IsRequired = false)]
+        public string Environment
+        {
+            get { return (string)this["environment"]; }
+            set { this["environment"] = value; }
+        }
+
         [ConfigurationProperty("Functions", IsRequired = false)]
         public FunctionElementCollection Functions
         {
