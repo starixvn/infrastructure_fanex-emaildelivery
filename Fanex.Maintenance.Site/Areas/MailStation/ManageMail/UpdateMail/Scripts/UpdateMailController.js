@@ -186,7 +186,7 @@ var UpdateMailController = function () {
                         return false;
                     }
                 }
-            } 
+            }
         }
 
         return true;
@@ -240,9 +240,11 @@ var UpdateMailController = function () {
             function (result) {
                 if (result.IsSuccessful) {
                     result.Message = viewResources.AddMailGroupSuccessMsg;
+                    sharedScriptManager.showNonQueryResult(result, null, null, self.refreshMailGroup());
                 }
-
-                sharedScriptManager.showNonQueryResult(result, null, null, self.refreshMailGroup());
+                else {
+                    sharedScriptManager.showNonQueryResult(result, null, null);
+                }
             },
             null,
             sharedScriptManager.unblockUI
