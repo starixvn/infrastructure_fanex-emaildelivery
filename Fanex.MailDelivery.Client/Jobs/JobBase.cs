@@ -27,7 +27,6 @@
         /// </remarks>
         public void Execute(IJobExecutionContext context)
         {
-            
             try
             {
                 var schedule = context.MergedJobDataMap[MailDeliveryConstants.ScheduleJobDataKey] as Schedule;

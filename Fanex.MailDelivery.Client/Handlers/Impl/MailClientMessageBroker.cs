@@ -87,6 +87,7 @@
                 scheduleRequest.Ids.Add(scheduleConfig.Id);
             }
 
+            var isconnect = _bus.IsConnected;
             return _bus.Request<ScheduleRequestMessage, List<Schedule>>(scheduleRequest);
         }
 

@@ -6,6 +6,9 @@ using System.Text;
 using Fanex.MailDelivery.Client.Handlers;
 using Fanex.MailDelivery.Client.Configurations;
 using Fanex.MailDelivery.Client.Models;
+using System.ServiceProcess;
+using MailClientTest.Installer;
+using System.Reflection;
 
 namespace MailClientTest
 {
@@ -13,19 +16,40 @@ namespace MailClientTest
     {
         static void Main(string[] args)
         {
-            MailClientHandler.Start();
-            Console.WriteLine("Mail Client Service Site: {0} started.", AppSettings.MailCientConfig.SiteId);
-            //SendFunctionMail();
-            Console.Read();
-            MailClientHandler.Stop();
+            //MailClientHandler.Start();
+            //Console.WriteLine("Mail Client Service Site: {0} started.", AppSettings.MailCientConfig.SiteId);
+            ////SendFunctionMail();
+            //Console.Read();
+            //MailClientHandler.Stop();
 
-            //TimeZoneInfo timeZone = TimeZoneInfo.FindSystemTimeZoneById("Atlantic Standard Time");
-            //DateTime utcDate = DateTime.UtcNow;
-            //DateTime now = DateTime.Now;
-            //DateTime negative4FMT = new DateTime(2015, 1, 15, 13, 5, 55, DateTimeKind.Unspecified);
-            //negative4FMT = TimeZoneInfo.ConvertTime(negative4FMT, timeZone);
-            //DateTime localDate = negative4FMT.ToLocalTime();
-            //DateTimeOffset dateOffset = DateTimeOffset.Now;
+            ServiceBase[] servicesToRun = new ServiceBase[]
+            {
+                new MailClientTestService()
+            };
+
+
+            if (Environment.UserInteractive)
+            {
+                Type type = typeof(ServiceBase);
+                BindingFlags flags = BindingFlags.Instance | BindingFlags.NonPublic;
+                MethodInfo method = type.GetMethod("OnStart", flags);
+                foreach (ServiceBase service in servicesToRun)
+                {
+                    method.Invoke(service, new object[] { args });
+                }
+
+                Console.WriteLine("Mail Client Service Site: {0} started.", AppSettings.MailCientConfig.SiteId);
+                Console.ReadLine();
+
+                foreach (ServiceBase service in servicesToRun)
+                {
+                    service.Stop();
+                }
+            }
+            else
+            {
+                ServiceBase.Run(servicesToRun);
+            }
         }
 
         private static void SendFunctionMail()

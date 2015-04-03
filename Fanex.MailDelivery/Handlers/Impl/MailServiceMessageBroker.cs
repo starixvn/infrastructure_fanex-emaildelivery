@@ -84,9 +84,14 @@
         /// </summary>
         public void SubscribeScheduleRequest()
         {
+            
             _bus.Respond<ScheduleRequestMessage, List<Schedule>>(
                 scheduleRequest =>
                 {
+                    var jobLog = "Subscribe schedule request.";
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine(jobLog);
+                    Console.ForegroundColor = ConsoleColor.White;
                     List<Schedule> schedules = _mailService.GetSchedules(scheduleRequest.Ids);
 
                     return schedules;
