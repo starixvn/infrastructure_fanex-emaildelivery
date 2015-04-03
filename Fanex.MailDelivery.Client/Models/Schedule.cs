@@ -108,7 +108,7 @@ using Fanex.MailDelivery.Client.Configurations;
 
         private int CalculateHoursDifferentBeetweenLocalAndServer()
         {
-            string environment = MailClientSection.GetConfig().Environment ?? string.Empty ;
+            string environment = MailClientSection.GetConfig().Environment ?? string.Empty;
             bool isLocal = environment.Length == 0 || environment.Trim().Equals("local") ? true : false;
             string timezoneName = isLocal ? MailDeliveryConstants.LocalServerTimeZone : MailDeliveryConstants.LiveServerTimeZone;
             var nowDate = DateTime.Now;

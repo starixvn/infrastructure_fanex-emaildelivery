@@ -13,6 +13,9 @@ var EditRecipientController = function () {
     var DOMElements = {
         RecipientID: null,
         RecipientName: null,
+        EmailID1: null,
+        EmailID2: null,
+        EmailID3: null,
         Email1: null,
         Email2: null,
         Email3: null,
@@ -25,6 +28,9 @@ var EditRecipientController = function () {
     self.cacheDOMElements = function () {
         DOMElements.RecipientID = $('#RecipientId');
         DOMElements.RecipientName = $('#RecipientName');
+        DOMElements.EmailID1 = $('#EmailID1');
+        DOMElements.EmailID2 = $('#EmailID2');
+        DOMElements.EmailID3 = $('#EmailID3');
         DOMElements.Email1 = $('#Email1');
         DOMElements.Email2 = $('#Email2');
         DOMElements.Email3 = $('#Email3');
@@ -69,6 +75,9 @@ var EditRecipientController = function () {
         var recipient = {
             RecipientId: DOMElements.RecipientID.val(),
             Username: DOMElements.RecipientName.val(),
+            EmailID1: DOMElements.EmailID1.val(),
+            EmailID2: DOMElements.EmailID2.val(),
+            EmailID3: DOMElements.EmailID3.val(),
             Email1: DOMElements.Email1.val(),
             Email2: DOMElements.Email2.val(),
             Email3: DOMElements.Email3.val(),

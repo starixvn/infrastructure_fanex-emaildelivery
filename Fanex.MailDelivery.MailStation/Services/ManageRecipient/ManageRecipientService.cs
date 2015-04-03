@@ -1,4 +1,4 @@
-﻿// --------------------------------------------------------------------------
+﻿﻿// --------------------------------------------------------------------------
 // <copyright file="ManageRecipientService.cs" company="Nexcel Solutions Vietnam">
 // Copyright (c) Nexcel Solutions Vietnam. All rights reserved.
 // </copyright>
@@ -83,6 +83,22 @@ namespace Fanex.MailDelivery.MailStation.Services.ManageRecipient
         /// <param name="criteria">The criteria.</param>
         /// <returns>Inserting result.</returns>
         public CommandResult InsertRecipient(CreateRecipientCriteria criteria)
+        {
+            Hashtable hash = criteria.GetSpParams();
+            hash = (new ResultCriteria()).AddSpParams(hash);
+            using (var db = new ObjectDb(criteria.GetSettingKey()))
+            {
+                db.ExecuteNonQuery(hash);
+                return GetCommandResult(hash);
+            }
+        }
+
+        /// <summary>
+        /// Deletes the recipient.
+        /// </summary>
+        /// <param name="criteria">The criteria.</param>
+        /// <returns>Command result.</returns>
+        public CommandResult DeleteRecipient(DeleteRecipientCriteria criteria)
         {
             Hashtable hash = criteria.GetSpParams();
             hash = (new ResultCriteria()).AddSpParams(hash);

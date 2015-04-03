@@ -11,6 +11,7 @@ namespace Fanex.MailDelivery.MailStation.Services.MailReport
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using Fanex.Data;
     using Fanex.MailDeliver.Model;
@@ -41,6 +42,7 @@ namespace Fanex.MailDelivery.MailStation.Services.MailReport
         /// </summary>
         /// <param name="criteria">The criteria.</param>
         /// <returns>The mail report.</returns>
+        [SuppressMessage("StyleCop.CSharp.Nexcel.NexcelCustomRules", "SP2101:MethodMustNotContainMoreLinesThan", Justification = "Reviewed. Suppression is OK here.")]
         public List<MailTaskModel> MailReport(MailReportCriteria criteria)
         {
             List<MailTaskModel> result = new List<MailTaskModel>();

@@ -67,7 +67,7 @@
             return result;
         }
 
-        public List<SelectListItem> Status(bool hasAllElement = true)
+        public List<SelectListItemExtra> Status(bool hasAllElement = true)
         {
             if (hasAllElement)
             {
@@ -77,7 +77,7 @@
             return MailStationConstants.Active;
         }
 
-        public List<SelectListItem> TaskStatus(bool hasAllElement = true)
+        public List<SelectListItemExtra> TaskStatus(bool hasAllElement = true)
         {
             if (hasAllElement)
             {
@@ -87,7 +87,7 @@
             return MailStationConstants.AllItem;
         }
 
-        public List<SelectListItem> Trigger(bool hasAllElement = true)
+        public List<SelectListItemExtra> Trigger(bool hasAllElement = true)
         {
             if (hasAllElement)
             {

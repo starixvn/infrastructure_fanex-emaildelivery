@@ -1,4 +1,4 @@
-﻿// --------------------------------------------------------------------------
+﻿﻿// --------------------------------------------------------------------------
 // <copyright file="RecipientModel.cs" company="Nexcel Solutions Vietnam">
 // Copyright (c) Nexcel Solutions Vietnam. All rights reserved.
 // </copyright>
@@ -19,6 +19,12 @@ namespace Fanex.MailDelivery.MailStation.Models
         public string RecipientName { get; set; }
 
         public bool IsNapUser { get; set; }
+
+        public int EmailID1 { get; set; }
+
+        public int EmailID2 { get; set; }
+
+        public int EmailID3 { get; set; }
 
         public string Email1 { get; set; }
 

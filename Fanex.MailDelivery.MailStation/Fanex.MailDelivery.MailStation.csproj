@@ -103,11 +103,13 @@
     <Compile Include="Criteria\MailReport\RetrySendMailCriteria.cs" />
     <Compile Include="Criteria\ManageRecipient\CheckRecipientInfoCriteria.cs" />
     <Compile Include="Criteria\ManageRecipient\CreateRecipientCriteria.cs" />
+    <Compile Include="Criteria\ManageRecipient\DeleteRecipientCriteria.cs" />
     <Compile Include="Criteria\ManageRecipient\RecipientByIdCriteria.cs" />
     <Compile Include="Criteria\ManageRecipient\RecipientListCriteria.cs" />
     <Compile Include="Models\MailGroupModel.cs" />
     <Compile Include="Models\MailTaskDetailModel.cs" />
     <Compile Include="Models\MailTaskModel.cs" />
+    <Compile Include="Models\SelectListItemExtra.cs" />
     <Compile Include="Models\SuggestMailModel.cs" />
     <Compile Include="Criteria\ManageRecipient\UpdateRecipientCriteria.cs" />
     <Compile Include="Criteria\MailManage\SuggestMailCriteria.cs" />
