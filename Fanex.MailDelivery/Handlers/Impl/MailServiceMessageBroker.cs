@@ -83,8 +83,7 @@
         /// Subscribes the schedule request.
         /// </summary>
         public void SubscribeScheduleRequest()
-        {
-            
+        {            
             _bus.Respond<ScheduleRequestMessage, List<Schedule>>(
                 scheduleRequest =>
                 {

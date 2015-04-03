@@ -21,7 +21,6 @@
                 new MailDeliveryService()
             };
 
-
             if (Environment.UserInteractive)
             {
                 Type type = typeof(ServiceBase);

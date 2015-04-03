@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------
-// <copyright file="MailManageController.cs" company="Nexcel Solutions Vietnam">
+// <copyright file="MailGroupManageController.cs" company="Nexcel Solutions Vietnam">
 // Copyright (c) Nexcel Solutions Vietnam. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------
@@ -35,7 +35,6 @@ namespace Fanex.MailDelivery.MailStation.Controllers
         /// <summary>
         /// Creates the mail view.
         /// </summary>
-        /// <param name="criteria">The criteria.</param>
         /// <returns>Create Mail View.</returns>
         public ActionResult CreateMailGroupView()
         {
@@ -62,6 +61,11 @@ namespace Fanex.MailDelivery.MailStation.Controllers
             return Json(this._mailGroupService.DeleteMailGroup(criteria));
         }
 
+        /// <summary>
+        /// Updates mail group.
+        /// </summary>
+        /// <param name="criteria">Mail group by id.</param>
+        /// <returns>Action Result.</returns>
         public ActionResult UpdateMailGroupView(GetMailGroupByIDCriteria criteria)
         {
             var mailGroup = this._mailGroupService.GetMailGroupByID(criteria);

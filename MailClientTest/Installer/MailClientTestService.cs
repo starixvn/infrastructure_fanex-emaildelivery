@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.Linq;
-using System.ServiceProcess;
-using System.Text;
-using Fanex.MailDelivery.Client.Handlers;
-using Fanex.MailDelivery.Client.Configurations;
-
-namespace MailClientTest.Installer
+﻿namespace MailClientTest.Installer
 {
-    partial class MailClientTestService : ServiceBase
+    using System.ServiceProcess;
+    using Fanex.MailDelivery.Client.Handlers;
+
+    /// <summary>
+    /// Mail client service for testing.
+    /// </summary>
+    public partial class MailClientTestService : ServiceBase
     {
         public MailClientTestService()
         {

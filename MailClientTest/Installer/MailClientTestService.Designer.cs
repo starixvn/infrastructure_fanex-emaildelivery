@@ -1,22 +1,26 @@
 ﻿namespace MailClientTest.Installer
 {
-    partial class MailClientTestService
+    /// <summary>
+    /// Mail client service for testing.
+    /// </summary>
+    public partial class MailClientTestService
     {
         /// <summary> 
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private System.ComponentModel.IContainer _components = null;
 
         /// <summary>
         /// Clean up any resources being used.
         /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        /// <param name="disposing">True if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (components != null))
+            if (disposing && (_components != null))
             {
-                components.Dispose();
+                _components.Dispose();
             }
+
             base.Dispose(disposing);
         }
 
@@ -28,7 +32,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
+            _components = new System.ComponentModel.Container();
             this.ServiceName = "MailClientTestService";
         }
 
