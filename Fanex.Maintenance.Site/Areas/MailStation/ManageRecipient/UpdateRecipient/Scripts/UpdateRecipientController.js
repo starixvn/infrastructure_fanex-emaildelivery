@@ -95,8 +95,8 @@ var EditRecipientController = function () {
         var email3 = DOMElements.Email3.val();
 
         if (($.trim(email1) === $.trim(email2) && email1 !== '' && email2 !== '')
-            || ($.trim(email1) === $.trim(email3) && email1 !== '' && email2 !== '')
-            || ($.trim(email2) === $.trim(email3) && email1 !== '' && email2 !== '')) {
+            || ($.trim(email1) === $.trim(email3) && email1 !== '' && email3 !== '')
+            || ($.trim(email2) === $.trim(email3) && email2 !== '' && email3 !== '')) {
             DOMElements.Email1.addClass('input-validation-error');
             DOMElements.Email2.addClass('input-validation-error');
             DOMElements.Email3.addClass('input-validation-error');
