@@ -20,6 +20,9 @@ namespace Fanex.MailDelivery.MailStation.Criteria.ManageRecipient
         [SpParam(SqlParamName = "RecipientID")]
         public int RecipientId { get; set; }
 
+        [SpParam(SqlParamName = "RecipientName")]
+        public string Username { get; set; }
+
         public int EmailID1 { get; set; }
 
         public int EmailID2 { get; set; }
