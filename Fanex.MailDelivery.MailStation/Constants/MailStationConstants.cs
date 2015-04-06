@@ -32,9 +32,8 @@
             TaskStatus = new List<SelectListItemExtra>();
             TaskStatus.Add(new SelectListItemExtra() { Text = "Waiting".ToUpper(), Value = "0" });
             TaskStatus.Add(new SelectListItemExtra() { Text = "Running".ToUpper(), Value = "1" });
-            TaskStatus.Add(new SelectListItemExtra() { Text = "Sent".ToUpper(), Value = "2" });
-            TaskStatus.Add(new SelectListItemExtra() { Text = "Data not ready".ToUpper(), Value = "3" });
-            TaskStatus.Add(new SelectListItemExtra() { Text = "Failed".ToUpper(), Value = "4" });
+            TaskStatus.Add(new SelectListItemExtra() { Text = "Data not ready".ToUpper(), Value = "2" });
+            TaskStatus.Add(new SelectListItemExtra() { Text = "Sent".ToUpper(), Value = "4" });
         }
     }
 }
