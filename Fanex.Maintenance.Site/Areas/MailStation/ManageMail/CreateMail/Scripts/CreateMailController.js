@@ -165,7 +165,14 @@ var InsertMailController = function () {
                         return false;
                     }
                 }
-            } 
+            }
+//            else if (cronExpression.RepeatType === '1') {
+//                // Weekly
+//                if ($('[id^="nexcron-weekly-"]:checked').length === 0) {
+//                    sharedScriptManager.createValidationSummary(['At least one day must be selected.'], false);
+//                    return false;
+//                }
+//            }
         }
 
         return true;

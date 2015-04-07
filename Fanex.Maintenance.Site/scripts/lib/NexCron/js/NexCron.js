@@ -536,7 +536,7 @@
                 dayOfWeek += this.DOMElements.RepeatWeeklySaturday.is(':checked') ? ',6' : '';
                 dayOfWeek += this.DOMElements.RepeatWeeklySunday.is(':checked') ? ',7' : '';
                 dayOfWeek = dayOfWeek.replace(/^,|,$/g, '');
-                if (dayOfWeek.length === 13) {
+                if (dayOfWeek.length === 13 || dayOfWeek.length === 0) {
                     // All Days of Week is selected
                     dayOfWeek = '*';
                 }
@@ -649,7 +649,7 @@
                     this.DOMElements.RepeatMonthly.val(repeatDaily);
                 }
 
-                this.DOMElements.RepeatOnDaysOfMonth.val(cronExpression[3]);
+                this.DOMElements.RepeatOnDaysOfMonth.val(cronExpression[3] === '*' ? '' : cronExpression[3]);
             default:
                 break;
         }
