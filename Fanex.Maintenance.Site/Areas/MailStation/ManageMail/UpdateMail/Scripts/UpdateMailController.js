@@ -187,13 +187,13 @@ var UpdateMailController = function () {
                     }
                 }
             }
-//            else if (cronExpression.RepeatType === '1') {
-//                // Weekly
-//                if ($('[id^="nexcron-weekly-"]:checked').length === 0) {
-//                    sharedScriptManager.createValidationSummary(['At least one day must be selected.'], false);
-//                    return false;
-//                }
-//            }
+            //            else if (cronExpression.RepeatType === '1') {
+            //                // Weekly
+            //                if ($('[id^="nexcron-weekly-"]:checked').length === 0) {
+            //                    sharedScriptManager.createValidationSummary(['At least one day must be selected.'], false);
+            //                    return false;
+            //                }
+            //            }
         }
 
         return true;
@@ -247,7 +247,7 @@ var UpdateMailController = function () {
             function (result) {
                 if (result.IsSuccessful) {
                     result.Message = viewResources.AddMailGroupSuccessMsg;
-                    sharedScriptManager.showNonQueryResult(result, null, null, self.refreshMailGroup());
+                    sharedScriptManager.showNonQueryResult(result, null, null, self.refreshMailGroup(groupName));
                 }
                 else {
                     sharedScriptManager.showNonQueryResult(result, null, null);
@@ -258,14 +258,14 @@ var UpdateMailController = function () {
         );
     };
 
-    self.refreshMailGroup = function () {
+    self.refreshMailGroup = function (groupName) {
         sharedScriptManager.callAjax(self,
             window.rootUrl + "MailStation/MailManage/MailGroups",
-            null,
+            { hasAllElement: false },
             function (result) {
                 var mailGroupHtml = '';
                 for (var i = 0; i < result.length; i++) {
-                    mailGroupHtml += '<option value="' + result[i].Value + '">' + result[i].Text + '</option>';
+                    mailGroupHtml += '<option value="' + result[i].Value + '"' + (groupName === result[i].Text ? ' selected' : '') + '>' + result[i].Text + '</option>';
                 }
 
                 DOMElements.MailGroupID.empty().append(mailGroupHtml);

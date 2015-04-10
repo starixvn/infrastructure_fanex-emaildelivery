@@ -40,10 +40,10 @@ namespace Fanex.MailDelivery.MailStation.Controllers
             return Json(_mailManageService.Sites());
         }
 
-        public JsonResult MailGroups()
+        public JsonResult MailGroups(bool hasAllElement = true)
         {
             _mailManageService = new MailManageService();
-            return Json(_mailManageService.MailGroups());
+            return Json(_mailManageService.MailGroups(hasAllElement));
         }
 
         public JsonResult AddMailGroup(CreateMailGroupCriteria criteria)
