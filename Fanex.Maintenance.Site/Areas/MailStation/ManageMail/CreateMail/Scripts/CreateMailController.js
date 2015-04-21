@@ -13,6 +13,7 @@ var InsertMailController = function () {
     };
 
     var magicSuggestOptions = {
+        highlight: false,
         allowFreeEntries: false,
         data: window.rootUrl + "MailStation/MailManage/SuggestMail"
     };

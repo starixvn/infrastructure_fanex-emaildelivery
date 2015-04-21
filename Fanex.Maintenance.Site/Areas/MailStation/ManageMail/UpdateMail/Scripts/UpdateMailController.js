@@ -14,9 +14,9 @@ var UpdateMailController = function () {
     };
 
     var magicSuggestOptions = {
+        highlight: false,
         allowFreeEntries: false,
-        data: window.rootUrl + "MailStation/MailManage/SuggestMail",
-        value: [1, 2, 3]
+        data: window.rootUrl + "MailStation/MailManage/SuggestMail"
     };
 
     self.initPage = function () {
