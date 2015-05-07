@@ -1,9 +1,9 @@
 ﻿namespace MailClientTest.Installer
 {
-    using System.ServiceProcess;
-    using Fanex.MailDelivery.Client.Handlers;
     using System;
+    using System.ServiceProcess;
     using Fanex.MailDelivery.Client.Configurations;
+    using Fanex.MailDelivery.Client.Handlers;
 
     /// <summary>
     /// Mail client service for testing.
@@ -14,6 +14,11 @@
         {
         }
 
+        /// <summary>
+        /// When implemented in a derived class, executes when a Start command is sent to the service by the Service Control Manager (SCM) 
+        /// or when the operating system starts (for a service that starts automatically). Specifies actions to take when the service starts.
+        /// </summary>
+        /// <param name="args">Data passed by the start command.</param>
         protected override void OnStart(string[] args)
         {
             MailClientHandler.Start();
@@ -37,9 +42,7 @@
                     foreach (var schedule in listschedule)
                     {
                         Console.WriteLine("Schedule: {0}; Cron: {1}", schedule.Id, schedule.RepeatExpression);
-
                         schedule.ConvertToServerTime();
-
                     }
                 }
             }
@@ -52,7 +55,6 @@
                     Console.WriteLine(innerException.Message);
                     innerException = innerException.InnerException;
                 }
-                
             }
 
             Console.ReadLine();

@@ -14,6 +14,8 @@
         public const string JobResultRoutingKey = "RoutingKey.JobResult";
         public const string UpdateScheduleRoutingKeyFormat = "RoutingKey.UpdateSchedule_{0}";
         public const string RetryJobRoutingKeyFormat = "RoutingKey.RetryJob_{0}";
+        public const string AbortJobRoutingKeyFormat = "RoutingKey.AbortJob";
+        public const string RunJobImmediatelyRoutingKeyFormat = "RoutingKey.RunJobImmediately_{0}";
 
         public const string AutoMailJobNameFormat = "AutoMailJob_{0}";
         public const string MailCentralizedJobGroup = "Fanex.MailDelivery.Client.MailCentralizedJobGroup";

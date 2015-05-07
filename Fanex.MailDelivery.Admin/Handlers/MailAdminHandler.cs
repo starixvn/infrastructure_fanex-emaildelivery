@@ -31,5 +31,10 @@
         {
             _messageBroker.PublishScheduleChangeMessage(schedule);
         }
+
+        public static void PublishAbortJobMessage(int taskID)
+        {
+            _messageBroker.PublishAbortJobMessage(taskID);
+        }
     }
 }

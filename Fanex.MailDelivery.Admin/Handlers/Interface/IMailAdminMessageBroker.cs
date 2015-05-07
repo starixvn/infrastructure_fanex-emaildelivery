@@ -18,5 +18,7 @@
         void PublishRetryJobMessage(Schedule schedule);
 
         void PublishScheduleChangeMessage(Schedule schedule);
+
+        void PublishAbortJobMessage(int taskID);
     }
 }

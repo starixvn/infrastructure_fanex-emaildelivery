@@ -68,5 +68,10 @@ namespace Fanex.MailDelivery.MailStation.Controllers
 
             return View("~/Areas/MailStation/Report/MailLog/Index.cshtml", mailLog);
         }
+
+        public void AbortTask(int taskId)
+        {
+            _mailReportService.AbortJob(taskId);
+        }
     }
 }

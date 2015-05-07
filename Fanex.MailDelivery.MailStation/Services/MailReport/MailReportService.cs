@@ -135,24 +135,6 @@ namespace Fanex.MailDelivery.MailStation.Services.MailReport
             }
         }
 
-        public MailTaskModel GetMailTaskByID(GetMailTaskByIDCriteria criteria)
-        {
-            using (ObjectDb db = new ObjectDb(criteria.GetSettingKey()))
-            {
-                db.AssignParamValues(criteria.GetSpParams());
-                return db.Query<MailTaskModel>().FirstOrDefault();
-            }
-        }
-
-        public Schedule GetScheduleByMailID(GetScheduleByIDCriteria criteria)
-        {
-            using (ObjectDb db = new ObjectDb(criteria.GetSettingKey()))
-            {
-                db.AssignParamValues(criteria.GetSpParams());
-                return db.Query<Schedule>().FirstOrDefault();
-            }
-        }
-
         /// <summary>
         /// Retry send mail.
         /// </summary>
@@ -164,6 +146,13 @@ namespace Fanex.MailDelivery.MailStation.Services.MailReport
             Schedule schedule = this.GetScheduleByMailID(new GetScheduleByIDCriteria() { MailId = mailTask.MailId });
             schedule.TaskId = mailTask.MailTaskId;
             MailAdminHandler.PublishRetryJobMessage(schedule);
+            MailAdminHandler.Stop();
+        }
+
+        public void AbortJob(int taskID)
+        {
+            MailAdminHandler.Start();
+            MailAdminHandler.PublishAbortJobMessage(taskID);
             MailAdminHandler.Stop();
         }
 

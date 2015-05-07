@@ -11,7 +11,8 @@ var MailReportController = function () {
             Running: 1,
             DataNotReady: 2,
             Failed: 3,
-            Sent: 4
+            Sent: 4,
+            Abort: 6
         },
         TriggerType: {
             FunctionMail: 0,
@@ -175,12 +176,20 @@ var MailReportController = function () {
             headerColumnHeight: 29,
             bodyRowHeight: 30,
             showPager: true,
-            timeZone: "-04:00",
+            timeZone: viewResources.TimeZone,
+            customPager: true,
             pagerOption: {
                 itemsPerPage: sharedScriptManager.cachedData.defaultItemsPerPage,
                 currentPage: 0,
                 itemsPerPageArray: sharedScriptManager.cachedData.pagingOptions,
-                totalItem: 800
+                totalItem: bodyData.length,
+                pagerSelectCallBack: function (page_index, itemsPerPage, jq) {
+                    gridOptions.pagerOption.itemsPerPage = itemsPerPage;
+                    gridOptions.pagerOption.currentPage = page_index;
+                    $("#mail-report").fanexGrid(gridOptions);
+                    self.bindGridEvent();
+                    //return false;
+                }
             }
         };
 
@@ -204,6 +213,8 @@ var MailReportController = function () {
                 return '<div class="column-status sent-status"' + mailIndex + '>' + viewResources.Sent.toUpperCase() + '</div>';
             case self.Enums.TaskStatus.Failed:
                 return '<div class="column-status failed-status"' + mailIndex + '>' + viewResources.Failed.toUpperCase() + '</div>';
+            case self.Enums.TaskStatus.Abort:
+                return '<div class="column-status abort-status"' + mailIndex + '>' + viewResources.Abort + '</div>';
         }
     };
 
@@ -211,9 +222,12 @@ var MailReportController = function () {
         if (mail.TriggerType === self.Enums.TriggerType.ScheduleMail) {
             var mailIndex = ' mail-index="' + mail.MailTaskId + '"';
             switch (mail.Status) {
+                case self.Enums.TaskStatus.Running:
+                    return '<input type="submit" value="Abort" class="button-abort"' + mailIndex + '>';
                 case self.Enums.TaskStatus.DataNotReady:
                 case self.Enums.TaskStatus.Sent:
                 case self.Enums.TaskStatus.Failed:
+                case self.Enums.TaskStatus.Abort:
                     return '<input type="submit" value="Retry" class="button-retry"' + mailIndex + '>';
             }
         }
@@ -238,10 +252,21 @@ var MailReportController = function () {
             self.viewMailDetail(mailIndex);
         });
 
-        gridContainer.find(".button-retry").click(function (event) {
+        $(".button-retry").click(function (event) {
             var $this = $(this);
             var mailIndex = parseInt($this.attr("mail-index"));
             self.retrySendMail(mailIndex, function () {
+                setTimeout(function () {
+                    NAP.headlineMsgBox.close();
+                    self.refreshMailReport();
+                }, sharedScriptManager.cachedData.alertSuccessTime);
+            });
+        });
+
+        $(".button-abort").click(function (event) {
+            var $this = $(this);
+            var mailIndex = parseInt($this.attr("mail-index"));
+            self.abortTask(mailIndex, function () {
                 setTimeout(function () {
                     NAP.headlineMsgBox.close();
                     self.refreshMailReport();
@@ -253,6 +278,27 @@ var MailReportController = function () {
             var $this = $(this);
             var mailIndex = parseInt($this.attr("mail-index"));
             self.viewMailLog(mailIndex);
+        });
+    };
+
+    self.abortTask = function (mailIndex, callback) {
+        NAP.headlineMsgBox.confirm(viewResources.Confirm_AbortTask, function () {
+            sharedScriptManager.blockUI();
+            var abortParams = {
+                TaskId: mailIndex
+            };
+            sharedScriptManager.callAjax(self,
+            window.rootUrl + "MailStation/MailReport/AbortTask",
+            abortParams,
+            function (result) {
+                result = {
+                    Code: 0,
+                    Message: 'Job has been aborted.'
+                };
+                sharedScriptManager.renderActionResult(result, callback);
+            },
+            null,
+            sharedScriptManager.unblockUI);
         });
     };
 

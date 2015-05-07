@@ -38,6 +38,14 @@
             _scheduler.ScheduleJob(job, trigger);
         }
 
+        public void AbortJob(Schedule schedule)
+        {
+            IJobDetail job = GetRetryJob(schedule);
+
+            // Tell quartz to schedule the job using our trigger
+            _scheduler.Interrupt(job.Key);
+        }
+
         public void Start()
         {
             ISchedulerFactory schedFact = new StdSchedulerFactory();

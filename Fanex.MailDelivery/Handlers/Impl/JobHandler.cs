@@ -29,41 +29,5 @@
                 _scheduler.Shutdown();
             }
         }
-
-        /// <summary>
-        /// Starts the check automatic mail status job.
-        /// </summary>
-        private void StartCheckAutoMailStatusJob()
-        {
-            IJobDetail job = JobBuilder.Create<CheckMailStatusJob>()
-                    .WithIdentity(CheckMailStatusJob.CheckAutoMailStatusJobName)
-                    .Build();
-
-            ITrigger trigger = TriggerBuilder.Create()
-                .WithIdentity(CheckMailStatusJob.CheckAutoMailStatusJobTriggerName)
-                .StartNow()
-                .WithCronSchedule(AppSettings.MailServiceSection.CheckAutoMailStatusSchedule)
-                .Build();
-
-            _scheduler.ScheduleJob(job, trigger);
-        }
-
-        /// <summary>
-        /// Starts the insert automatic mail record job.
-        /// </summary>
-        private void StartInsertAutoMailRecordJob()
-        {
-            IJobDetail job = JobBuilder.Create<InsertAutoMailRecordJob>()
-                    .WithIdentity(InsertAutoMailRecordJob.InsertAutoMailRecordJobName)
-                    .Build();
-
-            ITrigger trigger = TriggerBuilder.Create()
-                .WithIdentity(InsertAutoMailRecordJob.InsertAutoMailRecordJobTriggerName)
-                .StartNow()
-                .WithCronSchedule(AppSettings.MailServiceSection.InsertMailStatusRecordSchedule)
-                .Build();
-
-            _scheduler.ScheduleJob(job, trigger);
-        }
     }
 }

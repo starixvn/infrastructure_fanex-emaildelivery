@@ -17,7 +17,7 @@ var UpdateMailController = function () {
         maxSelection: null,
         highlight: false,
         allowFreeEntries: false,
-        data: window.rootUrl + "MailStation/MailManage/SuggestMail"
+        data: window.rootUrl + "MailStation/MailManage/SuggestMail",
     };
 
     self.initPage = function () {

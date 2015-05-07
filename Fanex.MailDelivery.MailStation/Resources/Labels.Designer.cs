@@ -61,6 +61,15 @@ namespace Fanex.MailDelivery.MailStation.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ABORT.
+        /// </summary>
+        public static string Abort {
+            get {
+                return ResourceManager.GetString("Abort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Action.
         /// </summary>
         public static string Action {
@@ -133,6 +142,15 @@ namespace Fanex.MailDelivery.MailStation.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Do you want to abort this task?.
+        /// </summary>
+        public static string Confirm_AbortJob {
+            get {
+                return ResourceManager.GetString("Confirm_AbortJob", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Do you want to cancel the Editing recipient?.
         /// </summary>
         public static string Confirm_CancelEditRecipient {
@@ -174,6 +192,15 @@ namespace Fanex.MailDelivery.MailStation.Resources {
         public static string Confirm_RetrySendMail {
             get {
                 return ResourceManager.GetString("Confirm_RetrySendMail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do you want to run this Mail now?.
+        /// </summary>
+        public static string Confirm_RunNow {
+            get {
+                return ResourceManager.GetString("Confirm_RunNow", resourceCulture);
             }
         }
         

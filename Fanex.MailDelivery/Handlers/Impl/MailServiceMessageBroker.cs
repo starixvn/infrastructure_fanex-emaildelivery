@@ -44,11 +44,23 @@
             SubscribeScheduleRequest();
             SubscribeMail();
             SubscribeJobResult();
+            SubscribeAbortJob();
             SubscribeFunctionMailingListRequest();
             SubscribeFunctionMailingListUpdate();
             SubscribeScheduleMailingListRequest();
             SubscribeScheduleMailingListUpdate();
             RespondAddMailTaskForRunningJob();
+        }
+
+        public void SubscribeAbortJob()
+        {
+            _bus.Subscribe<JobResultMessage>(
+                MailDeliveryConstants.AbortJobRoutingKeyFormat,
+                    jobStatus =>
+                    {
+                        _mailService.UpdateJobStatus(jobStatus);
+                    },
+                    config => config.WithTopic(MailDeliveryConstants.AbortJobRoutingKeyFormat));
         }
 
         /// <summary>

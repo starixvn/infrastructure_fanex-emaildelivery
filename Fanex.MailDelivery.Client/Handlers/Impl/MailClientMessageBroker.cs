@@ -15,6 +15,8 @@
     {
         private string _updateScheduleSubscriptionId = string.Format(MailDeliveryConstants.UpdateScheduleRoutingKeyFormat, AppSettings.MailCientConfig.SiteId);
         private string _retryJobSubscriptionId = string.Format(MailDeliveryConstants.RetryJobRoutingKeyFormat, AppSettings.MailCientConfig.SiteId);
+        private string _abortJobSubscriptionId = string.Format(MailDeliveryConstants.AbortJobRoutingKeyFormat, AppSettings.MailCientConfig.SiteId);
+        private string _runJobImmediatelySubscriptionId = string.Format(MailDeliveryConstants.RunJobImmediatelyRoutingKeyFormat, AppSettings.MailCientConfig.SiteId);
         private IBus _bus;
         private IJobHandler _jobHandler;
 
@@ -60,6 +62,17 @@
                         _jobHandler.RetryAllProcess(schedule);
                     },
                     config => config.WithTopic(_retryJobSubscriptionId));
+        }
+
+        public void SubscribeRunJobImmediately()
+        {
+            _bus.Subscribe<Schedule>(
+                _runJobImmediatelySubscriptionId,
+                    schedule =>
+                    {
+                        _jobHandler.RetryAllProcess(schedule);
+                    },
+                    config => config.WithTopic(_runJobImmediatelySubscriptionId));
         }
 
         public void Publish(Mail mail)

@@ -6,9 +6,10 @@
     using System.Linq;
     using System.Web.Mvc;
     using Fanex.Data;
+    using Fanex.MailDelivery.Client.Models;
     using Fanex.MailDelivery.MailStation.Constants;
-    using Fanex.MailDelivery.MailStation.Criteria.MailGroup;
     using Fanex.MailDelivery.MailStation.Criteria.MailManage;
+    using Fanex.MailDelivery.MailStation.Criteria.MailReport;
     using Fanex.MailDelivery.MailStation.Models;
     using Fanex.NAP.Core.Criteria.Misc;
     using Fanex.NAP.Framework.Command;
@@ -129,6 +130,24 @@
             {
                 db.ExecuteNonQuery(hash);
                 return GetCommandResult(hash);
+            }
+        }
+
+        public MailTaskModel GetMailTaskByID(GetMailTaskByIDCriteria criteria)
+        {
+            using (ObjectDb db = new ObjectDb(criteria.GetSettingKey()))
+            {
+                db.AssignParamValues(criteria.GetSpParams());
+                return db.Query<MailTaskModel>().FirstOrDefault();
+            }
+        }
+
+        public Schedule GetScheduleByMailID(GetScheduleByIDCriteria criteria)
+        {
+            using (ObjectDb db = new ObjectDb(criteria.GetSettingKey()))
+            {
+                db.AssignParamValues(criteria.GetSpParams());
+                return db.Query<Schedule>().FirstOrDefault();
             }
         }
     }

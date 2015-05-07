@@ -33,6 +33,11 @@
         /// <summary>
         /// The retry status.
         /// </summary>
-        Retry = 5
+        Retry = 5,
+
+        /// <summary>
+        /// The abort status.
+        /// </summary>
+        Abort = 6
     }
 }

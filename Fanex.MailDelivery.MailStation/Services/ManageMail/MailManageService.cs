@@ -8,6 +8,7 @@
     using Fanex.MailDelivery.Client.Models;
     using Fanex.MailDelivery.MailStation.Criteria.MailGroup;
     using Fanex.MailDelivery.MailStation.Criteria.MailManage;
+    using Fanex.MailDelivery.MailStation.Criteria.MailReport;
     using Fanex.MailDelivery.MailStation.Models;
     using Fanex.NAP.Framework.Command;
 
@@ -72,6 +73,14 @@
         public CommandResult DeleteMail(DeleteMailCriteria criteria)
         {
             return ExecuteNonQuery(criteria);
+        }
+
+        public void RunJobImmediately(int mailID)
+        {
+            MailAdminHandler.Start();
+            Schedule schedule = this.GetScheduleByMailID(new GetScheduleByIDCriteria() { MailId = mailID });
+            MailAdminHandler.PublishRetryJobMessage(schedule);
+            MailAdminHandler.Stop();
         }
     }
 }

@@ -1,10 +1,10 @@
 ﻿namespace Fanex.MailDelivery.Admin.Handlers.Impl
 {
-    using System;
     using EasyNetQ;
     using Fanex.MailDelivery.Admin.Configurations;
     using Fanex.MailDelivery.Admin.Handlers.Interface;
     using Fanex.MailDelivery.Client;
+    using Fanex.MailDelivery.Client.Messages;
     using Fanex.MailDelivery.Client.Models;
 
     /// <summary>
@@ -40,6 +40,17 @@
             string updateSchedulePublishId = string.Format(MailDeliveryConstants.UpdateScheduleRoutingKeyFormat, schedule.SiteId);
 
             _bus.Publish<Schedule>(schedule, updateSchedulePublishId);
+        }
+
+        public void PublishAbortJobMessage(int taskID)
+        {
+            JobResultMessage jobResultMessage = new JobResultMessage() { JobStatus = Client.Enumerations.JobStatus.Abort, Schedule = new Schedule() { TaskId = taskID } };
+            _bus.Publish<JobResultMessage>(jobResultMessage, MailDeliveryConstants.AbortJobRoutingKeyFormat);
+        }
+
+        public void PublishRunJobImmediatelyMessage(Schedule schedule)
+        {
+            _bus.Publish<Schedule>(schedule, string.Format(MailDeliveryConstants.RunJobImmediatelyRoutingKeyFormat, schedule.SiteId));
         }
     }
 }

@@ -166,6 +166,10 @@ var MailManageController = function () {
                                     <div class="relative"></div>\
                                 </div>'
                 });
+                rowColumns.push({
+                    Name: "ColRunNow",
+                    Value: '<input type="submit" value="Run Now" class="button-run-now"' + mailIndex + '>'
+                });
             }
 
             bodyData.push({
@@ -175,17 +179,18 @@ var MailManageController = function () {
 
         var headerColumns = [];
         headerColumns.push({ HeaderText: viewResources.Id, Width: 20, Name: "ColId", HeaderAlign: "center", CellAlign: "center" });
-        headerColumns.push({ HeaderText: viewResources.Mail_Name, Width: 230, Name: "ColMailName", HeaderAlign: "center", CellAlign: "left" });
+        headerColumns.push({ HeaderText: viewResources.Mail_Name, Width: 215, Name: "ColMailName", HeaderAlign: "center", CellAlign: "left" });
         headerColumns.push({ HeaderText: viewResources.Group, Width: 90, Name: "ColGroup", HeaderAlign: "center", CellAlign: "left", AllowTruncate: true });
         headerColumns.push({ HeaderText: viewResources.Site, Width: 100, Name: "ColSite", HeaderAlign: "center", CellAlign: "left", AllowTruncate: true });
-        headerColumns.push({ HeaderText: viewResources.Trigger, Width: 100, Name: "ColTrigger", HeaderAlign: "center", CellAlign: "center" });
-        headerColumns.push({ HeaderText: viewResources.To, Width: 130, Name: "ColTo", HeaderAlign: "center", CellAlign: "left", AllowTruncate: true });
-        headerColumns.push({ HeaderText: viewResources.CC, Width: 130, Name: "ColCC", HeaderAlign: "center", CellAlign: "left", AllowTruncate: true });
-        headerColumns.push({ HeaderText: viewResources.BCC, Width: 130, Name: "ColBCC", HeaderAlign: "center", CellAlign: "left", AllowTruncate: true });
+        headerColumns.push({ HeaderText: viewResources.Trigger, Width: 90, Name: "ColTrigger", HeaderAlign: "center", CellAlign: "center" });
+        headerColumns.push({ HeaderText: viewResources.To, Width: 120, Name: "ColTo", HeaderAlign: "center", CellAlign: "left", AllowTruncate: true });
+        headerColumns.push({ HeaderText: viewResources.CC, Width: 110, Name: "ColCC", HeaderAlign: "center", CellAlign: "left", AllowTruncate: true });
+        headerColumns.push({ HeaderText: viewResources.BCC, Width: 110, Name: "ColBCC", HeaderAlign: "center", CellAlign: "left", AllowTruncate: true });
         headerColumns.push({ HeaderText: viewResources.Last_Sent, Width: 150, Name: "ColLastSent", HeaderAlign: "center", CellAlign: "center", FormatDateTime: "MMM DD, YYYY hh:mm:ss A", AllowTruncate: true });
         headerColumns.push({ HeaderText: viewResources.Active, Width: 40, Name: "ColActive", HeaderAlign: "center", CellAlign: "center" });
         if (viewResources.hasEditRight) {
             headerColumns.push({ HeaderText: viewResources.Action, Width: 50, Name: "ColAction", HeaderAlign: "center", CellAlign: "center" });
+            headerColumns.push({ HeaderText: '', Width: 80, Name: "ColRunNow", HeaderAlign: "center", CellAlign: "center" });
         }
 
         var gridOptions = {
@@ -195,6 +200,7 @@ var MailManageController = function () {
             showDistinctRow: false,
             showHighlightRow: true,
             showPager: true,
+            timeZone: viewResources.TimeZone,
             gridExpandHeight: 350,
             pagerOption: {
                 itemsPerPage: sharedScriptManager.cachedData.defaultItemsPerPage,
@@ -231,10 +237,42 @@ var MailManageController = function () {
             event.stopPropagation();
         });
 
+        $(".button-run-now").click(function (event) {
+            var $this = $(this);
+            var mailIndex = parseInt($this.attr("mailid"));
+            self.runNow(mailIndex, function () {
+                setTimeout(function () {
+                    NAP.headlineMsgBox.close();
+                    self.getMailList();
+                }, sharedScriptManager.cachedData.alertSuccessTime);
+            });
+        });
+
         DOMElements.gridContainer.find(".link.mail-name").click(function () {
             var $this = $(this);
             var mailid = parseInt($this.attr("mailid"));
             self.editMail(mailid);
+        });
+    };
+
+    self.runNow = function (mailIndex, callBack) {
+        NAP.headlineMsgBox.confirm(viewResources.Confirm_RunNow, function () {
+            sharedScriptManager.blockUI();
+            var runNowParams = {
+                mailID: mailIndex
+            };
+            sharedScriptManager.callAjax(self,
+            window.rootUrl + "MailStation/MailManage/RunNow",
+            runNowParams,
+            function (result) {
+                result = {
+                    Code: 0,
+                    Message: 'Job has been started.'
+                };
+                sharedScriptManager.renderActionResult(result, callBack);
+            },
+            null,
+            sharedScriptManager.unblockUI);
         });
     };
 
@@ -303,9 +341,6 @@ var MailManageController = function () {
                 }, sharedScriptManager.cachedData.alertSuccessTime);
             });
     };
-};
-self.initRecipientInfo = function (recipient) {
-
 };
 
 var MailManageController = new MailManageController();

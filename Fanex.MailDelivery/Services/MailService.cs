@@ -83,6 +83,9 @@
                     case JobStatus.Failed:
                         this.UpdateFailedJob(jobResultMessage);
                         break;
+                    case JobStatus.Abort:
+                        this.UpdateAbortJob(jobResultMessage);
+                        break;
                     default:
                         break;
                 }
@@ -260,6 +263,15 @@
                     TaskID = jobResultMessage.Schedule.TaskId
                 });
             }
+        }
+
+        private void UpdateAbortJob(JobResultMessage jobResultMessage)
+        {
+            this._mailRepository.UpdateMailTaskStatus(new UpdateMailTaskStatusCriteria()
+            {
+                TaskID = jobResultMessage.Schedule.TaskId,
+                Status = (int)JobStatus.Abort
+            });
         }
 
         private void UpdateRetryJob(JobResultMessage jobResultMessage)

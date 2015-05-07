@@ -309,4 +309,13 @@
   <data name="SystemName" xml:space="preserve">
     <value>Mail Station</value>
   </data>
+  <data name="Abort" xml:space="preserve">
+    <value>ABORT</value>
+  </data>
+  <data name="Confirm_AbortJob" xml:space="preserve">
+    <value>Do you want to abort this task?</value>
+  </data>
+  <data name="Confirm_RunNow" xml:space="preserve">
+    <value>Do you want to run this Mail now?</value>
+  </data>
 </root>

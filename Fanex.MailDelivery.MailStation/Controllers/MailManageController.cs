@@ -131,5 +131,11 @@ namespace Fanex.MailDelivery.MailStation.Controllers
             _mailManageService = new MailManageService();
             return Json(_mailManageService.SuggestMails(criteria), JsonRequestBehavior.AllowGet);
         }
+
+        public void RunNow(int mailID)
+        {
+            _mailManageService = new MailManageService();
+            _mailManageService.RunJobImmediately(mailID);
+        }
     }
 }
