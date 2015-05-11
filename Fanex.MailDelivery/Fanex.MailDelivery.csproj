@@ -99,9 +99,10 @@
     <Compile Include="Configurations\MailServiceSection.cs" />
     <Compile Include="Criteria\AddMailTaskCriteria.cs" />
     <Compile Include="Criteria\AddMailLogCriteria.cs" />
+    <Compile Include="Criteria\GetMailTaskByIDCriteria.cs" />
     <Compile Include="Criteria\UpdateMailTaskMailRecordIDCriteria.cs" />
     <Compile Include="Criteria\GetMailWithEmailAddressByMailIDCriteria.cs" />
-    <Compile Include="Criteria\GetMailByIDCriteria.cs" />
+    <Compile Include="Criteria\GetMailingListTypeCriteria.cs" />
     <Compile Include="Criteria\UpdateTaskRetryCounterCriteria.cs" />
     <Compile Include="Criteria\UpdateMailTaskStatusCriteria.cs" />
     <Compile Include="Criteria\GetScheduleByIDCriteria.cs" />
@@ -109,6 +110,7 @@
     <Compile Include="Handlers\Impl\MailServiceMessageBroker.cs" />
     <Compile Include="Handlers\Impl\RabbitMQLogger.cs" />
     <Compile Include="Handlers\Interface\IMessageBroker.cs" />
+    <Compile Include="Models\MailTask.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\IMailRepository.cs" />
     <Compile Include="Repositories\MailRepository.cs" />

@@ -16,37 +16,37 @@ namespace MailClientTest
     {
         static void Main(string[] args)
         {
-            MailClientHandler.Start();
-            Console.WriteLine("Mail Client Service Site: {0} started.", AppSettings.MailCientConfig.SiteId);
-            //SendFunctionMail();
-            Console.Read();
-            MailClientHandler.Stop();
+            //MailClientHandler.Start();
+            //Console.WriteLine("Mail Client Service Site: {0} started.", AppSettings.MailCientConfig.SiteId);
+            ////SendFunctionMail();
+            //Console.Read();
+            //MailClientHandler.Stop();
 
-            //ServiceBase[] servicesToRun = new ServiceBase[]
-            //{
-            //    new MailClientTestService()
-            //};
+            ServiceBase[] servicesToRun = new ServiceBase[]
+            {
+                new MailClientTestService()
+            };
 
 
-            //if (Environment.UserInteractive)
-            //{
-            //    Type type = typeof(ServiceBase);
-            //    BindingFlags flags = BindingFlags.Instance | BindingFlags.NonPublic;
-            //    MethodInfo method = type.GetMethod("OnStart", flags);
-            //    foreach (ServiceBase service in servicesToRun)
-            //    {
-            //        method.Invoke(service, new object[] { args });
-            //    }
+            if (Environment.UserInteractive)
+            {
+                Type type = typeof(ServiceBase);
+                BindingFlags flags = BindingFlags.Instance | BindingFlags.NonPublic;
+                MethodInfo method = type.GetMethod("OnStart", flags);
+                foreach (ServiceBase service in servicesToRun)
+                {
+                    method.Invoke(service, new object[] { args });
+                }
 
-            //    foreach (ServiceBase service in servicesToRun)
-            //    {
-            //        service.Stop();
-            //    }
-            //}
-            //else
-            //{
-            //    ServiceBase.Run(servicesToRun);
-            //}
+                foreach (ServiceBase service in servicesToRun)
+                {
+                    service.Stop();
+                }
+            }
+            else
+            {
+                ServiceBase.Run(servicesToRun);
+            }
         }
 
         private static void SendFunctionMail()

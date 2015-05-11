@@ -8,6 +8,7 @@
     using Fanex.MailDelivery.Client.Models;
     using Fanex.MailDelivery.Criteria;
     using Fanex.NAP.Core.Criteria.Misc;
+using Fanex.MailDelivery.Models;
 
     /// <summary>
     /// Mail Repository.
@@ -108,6 +109,15 @@
             using (var db = new ObjectDb(criteria.GetSettingKey()))
             {
                 db.ExecuteNonQuery(hash);
+            }
+        }
+
+        public MailTask GetMailTask(GetMailTaskByIDCriteria criteria)
+        { 
+            using (var db = new ObjectDb(criteria.GetSettingKey()))
+            {
+                db.AssignParamValues(criteria.GetSpParams());
+                return db.Query<MailTask>().FirstOrDefault();
             }
         }
     }

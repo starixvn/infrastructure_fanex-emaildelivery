@@ -318,12 +318,17 @@
                 LastSent = DateTime.Now
             });
 
-            int mailRecordId = this.SendMail(jobResultMessage.Mail);
-            this._mailRepository.UpdateMailTask(new UpdateMailTaskMSiteMailIDCriteria()
+            // Because the job cannot be update to success when aborted. We will check Status again to make sure job is done.
+            var mailTask = this._mailRepository.GetMailTask(new GetMailTaskByIDCriteria() { MailTaskID = jobResultMessage.Schedule.TaskId });
+            if (mailTask.Status == (int)JobStatus.Success)
             {
-                TaskID = jobResultMessage.Schedule.TaskId,
-                MSiteMailID = mailRecordId
-            });
+                int mailRecordId = this.SendMail(jobResultMessage.Mail);
+                this._mailRepository.UpdateMailTask(new UpdateMailTaskMSiteMailIDCriteria()
+                {
+                    TaskID = jobResultMessage.Schedule.TaskId,
+                    MSiteMailID = mailRecordId
+                });
+            }
         }
 
         private void UpdateFailedJob(JobResultMessage jobResultMessage)
