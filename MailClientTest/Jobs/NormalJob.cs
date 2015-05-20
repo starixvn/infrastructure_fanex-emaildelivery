@@ -34,7 +34,7 @@ namespace MailClientTest.Jobs
             mail.Subject = "Mail Station Test (Normal Job).";
             mail.Title = "Mail Station Test (Normal Job).";
             mail.Body = "Email Body";
-            mail.MailingListId = 2;
+            //mail.MailingListId = 2;
             Thread.Sleep(5000);
 
             return new JobResultMessage

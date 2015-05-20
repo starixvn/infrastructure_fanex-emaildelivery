@@ -168,7 +168,7 @@ var MailManageController = function () {
                 });
                 rowColumns.push({
                     Name: "ColRunNow",
-                    Value: '<input type="submit" value="Run Now" class="button-run-now"' + mailIndex + '>'
+                    Value: mail.TriggerType == 1 ? '<input type="submit" value="Run Now" class="button-run-now"' + mailIndex + '>' : ''
                 });
             }
 

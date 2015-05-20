@@ -9,6 +9,7 @@ using Fanex.MailDelivery.Client.Models;
 using System.ServiceProcess;
 using MailClientTest.Installer;
 using System.Reflection;
+using System.IO;
 
 namespace MailClientTest
 {
@@ -18,7 +19,7 @@ namespace MailClientTest
         {
             //MailClientHandler.Start();
             //Console.WriteLine("Mail Client Service Site: {0} started.", AppSettings.MailCientConfig.SiteId);
-            ////SendFunctionMail();
+            //SendFunctionMail();
             //Console.Read();
             //MailClientHandler.Stop();
 
@@ -51,10 +52,6 @@ namespace MailClientTest
 
         private static void SendFunctionMail()
         {
-            //var mailSubject = string.Empty;
-            //Console.WriteLine("Enter a mail subject. 'Quit' to quit.");
-            //while ((mailSubject = Console.ReadLine()) != "Quit")
-            //{
             var mail = new Mail
                 {
                     Subject = "Mail Station Test (Function Mail).",
@@ -62,7 +59,7 @@ namespace MailClientTest
                     Body = "Email Body.",
                 };
 
-            mail.MailingListId = AppSettings.GetFunctionId("FuntionA");
+            mail.MailingListId = AppSettings.GetFunctionId("Win Loss by Product Mail Function");
             MailClientHandler.SendMail(mail);
         }
 
@@ -71,8 +68,6 @@ namespace MailClientTest
             var mailSubject = string.Empty;
             var functionId = 1;
             Console.ForegroundColor = ConsoleColor.Red;
-
-
             var mailingList = MailClientHandler.GetFunctionMailingList(functionId);
             Console.WriteLine("Get Mailing List:");
 

@@ -7,6 +7,8 @@
     using Fanex.MailDelivery.Client.Handlers.Interface;
     using Fanex.MailDelivery.Client.Messages;
     using Fanex.MailDelivery.Client.Models;
+    using System.Text;
+    using System.Security.Cryptography;
 
     /// <summary>
     /// Rabbit MQ Broker for PUB/SUB message.
@@ -15,7 +17,6 @@
     {
         private string _updateScheduleSubscriptionId = string.Format(MailDeliveryConstants.UpdateScheduleRoutingKeyFormat, AppSettings.MailCientConfig.SiteId);
         private string _retryJobSubscriptionId = string.Format(MailDeliveryConstants.RetryJobRoutingKeyFormat, AppSettings.MailCientConfig.SiteId);
-        private string _abortJobSubscriptionId = string.Format(MailDeliveryConstants.AbortJobRoutingKeyFormat, AppSettings.MailCientConfig.SiteId);
         private string _runJobImmediatelySubscriptionId = string.Format(MailDeliveryConstants.RunJobImmediatelyRoutingKeyFormat, AppSettings.MailCientConfig.SiteId);
         private IBus _bus;
         private IJobHandler _jobHandler;
@@ -33,8 +34,10 @@
                 {
                     serviceRegister.Register<IEasyNetQLogger>(_ => new MailClientLogger());
                 });
+
             SubscribeScheduleChange();
             SubscribeRetryJob();
+            SubscribeRunJobImmediately();
         }
 
         public void Stop()
@@ -45,7 +48,7 @@
         public void SubscribeScheduleChange()
         {
             _bus.Subscribe<Schedule>(
-                _updateScheduleSubscriptionId,
+                this.GetRandomString(),
                     schedule =>
                     {
                         _jobHandler.UpdateSchedule(schedule);
@@ -56,7 +59,7 @@
         public void SubscribeRetryJob()
         {
             _bus.Subscribe<Schedule>(
-                _retryJobSubscriptionId,
+                this.GetRandomString(),
                     schedule =>
                     {
                         _jobHandler.RetryAllProcess(schedule);
@@ -67,7 +70,7 @@
         public void SubscribeRunJobImmediately()
         {
             _bus.Subscribe<Schedule>(
-                _runJobImmediatelySubscriptionId,
+                this.GetRandomString(),
                     schedule =>
                     {
                         _jobHandler.RetryAllProcess(schedule);
@@ -166,6 +169,28 @@
             mailingList.MailType = MailType.Schedule;
 
             return _bus.Request<MailingList, ResultMessage>(mailingList);
+        }
+
+        private string GetRandomString(int maxSize = 8)
+        {
+            char[] chars = new char[62];
+            string a;
+            a = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+            chars = a.ToCharArray();
+            int size = maxSize;
+            byte[] data = new byte[1];
+            RNGCryptoServiceProvider crypto = new RNGCryptoServiceProvider();
+            crypto.GetNonZeroBytes(data);
+            size = maxSize;
+            data = new byte[size];
+            crypto.GetNonZeroBytes(data);
+            StringBuilder result = new StringBuilder(size);
+            foreach (byte b in data)
+            {
+                result.Append(chars[b % (chars.Length - 1)]);
+
+            }
+            return result.ToString();
         }
     }
 }

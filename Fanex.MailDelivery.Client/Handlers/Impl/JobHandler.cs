@@ -103,6 +103,7 @@
         {
             // If the schedule is belong to current Client.
             // We just manage the Schedule belong to us (in appconfig).
+            // Console.WriteLine("Update Schedule {0}: {1}", schedule.Id, schedule.RepeatExpression);
             if (AppSettings.HasScheduleId(schedule.Id))
             {
                 var triggerKey = new TriggerKey(schedule.Id.ToString(), MailDeliveryConstants.MailCentralizedTriggerGroup);
