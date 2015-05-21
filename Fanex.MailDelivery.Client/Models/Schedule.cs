@@ -2,6 +2,7 @@
 {
     using System;
 using Fanex.MailDelivery.Client.Configurations;
+using Fanex.MailDelivery.Client.Enumerations;
 
     /// <summary>
     /// Schedule information.
@@ -16,6 +17,8 @@ using Fanex.MailDelivery.Client.Configurations;
         public int TaskId { get; set; }
 
         public string Name { get; set; }
+
+        public int TriggerType { get; set; }
 
         public string RepeatExpression { get; set; }
 
@@ -32,6 +35,18 @@ using Fanex.MailDelivery.Client.Configurations;
         public int MaxRetryTimes { get; set; }
 
         public int CurrentRetryTimes { get; set; }
+
+        public MailType TriggerTypeEnum {
+            get 
+            {
+                return this.TriggerType == 0 ? MailType.Function : MailType.Schedule;
+            }
+
+            set 
+            {
+                this.TriggerType = (int)value;
+            }
+        }
 
         /// <summary>
         /// Clones this instance.

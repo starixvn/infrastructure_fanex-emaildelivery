@@ -125,34 +125,38 @@
                 var mailService = new MailDeliver();
                 var mailRecord = this.ConvertFromMailToMailRecord(mail);
                 mailId = (int)_mailDeliverBusiness.InsertMailRecord(mailRecord);
-                if (mailId > 0)
+                var schedule = this._mailRepository.GetScheduleByID(new GetScheduleByIDCriteria() { MailId = mail.MailingListId });
+                if (schedule.Active)
                 {
-                    LogExtension.LogMessage(string.Format("Stored mail {0}", mailId));
-                    mailRecord.IsReady = true;
-                    mailRecord.MailID = mailId;
-                    SendMail(mailRecord);
-
-                    // If is function mail
-                    // Insert a MailTask record to database
-                    // else
-                    // Leave the MailTask record for Job to handle.
-                    var mailType = _mailRepository.GetMailingListType(new GetMailingListTypeCriteria() { MailID = mail.MailingListId });
-                    if (mailType == MailType.Function)
+                    if (mailId > 0)
                     {
-                        _mailRepository.AddMailTask(new AddMailTaskCriteria()
+                        LogExtension.LogMessage(string.Format("Stored mail {0}", mailId));
+                        mailRecord.IsReady = true;
+                        mailRecord.MailID = mailId;
+
+                        SendMail(mailRecord);
+
+                        // If is function mail
+                        // Insert a MailTask record to database
+                        // else
+                        // Leave the MailTask record for Job to handle.
+                        if (schedule.TriggerTypeEnum == MailType.Function)
                         {
-                            MailId = mail.MailingListId,
-                            SiteId = mail.SiteId,
-                            ScheduledTime = DateTime.Now,
-                            LastSent = DateTime.Now,
-                            Status = (int)JobStatus.Success,
-                            MSiteMailId = mailId
-                        });
+                            _mailRepository.AddMailTask(new AddMailTaskCriteria()
+                            {
+                                MailId = mail.MailingListId,
+                                SiteId = mail.SiteId,
+                                ScheduledTime = DateTime.Now,
+                                LastSent = DateTime.Now,
+                                Status = (int)JobStatus.Success,
+                                MSiteMailId = mailId
+                            });
+                        }
                     }
-                }
-                else
-                {
-                    LogExtension.LogMessage("Store mail failed.");
+                    else
+                    {
+                        LogExtension.LogMessage("Store mail failed.");
+                    }
                 }
             }
             catch (Exception ex)
