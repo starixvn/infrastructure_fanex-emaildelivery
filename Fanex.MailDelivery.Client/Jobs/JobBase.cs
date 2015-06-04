@@ -31,7 +31,7 @@
             try
             {
                 var schedule = context.MergedJobDataMap[MailDeliveryConstants.ScheduleJobDataKey] as Schedule;
-                Logger.Log.Info(string.Format("{0} ScheduleID:{1} Cron Exp: {2} is running at {3}", schedule.Name, schedule.Id, schedule.RepeatExpression, DateTime.Now));
+                // Logger.Log.Info(string.Format("{0} ScheduleID:{1} Cron Exp: {2} is running at {3}", schedule.Name, schedule.Id, schedule.RepeatExpression, DateTime.Now));
                 if (schedule != null && schedule.Active == true)
                 {
                     int taskID = schedule.TaskId;

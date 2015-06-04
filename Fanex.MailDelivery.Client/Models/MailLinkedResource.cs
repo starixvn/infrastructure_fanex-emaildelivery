@@ -17,6 +17,10 @@ namespace Fanex.MailDelivery.Client.Models
     /// </summary>
     public class MailLinkedResource : MailAttachment
     {
+        public MailLinkedResource()
+        { 
+        }
+
         public MailLinkedResource(string filePath, FileExtension fileExtension, string contentId) 
             : base(filePath, fileExtension)
         {

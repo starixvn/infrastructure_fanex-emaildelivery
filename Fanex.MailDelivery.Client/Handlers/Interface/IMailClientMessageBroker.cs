@@ -19,15 +19,9 @@
 
         void Publish(JobResultMessage jobStatus);
 
-        MailingList GetFunctionMailingList(int functionId);
-
-        MailingList GetScheduleMailingList(int scheduleId);
-
-        ResultMessage UpdateFunctionMailingList(int functionId, MailingList mailingList);
-
-        ResultMessage UpdateScheduleMailingList(int scheduleId, MailingList mailingList);
-
         List<Schedule> GetSchedules();
+
+        MailingList GetMailingList(int mailId);
 
         JobResultMessage RequestAddMailTaskForRunningJob(JobResultMessage jobResult);
 

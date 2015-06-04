@@ -82,6 +82,8 @@ using Fanex.MailDelivery.Models;
                     result.Id = Converter.ToInt(reader["MailId"]);
                     result.Name = Converter.ToString2(reader["MailName"]);
                     result.SiteId = Converter.ToInt(reader["SiteId"]);
+                    result.Active = Converter.ToBool(reader["IsActive"]);
+                    result.Group = Converter.ToInt(reader["MailGroupID"]);
                     result.TOs = Converter.ToString2(reader["MailTo"]).Split(';').ToList();
                     result.CCs = Converter.ToString2(reader["MailCc"]).Split(';').ToList();
                     result.BCCs = Converter.ToString2(reader["MailBcc"]).Split(';').ToList();

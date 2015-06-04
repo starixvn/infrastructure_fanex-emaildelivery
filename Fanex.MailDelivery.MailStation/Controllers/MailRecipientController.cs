@@ -11,6 +11,7 @@ namespace Fanex.MailDelivery.MailStation.Controllers
 {
     using System.Web.Mvc;
     using Fanex.MailDelivery.MailStation.Criteria.ManageRecipient;
+    using Fanex.MailDelivery.MailStation.Extensions;
     using Fanex.MailDelivery.MailStation.Services.ManageRecipient;
     using Fanex.Maintenance.Controller;
 
@@ -29,11 +30,13 @@ namespace Fanex.MailDelivery.MailStation.Controllers
         public ActionResult Index()
         {
             ViewBag.ListStatus = _manageRecipientService.Status(true);
+            ViewBag.TimeZoneString = TimeZoneExtension.GetTimeZoneString();
             return View("~/Areas/MailStation/ManageRecipient/ManageRecipient/Index.cshtml");
         }
 
         public ActionResult CreateRecipientView()
         {
+            ViewBag.TimeZoneString = TimeZoneExtension.GetTimeZoneString();
             return View("~/Areas/MailStation/ManageRecipient/CreateRecipient/Index.cshtml");
         }
 
@@ -45,7 +48,7 @@ namespace Fanex.MailDelivery.MailStation.Controllers
         public ActionResult UpdateRecipientView(RecipientByIdCriteria criteria)
         {
             var recipient = _manageRecipientService.RecipientById(criteria);
-
+            ViewBag.TimeZoneString = TimeZoneExtension.GetTimeZoneString();
             return View("~/Areas/MailStation/ManageRecipient/UpdateRecipient/Index.cshtml", recipient);
         }
 

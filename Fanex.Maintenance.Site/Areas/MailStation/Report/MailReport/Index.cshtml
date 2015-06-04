@@ -5,7 +5,7 @@
 @model MailReportCriteria
 @{
     ViewBag.Title = Labels.Report;
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_LayoutWithTimer.cshtml";  
     var hasEditRight = PermissionService.HasHostPermission(MailDeliveryFunctionKeys.MailReport);
 }
 @section Head {

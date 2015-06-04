@@ -271,6 +271,7 @@
     <Content Include="scripts\lib\MagicSuggest\css\bootstrap.min.css" />
     <Content Include="scripts\lib\MagicSuggest\css\magicsuggest-min.css" />
     <Content Include="scripts\lib\MagicSuggest\js\magicsuggest-min.js" />
+    <Content Include="scripts\lib\moment\moment-timezone-with-data.js" />
     <Content Include="scripts\lib\MultipleSelect\images\BottomLine.png" />
     <Content Include="scripts\lib\MultipleSelect\images\FirstNodeSpan.png" />
     <Content Include="scripts\lib\MultipleSelect\images\MiddleLine.png" />
@@ -751,6 +752,7 @@
     <None Include="themes\shared\contextmenu.less" />
     <None Include="themes\shared\formedit.less" />
     <None Include="scripts\lib\Countdown\CountDown.less" />
+    <Content Include="Views\Shared\_LayoutWithTimer.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

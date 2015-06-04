@@ -76,6 +76,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants\TimeZoneConstants.cs" />
     <Compile Include="Constants\MailStationConstants.cs" />
     <Compile Include="Constants\ErrorCodeConstants.cs" />
     <Compile Include="Constants\MailDeliveryFunctionKeys.cs" />
@@ -106,6 +107,8 @@
     <Compile Include="Criteria\ManageRecipient\DeleteRecipientCriteria.cs" />
     <Compile Include="Criteria\ManageRecipient\RecipientByIdCriteria.cs" />
     <Compile Include="Criteria\ManageRecipient\RecipientListCriteria.cs" />
+    <Compile Include="Extensions\TimeZoneExtension.cs" />
+    <Compile Include="Models\CustomTimeZone.cs" />
     <Compile Include="Models\MailGroupModel.cs" />
     <Compile Include="Models\MailTaskDetailModel.cs" />
     <Compile Include="Models\MailTaskModel.cs" />
@@ -151,9 +154,7 @@
       <Name>Fanex.MailDelivery.Client</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Extensions\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <EmbeddedResource Include="Resources\Labels.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

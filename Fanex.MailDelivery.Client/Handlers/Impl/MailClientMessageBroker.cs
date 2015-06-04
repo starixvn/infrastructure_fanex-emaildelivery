@@ -107,6 +107,11 @@
             return _bus.Request<ScheduleRequestMessage, List<Schedule>>(scheduleRequest);
         }
 
+        public MailingList GetMailingList(int mailId)
+        {
+            return _bus.Request<MailingListRequest, MailingList>(new MailingListRequest() { MailingListId = mailId });
+        }
+
         /// <summary>
         /// For the first time Job is running, we need to get back the TaskID of the current running Job.
         /// By insert new record at DB, it get back itself with additional TaskID's value.
@@ -128,47 +133,6 @@
             }
 
             _bus.Publish(jobStatus, MailDeliveryConstants.JobResultRoutingKey);
-        }
-
-        public MailingList GetFunctionMailingList(int functionId)
-        {
-            var mailingListRequest = new MailingListRequest
-            {
-                SiteId = AppSettings.MailCientConfig.SiteId,
-                MailingListId = functionId
-            };
-
-            return _bus.Request<MailingListRequest, MailingList>(mailingListRequest);
-        }
-
-        public MailingList GetScheduleMailingList(int scheduleId)
-        {
-            var mailingListRequest = new MailingListRequest
-            {
-                SiteId = AppSettings.MailCientConfig.SiteId,
-                MailingListId = scheduleId,
-                MailType = MailType.Schedule
-            };
-
-            return _bus.Request<MailingListRequest, MailingList>(mailingListRequest);
-        }
-
-        public ResultMessage UpdateFunctionMailingList(int functionId, MailingList mailingList)
-        {
-            mailingList.SiteId = AppSettings.MailCientConfig.SiteId;
-            mailingList.Id = functionId;
-            mailingList.MailType = MailType.Function;
-
-            return _bus.Request<MailingList, ResultMessage>(mailingList);
-        }
-
-        public ResultMessage UpdateScheduleMailingList(int scheduleId, MailingList mailingList)
-        {
-            mailingList.SiteId = AppSettings.MailCientConfig.SiteId;
-            mailingList.Id = scheduleId;
-            mailingList.MailType = MailType.Schedule;
-
-            return _bus.Request<MailingList, ResultMessage>(mailingList);
         }
 
         private string GetRandomString(int maxSize = 8)

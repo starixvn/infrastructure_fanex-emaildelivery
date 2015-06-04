@@ -45,24 +45,9 @@
             return _messageBroker.GetSchedules();
         }
 
-        public static MailingList GetFunctionMailingList(int functionId)
+        public static MailingList GetMailingList(int mailId)
         {
-            return _messageBroker.GetFunctionMailingList(functionId);
-        }
-
-        public static MailingList GetScheduleMailingList(int scheduleId)
-        {
-            return _messageBroker.GetScheduleMailingList(scheduleId);
-        }
-
-        public static ResultMessage UpdateFunctionMailingList(int functionId, MailingList mailingList)
-        {
-            return _messageBroker.UpdateFunctionMailingList(functionId, mailingList);
-        }
-
-        public static ResultMessage UpdateScheduleMailingList(int scheduleId, MailingList mailingList)
-        {
-            return _messageBroker.UpdateScheduleMailingList(scheduleId, mailingList);
+            return _messageBroker.GetMailingList(mailId);
         }
 
         public static JobResultMessage RequestAddMailTaskForRunningJob(JobResultMessage jobResult)

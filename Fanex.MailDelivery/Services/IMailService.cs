@@ -18,8 +18,6 @@
 
         MailingList GetMailingList(int mailingListId);
 
-        CommandResult UpdateMailingList(MailingList mailingList);
-
         void AddMailTaskForRunningJob(JobResultMessage jobResultMessage);
     }
 }

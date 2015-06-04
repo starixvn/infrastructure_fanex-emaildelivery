@@ -12,6 +12,7 @@ namespace Fanex.MailDelivery.MailStation.Controllers
     using System.Web.Mvc;
     using Fanex.MailDelivery.MailStation.Criteria.MailGroup;
     using Fanex.MailDelivery.MailStation.Criteria.MailManage;
+    using Fanex.MailDelivery.MailStation.Extensions;
     using Fanex.MailDelivery.MailStation.Services.MailGroup;
     using Fanex.Maintenance.Controller;
 
@@ -29,6 +30,7 @@ namespace Fanex.MailDelivery.MailStation.Controllers
 
         public ActionResult Index(GetMailListCriteria criteria)
         {
+            ViewBag.TimeZoneString = TimeZoneExtension.GetTimeZoneString();
             return View("~/Areas/MailStation/MailGroup/ManageMailGroup/Index.cshtml");
         }
 
@@ -38,6 +40,7 @@ namespace Fanex.MailDelivery.MailStation.Controllers
         /// <returns>Create Mail View.</returns>
         public ActionResult CreateMailGroupView()
         {
+            ViewBag.TimeZoneString = TimeZoneExtension.GetTimeZoneString();
             return View("~/Areas/MailStation/MailGroup/CreateMailGroup/Index.cshtml");
         }
 
@@ -77,6 +80,7 @@ namespace Fanex.MailDelivery.MailStation.Controllers
                 model.Description = mailGroup.Description;
             }
 
+            ViewBag.TimeZoneString = TimeZoneExtension.GetTimeZoneString();
             return View("~/Areas/MailStation/MailGroup/UpdateMailGroup/Index.cshtml", model);
         }
 

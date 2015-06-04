@@ -24,12 +24,6 @@ namespace Fanex.MailDelivery.Handlers.Interface
 
         void SubscribeScheduleRequest();
 
-        void SubscribeFunctionMailingListRequest();
-
-        void SubscribeScheduleMailingListRequest();
-
-        void SubscribeFunctionMailingListUpdate();
-
-        void SubscribeScheduleMailingListUpdate();
+        void SubscribeMailingListRequest();
     }
 }

@@ -45,10 +45,7 @@
             SubscribeMail();
             SubscribeJobResult();
             SubscribeAbortJob();
-            SubscribeFunctionMailingListRequest();
-            SubscribeFunctionMailingListUpdate();
-            SubscribeScheduleMailingListRequest();
-            SubscribeScheduleMailingListUpdate();
+            SubscribeMailingListRequest();
             RespondAddMailTaskForRunningJob();
         }
 
@@ -112,59 +109,13 @@
         /// <summary>
         /// Subscribes the function mailing list request.
         /// </summary>
-        public void SubscribeFunctionMailingListRequest()
+        public void SubscribeMailingListRequest()
         {
             _bus.Respond<MailingListRequest, MailingList>(
-                functionMailingListRequest =>
+                mailingListRequest =>
                 {
-                    return _mailService.GetMailingList(functionMailingListRequest.MailingListId);
+                    return _mailService.GetMailingList(mailingListRequest.MailingListId);
                 });
-        }
-
-        /// <summary>
-        /// Subscribes the schedule mailing list request.
-        /// </summary>
-        public void SubscribeScheduleMailingListRequest()
-        {
-            _bus.Respond<MailingListRequest, MailingList>(
-                scheduleMailingListRequest =>
-                {
-                    return _mailService.GetMailingList(scheduleMailingListRequest.MailingListId);
-                });
-        }
-
-        /// <summary>
-        /// Subscribes the function mailing list update.
-        /// </summary>
-        public void SubscribeFunctionMailingListUpdate()
-        {
-            _bus.Respond<MailingList, ResultMessage>(
-                 mailingList =>
-                 {
-                     var commandResult = _mailService.UpdateMailingList(mailingList);
-                     return new ResultMessage
-                         {
-                             ErrCode = commandResult.Code,
-                             ErrMsg = commandResult.Message
-                         };
-                 });
-        }
-
-        /// <summary>
-        /// Subscribes the schedule mailing list update.
-        /// </summary>
-        public void SubscribeScheduleMailingListUpdate()
-        {
-            _bus.Respond<MailingList, ResultMessage>(
-                 mailingList =>
-                 {
-                     var commandResult = _mailService.UpdateMailingList(mailingList);
-                     return new ResultMessage
-                     {
-                         ErrCode = commandResult.Code,
-                         ErrMsg = commandResult.Message
-                     };
-                 });
         }
 
         public void RespondAddMailTaskForRunningJob()

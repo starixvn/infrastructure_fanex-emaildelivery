@@ -4,6 +4,7 @@
     using System.ServiceProcess;
     using Fanex.MailDelivery.Client.Configurations;
     using Fanex.MailDelivery.Client.Handlers;
+    using Fanex.MailDelivery.Client.Models;
 
     /// <summary>
     /// Mail client service for testing.
@@ -23,6 +24,9 @@
         {
             MailClientHandler.Start();
             Console.WriteLine("Mail Client Service Site: {0} started.", AppSettings.MailCientConfig.SiteId);
+            //GetMaillingList(2);
+
+            SendFunctionMail();
             try
             {
                 var schedules = AppSettings.MailCientConfig.Schedules;
@@ -63,6 +67,40 @@
         protected override void OnStop()
         {
             MailClientHandler.Stop();
+        }
+
+        private void GetMaillingList(int mailID)
+        {
+            var mail = MailClientHandler.GetMailingList(mailID);
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("MailID: " + mail.Id.ToString());
+            Console.WriteLine("Mail Type: " + mail.MailType.ToString());
+            Console.WriteLine("Mail Name: " + mail.Name.ToString());
+            Console.WriteLine("Mail Group: " + mail.Group.ToString());
+            Console.WriteLine("Is Active: " + mail.Active.ToString());
+            Console.WriteLine("Site id: " + mail.SiteId.ToString());
+            Console.WriteLine("Mail to: " + mail.TOs.ToString());
+            Console.WriteLine("Mail CC: " + mail.CCs.ToString());
+            Console.WriteLine("Mail BCC: " + mail.BCCs.ToString());
+            Console.ForegroundColor = ConsoleColor.White;
+        }
+
+
+
+        private void SendFunctionMail()
+        {
+            var mail = new Mail
+            {
+                Subject = "Mail Station Test (Function Mail).",
+                Title = "Mail Station Test (Function Mail).",
+                Body = "Email Body.",
+            };
+
+            mail.AlternativeViews = new System.Collections.Generic.List<MailLinkedResource>();
+            mail.AlternativeViews.Add(new MailLinkedResource("D:\\image1.jpg", Fanex.MailDelivery.Client.Enumerations.FileExtension.IMG_JPG, "contentId1"));
+
+            mail.MailingListId = AppSettings.GetFunctionId("FuntionA");
+            MailClientHandler.SendMail(mail);
         }
     }
 }

@@ -150,5 +150,10 @@
                 return db.Query<Schedule>().FirstOrDefault();
             }
         }
+
+        public string GetTimeZone()
+        {
+            return string.Empty;
+        }
     }
 }

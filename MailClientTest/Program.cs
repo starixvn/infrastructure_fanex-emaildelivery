@@ -22,7 +22,6 @@ namespace MailClientTest
             //SendFunctionMail();
             //Console.Read();
             //MailClientHandler.Stop();
-
             ServiceBase[] servicesToRun = new ServiceBase[]
             {
                 new MailClientTestService()
@@ -48,42 +47,6 @@ namespace MailClientTest
             {
                 ServiceBase.Run(servicesToRun);
             }
-        }
-
-        private static void SendFunctionMail()
-        {
-            var mail = new Mail
-                {
-                    Subject = "Mail Station Test (Function Mail).",
-                    Title = "Mail Station Test (Function Mail).",
-                    Body = "Email Body.",
-                };
-
-            mail.MailingListId = AppSettings.GetFunctionId("Win Loss by Product Mail Function");
-            MailClientHandler.SendMail(mail);
-        }
-
-        private static void ModifyMailingList()
-        {
-            var mailSubject = string.Empty;
-            var functionId = 1;
-            Console.ForegroundColor = ConsoleColor.Red;
-            var mailingList = MailClientHandler.GetFunctionMailingList(functionId);
-            Console.WriteLine("Get Mailing List:");
-
-            foreach (var toMail in mailingList.TOs)
-            {
-                Console.WriteLine(toMail);
-            }
-
-            Console.WriteLine("Please input mail to:");
-            mailingList.TOs[0] = Console.ReadLine();
-
-            var result = MailClientHandler.UpdateFunctionMailingList(functionId, mailingList);
-
-            Console.WriteLine(result.ErrMsg);
-            Console.ForegroundColor = ConsoleColor.Gray;
-            Console.ReadLine();
         }
     }
 }

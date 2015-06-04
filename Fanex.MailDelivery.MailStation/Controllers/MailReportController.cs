@@ -12,6 +12,7 @@ namespace Fanex.MailDelivery.MailStation.Controllers
     using System.Web.Mvc;
     using Fanex.MailDelivery.MailStation.Constants;
     using Fanex.MailDelivery.MailStation.Criteria.MailReport;
+    using Fanex.MailDelivery.MailStation.Extensions;
     using Fanex.MailDelivery.MailStation.Services.MailReport;
     using Fanex.MailDelivery.MailStation.Services.ManageMail;
     using Fanex.Maintenance.Controller;
@@ -34,6 +35,7 @@ namespace Fanex.MailDelivery.MailStation.Controllers
         {
             var mailManageService = new MailManageService();
             ViewBag.ListStatus = mailManageService.TaskStatus();
+            ViewBag.TimeZoneString = TimeZoneExtension.GetTimeZoneString();
             return View("~/Areas/MailStation/Report/MailReport/Index.cshtml");
         }
 
@@ -56,6 +58,7 @@ namespace Fanex.MailDelivery.MailStation.Controllers
                 MailId = mailId
             });
 
+            ViewBag.TimeZoneString = TimeZoneExtension.GetTimeZoneString();
             return View("~/Areas/MailStation/Report/MailDetail/Index.cshtml", mailDetail);
         }
 
@@ -66,6 +69,7 @@ namespace Fanex.MailDelivery.MailStation.Controllers
                 MailId = mailId
             });
 
+            ViewBag.TimeZoneString = TimeZoneExtension.GetTimeZoneString();
             return View("~/Areas/MailStation/Report/MailLog/Index.cshtml", mailLog);
         }
 

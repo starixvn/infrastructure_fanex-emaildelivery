@@ -5,6 +5,7 @@
 @{
     ViewBag.Title = Labels.Log_details;
     var mailLog = JsonConvert.SerializeObject(Model);
+    Layout = "~/Views/Shared/_LayoutWithTimer.cshtml";  
 }
 <!DOCTYPE html>
 <!--[if IEMobile 7]><html class="no-js iem7 oldie"><![endif]-->

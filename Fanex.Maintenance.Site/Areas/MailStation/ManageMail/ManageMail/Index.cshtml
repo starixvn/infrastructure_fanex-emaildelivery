@@ -5,7 +5,7 @@
 @model GetMailListCriteria
 @{
     ViewBag.Title = "Manage Mail";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_LayoutWithTimer.cshtml";
     var hasEditRight = true;
     var hasSiteRight = true;
     var recipient = JsonConvert.SerializeObject(Model);
@@ -111,7 +111,7 @@
             Action: 'Action',
             Confirm_DeleteMail: 'Do you want to delete the Mail?',
             Confirm_RunNow: '@Labels.Confirm_RunNow',
-            TimeZone: '@(Fanex.NAP.Core.Configuration.NapSettings.Settings.Environment == "UAT" ? "-04:00" : "-03:00")'
+            TimeZone: '@ViewBag.TimeZoneString'
         };
     </script>
 }

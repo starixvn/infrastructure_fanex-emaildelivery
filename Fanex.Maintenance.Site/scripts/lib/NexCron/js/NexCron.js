@@ -363,7 +363,7 @@
         monthlyhtml.push('  </div>');
         monthlyhtml.push('  <div class="nexcron-edit-field">');
         monthlyhtml.push('      <select id="nexcron-repeat-day-monthly" name="repeat-day" class="nexcron-repeat-day">');
-        for (var i = 1; i <= 31; i++) {
+        for (var i = 1; i <= 12; i++) {
             monthlyhtml.push('      <option value="' + i + '">' + i + '</option>');
         }
         monthlyhtml.push('      </select>');

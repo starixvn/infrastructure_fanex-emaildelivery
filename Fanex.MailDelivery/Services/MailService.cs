@@ -202,42 +202,6 @@
         }
 
         /// <summary>
-        /// Updates the mailing list.
-        /// </summary>
-        /// <param name="mailingList">The mailing list.</param>
-        /// <returns>Update result.</returns>
-        public CommandResult UpdateMailingList(MailingList mailingList)
-        {
-            try
-            {
-                if (mailingList.MailType == MailType.Function)
-                {
-                    Console.WriteLine("Updated function mailing list:" + mailingList.TOs[0]);
-                }
-                else
-                {
-                    Console.WriteLine("Updated schedule mailing list:" + mailingList.TOs[0]);
-                }
-
-                return new CommandResult
-                {
-                    Code = 0,
-                    Message = "Updated successfully!"
-                };
-            }
-            catch (Exception ex)
-            {
-                LogError(ex);
-
-                return new CommandResult
-                {
-                    Code = 1001,
-                    Message = "Update unsuccessfully!"
-                };
-            }
-        }
-
-        /// <summary>
         /// Updates the running job.
         /// </summary>
         /// <param name="jobResultMessage">The job result message.</param>

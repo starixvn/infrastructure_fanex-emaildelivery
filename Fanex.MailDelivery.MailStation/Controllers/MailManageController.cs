@@ -12,6 +12,7 @@ namespace Fanex.MailDelivery.MailStation.Controllers
     using System.Web.Mvc;
     using Fanex.MailDelivery.MailStation.Criteria.MailGroup;
     using Fanex.MailDelivery.MailStation.Criteria.MailManage;
+    using Fanex.MailDelivery.MailStation.Extensions;
     using Fanex.MailDelivery.MailStation.Models;
     using Fanex.MailDelivery.MailStation.Resources;
     using Fanex.MailDelivery.MailStation.Services.ManageMail;
@@ -31,6 +32,7 @@ namespace Fanex.MailDelivery.MailStation.Controllers
             ViewBag.ListSite = _mailManageService.Sites();
             ViewBag.ListStatus = _mailManageService.Status();
             ViewBag.ListTriggerType = _mailManageService.Trigger();
+            ViewBag.TimeZoneString = TimeZoneExtension.GetTimeZoneString();
             return View("~/Areas/MailStation/ManageMail/ManageMail/Index.cshtml");
         }
 
@@ -69,6 +71,7 @@ namespace Fanex.MailDelivery.MailStation.Controllers
                 mail.MailName += Labels.CopyPrefix;
             }
 
+            ViewBag.TimeZoneString = TimeZoneExtension.GetTimeZoneString();
             CreateMailCriteria model = new CreateMailCriteria(mail);
             return View("~/Areas/MailStation/ManageMail/CreateMail/Index.cshtml", model);
         }
@@ -91,7 +94,7 @@ namespace Fanex.MailDelivery.MailStation.Controllers
             }
 
             _mailManageService = new MailManageService();
-            return Json(_mailManageService.CreateMail(criteria));
+            return Json(_mailManageService.CreateMail(criteria), JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult MailList(GetMailListCriteria criteria)
@@ -115,7 +118,7 @@ namespace Fanex.MailDelivery.MailStation.Controllers
             ViewBag.ListTriggerType = _mailManageService.Trigger(false);
             MailModel mail = _mailManageService.MailByID(criteria);
             UpdateMailCriteria model = new UpdateMailCriteria(mail);
-
+            ViewBag.TimeZoneString = TimeZoneExtension.GetTimeZoneString();
             return View("~/Areas/MailStation/ManageMail/UpdateMail/Index.cshtml", model);
         }
 
@@ -123,7 +126,7 @@ namespace Fanex.MailDelivery.MailStation.Controllers
         public JsonResult UpdateMail(UpdateMailCriteria criteria)
         {
             _mailManageService = new MailManageService();
-            return Json(_mailManageService.UpdateMail(criteria));
+            return Json(_mailManageService.UpdateMail(criteria), JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult SuggestMail(SuggestMailCriteria criteria)
