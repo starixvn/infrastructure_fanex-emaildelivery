@@ -18,7 +18,7 @@
 
         public static void LogInfo(string message)
         {
-            Logger.Log.Info(message);
+            // Logger.Log.Info(message);
         }
     }
 }
