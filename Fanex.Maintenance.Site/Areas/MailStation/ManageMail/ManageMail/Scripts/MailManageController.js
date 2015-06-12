@@ -15,6 +15,10 @@ var MailManageController = function () {
         btnSearch: null
     };
 
+    var cacheObject = {
+        bodyData: null
+    };
+
     self.reportParams = {
         MailName: null,
         IsActive: null,
@@ -193,20 +197,37 @@ var MailManageController = function () {
             headerColumns.push({ HeaderText: '', Width: 80, Name: "ColRunNow", HeaderAlign: "center", CellAlign: "center" });
         }
 
+        var reRenderAfterPaged = function (page_index, itemsPerPage, jq) {
+            gridOptions.pagerOption.itemsPerPage = itemsPerPage;
+            gridOptions.pagerOption.currentPage = page_index;
+            var startIndex = (page_index * itemsPerPage);
+            var endIndex = ((page_index + 1) * itemsPerPage);
+            var currentBodyRows = cacheObject.bodyData.slice(startIndex, endIndex);
+            gridOptions.bodyRows = currentBodyRows;
+            DOMElements.gridContainer.fanexGrid(gridOptions); 
+            self.bindGridEvent();
+            return false;
+        };
+
+        cacheObject.bodyData = bodyData;
+        var startIndex = 0;
+        var currentBodyRows = cacheObject.bodyData.slice(0, sharedScriptManager.cachedData.defaultItemsPerPage);
         var gridOptions = {
             columns: headerColumns,
             showTitle: false,
-            bodyRows: bodyData,
+            bodyRows: currentBodyRows,
             showDistinctRow: false,
             showHighlightRow: true,
             showPager: true,
+            customPager: true,
             timeZone: viewResources.TimeZone,
             gridExpandHeight: 350,
             pagerOption: {
                 itemsPerPage: sharedScriptManager.cachedData.defaultItemsPerPage,
                 currentPage: 0,
                 itemsPerPageArray: sharedScriptManager.cachedData.pagingOptions,
-                totalItem: 800
+                totalItem: cacheObject.bodyData.length,
+                pagerSelectCallBack: reRenderAfterPaged
             }
         };
 
