@@ -15,8 +15,6 @@
 
         public JobStatus JobStatus { get; set; }
 
-        public ResultMessage Result { get; set; }
-
         public TaskLog TaskLog { get; set; }
 
         public DateTime RunningTime { get; set; }

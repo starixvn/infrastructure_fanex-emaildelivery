@@ -38,6 +38,12 @@
         /// <summary>
         /// The abort status.
         /// </summary>
-        Abort = 6
+        Abort = 6,
+
+
+        /// <summary>
+        /// The success without sendmail status.
+        /// </summary>
+        SuccessWithoutSendmail = 7
     }
 }

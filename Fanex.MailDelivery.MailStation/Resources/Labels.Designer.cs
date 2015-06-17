@@ -592,6 +592,15 @@ namespace Fanex.MailDelivery.MailStation.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Succeeded.
+        /// </summary>
+        public static string Succeeded {
+            get {
+                return ResourceManager.GetString("Succeeded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to #.
         /// </summary>
         public static string Symbol_No {

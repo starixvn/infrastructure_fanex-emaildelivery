@@ -48,12 +48,7 @@ namespace MailClientTest.Jobs
             {
                 Mail = mail,
                 Schedule = schedule,
-                JobStatus = JobStatus.Success,
-                Result = new ResultMessage
-                {
-                    ErrCode = 0,
-                    ErrMsg = string.Empty
-                }
+                JobStatus = JobStatus.Success
             };
         }
     }

@@ -12,7 +12,8 @@ var MailReportController = function () {
             DataNotReady: 2,
             Failed: 3,
             Sent: 4,
-            Abort: 6
+            Abort: 6,
+            Succeeded: 7
         },
         TriggerType: {
             FunctionMail: 0,
@@ -215,6 +216,8 @@ var MailReportController = function () {
                 return '<div class="column-status failed-status"' + mailIndex + '>' + viewResources.Failed.toUpperCase() + '</div>';
             case self.Enums.TaskStatus.Abort:
                 return '<div class="column-status abort-status"' + mailIndex + '>' + viewResources.Abort + '</div>';
+            case self.Enums.TaskStatus.Succeeded:
+                return '<div class="column-status sent-status"' + mailIndex + '>' + viewResources.Succeeded.toUpperCase() + '</div>';
         }
     };
 

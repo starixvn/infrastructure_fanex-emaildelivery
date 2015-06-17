@@ -264,7 +264,7 @@ var MailManageController = function () {
             self.runNow(mailIndex, function () {
                 setTimeout(function () {
                     NAP.headlineMsgBox.close();
-                    self.getMailList();
+                    // self.getMailList();
                 }, sharedScriptManager.cachedData.alertSuccessTime);
             });
         });

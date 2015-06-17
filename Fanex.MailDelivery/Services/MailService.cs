@@ -80,6 +80,9 @@
                     case JobStatus.Success:
                         this.UpdateSuccessJob(jobResultMessage);
                         break;
+                    case JobStatus.SuccessWithoutSendmail:
+                        this.UpdateSuccessJobWithoutSendMail(jobResultMessage);
+                        break;
                     case JobStatus.Failed:
                         this.UpdateFailedJob(jobResultMessage);
                         break;
@@ -260,7 +263,7 @@
             this._mailRepository.UpdateMailTaskStatus(new UpdateMailTaskStatusCriteria()
             {
                 TaskID = jobResultMessage.Schedule.TaskId,
-                Status = (int)JobStatus.DataIsNotReady
+                Status = (int)jobResultMessage.JobStatus
             });
 
             this._mailRepository.AddMailLog(new AddMailLogCriteria()
@@ -282,19 +285,44 @@
             this._mailRepository.UpdateMailTaskStatus(new UpdateMailTaskStatusCriteria()
             {
                 TaskID = jobResultMessage.Schedule.TaskId,
-                Status = (int)JobStatus.Success,
+                Status = (int)jobResultMessage.JobStatus,
                 LastSent = DateTime.Now
             });
 
             // Because the job cannot be update to success when aborted. We will check Status again to make sure job is done.
             var mailTask = this._mailRepository.GetMailTask(new GetMailTaskByIDCriteria() { MailTaskID = jobResultMessage.Schedule.TaskId });
-            if (mailTask.Status == (int)JobStatus.Success)
+            if (mailTask.Status == (int)jobResultMessage.JobStatus)
             {
                 int mailRecordId = this.SendMail(jobResultMessage.Mail);
                 this._mailRepository.UpdateMailTask(new UpdateMailTaskMSiteMailIDCriteria()
                 {
                     TaskID = jobResultMessage.Schedule.TaskId,
                     MSiteMailID = mailRecordId
+                });
+            }
+        }
+
+        /// <summary>
+        /// Updates the success job.
+        /// </summary>
+        /// <param name="jobResultMessage">The job result message.</param>
+        private void UpdateSuccessJobWithoutSendMail(JobResultMessage jobResultMessage)
+        {
+            this._mailRepository.UpdateMailTaskStatus(new UpdateMailTaskStatusCriteria()
+            {
+                TaskID = jobResultMessage.Schedule.TaskId,
+                Status = (int)jobResultMessage.JobStatus,
+                LastSent = DateTime.Now
+            });
+
+            // Because the job cannot be update to success when aborted. We will check Status again to make sure job is done.
+            var mailTask = this._mailRepository.GetMailTask(new GetMailTaskByIDCriteria() { MailTaskID = jobResultMessage.Schedule.TaskId });
+            if (mailTask.Status == (int)jobResultMessage.JobStatus)
+            {
+                this._mailRepository.UpdateMailTask(new UpdateMailTaskMSiteMailIDCriteria()
+                {
+                    TaskID = jobResultMessage.Schedule.TaskId,
+                    MSiteMailID = 0
                 });
             }
         }

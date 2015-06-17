@@ -318,4 +318,7 @@
   <data name="Confirm_RunNow" xml:space="preserve">
     <value>Do you want to run this Mail now?</value>
   </data>
+  <data name="Succeeded" xml:space="preserve">
+    <value>Succeeded</value>
+  </data>
 </root>

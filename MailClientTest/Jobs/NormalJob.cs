@@ -21,7 +21,7 @@ namespace MailClientTest.Jobs
         protected override JobResultMessage Run(Schedule schedule, IJobExecutionContext jobContext)
         {
             var jobLog = string.Format(
-                "Run Normal Job: \n\tSite Id: {0}, Schedule: {1}. \n\tSent at {2}",
+                "Run Normal Job but not send mail: \n\tSite Id: {0}, Schedule: {1}. \n\tSent at {2}",
                 schedule.SiteId,
                 schedule.Id,
                 DateTime.Now);
@@ -41,7 +41,7 @@ namespace MailClientTest.Jobs
             {
                 Mail = mail,
                 Schedule = schedule,
-                JobStatus = JobStatus.Success
+                JobStatus = JobStatus.SuccessWithoutSendmail
             };
         }
     }

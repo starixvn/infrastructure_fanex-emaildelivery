@@ -62,7 +62,7 @@
                     }
 
                     jobResult.Schedule.TaskId = taskID;
-                    if (jobResult.JobStatus != JobStatus.Success)
+                    if (jobResult.JobStatus != JobStatus.Success && jobResult.JobStatus != JobStatus.SuccessWithoutSendmail)
                     {
                         RetryJob(jobResult.Schedule, context.MergedJobDataMap);
                         jobResult.JobStatus = jobResult.Schedule.IsRunning() ? JobStatus.Running : JobStatus.DataIsNotReady;

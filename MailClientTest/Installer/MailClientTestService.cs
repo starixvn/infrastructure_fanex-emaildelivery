@@ -26,7 +26,7 @@
             Console.WriteLine("Mail Client Service Site: {0} started.", AppSettings.MailCientConfig.SiteId);
             //GetMaillingList(2);
 
-            SendFunctionMail();
+            //SendFunctionMail();
             try
             {
                 var schedules = AppSettings.MailCientConfig.Schedules;
