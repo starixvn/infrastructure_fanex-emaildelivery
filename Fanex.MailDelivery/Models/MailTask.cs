@@ -2,6 +2,9 @@
 {
     using System;
 
+    /// <summary>
+    /// Mail Task object.
+    /// </summary>
     public class MailTask
     {
         public int TaskID { get; set; }

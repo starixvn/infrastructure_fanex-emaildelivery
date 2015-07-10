@@ -22,7 +22,8 @@ var MailReportController = function () {
     };
 
     self.cachedData = {
-        searchParams: null
+        searchParams: null,
+        bodyRows: null
     };
 
     self.initPage = function () {
@@ -112,6 +113,7 @@ var MailReportController = function () {
         sharedScriptManager.blockUI();
         var searchParams = {
             MailName: $("#MailName").val(),
+            SiteID: $("#SiteID").val(),
             FromDate: $("#FromDate").val(),
             ToDate: $("#ToDate").val(),
             Status: $("#Status").val()
@@ -154,7 +156,7 @@ var MailReportController = function () {
                 Columns: rowColumns
             });
         };
-
+        self.cachedData.bodyRows = bodyData;
         var headerColumns = [];
         headerColumns.push({ HeaderText: viewResources.Id, Width: 40, Name: "ColId", HeaderAlign: "center", CellAlign: "center" });
         headerColumns.push({ HeaderText: viewResources.Mail_Name, Width: 340, Name: "ColMailName", HeaderAlign: "center", CellAlign: "left" });
@@ -170,7 +172,7 @@ var MailReportController = function () {
         var gridOptions = {
             columns: headerColumns,
             showTitle: false,
-            bodyRows: bodyData,
+            bodyRows: self.cachedData.bodyRows,
             showDistinctRow: false,
             showHighlightRow: true,
             gridExpandHeight: 350,
@@ -187,9 +189,13 @@ var MailReportController = function () {
                 pagerSelectCallBack: function (page_index, itemsPerPage, jq) {
                     gridOptions.pagerOption.itemsPerPage = itemsPerPage;
                     gridOptions.pagerOption.currentPage = page_index;
+                    var startIndex = (page_index * itemsPerPage);
+                    var endIndex = ((page_index + 1) * itemsPerPage);
+                    var currentBodyRows = self.cachedData.bodyRows.slice(startIndex, endIndex);
+                    gridOptions.bodyRows = currentBodyRows;
                     $("#mail-report").fanexGrid(gridOptions);
                     self.bindGridEvent();
-                    //return false;
+                    return false;
                 }
             }
         };

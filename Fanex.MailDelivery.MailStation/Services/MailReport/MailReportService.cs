@@ -53,25 +53,23 @@ namespace Fanex.MailDelivery.MailStation.Services.MailReport
             }
 
             List<MailTaskDetailModel> listMailTaskDetail = new List<MailTaskDetailModel>();
-            GetAllScheduleCriteria getAllScheduleCriteria = new GetAllScheduleCriteria() { MailName = criteria.MailName };
+            GetAllScheduleCriteria getAllScheduleCriteria = new GetAllScheduleCriteria() { MailName = criteria.MailName, SiteID = criteria.SiteID };
             using (ObjectDb db = new ObjectDb(getAllScheduleCriteria.GetSettingKey()))
             {
                 db.AssignParamValues(getAllScheduleCriteria.GetSpParams());
                 listMailTaskDetail = db.Query<MailTaskDetailModel>().ToList();
             }
 
-            if (criteria.Status == (int)JobStatus.Waiting || criteria.Status == -1)
+            TimeSpan ts = new TimeSpan(23, 59, 59);
+            criteria.ToDate += ts;
+            if ((criteria.ToDate > DateTime.Now) && (criteria.Status == (int)JobStatus.Waiting || criteria.Status == -1))
             {
                 foreach (MailTaskDetailModel schedule in listMailTaskDetail)
                 {
                     if (schedule.LastSent == null || schedule.LastSent < criteria.ToDate)
                     {
-                        TimeSpan ts = new TimeSpan(0, 0, 0);
                         DateTime fromDate = this.MaxDateTime(criteria.FromDate, DateTime.Today);
-                        fromDate = fromDate.Date + ts;
                         DateTime toDate = this.MaxDateTime(criteria.ToDate, DateTime.Today);
-                        ts = new TimeSpan(23, 59, 59);
-                        toDate = toDate.Date + ts;
                         ITrigger trigger = TriggerBuilder.Create().WithCronSchedule(schedule.CronExpression).Build();
                         //// Add 5 seconds to remove delay time between Scheduled Time and real Trigger Time.
                         DateTime lastSent = schedule.LastSent == null ? schedule.LastScheduledTime.AddSeconds(5) : schedule.LastSent.Value;

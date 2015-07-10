@@ -222,7 +222,7 @@
             schedule.ConvertToServerTime();
             var jobDataMap = GetJobDataMap(schedule);
             ITrigger retryTrigger = TriggerBuilder.Create()
-                .StartAt(DateTimeOffset.Now.AddSeconds(MailDeliveryConstants.RetryDelayInSecond))
+                .StartAt(DateTimeOffset.Now.AddSeconds(schedule.RetryInterval * 60))
                 .UsingJobData(jobDataMap)
                 .Build();
 

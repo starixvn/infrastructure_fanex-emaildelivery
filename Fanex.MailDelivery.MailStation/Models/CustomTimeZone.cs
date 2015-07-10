@@ -1,11 +1,8 @@
-﻿
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Fanex.MailDelivery.MailStation.Models
+﻿namespace Fanex.MailDelivery.MailStation.Models
 {
+    /// <summary>
+    /// Custom Time Zone.
+    /// </summary>
     public class CustomTimeZone
     {
         public string StandardName { get; set; }

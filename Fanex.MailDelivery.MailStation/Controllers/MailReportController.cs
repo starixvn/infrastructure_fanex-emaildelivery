@@ -33,8 +33,8 @@ namespace Fanex.MailDelivery.MailStation.Controllers
 
         public ActionResult Index()
         {
-            var mailManageService = new MailManageService();
-            ViewBag.ListStatus = mailManageService.TaskStatus();
+            ViewBag.ListStatus = _mailReportService.TaskStatus();
+            ViewBag.ListSite = _mailReportService.Sites();
             ViewBag.TimeZoneString = TimeZoneExtension.GetTimeZoneString();
             return View("~/Areas/MailStation/Report/MailReport/Index.cshtml");
         }

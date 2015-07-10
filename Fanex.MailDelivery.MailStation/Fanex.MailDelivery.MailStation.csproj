@@ -78,9 +78,7 @@
   <ItemGroup>
     <Compile Include="Constants\TimeZoneConstants.cs" />
     <Compile Include="Constants\MailStationConstants.cs" />
-    <Compile Include="Constants\ErrorCodeConstants.cs" />
     <Compile Include="Constants\MailDeliveryFunctionKeys.cs" />
-    <Compile Include="Constants\TaskStatusConstants.cs" />
     <Compile Include="Controllers\MailGroupManageController.cs" />
     <Compile Include="Controllers\MailManageController.cs" />
     <Compile Include="Controllers\MailRecipientController.cs" />

@@ -24,9 +24,6 @@
         {
             MailClientHandler.Start();
             Console.WriteLine("Mail Client Service Site: {0} started.", AppSettings.MailCientConfig.SiteId);
-            //GetMaillingList(2);
-
-            //SendFunctionMail();
             try
             {
                 var schedules = AppSettings.MailCientConfig.Schedules;
@@ -69,6 +66,10 @@
             MailClientHandler.Stop();
         }
 
+        /// <summary>
+        /// Gets the mail list.
+        /// </summary>
+        /// <param name="mailID">The mail identifier.</param>
         private void GetMaillingList(int mailID)
         {
             var mail = MailClientHandler.GetMailingList(mailID);
@@ -85,8 +86,9 @@
             Console.ForegroundColor = ConsoleColor.White;
         }
 
-
-
+        /// <summary>
+        /// Sends the function mail.
+        /// </summary>
         private void SendFunctionMail()
         {
             var mail = new Mail
@@ -98,7 +100,6 @@
 
             mail.AlternativeViews = new System.Collections.Generic.List<MailLinkedResource>();
             mail.AlternativeViews.Add(new MailLinkedResource("D:\\image1.jpg", Fanex.MailDelivery.Client.Enumerations.FileExtension.IMG_JPG, "contentId1"));
-
             mail.MailingListId = AppSettings.GetFunctionId("FuntionA");
             MailClientHandler.SendMail(mail);
         }

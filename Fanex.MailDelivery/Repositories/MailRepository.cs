@@ -7,8 +7,8 @@
     using Fanex.MailDelivery.Client.Enumerations;
     using Fanex.MailDelivery.Client.Models;
     using Fanex.MailDelivery.Criteria;
+    using Fanex.MailDelivery.Models;
     using Fanex.NAP.Core.Criteria.Misc;
-using Fanex.MailDelivery.Models;
 
     /// <summary>
     /// Mail Repository.

@@ -30,13 +30,14 @@ using Fanex.MailDelivery.Client.Enumerations;
 
         public bool Active { get; set; }
 
-        public int RetryIntervalInSeconds { get; set; }
+        public int RetryInterval { get; set; }
 
         public int MaxRetryTimes { get; set; }
 
         public int CurrentRetryTimes { get; set; }
 
-        public MailType TriggerTypeEnum {
+        public MailType TriggerTypeEnum
+        {
             get 
             {
                 return this.TriggerType == 0 ? MailType.Function : MailType.Schedule;
@@ -64,7 +65,7 @@ using Fanex.MailDelivery.Client.Enumerations;
                 StartTime = StartTime,
                 EndTime = EndTime,
                 Active = Active,
-                RetryIntervalInSeconds = RetryIntervalInSeconds,
+                RetryInterval = RetryInterval,
                 MaxRetryTimes = MaxRetryTimes,
                 CurrentRetryTimes = CurrentRetryTimes
             };

@@ -1,21 +1,22 @@
 ﻿// --------------------------------------------------------------------------
-// <copyright file="ErrorCodeConstants.cs" company="Nexcel Solutions Vietnam">
+// <copyright file="TimeZoneConstants.cs" company="Nexcel Solutions Vietnam">
 // Copyright (c) Nexcel Solutions Vietnam. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------
 
 namespace Fanex.MailDelivery.MailStation.Constants
 {
-    using System.Web.Mvc;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using Fanex.MailDelivery.MailStation.Models;
+
     /// <summary>
     /// Error Code Constants.
     /// </summary>
     public static class TimeZoneConstants
     {
-        public static List<CustomTimeZone> Timezones;
-
+        [SuppressMessage("StyleCop.CSharp.Nexcel.NexcelCustomRules", "SP2101:MethodMustNotContainMoreLinesThan", Justification = "Reviewed. Suppression is OK here.")]
+        [SuppressMessage("StyleCop.CSharp.Nexcel.NexcelCustomRules", "SP2100:CodeLineMustNotBeLongerThan", Justification = "Reviewed. Suppression is OK here.")]
         static TimeZoneConstants()
         {
             Timezones = new List<CustomTimeZone>();
@@ -108,5 +109,7 @@ namespace Fanex.MailDelivery.MailStation.Constants
             Timezones.Add(new CustomTimeZone() { StandardName = "Samoa Standard Time", DisplayName = "(GMT-11:00) Midway Island, Samoa", TimeZoneString = "-11:00" });
             Timezones.Add(new CustomTimeZone() { StandardName = "Dateline Standard Time", DisplayName = "(GMT-12:00) International Date Line West", TimeZoneString = "-12:00" });
         }
+
+        public static List<CustomTimeZone> Timezones { get; set; }
     }
 }

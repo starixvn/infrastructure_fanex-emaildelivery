@@ -1,11 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Fanex.MailDelivery.MailStation.Constants;
-
-namespace Fanex.MailDelivery.MailStation.Extensions
+﻿namespace Fanex.MailDelivery.MailStation.Extensions
 {
+    using System;
+    using System.Linq;
+    using Fanex.MailDelivery.MailStation.Constants;
+
+    /// <summary>
+    /// Time Zone Extension.
+    /// </summary>
     public static class TimeZoneExtension
     {
         public static string GetTimeZoneString()

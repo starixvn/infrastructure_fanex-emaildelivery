@@ -40,10 +40,14 @@
         /// </summary>
         Abort = 6,
 
+        /// <summary>
+        /// The success without send mail status.
+        /// </summary>
+        SuccessWithoutSendmail = 7,
 
         /// <summary>
-        /// The success without sendmail status.
+        /// The missing job status.
         /// </summary>
-        SuccessWithoutSendmail = 7
+        Missing = 8
     }
 }

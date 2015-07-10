@@ -27,13 +27,22 @@
             <div class="edit-field">
                 @Html.TextBoxFor(m => m.MailName, new { width = "200px" })
             </div>
-            <div class="lbl-field width-40">
+            
+            <div class="lbl-field">
+                @Html.LabelFor(m => m.SiteID, "Site")
+            </div>
+            <div class="edit-field site-box">
+                @Html.DropDownListFor(m => m.SiteID, (IEnumerable<SelectListItem>)ViewBag.ListSite, new { @class = "site-box" })
+            </div>
+        </div>
+        <div class="filter-row">
+            <div class="lbl-field width-80">
                 @Html.LabelFor(m => m.FromDate, Labels.From)
             </div>
             <div class="edit-field">
                 @Html.TextBoxFor(m => m.FromDate, new { @Value = DateTime.Now.ToString("MMM dd,yyyy"), style = "width: 100px" })
             </div>
-            <div class="lbl-field width-40">
+            <div class="lbl-field">
                 @Html.LabelFor(m => m.ToDate, Labels.To)
             </div>
             <div class="edit-field">
@@ -42,8 +51,8 @@
             <div class="lbl-field">
                 @Html.LabelFor(m => m.Status, Labels.Status)
             </div>
-            <div class="edit-field">
-                @Html.DropDownListFor(m => m.Status, (IEnumerable<SelectListItem>)ViewBag.ListStatus)
+            <div class="edit-field width-160">
+                @Html.DropDownListFor(m => m.Status, (IEnumerable<SelectListItem>)ViewBag.ListStatus, new { @class = "width-auto" })
             </div>
             <div class="submit">
                 <input id="button-search" type="submit" value="@Labels.Submit" />
@@ -102,7 +111,7 @@
             Abort: '@Labels.Abort',
             Succeeded: '@Labels.Succeeded',
 
-            TimeZone: '@(Fanex.NAP.Core.Configuration.NapSettings.Settings.Environment == "UAT" ? "-04:00" : "-03:00")'
+            TimeZone: '@ViewBag.TimeZoneString'
         };
     </script>
 }

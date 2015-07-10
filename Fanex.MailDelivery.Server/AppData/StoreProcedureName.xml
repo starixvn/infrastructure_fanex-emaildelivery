@@ -10,7 +10,7 @@
       <Mapping DataField="StartOn" ObjectProperty="StartTime" />
       <Mapping DataField="EndOn" ObjectProperty="EndTime" />
       <Mapping DataField="IsActive" ObjectProperty="Active" />
-      <Mapping DataField="Interval" ObjectProperty="RetryIntervalInSeconds" />
+      <Mapping DataField="Interval" ObjectProperty="RetryInterval" />
       <Mapping DataField="Attempt" ObjectProperty="MaxRetryTimes" />
     </Setting>
     <Setting Key="Mail_Core_InsertMailTask" SpName="Mail_Core_InsertMailTask" DbName="DBMMS.bodb_MMS.bodbAdminNet" />

@@ -62,7 +62,7 @@
                 MaxRetryTimes = criteria.Attempt,
                 Name = criteria.MailName,
                 RepeatExpression = criteria.CronExpression,
-                RetryIntervalInSeconds = criteria.Interval,
+                RetryInterval = criteria.Interval,
                 SiteId = criteria.SiteID
             });
 

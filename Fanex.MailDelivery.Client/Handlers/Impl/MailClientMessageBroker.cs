@@ -1,14 +1,13 @@
 ﻿namespace Fanex.MailDelivery.Client.Handlers.Impl
 {
     using System.Collections.Generic;
+    using System.Security.Cryptography;
+    using System.Text;
     using EasyNetQ;
     using Fanex.MailDelivery.Client.Configurations;
-    using Fanex.MailDelivery.Client.Enumerations;
     using Fanex.MailDelivery.Client.Handlers.Interface;
     using Fanex.MailDelivery.Client.Messages;
     using Fanex.MailDelivery.Client.Models;
-    using System.Text;
-    using System.Security.Cryptography;
 
     /// <summary>
     /// Rabbit MQ Broker for PUB/SUB message.
@@ -135,6 +134,11 @@
             _bus.Publish(jobStatus, MailDeliveryConstants.JobResultRoutingKey);
         }
 
+        /// <summary>
+        /// Gets the random string.
+        /// </summary>
+        /// <param name="maxSize">The maximum size.</param>
+        /// <returns>Random string.</returns>
         private string GetRandomString(int maxSize = 8)
         {
             char[] chars = new char[62];
@@ -152,8 +156,8 @@
             foreach (byte b in data)
             {
                 result.Append(chars[b % (chars.Length - 1)]);
-
             }
+
             return result.ToString();
         }
     }

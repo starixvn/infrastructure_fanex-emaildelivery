@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fanex.Maintenance.Site", "F
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fanex.MailDelivery.MailStation", "Fanex.MailDelivery.MailStation\Fanex.MailDelivery.MailStation.csproj", "{108C1D8A-CAE1-46DA-B951-60E1FC67EF12}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mail", "Mail\Mail.csproj", "{1E6D055E-3ADA-46E8-9B9B-25210B184937}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -109,6 +111,16 @@ Global
 		{108C1D8A-CAE1-46DA-B951-60E1FC67EF12}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{108C1D8A-CAE1-46DA-B951-60E1FC67EF12}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{108C1D8A-CAE1-46DA-B951-60E1FC67EF12}.Release|x86.ActiveCfg = Release|Any CPU
+		{1E6D055E-3ADA-46E8-9B9B-25210B184937}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E6D055E-3ADA-46E8-9B9B-25210B184937}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E6D055E-3ADA-46E8-9B9B-25210B184937}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{1E6D055E-3ADA-46E8-9B9B-25210B184937}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{1E6D055E-3ADA-46E8-9B9B-25210B184937}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1E6D055E-3ADA-46E8-9B9B-25210B184937}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E6D055E-3ADA-46E8-9B9B-25210B184937}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E6D055E-3ADA-46E8-9B9B-25210B184937}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{1E6D055E-3ADA-46E8-9B9B-25210B184937}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{1E6D055E-3ADA-46E8-9B9B-25210B184937}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

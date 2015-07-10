@@ -13,7 +13,7 @@ namespace Fanex.MailDelivery.MailStation.Constants
     {
         public const string MailStation = "MailStation";
         public const string ManageMail = "ManageMail";
-        public const string MailReport = "MailReport";
+        public const string MailReport = "ManageReport";
         public const string ManageMailGroup = "ManageMailGroup";
         public const string ManageRecipient = "ManageRecipient";
     }

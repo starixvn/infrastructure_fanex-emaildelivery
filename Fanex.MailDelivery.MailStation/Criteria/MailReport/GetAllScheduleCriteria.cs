@@ -9,6 +9,8 @@
     {
         public string MailName { get; set; }
 
+        public int SiteID { get; set; }
+
         public override bool IsValid()
         {
             return true;

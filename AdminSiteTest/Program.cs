@@ -22,7 +22,7 @@ namespace AdminSiteTest
                 RepeatExpression = "0/20 * * * * ?",
                 StartTime = DateTime.Now,
                 EndTime = DateTime.Now.AddDays(30),
-                RetryIntervalInSeconds = 5,
+                RetryInterval = 5,
                 MaxRetryTimes = 2,
                 Active = false
             };
