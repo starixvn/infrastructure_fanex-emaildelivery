@@ -23,7 +23,7 @@
         /// <summary>
         /// The failed status.
         /// </summary>
-        Failed = 3,
+        JobFailed = 3,
 
         /// <summary>
         /// The success status.

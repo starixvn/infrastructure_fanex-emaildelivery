@@ -58,7 +58,7 @@
                             Message = ex.Message,
                             StackTrace = ex.StackTrace
                         };
-                        jobResult.JobStatus = JobStatus.Failed;
+                        jobResult.JobStatus = JobStatus.JobFailed;
                     }
 
                     jobResult.Schedule.TaskId = taskID;

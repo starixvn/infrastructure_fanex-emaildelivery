@@ -83,7 +83,7 @@
                     case JobStatus.SuccessWithoutSendmail:
                         this.UpdateSuccessJobWithoutSendMail(jobResultMessage);
                         break;
-                    case JobStatus.Failed:
+                    case JobStatus.JobFailed:
                         this.UpdateFailedJob(jobResultMessage);
                         break;
                     case JobStatus.Abort:
@@ -332,7 +332,7 @@
             this._mailRepository.UpdateMailTaskStatus(new UpdateMailTaskStatusCriteria()
             {
                 TaskID = jobResultMessage.Schedule.TaskId,
-                Status = (int)JobStatus.Failed
+                Status = (int)JobStatus.JobFailed
             });
         }
 
