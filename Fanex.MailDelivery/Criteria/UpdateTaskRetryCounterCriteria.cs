@@ -7,7 +7,7 @@
     /// </summary>
     public class UpdateTaskRetryCounterCriteria : CriteriaBase
     {
-        public int TaskID { get; set; }
+        public int TaskId { get; set; }
 
         public int RetryCount { get; set; }
 

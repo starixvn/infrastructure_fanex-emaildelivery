@@ -8,32 +8,61 @@
     /// </summary>
     public static class MailStationConstants
     {
-        public static readonly List<SelectListItemExtra> Active;
-
-        public static readonly List<SelectListItemExtra> TriggerTypes;
-
-        public static readonly List<SelectListItemExtra> AllItem;
-
-        public static readonly List<SelectListItemExtra> TaskStatus;
-
-        static MailStationConstants()
+        private static List<SelectListItemExtra> active = new List<SelectListItemExtra>()
         {
-            AllItem = new List<SelectListItemExtra>();
-            AllItem.Add(new SelectListItemExtra() { Text = "All", Value = "-1" });
+            new SelectListItemExtra() { Text = "Active", Value = "1" },
+            new SelectListItemExtra() { Text = "Inactive", Value = "0" }
+        };
 
-            Active = new List<SelectListItemExtra>();
-            Active.Add(new SelectListItemExtra() { Text = "Active", Value = "1" });
-            Active.Add(new SelectListItemExtra() { Text = "Inactive", Value = "0" });
+        private static List<SelectListItemExtra> triggerTypes = new List<SelectListItemExtra>() 
+        {
+            new SelectListItemExtra() { Selected = false, Text = "Function", Value = "0" },
+            new SelectListItemExtra() { Selected = false, Text = "Schedule", Value = "1" }
+        };
 
-            TriggerTypes = new List<SelectListItemExtra>();
-            TriggerTypes.Add(new SelectListItemExtra() { Selected = false, Text = "Function", Value = "0" });
-            TriggerTypes.Add(new SelectListItemExtra() { Selected = false, Text = "Schedule", Value = "1" });
+        private static List<SelectListItemExtra> allItem = new List<SelectListItemExtra>()
+        {
+            new SelectListItemExtra() { Text = "All", Value = "-1" }
+        };
 
-            TaskStatus = new List<SelectListItemExtra>();
-            TaskStatus.Add(new SelectListItemExtra() { Text = "Waiting".ToUpper(), Value = "0" });
-            TaskStatus.Add(new SelectListItemExtra() { Text = "Running".ToUpper(), Value = "1" });
-            TaskStatus.Add(new SelectListItemExtra() { Text = "Data not ready".ToUpper(), Value = "2" });
-            TaskStatus.Add(new SelectListItemExtra() { Text = "Sent".ToUpper(), Value = "4" });
+        private static List<SelectListItemExtra> taskStatus = new List<SelectListItemExtra>()
+        {
+            new SelectListItemExtra() { Text = "Waiting".ToUpper(), Value = "0" },
+            new SelectListItemExtra() { Text = "Running".ToUpper(), Value = "1" },
+            new SelectListItemExtra() { Text = "Data not ready".ToUpper(), Value = "2" },
+            new SelectListItemExtra() { Text = "Sent".ToUpper(), Value = "4" }
+        };
+
+        public static List<SelectListItemExtra> Active
+        {
+            get
+            {
+                return active;
+            }
+        }
+
+        public static List<SelectListItemExtra> TriggerTypes
+        {
+            get
+            {
+                return triggerTypes;
+            }
+        }
+
+        public static List<SelectListItemExtra> AllItem
+        {
+            get
+            {
+                return allItem;
+            }
+        }
+
+        public static List<SelectListItemExtra> TaskStatus
+        {
+            get
+            {
+                return taskStatus;
+            }
         }
     }
 }

@@ -5,7 +5,7 @@
     /// <summary>
     /// Get all log category criteria.
     /// </summary>
-    public class GetScheduleByIDCriteria : CriteriaBase
+    public class GetScheduleByIdCriteria : CriteriaBase
     {
         public int MailId { get; set; }
 
@@ -16,7 +16,7 @@
 
         public override string GetSettingKey()
         {
-            return "Mail_MailManagement_GetScheduleByMailID";
+            return "Mail_MailManagement_GetScheduleByMailId";
         }
     }
 }

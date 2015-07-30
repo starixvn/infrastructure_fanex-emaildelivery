@@ -11,9 +11,9 @@ namespace Fanex.MailDelivery.MailStation.Criteria.MailManage
     /// <summary>
     /// Get all log category criteria.
     /// </summary>
-    public class ReadMailByIDCriteria : CriteriaBase
+    public class ReadMailByIdCriteria : CriteriaBase
     {
-        public int MailID { get; set; }
+        public int MailId { get; set; }
 
         public override bool IsValid()
         {

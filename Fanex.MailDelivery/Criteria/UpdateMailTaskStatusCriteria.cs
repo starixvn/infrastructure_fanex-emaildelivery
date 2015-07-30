@@ -5,11 +5,11 @@
     /// <summary>
     /// Get all log category criteria.
     /// </summary>
-    public class UpdateMailTaskMSiteMailIDCriteria : CriteriaBase
+    public class UpdateMailTaskMSiteMailIdCriteria : CriteriaBase
     {
-        public int TaskID { get; set; }
+        public int TaskId { get; set; }
 
-        public int MSiteMailID { get; set; }
+        public int MSiteMailId { get; set; }
 
         public override bool IsValid()
         {

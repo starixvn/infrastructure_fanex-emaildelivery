@@ -62,11 +62,11 @@ var MailManageController = function () {
         for (var i = 0; i < mailListLength; i++) {
             var mail = result[i];
             var rowColumns = [];
-            var mailGroupIndex = ' groupid="' + mail.MailGroupID + '"';
-            rowColumns.push({ Name: "ID", Value: mail.MailGroupID });
+            var mailGroupIndex = ' groupid="' + mail.MailGroupId + '"';
+            rowColumns.push({ Name: "ID", Value: mail.MailGroupId });
             rowColumns.push({
                 Name: "Group",
-                Value: parseInt(mail.MailGroupID) === 1 ? mail.MailGroupName : '<a title="' + mail.MailGroupName + '" class="link group-mail-name" href="javascript:;"' + mailGroupIndex + '>' +
+                Value: parseInt(mail.MailGroupId) === 1 ? mail.MailGroupName : '<a title="' + mail.MailGroupName + '" class="link group-mail-name" href="javascript:;"' + mailGroupIndex + '>' +
                                 mail.MailGroupName +
                             '</a>'
             });
@@ -78,7 +78,7 @@ var MailManageController = function () {
                                 </div>';
             rowColumns.push({
                 Name: "Action",
-                Value: mail.MailGroupID !== 1 ? actionElement : ''
+                Value: mail.MailGroupId !== 1 ? actionElement : ''
             });
 
             bodyData.push({
@@ -167,7 +167,7 @@ var MailManageController = function () {
     self.editMailGroup = function (mailGroupId) {
         window.location.href = window.rootUrl + "MailStation/MailGroupManage/UpdateMailGroupView?" +
             $.param({
-                MailGroupID: mailGroupId
+                MailGroupId: mailGroupId
             });
     };
 

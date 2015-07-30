@@ -131,6 +131,7 @@
         public void Dispose()
         {
             _bus.Dispose();
+            GC.SuppressFinalize(this);
         }
     }
 }

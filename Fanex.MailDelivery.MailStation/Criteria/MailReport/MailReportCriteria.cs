@@ -19,7 +19,7 @@ namespace Fanex.MailDelivery.MailStation.Criteria.MailReport
     {
         public string MailName { get; set; }
 
-        public int SiteID { get; set; }
+        public int SiteId { get; set; }
 
         public DateTime FromDate { get; set; }
 

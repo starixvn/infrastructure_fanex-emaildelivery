@@ -112,8 +112,8 @@
         }
 
         /// <summary>
-        /// For the first time Job is running, we need to get back the TaskID of the current running Job.
-        /// By insert new record at DB, it get back itself with additional TaskID's value.
+        /// For the first time Job is running, we need to get back the TaskId of the current running Job.
+        /// By insert new record at DB, it get back itself with additional TaskId's value.
         /// </summary>
         /// <param name="jobResult">Job Result.</param>
         /// <returns>

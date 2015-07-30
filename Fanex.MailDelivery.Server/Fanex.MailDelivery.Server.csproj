@@ -34,6 +34,9 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EasyNetQ, Version=0.50.1.392, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\EasyNetQ.0.50.1.392\lib\net40\EasyNetQ.dll</HintPath>
+    </Reference>
     <Reference Include="Fanex.Data">
       <HintPath>..\packages\Fanex.Data.0.5.404.63\lib\net40\Fanex.Data.dll</HintPath>
     </Reference>
@@ -54,6 +57,10 @@
     </Reference>
     <Reference Include="Microsoft.Practices.Unity.Interception">
       <HintPath>..\packages\EnterpriseLibrary.Unity.5.0.414.0\lib\net40\Microsoft.Practices.Unity.Interception.dll</HintPath>
+    </Reference>
+    <Reference Include="RabbitMQ.Client, Version=3.5.4.0, Culture=neutral, PublicKeyToken=89e7d7c5feba84ce, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\RabbitMQ.Client.3.5.4\lib\net40\RabbitMQ.Client.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />

@@ -17,7 +17,7 @@ namespace Fanex.Maintenance.Site
     using System.Web.Routing;
     using Fanex.Data.Configuration;
     using Fanex.Logging;
-    using Fanex.Maintenance.Site.App_Start;
+    using Fanex.Maintenance.Site.AppStart;
 
     /// <summary>
     /// Note: For instructions on enabling IIS6 or IIS7 classic mode, visit http://go.microsoft.com/?LinkId=9394801 .

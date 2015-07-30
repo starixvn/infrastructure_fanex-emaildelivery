@@ -20,7 +20,7 @@
     </Setting>
     <Setting Key="MailStation_EditMail" SpName="Mail_MailManagement_UpdateMail" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
     <Setting Key="MailStation_DeleteMail" SpName="Mail_MailManagement_DeleteMail" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
-    <Setting Key="Mail_MailManagement_GetScheduleByMailID" SpName="Mail_MailManagement_GetScheduleByMailID" DbName="DBMMS.bodb_MMS.bodbAdminNet" >
+    <Setting Key="Mail_MailManagement_GetScheduleByMailId" SpName="Mail_MailManagement_GetScheduleByMailId" DbName="DBMMS.bodb_MMS.bodbAdminNet" >
       <Mapping DataField="MailID" ObjectProperty="Id" />
       <Mapping DataField="SiteId" ObjectProperty="SiteId" />
       <Mapping DataField="MailName" ObjectProperty="Name" />

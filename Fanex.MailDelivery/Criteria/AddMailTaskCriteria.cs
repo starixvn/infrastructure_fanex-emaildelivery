@@ -8,7 +8,7 @@
     /// </summary>
     public class AddMailTaskCriteria : CriteriaBase
     {
-        public int MailTaskID { get; set; }
+        public int MailTaskId { get; set; }
 
         public int MailId { get; set; }
 

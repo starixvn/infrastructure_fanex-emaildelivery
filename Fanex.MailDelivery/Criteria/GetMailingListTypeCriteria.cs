@@ -13,7 +13,7 @@ namespace Fanex.MailDelivery.Criteria
     /// </summary>
     public class GetMailingListTypeCriteria : CriteriaBase
     {
-        public int MailID { get; set; }
+        public int MailId { get; set; }
 
         public int MailType { get; set; }
 

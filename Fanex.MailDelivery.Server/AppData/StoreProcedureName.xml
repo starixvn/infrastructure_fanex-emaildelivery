@@ -2,7 +2,7 @@
 <Functions>
   <Function Name="MailDeliver">
     <Setting Key="StoreConfig" SpName="MailRecorder_InsConfig" DbName="DBMA.bodb_Maintenance.bodbAdminNet"  />
-    <Setting Key="Mail_MailManagement_GetScheduleByMailID" SpName="Mail_MailManagement_GetScheduleByMailID" DbName="DBMMS.bodb_MMS.bodbAdminNet" >
+    <Setting Key="Mail_MailManagement_GetScheduleByMailId" SpName="Mail_MailManagement_GetScheduleByMailId" DbName="DBMMS.bodb_MMS.bodbAdminNet" >
       <Mapping DataField="MailID" ObjectProperty="Id" />
       <Mapping DataField="SiteId" ObjectProperty="SiteId" />
       <Mapping DataField="MailName" ObjectProperty="Name" />
@@ -20,14 +20,14 @@
     <Setting Key="Mail_MailManagement_GetMailWithEmailAddressByMailID" SpName="Mail_MailManagement_GetMailWithEmailAddressByMailID" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
     <Setting Key="Mail_Core_GetMailingListType" SpName="Mail_Core_GetMailingListType" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
     <Setting Key="Mail_Core_GetMailTask" SpName="Mail_Core_GetMailTask" DbName="DBMMS.bodb_MMS.bodbAdminNet" >
-      <Mapping DataField="TaskID" ObjectProperty="TaskID" />
-      <Mapping DataField="MailID" ObjectProperty="MailID" />
-      <Mapping DataField="SiteID" ObjectProperty="SiteID" />
+      <Mapping DataField="TaskID" ObjectProperty="TaskId" />
+      <Mapping DataField="MailID" ObjectProperty="MailId" />
+      <Mapping DataField="SiteID" ObjectProperty="SiteId" />
       <Mapping DataField="ScheduleTime" ObjectProperty="ScheduleTime" />
       <Mapping DataField="LastSent" ObjectProperty="LastSent" />
       <Mapping DataField="Status" ObjectProperty="Status" />
       <Mapping DataField="Attempt" ObjectProperty="Attempt" />
-      <Mapping DataField="MSiteMailID" ObjectProperty="MSiteMailID" />
+      <Mapping DataField="MSiteMailID" ObjectProperty="MSiteMailId" />
     </Setting>
     <Setting Key="Mail_Core_UpdateMailTaskMSiteMailID" SpName="Mail_Core_UpdateMailTaskMSiteMailID" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
   </Function>

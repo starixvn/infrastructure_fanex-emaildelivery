@@ -14,7 +14,7 @@ namespace Fanex.MailDelivery.Configurations
     /// <summary>
     /// TODO: Update summary.
     /// </summary>
-    public class AppSettings
+    public static class AppSettings
     {
         static AppSettings()
         {

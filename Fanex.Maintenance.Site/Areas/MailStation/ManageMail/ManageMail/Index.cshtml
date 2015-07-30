@@ -44,10 +44,10 @@
                     @Html.DropDownListFor(m => m.IsActive, (IEnumerable<SelectListItem>)ViewBag.ListStatus, new { @class = "width-80" })
                 </div>
                 <div class="lbl-field">
-                    @Html.LabelFor(m => m.MailGroupID, "Group")
+                    @Html.LabelFor(m => m.MailGroupId, "Group")
                 </div>
                 <div class="edit-field">
-                    @Html.HiddenFor(m => m.MailGroupID)
+                    @Html.HiddenFor(m => m.MailGroupId)
                     <select id="dropdownMailGroup"></select>
                 </div>
                 <div class="lbl-field">
@@ -65,10 +65,10 @@
                     @Html.TextBoxFor(m => m.Emails, new { @class = "width-300" })
                 </div>
                 <div class="lbl-field">
-                    @Html.LabelFor(m => m.SiteID, "Site")
+                    @Html.LabelFor(m => m.SiteId, "Site")
                 </div>
                 <div class="edit-field site-box">
-                    @Html.DropDownListFor(m => m.SiteID, (IEnumerable<SelectListItem>)ViewBag.ListSite, new { @class = "site-box" })
+                    @Html.DropDownListFor(m => m.SiteId, (IEnumerable<SelectListItem>)ViewBag.ListSite, new { @class = "site-box" })
                 </div>
                 <div class="submit">
                     <input id="button-search" type="submit" value="Submit" />

@@ -49,7 +49,7 @@ namespace Fanex.MailDelivery.MailStation.Services.MailGroup
             return this.ExecuteNonQuery(criteria);
         }
 
-        public MailGroupModel GetMailGroupByID(GetMailGroupByIDCriteria criteria)
+        public MailGroupModel GetMailGroupByID(GetMailGroupByIdCriteria criteria)
         {
             using (ObjectDb db = new ObjectDb(criteria.GetSettingKey()))
             {

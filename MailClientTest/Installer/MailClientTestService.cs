@@ -69,10 +69,10 @@
         /// <summary>
         /// Gets the mail list.
         /// </summary>
-        /// <param name="mailID">The mail identifier.</param>
-        private void GetMaillingList(int mailID)
+        /// <param name="mailId">The mail identifier.</param>
+        private void GetMaillingList(int mailId)
         {
-            var mail = MailClientHandler.GetMailingList(mailID);
+            var mail = MailClientHandler.GetMailingList(mailId);
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("MailID: " + mail.Id.ToString());
             Console.WriteLine("Mail Type: " + mail.MailType.ToString());

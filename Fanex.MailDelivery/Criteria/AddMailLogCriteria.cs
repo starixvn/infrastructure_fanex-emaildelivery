@@ -8,7 +8,7 @@
     /// </summary>
     public class AddMailLogCriteria : CriteriaBase
     {
-        public int TaskID { get; set; }
+        public int TaskId { get; set; }
 
         public string ExceptionMessage { get; set; }
 

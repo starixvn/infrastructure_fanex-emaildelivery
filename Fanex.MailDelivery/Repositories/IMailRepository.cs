@@ -7,7 +7,7 @@
 
     public interface IMailRepository
     {
-        Schedule GetScheduleByID(GetScheduleByIDCriteria criteria);
+        Schedule GetScheduleByID(GetScheduleByIdCriteria criteria);
 
         int AddMailTask(AddMailTaskCriteria criteria);
 
@@ -17,12 +17,12 @@
 
         void AddMailLog(AddMailLogCriteria criteria);
 
-        MailingList GetMailingList(GetMailWithEmailAddressByMailID criteria);
+        MailingList GetMailingList(GetMailWithEmailAddressByMailId criteria);
 
         MailType GetMailingListType(GetMailingListTypeCriteria criteria);
 
-        void UpdateMailTask(UpdateMailTaskMSiteMailIDCriteria criteria);
+        void UpdateMailTask(UpdateMailTaskMSiteMailIdCriteria criteria);
 
-        MailTask GetMailTask(GetMailTaskByIDCriteria criteria);
+        MailTask GetMailTask(GetMailTaskByIdCriteria criteria);
     }
 }

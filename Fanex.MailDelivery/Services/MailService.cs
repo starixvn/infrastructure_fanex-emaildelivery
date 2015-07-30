@@ -42,7 +42,7 @@
             {
                 foreach (int scheduleId in scheduleIds)
                 {
-                    schedules.Add(this._mailRepository.GetScheduleByID(new GetScheduleByIDCriteria() { MailId = scheduleId }));
+                    schedules.Add(this._mailRepository.GetScheduleByID(new GetScheduleByIdCriteria() { MailId = scheduleId }));
                 }
             }
             catch (Exception ex)
@@ -128,7 +128,7 @@
                 var mailService = new MailDeliver();
                 var mailRecord = this.ConvertFromMailToMailRecord(mail);
                 mailId = (int)_mailDeliverBusiness.InsertMailRecord(mailRecord);
-                var schedule = this._mailRepository.GetScheduleByID(new GetScheduleByIDCriteria() { MailId = mail.MailingListId });
+                var schedule = this._mailRepository.GetScheduleByID(new GetScheduleByIdCriteria() { MailId = mail.MailingListId });
                 if (schedule.Active)
                 {
                     if (mailId > 0)
@@ -194,7 +194,7 @@
         {
             try
             {
-                return _mailRepository.GetMailingList(new GetMailWithEmailAddressByMailID() { MailId = mailingListId });
+                return _mailRepository.GetMailingList(new GetMailWithEmailAddressByMailId() { MailId = mailingListId });
             }
             catch (Exception ex)
             {
@@ -212,13 +212,13 @@
         {
             this._mailRepository.UpdateMailTaskStatus(new UpdateMailTaskStatusCriteria()
             {
-                TaskID = jobResultMessage.Schedule.TaskId,
+                TaskId = jobResultMessage.Schedule.TaskId,
                 Status = (int)JobStatus.Running
             });
 
             this._mailRepository.UpdateRetryCounter(new UpdateTaskRetryCounterCriteria()
             {
-                TaskID = jobResultMessage.Schedule.TaskId,
+                TaskId = jobResultMessage.Schedule.TaskId,
                 RetryCount = jobResultMessage.Schedule.CurrentRetryTimes
             });
 
@@ -231,7 +231,7 @@
                     ExceptionMessage = jobResultMessage.TaskLog.Message,
                     StackTrace = jobResultMessage.TaskLog.StackTrace,
                     Status = (int)jobResultMessage.JobStatus,
-                    TaskID = jobResultMessage.Schedule.TaskId
+                    TaskId = jobResultMessage.Schedule.TaskId
                 });
             }
         }
@@ -240,7 +240,7 @@
         {
             this._mailRepository.UpdateMailTaskStatus(new UpdateMailTaskStatusCriteria()
             {
-                TaskID = jobResultMessage.Schedule.TaskId,
+                TaskId = jobResultMessage.Schedule.TaskId,
                 Status = (int)JobStatus.Abort
             });
         }
@@ -249,7 +249,7 @@
         {
             this._mailRepository.UpdateRetryCounter(new UpdateTaskRetryCounterCriteria()
             {
-                TaskID = jobResultMessage.Schedule.TaskId,
+                TaskId = jobResultMessage.Schedule.TaskId,
                 RetryCount = jobResultMessage.Schedule.CurrentRetryTimes
             });
         }
@@ -262,7 +262,7 @@
         {
             this._mailRepository.UpdateMailTaskStatus(new UpdateMailTaskStatusCriteria()
             {
-                TaskID = jobResultMessage.Schedule.TaskId,
+                TaskId = jobResultMessage.Schedule.TaskId,
                 Status = (int)jobResultMessage.JobStatus
             });
 
@@ -272,7 +272,7 @@
                 ExceptionMessage = jobResultMessage.TaskLog.Message,
                 StackTrace = jobResultMessage.TaskLog.StackTrace,
                 Status = (int)jobResultMessage.JobStatus,
-                TaskID = jobResultMessage.Schedule.TaskId
+                TaskId = jobResultMessage.Schedule.TaskId
             });
         }
 
@@ -284,20 +284,20 @@
         {
             this._mailRepository.UpdateMailTaskStatus(new UpdateMailTaskStatusCriteria()
             {
-                TaskID = jobResultMessage.Schedule.TaskId,
+                TaskId = jobResultMessage.Schedule.TaskId,
                 Status = (int)jobResultMessage.JobStatus,
                 LastSent = DateTime.Now
             });
 
             // Because the job cannot be update to success when aborted. We will check Status again to make sure job is done.
-            var mailTask = this._mailRepository.GetMailTask(new GetMailTaskByIDCriteria() { MailTaskID = jobResultMessage.Schedule.TaskId });
+            var mailTask = this._mailRepository.GetMailTask(new GetMailTaskByIdCriteria() { MailTaskId = jobResultMessage.Schedule.TaskId });
             if (mailTask.Status == (int)jobResultMessage.JobStatus)
             {
                 int mailRecordId = this.SendMail(jobResultMessage.Mail);
-                this._mailRepository.UpdateMailTask(new UpdateMailTaskMSiteMailIDCriteria()
+                this._mailRepository.UpdateMailTask(new UpdateMailTaskMSiteMailIdCriteria()
                 {
-                    TaskID = jobResultMessage.Schedule.TaskId,
-                    MSiteMailID = mailRecordId
+                    TaskId = jobResultMessage.Schedule.TaskId,
+                    MSiteMailId = mailRecordId
                 });
             }
         }
@@ -310,19 +310,19 @@
         {
             this._mailRepository.UpdateMailTaskStatus(new UpdateMailTaskStatusCriteria()
             {
-                TaskID = jobResultMessage.Schedule.TaskId,
+                TaskId = jobResultMessage.Schedule.TaskId,
                 Status = (int)jobResultMessage.JobStatus,
                 LastSent = DateTime.Now
             });
 
             // Because the job cannot be update to success when aborted. We will check Status again to make sure job is done.
-            var mailTask = this._mailRepository.GetMailTask(new GetMailTaskByIDCriteria() { MailTaskID = jobResultMessage.Schedule.TaskId });
+            var mailTask = this._mailRepository.GetMailTask(new GetMailTaskByIdCriteria() { MailTaskId = jobResultMessage.Schedule.TaskId });
             if (mailTask.Status == (int)jobResultMessage.JobStatus)
             {
-                this._mailRepository.UpdateMailTask(new UpdateMailTaskMSiteMailIDCriteria()
+                this._mailRepository.UpdateMailTask(new UpdateMailTaskMSiteMailIdCriteria()
                 {
-                    TaskID = jobResultMessage.Schedule.TaskId,
-                    MSiteMailID = 0
+                    TaskId = jobResultMessage.Schedule.TaskId,
+                    MSiteMailId = 0
                 });
             }
         }
@@ -331,7 +331,7 @@
         {
             this._mailRepository.UpdateMailTaskStatus(new UpdateMailTaskStatusCriteria()
             {
-                TaskID = jobResultMessage.Schedule.TaskId,
+                TaskId = jobResultMessage.Schedule.TaskId,
                 Status = (int)JobStatus.JobFailed
             });
         }
@@ -386,7 +386,7 @@
             }
 
             // Get Mailing List from database
-            var mailingList = _mailRepository.GetMailingList(new GetMailWithEmailAddressByMailID() { MailId = mail.MailingListId });
+            var mailingList = _mailRepository.GetMailingList(new GetMailWithEmailAddressByMailId() { MailId = mail.MailingListId });
             mailRecord.MailTo = string.Join(";", mailingList.TOs);
             mailRecord.MailCc = string.Join(";", mailingList.CCs);
             mailRecord.MailBcc = string.Join(";", mailingList.BCCs);

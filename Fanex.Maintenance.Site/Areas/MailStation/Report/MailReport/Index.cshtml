@@ -29,10 +29,10 @@
             </div>
             
             <div class="lbl-field">
-                @Html.LabelFor(m => m.SiteID, "Site")
+                @Html.LabelFor(m => m.SiteId, "Site")
             </div>
             <div class="edit-field site-box">
-                @Html.DropDownListFor(m => m.SiteID, (IEnumerable<SelectListItem>)ViewBag.ListSite, new { @class = "site-box" })
+                @Html.DropDownListFor(m => m.SiteId, (IEnumerable<SelectListItem>)ViewBag.ListSite, new { @class = "site-box" })
             </div>
         </div>
         <div class="filter-row">

@@ -11,7 +11,7 @@ var UpdateMailGroupController = function () {
     };
 
     var DOMElements = {
-        MailGroupID: null,
+        MailGroupId: null,
         MailGroupName: null,
         Description: null,
         BtnCancel: null,
@@ -23,7 +23,7 @@ var UpdateMailGroupController = function () {
     };
 
     self.cacheDOMElement = function () {
-        DOMElements.MailGroupID = $('#MailGroupID');
+        DOMElements.MailGroupId = $('#MailGroupId');
         DOMElements.MailGroupName = $('#MailGroupName');
         DOMElements.Description = $('#Description');
         DOMElements.BtnSave = $('#button-save');
@@ -70,7 +70,7 @@ var UpdateMailGroupController = function () {
 
     self.getParams = function () {
         return {
-            MailGroupID: DOMElements.MailGroupID.val(),
+            MailGroupId: DOMElements.MailGroupId.val(),
             MailGroupName: DOMElements.MailGroupName.val(),
             Description: DOMElements.Description.val()
         };

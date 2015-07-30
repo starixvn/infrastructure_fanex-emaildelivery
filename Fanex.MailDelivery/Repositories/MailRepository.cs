@@ -15,7 +15,7 @@
     /// </summary>
     public class MailRepository : IMailRepository
     {
-        public Schedule GetScheduleByID(GetScheduleByIDCriteria criteria)
+        public Schedule GetScheduleByID(GetScheduleByIdCriteria criteria)
         {
             using (var db = new ObjectDb(criteria.GetSettingKey()))
             {
@@ -70,7 +70,7 @@
         /// </summary>
         /// <param name="criteria">The criteria.</param>
         /// <returns>Mailing List.</returns>
-        public MailingList GetMailingList(GetMailWithEmailAddressByMailID criteria)
+        public MailingList GetMailingList(GetMailWithEmailAddressByMailId criteria)
         {
             var result = new MailingList();
             using (var db = new ObjectDb(criteria.GetSettingKey()))
@@ -104,7 +104,7 @@
             }
         }
 
-        public void UpdateMailTask(UpdateMailTaskMSiteMailIDCriteria criteria)
+        public void UpdateMailTask(UpdateMailTaskMSiteMailIdCriteria criteria)
         {
             Hashtable hash = criteria.GetSpParams();
             hash = (new ResultCriteria()).AddSpParams(hash);
@@ -114,7 +114,7 @@
             }
         }
 
-        public MailTask GetMailTask(GetMailTaskByIDCriteria criteria)
+        public MailTask GetMailTask(GetMailTaskByIdCriteria criteria)
         { 
             using (var db = new ObjectDb(criteria.GetSettingKey()))
             {

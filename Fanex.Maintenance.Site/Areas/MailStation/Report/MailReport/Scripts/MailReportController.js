@@ -113,7 +113,7 @@ var MailReportController = function () {
         sharedScriptManager.blockUI();
         var searchParams = {
             MailName: $("#MailName").val(),
-            SiteID: $("#SiteID").val(),
+            SiteId: $("#SiteId").val(),
             FromDate: $("#FromDate").val(),
             ToDate: $("#ToDate").val(),
             Status: $("#Status").val()
@@ -133,11 +133,11 @@ var MailReportController = function () {
         for (var i = 0; i < mailReportLength; i++) {
             var mail = result[i];
             var rowColumns = [];
-            var mailIndex = ' mail-index="' + mail.MSiteMailID + '"';
+            var mailIndex = ' mail-index="' + mail.MSiteMailId + '"';
             rowColumns.push({ Name: "ColId", Value: mail.MailTaskId });
             rowColumns.push({
                 Name: "ColMailName",
-                Value: mail.MSiteMailID == 0 ? mail.MailName : '<a class="link mail-name" href="javascript:;"' + mailIndex + '>' +
+                Value: mail.MSiteMailId == 0 ? mail.MailName : '<a class="link mail-name" href="javascript:;"' + mailIndex + '>' +
                            mail.MailName +
                        '</a>'
             });

@@ -9,7 +9,7 @@ namespace Fanex.MailDelivery.MailStation.Constants
     /// <summary>
     /// Mail Delivery FunctionKeys.
     /// </summary>
-    public class MailDeliveryFunctionKeys
+    public static class MailDeliveryFunctionKeys
     {
         public const string MailStation = "MailStation";
         public const string ManageMail = "ManageMail";

@@ -7,6 +7,7 @@
 namespace Fanex.MailDelivery.MailStation.Criteria.MailManage
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using Fanex.MailDelivery.MailStation.Models;
     using Fanex.NAP.Framework.Data;
 
@@ -26,8 +27,8 @@ namespace Fanex.MailDelivery.MailStation.Criteria.MailManage
             if (model != null)
             {
                 this.MailName = model.MailName;
-                this.MailGroupID = model.MailGroupId;
-                this.SiteID = model.SiteId;
+                this.MailGroupId = model.MailGroupId;
+                this.SiteId = model.SiteId;
                 this.TriggerType = model.TriggerType;
                 this.RepeatType = model.RepeatType;
                 this.CronExpression = model.CronExpression;
@@ -50,9 +51,9 @@ namespace Fanex.MailDelivery.MailStation.Criteria.MailManage
 
         public string MailName { get; set; }
 
-        public int MailGroupID { get; set; }
+        public int MailGroupId { get; set; }
 
-        public int SiteID { get; set; }
+        public int SiteId { get; set; }
 
         public int TriggerType { get; set; }
 
@@ -64,6 +65,7 @@ namespace Fanex.MailDelivery.MailStation.Criteria.MailManage
 
         public string MailTo { get; set; }
 
+        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
         public string MailCc { get; set; }
 
         public string MailBcc { get; set; }

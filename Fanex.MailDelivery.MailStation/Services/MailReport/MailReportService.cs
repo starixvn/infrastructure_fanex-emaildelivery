@@ -53,7 +53,7 @@ namespace Fanex.MailDelivery.MailStation.Services.MailReport
             }
 
             List<MailTaskDetailModel> listMailTaskDetail = new List<MailTaskDetailModel>();
-            GetAllScheduleCriteria getAllScheduleCriteria = new GetAllScheduleCriteria() { MailName = criteria.MailName, SiteID = criteria.SiteID };
+            GetAllScheduleCriteria getAllScheduleCriteria = new GetAllScheduleCriteria() { MailName = criteria.MailName, SiteId = criteria.SiteId };
             using (ObjectDb db = new ObjectDb(getAllScheduleCriteria.GetSettingKey()))
             {
                 db.AssignParamValues(getAllScheduleCriteria.GetSpParams());
@@ -83,7 +83,7 @@ namespace Fanex.MailDelivery.MailStation.Services.MailReport
                             MailTaskModel waitingTask = new MailTaskModel()
                             {
                                 MailName = schedule.MailName,
-                                MailId = schedule.MailID,
+                                MailId = schedule.MailId,
                                 Attempt = schedule.Attempt,
                                 LastSent = null,
                                 ScheduledTime = triggertime.LocalDateTime,
@@ -140,8 +140,8 @@ namespace Fanex.MailDelivery.MailStation.Services.MailReport
         public void RetrySendMail(RetrySendMailCriteria criteria)
         {
             MailAdminHandler.Start();
-            MailTaskModel mailTask = this.GetMailTaskByID(new GetMailTaskByIDCriteria() { MailTaskID = criteria.TaskId });
-            Schedule schedule = this.GetScheduleByMailID(new GetScheduleByIDCriteria() { MailId = mailTask.MailId });
+            MailTaskModel mailTask = this.GetMailTaskByID(new GetMailTaskByIdCriteria() { MailTaskId = criteria.TaskId });
+            Schedule schedule = this.GetScheduleByMailId(new GetScheduleByIdCriteria() { MailId = mailTask.MailId });
             schedule.TaskId = mailTask.MailTaskId;
             MailAdminHandler.PublishRetryJobMessage(schedule);
             MailAdminHandler.Stop();

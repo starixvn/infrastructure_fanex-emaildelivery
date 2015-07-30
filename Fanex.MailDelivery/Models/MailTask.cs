@@ -7,11 +7,11 @@
     /// </summary>
     public class MailTask
     {
-        public int TaskID { get; set; }
+        public int TaskId { get; set; }
 
-        public int MailID { get; set; }
+        public int MailId { get; set; }
 
-        public int SiteID { get; set; }
+        public int SiteId { get; set; }
 
         public DateTime ScheduleTime { get; set; }
 
@@ -21,6 +21,6 @@
 
         public int Attempt { get; set; }
 
-        public long MSiteMailID { get; set; }
+        public long MSiteMailId { get; set; }
     }
 }

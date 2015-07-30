@@ -14,7 +14,7 @@ namespace Fanex.MailDelivery.MailStation.Models
     /// </summary>
     public class MailGroupModel
     {
-        public int MailGroupID { get; set; }
+        public int MailGroupId { get; set; }
 
         public string MailGroupName { get; set; }
 

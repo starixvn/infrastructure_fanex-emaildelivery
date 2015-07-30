@@ -5,7 +5,7 @@
     /// <summary>
     /// Get all log category criteria.
     /// </summary>
-    public class GetMailWithEmailAddressByMailID : CriteriaBase
+    public class GetMailWithEmailAddressByMailId : CriteriaBase
     {
         public int MailId { get; set; }
 

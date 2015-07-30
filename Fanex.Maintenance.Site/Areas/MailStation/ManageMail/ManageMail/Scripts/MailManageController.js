@@ -7,9 +7,9 @@ var MailManageController = function () {
     var DOMElements = {
         MailName: null,
         IsActive: null,
-        MailGroupID: null,
+        MailGroupId: null,
         MailGroup: null,
-        SiteID: null,
+        SiteId: null,
         TriggerType: null,
         Emails: null,
         btnSearch: null
@@ -22,8 +22,8 @@ var MailManageController = function () {
     self.reportParams = {
         MailName: null,
         IsActive: null,
-        MailGroupID: null,
-        SiteID: null,
+        MailGroupId: null,
+        SiteId: null,
         TriggerType: null,
         Emails: null,
         btnSearch: null,
@@ -38,8 +38,8 @@ var MailManageController = function () {
     self.cacheDOMElements = function () {
         DOMElements.MailName = $("#MailName");
         DOMElements.IsActive = $("#IsActive");
-        DOMElements.MailGroupID = $("#MailGroupID");
-        DOMElements.SiteID = $("#SiteID");
+        DOMElements.MailGroupId = $("#MailGroupId");
+        DOMElements.SiteId = $("#SiteId");
         DOMElements.TriggerType = $("#TriggerType");
         DOMElements.Emails = $("#Emails");
         DOMElements.btnSearch = $('#button-search');
@@ -67,7 +67,7 @@ var MailManageController = function () {
             window.rootUrl + "MailStation/MailManage/MailGroups",
             null,
             function (result) {
-                var mailGroupID = parseInt(DOMElements.MailGroupID.val());
+                var mailGroupID = parseInt(DOMElements.MailGroupId.val());
                 DOMElements.MailGroup.empty();
                 if (result && result.length > 0) {
                     var optionLength = result.length;
@@ -122,8 +122,8 @@ var MailManageController = function () {
         self.reportParams = {
             MailName: DOMElements.MailName.val(),
             IsActive: DOMElements.IsActive.val(),
-            MailGroupID: DOMElements.MailGroup.multiSelect('getCheckedItems').join(','),
-            SiteID: DOMElements.SiteID.val(),
+            MailGroupId: DOMElements.MailGroup.multiSelect('getCheckedItems').join(','),
+            SiteId: DOMElements.SiteId.val(),
             TriggerType: DOMElements.TriggerType.val(),
             Emails: DOMElements.Emails.val()
         };
@@ -280,7 +280,7 @@ var MailManageController = function () {
         NAP.headlineMsgBox.confirm(viewResources.Confirm_RunNow, function () {
             sharedScriptManager.blockUI();
             var runNowParams = {
-                mailID: mailIndex
+                mailId: mailIndex
             };
             sharedScriptManager.callAjax(self,
             window.rootUrl + "MailStation/MailManage/RunNow",

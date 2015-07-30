@@ -9,7 +9,7 @@
     {
         public string MailName { get; set; }
 
-        public int SiteID { get; set; }
+        public int SiteId { get; set; }
 
         public override bool IsValid()
         {
