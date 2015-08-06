@@ -19,11 +19,11 @@ namespace Fanex.MailDelivery.Client.Enumerations
         /// <summary>
         /// Function mail.
         /// </summary>
-        Function = 1,
+        Function = 0,
 
         /// <summary>
         /// Schedule Mail.
         /// </summary>
-        Schedule = 2
+        Schedule = 1
     }
 }

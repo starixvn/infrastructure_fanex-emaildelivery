@@ -17,6 +17,8 @@
 
         public TaskLog TaskLog { get; set; }
 
+        public DateTime ScheduledTime { get; set; }
+
         public DateTime RunningTime { get; set; }
     }
 }

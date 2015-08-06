@@ -36,6 +36,7 @@
                     int taskID = schedule.TaskId;
                     JobResultMessage jobResult = new JobResultMessage();
                     jobResult.JobStatus = JobStatus.Running;
+                    jobResult.ScheduledTime = context.ScheduledFireTimeUtc.GetValueOrDefault().DateTime.ToLocalTime();
                     jobResult.RunningTime = context.FireTimeUtc.GetValueOrDefault().DateTime.ToLocalTime();
                     jobResult.Schedule = schedule.Clone();
                     if (schedule != null && schedule.TaskId == 0)
@@ -58,6 +59,7 @@
                             Message = ex.Message,
                             StackTrace = ex.StackTrace
                         };
+
                         jobResult.JobStatus = JobStatus.JobFailed;
                     }
 

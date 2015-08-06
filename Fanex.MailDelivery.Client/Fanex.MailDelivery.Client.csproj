@@ -96,6 +96,7 @@
     <Compile Include="Enumerations\JobStatus.cs" />
     <Compile Include="Handlers\BaseHandler.cs" />
     <Compile Include="Handlers\Impl\MailClientLogger.cs" />
+    <Compile Include="Jobs\ClientNotificationJob.cs" />
     <Compile Include="MailDeliveryConstants.cs" />
     <Compile Include="Enumerations\MailType.cs" />
     <Compile Include="Handlers\Impl\JobHandler.cs" />
@@ -104,6 +105,7 @@
     <Compile Include="Handlers\Interface\IMailClientMessageBroker.cs" />
     <Compile Include="Handlers\MailClientHandler.cs" />
     <Compile Include="Jobs\JobBase.cs" />
+    <Compile Include="Messages\ClientInfomationMessage.cs" />
     <Compile Include="Messages\JobResultMessage.cs" />
     <Compile Include="Messages\MailingListRequest.cs" />
     <Compile Include="Messages\ResultMessage.cs" />

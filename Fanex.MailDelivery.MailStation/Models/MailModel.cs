@@ -10,6 +10,7 @@
 namespace Fanex.MailDelivery.MailStation.Models
 {
     using System;
+    using Fanex.MailDelivery.Admin.Configurations;
 
     /// <summary>
     /// Mail Model.
@@ -71,5 +72,15 @@ namespace Fanex.MailDelivery.MailStation.Models
         public int Interval { get; set; }
 
         public string Description { get; set; }
+
+        public DateTime? LastActive { get; set; }
+
+        public bool IsClientOnline 
+        {
+            get
+            {
+                return LastActive != null && LastActive.Value >= DateTime.Now.AddSeconds(- AppSettings.MailAdminConfig.ClientNotifyTimeOutInSecond);
+            }
+        }
     }
 }

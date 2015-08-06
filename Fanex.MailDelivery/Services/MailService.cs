@@ -71,9 +71,6 @@
                     case JobStatus.Running:
                         this.UpdateRunningJob(jobResultMessage);
                         break;
-                    case JobStatus.Retry:
-                        this.UpdateRetryJob(jobResultMessage);
-                        break;
                     case JobStatus.DataIsNotReady:
                         this.UpdateDataNotReadyJob(jobResultMessage);
                         break;
@@ -109,7 +106,7 @@
             {
                 MailId = jobResultMessage.Schedule.Id,
                 SiteId = jobResultMessage.Schedule.SiteId,
-                ScheduledTime = jobResultMessage.RunningTime,
+                ScheduledTime = jobResultMessage.ScheduledTime,
                 Status = (int)JobStatus.Running,
                 Attempt = jobResultMessage.Schedule.CurrentRetryTimes
             });
@@ -204,6 +201,11 @@
             return null;
         }
 
+        public void UpdateClientActiveTime(ClientInfomationMessage clientInfoMessage)
+        {
+            this._mailRepository.UpdateClientActiveTime(new UpdateClientActiveTimeCriteria() { MailIds = clientInfoMessage.MailIds });
+        }
+
         /// <summary>
         /// Updates the running job.
         /// </summary>
@@ -245,15 +247,6 @@
             });
         }
 
-        private void UpdateRetryJob(JobResultMessage jobResultMessage)
-        {
-            this._mailRepository.UpdateRetryCounter(new UpdateTaskRetryCounterCriteria()
-            {
-                TaskId = jobResultMessage.Schedule.TaskId,
-                RetryCount = jobResultMessage.Schedule.CurrentRetryTimes
-            });
-        }
-
         /// <summary>
         /// Updates for the data not ready job.
         /// </summary>
@@ -264,15 +257,6 @@
             {
                 TaskId = jobResultMessage.Schedule.TaskId,
                 Status = (int)jobResultMessage.JobStatus
-            });
-
-            this._mailRepository.AddMailLog(new AddMailLogCriteria()
-            {
-                LogTime = jobResultMessage.TaskLog.LogTime,
-                ExceptionMessage = jobResultMessage.TaskLog.Message,
-                StackTrace = jobResultMessage.TaskLog.StackTrace,
-                Status = (int)jobResultMessage.JobStatus,
-                TaskId = jobResultMessage.Schedule.TaskId
             });
         }
 
@@ -334,6 +318,18 @@
                 TaskId = jobResultMessage.Schedule.TaskId,
                 Status = (int)JobStatus.JobFailed
             });
+
+            if (jobResultMessage != null && jobResultMessage.TaskLog != null)
+            {
+                this._mailRepository.AddMailLog(new AddMailLogCriteria()
+                {
+                    LogTime = jobResultMessage.TaskLog.LogTime,
+                    ExceptionMessage = jobResultMessage.TaskLog.Message,
+                    StackTrace = jobResultMessage.TaskLog.StackTrace,
+                    Status = (int)jobResultMessage.JobStatus,
+                    TaskId = jobResultMessage.Schedule.TaskId
+                });
+            }
         }
 
         /// <summary>

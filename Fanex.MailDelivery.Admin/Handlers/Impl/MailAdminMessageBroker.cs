@@ -47,10 +47,5 @@
             JobResultMessage jobResultMessage = new JobResultMessage() { JobStatus = Client.Enumerations.JobStatus.Abort, Schedule = new Schedule() { TaskId = taskID } };
             _bus.Publish<JobResultMessage>(jobResultMessage, MailDeliveryConstants.AbortJobRoutingKeyFormat);
         }
-
-        public void PublishRunJobImmediatelyMessage(Schedule schedule)
-        {
-            _bus.Publish<Schedule>(schedule, string.Format(MailDeliveryConstants.RunJobImmediatelyRoutingKeyFormat, schedule.SiteId));
-        }
     }
 }

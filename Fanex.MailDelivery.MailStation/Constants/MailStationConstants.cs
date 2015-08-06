@@ -8,29 +8,34 @@
     /// </summary>
     public static class MailStationConstants
     {
-        private static List<SelectListItemExtra> active = new List<SelectListItemExtra>()
+        private static readonly List<SelectListItemExtra> active = new List<SelectListItemExtra>()
         {
-            new SelectListItemExtra() { Text = "Active", Value = "1" },
-            new SelectListItemExtra() { Text = "Inactive", Value = "0" }
+            new SelectListItemExtra() { Text = "Active", Value = "1", Selected = false },
+            new SelectListItemExtra() { Text = "Inactive", Value = "0", Selected = false }
         };
 
-        private static List<SelectListItemExtra> triggerTypes = new List<SelectListItemExtra>() 
+        private static readonly List<SelectListItemExtra> triggerTypes = new List<SelectListItemExtra>() 
         {
             new SelectListItemExtra() { Selected = false, Text = "Function", Value = "0" },
             new SelectListItemExtra() { Selected = false, Text = "Schedule", Value = "1" }
         };
 
-        private static List<SelectListItemExtra> allItem = new List<SelectListItemExtra>()
+        private static readonly List<SelectListItemExtra> allItem = new List<SelectListItemExtra>()
         {
             new SelectListItemExtra() { Text = "All", Value = "-1" }
         };
 
-        private static List<SelectListItemExtra> taskStatus = new List<SelectListItemExtra>()
+        private static readonly List<SelectListItemExtra> taskStatus = new List<SelectListItemExtra>()
         {
             new SelectListItemExtra() { Text = "Waiting".ToUpper(), Value = "0" },
             new SelectListItemExtra() { Text = "Running".ToUpper(), Value = "1" },
             new SelectListItemExtra() { Text = "Data not ready".ToUpper(), Value = "2" },
-            new SelectListItemExtra() { Text = "Sent".ToUpper(), Value = "4" }
+            new SelectListItemExtra() { Text = "Job Failed".ToUpper(), Value = "3" },
+            new SelectListItemExtra() { Text = "Sent".ToUpper(), Value = "4" },
+            new SelectListItemExtra() { Text = "Abort".ToUpper(), Value = "6" },
+            new SelectListItemExtra() { Text = "Succeeded".ToUpper(), Value = "7" },
+            new SelectListItemExtra() { Text = "Missing".ToUpper(), Value = "8" }
+            
         };
 
         public static List<SelectListItemExtra> Active

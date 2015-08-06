@@ -13,7 +13,8 @@ var MailReportController = function () {
             Failed: 3,
             Sent: 4,
             Abort: 6,
-            Succeeded: 7
+            Succeeded: 7,
+            Missing: 8
         },
         TriggerType: {
             FunctionMail: 0,
@@ -36,6 +37,14 @@ var MailReportController = function () {
         self.renderDropdownRefresh();
         self.initDatePicker();
         countdownController.initPage();
+        var cookie = $.cookie('MailReport');
+        if (cookie) {
+            $('#MailName').val(cookie.MailName);
+            $('#SiteId').val(cookie.SiteId);
+            $('#FromDate').datepicker('setDate', new Date(cookie.FromDate));
+            $('#ToDate').datepicker('setDate', new Date(cookie.ToDate));
+            $('#Status').val(cookie.Status);
+        }
     };
     self.renderDropdownRefresh = function () {
         var countDowns = [{ Id: 0, Value: viewResources.Not_Refresh },
@@ -119,6 +128,7 @@ var MailReportController = function () {
             Status: $("#Status").val()
         };
         self.cachedData.searchParams = searchParams;
+        $.cookie('MailReport', searchParams);
         sharedScriptManager.callAjax(self,
             window.rootUrl + "MailStation/MailReport/MailReport",
             searchParams,
@@ -177,7 +187,6 @@ var MailReportController = function () {
             showHighlightRow: true,
             gridExpandHeight: 350,
             headerColumnHeight: 29,
-            bodyRowHeight: 30,
             showPager: true,
             timeZone: viewResources.TimeZone,
             customPager: true,
@@ -224,6 +233,8 @@ var MailReportController = function () {
                 return '<div class="column-status abort-status"' + mailIndex + '>' + viewResources.Abort + '</div>';
             case self.Enums.TaskStatus.Succeeded:
                 return '<div class="column-status sent-status"' + mailIndex + '>' + viewResources.Succeeded.toUpperCase() + '</div>';
+            case self.Enums.TaskStatus.Missing:
+                return '<div class="column-status missing-status"' + mailIndex + '>' + viewResources.Missing.toUpperCase() + '</div>';
         }
     };
 
@@ -238,6 +249,12 @@ var MailReportController = function () {
                 case self.Enums.TaskStatus.Failed:
                 case self.Enums.TaskStatus.Abort:
                     return '<input type="submit" value="Retry" class="button-retry"' + mailIndex + '>';
+                case self.Enums.TaskStatus.Missing:
+                    return '<input type="submit" value="Retry" class="button-retry-missing-task"'
+                        + 'mailId="' + mail.MailId + '"'
+                        + 'siteId="' + mail.SiteId + '"'
+                        + 'scheduledTime="' + mail.ScheduledTime + '"'
+                        + ' >';
             }
         }
     };
@@ -265,6 +282,20 @@ var MailReportController = function () {
             var $this = $(this);
             var mailIndex = parseInt($this.attr("mail-index"));
             self.retrySendMail(mailIndex, function () {
+                setTimeout(function () {
+                    NAP.headlineMsgBox.close();
+                    self.refreshMailReport();
+                }, sharedScriptManager.cachedData.alertSuccessTime);
+            });
+        });
+
+        $(".button-retry-missing-task").click(function (event) {
+            var $this = $(this);
+            var mailId = parseInt($this.attr("mailId"));
+            var siteId = parseInt($this.attr("siteId"));
+            var scheduledTime = moment($this.attr("scheduledTime")).format('MMM D YYYY, HH:mm:ss');
+            //var scheduledTime = $this.attr("scheduledTime");
+            self.retryMissingTask(mailId, siteId, scheduledTime, function () {
                 setTimeout(function () {
                     NAP.headlineMsgBox.close();
                     self.refreshMailReport();
@@ -332,6 +363,29 @@ var MailReportController = function () {
         });
     };
 
+    self.retryMissingTask = function (mailId, siteId, scheduledTime, afterRetryEvent) {
+        NAP.headlineMsgBox.confirm(viewResources.Confirm_RetryMissingTask, function () {
+            sharedScriptManager.blockUI();
+            var retryParams = {
+                MailId: mailId,
+                SiteId: siteId,
+                ScheduledTime: scheduledTime
+            };
+            sharedScriptManager.callAjax(self,
+            window.rootUrl + "MailStation/MailReport/RetryMissingTask",
+            retryParams,
+            function (result) {
+                result = {
+                    Code: 0,
+                    Message: 'Job has been retried.'
+                };
+                sharedScriptManager.renderActionResult(result, afterRetryEvent);
+            },
+            null,
+            sharedScriptManager.unblockUI);
+        });
+    };
+
     self.renderActionResult = function (result) {
         sharedScriptManager.renderActionResult(
             result,
@@ -341,22 +395,6 @@ var MailReportController = function () {
                 }, sharedScriptManager.cachedData.alertSuccessTime);
             }
         );
-    };
-
-    self.updateRowStatus = function (mailStatus, index) {
-        var gridContainer = $("#mail-report");
-        switch (mailStatus) {
-            case "RUNNING":
-                gridContainer.find(".column-status[mail-index=" + index + "]")
-                    .removeClass("data-not-ready-status")
-                    .removeClass("sent-status")
-                    .removeClass("failed-status")
-                    .addClass("running-status")
-                    .empty()
-                    .html('<span class="status">' + mailStatus + '</span>');
-                gridContainer.find(".icon-view-log[mail-index=" + index + "]").remove();
-                break;
-        }
     };
 
     self.viewMailDetail = function (mailIndex) {

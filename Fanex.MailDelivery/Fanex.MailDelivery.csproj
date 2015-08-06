@@ -103,6 +103,7 @@
     <Compile Include="Configurations\MailServiceSection.cs" />
     <Compile Include="Criteria\AddMailTaskCriteria.cs" />
     <Compile Include="Criteria\AddMailLogCriteria.cs" />
+    <Compile Include="Criteria\UpdateClientActiveTimeCriteria.cs" />
     <Compile Include="Criteria\GetMailTaskByIDCriteria.cs" />
     <Compile Include="Criteria\UpdateMailTaskMailRecordIDCriteria.cs" />
     <Compile Include="Criteria\GetMailWithEmailAddressByMailIDCriteria.cs" />

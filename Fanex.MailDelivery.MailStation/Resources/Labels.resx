@@ -321,4 +321,10 @@
   <data name="Succeeded" xml:space="preserve">
     <value>Succeeded</value>
   </data>
+  <data name="Missing" xml:space="preserve">
+    <value>Missing</value>
+  </data>
+  <data name="Confirm_RetryMissingJob" xml:space="preserve">
+    <value>Do you want to retry the missing job of the report?</value>
+  </data>
 </root>

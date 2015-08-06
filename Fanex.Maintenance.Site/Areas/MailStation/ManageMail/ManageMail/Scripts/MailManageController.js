@@ -33,6 +33,14 @@ var MailManageController = function () {
     self.initPage = function () {
         self.cacheDOMElements();
         self.renderMailGroupFilter();
+        var cookie = $.cookie('MailManage');
+        if (cookie) {
+            DOMElements.MailName.val(cookie.MailName);
+            DOMElements.SiteId.val(cookie.SiteId);
+            DOMElements.TriggerType.val(cookie.TriggerType);
+            DOMElements.Emails.val(cookie.Emails);
+            DOMElements.IsActive.val(cookie.IsActive);
+        }
     };
 
     self.cacheDOMElements = function () {
@@ -67,7 +75,12 @@ var MailManageController = function () {
             window.rootUrl + "MailStation/MailManage/MailGroups",
             null,
             function (result) {
+                var cookie = $.cookie('MailManage');
                 var mailGroupID = parseInt(DOMElements.MailGroupId.val());
+                if (cookie) {
+                    mailGroupID = cookie.MailGroupId;
+                }
+
                 DOMElements.MailGroup.empty();
                 if (result && result.length > 0) {
                     var optionLength = result.length;
@@ -128,6 +141,7 @@ var MailManageController = function () {
             Emails: DOMElements.Emails.val()
         };
 
+        $.cookie('MailManage', self.reportParams);
         sharedScriptManager.callAjax(self,
             window.rootUrl + "MailStation/MailManage/MailList",
             self.reportParams,
@@ -177,7 +191,8 @@ var MailManageController = function () {
             }
 
             bodyData.push({
-                Columns: rowColumns
+                Columns: rowColumns,
+                CssClass: mail.IsClientOnline == false ? 'client-off-line': ''
             });
         }
 
@@ -204,7 +219,7 @@ var MailManageController = function () {
             var endIndex = ((page_index + 1) * itemsPerPage);
             var currentBodyRows = cacheObject.bodyData.slice(startIndex, endIndex);
             gridOptions.bodyRows = currentBodyRows;
-            DOMElements.gridContainer.fanexGrid(gridOptions); 
+            DOMElements.gridContainer.fanexGrid(gridOptions);
             self.bindGridEvent();
             return false;
         };

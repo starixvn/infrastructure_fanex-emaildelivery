@@ -134,6 +134,19 @@
             _bus.Publish(jobStatus, MailDeliveryConstants.JobResultRoutingKey);
         }
 
+        public void PublishClientNotifyMessage()
+        {
+            string mailIds = string.Empty;
+            var schedules = AppSettings.MailCientConfig.Schedules;
+            foreach (ScheduleElement schedule in schedules)
+            {
+                mailIds += schedule.Id + ",";
+            }
+
+            mailIds = mailIds.Trim(',');
+            _bus.Publish(new ClientInfomationMessage() { MailIds = mailIds }, MailDeliveryConstants.ClientNotificationTopic);
+        }
+
         /// <summary>
         /// Gets the random string.
         /// </summary>

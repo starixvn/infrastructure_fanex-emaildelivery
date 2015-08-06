@@ -9,7 +9,7 @@
     /// <summary>
     /// Mail Client Handler.
     /// </summary>
-    public class MailClientHandler
+    public static class MailClientHandler
     {
         private static IJobHandler _jobHandler;
         private static IMailClientMessageBroker _messageBroker;
@@ -58,6 +58,11 @@
         public static void RetryJob(Schedule schedule)
         {
             _jobHandler.RetryJob(schedule);
+        }
+
+        public static void PublishClientNotifyMessage()
+        {
+            _messageBroker.PublishClientNotifyMessage();
         }
     }
 }

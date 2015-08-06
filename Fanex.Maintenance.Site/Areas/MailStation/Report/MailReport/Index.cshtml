@@ -24,8 +24,8 @@
             <div class="lbl-field width-80">
                 @Html.LabelFor(m => m.MailName, Labels.Mail_Name)
             </div>
-            <div class="edit-field">
-                @Html.TextBoxFor(m => m.MailName, new { width = "200px" })
+            <div class="edit-field" style="width: 372px !important">
+                @Html.TextBoxFor(m => m.MailName, new { style = "width: 360px !important" })
             </div>
             
             <div class="lbl-field">
@@ -101,6 +101,7 @@
             Active: '@Labels.Active',
             Inactive: '@Labels.Inactive',
             Confirm_RetrySendMail: '@Labels.Confirm_RetrySendMail',
+            Confirm_RetryMissingTask: '@Labels.Confirm_RetryMissingJob',
             Confirm_AbortTask: '@Labels.Confirm_AbortJob',
 
             Waiting: '@Labels.Waiting',
@@ -110,7 +111,7 @@
             Failed: '@Labels.Failed',
             Abort: '@Labels.Abort',
             Succeeded: '@Labels.Succeeded',
-
+            Missing: '@Labels.Missing',
             TimeZone: '@ViewBag.TimeZoneString'
         };
     </script>

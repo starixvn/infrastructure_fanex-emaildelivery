@@ -47,6 +47,7 @@
             SubscribeAbortJob();
             SubscribeMailingListRequest();
             RespondAddMailTaskForRunningJob();
+            SubscribeClientNotificationMessage();
         }
 
         public void SubscribeAbortJob()
@@ -86,6 +87,20 @@
                         _mailService.UpdateJobStatus(jobStatus);
                     },
                     config => config.WithTopic(MailDeliveryConstants.JobResultRoutingKey));
+        }
+
+        /// <summary>
+        /// Subscribes the job result.
+        /// </summary>
+        public void SubscribeClientNotificationMessage()
+        {
+            _bus.Subscribe<ClientInfomationMessage>(
+                MailDeliveryConstants.ClientNotificationTopic,
+                    clientInfoMessage =>
+                    {
+                        _mailService.UpdateClientActiveTime(clientInfoMessage);
+                    },
+                    config => config.WithTopic(MailDeliveryConstants.ClientNotificationTopic));
         }
 
         /// <summary>

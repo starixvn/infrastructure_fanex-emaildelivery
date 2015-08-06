@@ -8,6 +8,7 @@
     using Quartz;
     using Quartz.Impl;
     using Quartz.Spi;
+    using Fanex.MailDelivery.Client.Jobs;
 
     /// <summary>
     /// Handling job executing.
@@ -51,7 +52,7 @@
             ISchedulerFactory schedFact = new StdSchedulerFactory();
             _scheduler = schedFact.GetScheduler();
             _scheduler.Start();
-
+            StartClientNotificationJob();
             if (AppSettings.MailCientConfig.HasSchedule())
             {
                 StartJobs(MailClientHandler.GetSchedules());
@@ -133,6 +134,22 @@
                     }
                 }
             }
+        }
+
+        public void StartClientNotificationJob()
+        {
+            IJobDetail job = JobBuilder.Create<ClientNotificationJob>()
+                .WithIdentity(MailDeliveryConstants.ClientNotificationJobName)
+                .Build();
+
+            ITrigger trigger = TriggerBuilder.Create()
+                .WithIdentity(MailDeliveryConstants.ClientNotificationTriggerName)
+                .StartNow()
+                .WithSimpleSchedule(x => x.WithIntervalInSeconds(MailDeliveryConstants.ClientNotificationIntervalTimeInSecond).RepeatForever())
+                .ForJob(MailDeliveryConstants.ClientNotificationJobName)
+                .Build();
+
+            _scheduler.ScheduleJob(job, trigger);
         }
 
         private IJobDetail GetJob(Schedule schedule)

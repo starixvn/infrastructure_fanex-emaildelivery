@@ -41,7 +41,7 @@
                     @Html.LabelFor(m => m.IsActive, "Status")
                 </div>
                 <div class="edit-field">
-                    @Html.DropDownListFor(m => m.IsActive, (IEnumerable<SelectListItem>)ViewBag.ListStatus, new { @class = "width-80" })
+                    @Html.DropDownListFor(m => m.IsActive, ((IEnumerable<SelectListItem>)ViewBag.ListStatus).ToList(), new { @class = "width-80" })
                 </div>
                 <div class="lbl-field">
                     @Html.LabelFor(m => m.MailGroupId, "Group")

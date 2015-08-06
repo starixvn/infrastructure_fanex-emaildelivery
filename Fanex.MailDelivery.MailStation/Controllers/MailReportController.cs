@@ -77,5 +77,11 @@ namespace Fanex.MailDelivery.MailStation.Controllers
         {
             _mailReportService.AbortJob(taskId);
         }
+
+        public ActionResult RetryMissingTask(RetryMissingTaskCriteria criteria)
+        {
+            _mailReportService.RetryMissingJob(criteria);
+            return new EmptyResult();
+        }
     }
 }

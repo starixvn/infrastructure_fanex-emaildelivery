@@ -104,6 +104,7 @@
     <Compile Include="Criteria\MailManage\CreateMailCriteria.cs" />
     <Compile Include="Criteria\MailGroup\CreateMailGroupCriteria.cs" />
     <Compile Include="Criteria\MailManage\GetMailListCriteria.cs" />
+    <Compile Include="Criteria\MailReport\RetryMissingTaskCriteria.cs" />
     <Compile Include="Criteria\MailReport\GetAllScheduleCriteria.cs" />
     <Compile Include="Criteria\MailReport\GetMailTaskByIDCriteria.cs" />
     <Compile Include="Criteria\MailReport\GetScheduleByIDCriteria.cs" />

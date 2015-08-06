@@ -122,5 +122,13 @@
                 return db.Query<MailTask>().FirstOrDefault();
             }
         }
+
+        public void UpdateClientActiveTime(UpdateClientActiveTimeCriteria criteria)
+        {
+            using (var db = new ObjectDb(criteria.GetSettingKey()))
+            {
+                db.ExecuteNonQuery(criteria.GetSpParams());
+            }
+        }
     }
 }

@@ -24,5 +24,7 @@
         void UpdateMailTask(UpdateMailTaskMSiteMailIdCriteria criteria);
 
         MailTask GetMailTask(GetMailTaskByIdCriteria criteria);
+
+        void UpdateClientActiveTime(UpdateClientActiveTimeCriteria criteria);
     }
 }

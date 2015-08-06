@@ -26,5 +26,7 @@
         JobResultMessage RequestAddMailTaskForRunningJob(JobResultMessage jobResult);
 
         void SubscribeRetryJob();
+
+        void PublishClientNotifyMessage();
     }
 }

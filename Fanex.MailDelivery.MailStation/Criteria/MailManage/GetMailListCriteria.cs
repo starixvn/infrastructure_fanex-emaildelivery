@@ -25,6 +25,13 @@ namespace Fanex.MailDelivery.MailStation.Criteria.MailManage
 
         public string Emails { get; set; }
 
+        public GetMailListCriteria()
+        {
+            this.IsActive = -1;
+            this.TriggerType = -1;
+            this.SiteId = -1;
+        }
+
         public override bool IsValid()
         {
             return true;
