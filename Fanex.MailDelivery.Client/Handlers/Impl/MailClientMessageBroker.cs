@@ -1,8 +1,9 @@
 ﻿namespace Fanex.MailDelivery.Client.Handlers.Impl
 {
     using System.Collections.Generic;
-    using System.Security.Cryptography;
-    using System.Text;
+    using System.Diagnostics;
+    using System.Linq;
+    using System.Net;
     using EasyNetQ;
     using Fanex.MailDelivery.Client.Configurations;
     using Fanex.MailDelivery.Client.Handlers.Interface;
@@ -47,7 +48,7 @@
         public void SubscribeScheduleChange()
         {
             _bus.Subscribe<Schedule>(
-                this.GetRandomString(),
+                this.GetSubscriptionIdKey(_updateScheduleSubscriptionId),
                     schedule =>
                     {
                         _jobHandler.UpdateSchedule(schedule);
@@ -58,7 +59,7 @@
         public void SubscribeRetryJob()
         {
             _bus.Subscribe<Schedule>(
-                this.GetRandomString(),
+                this.GetSubscriptionIdKey(_retryJobSubscriptionId),
                     schedule =>
                     {
                         _jobHandler.RetryAllProcess(schedule);
@@ -69,7 +70,7 @@
         public void SubscribeRunJobImmediately()
         {
             _bus.Subscribe<Schedule>(
-                this.GetRandomString(),
+                this.GetSubscriptionIdKey(_runJobImmediatelySubscriptionId),
                     schedule =>
                     {
                         _jobHandler.RetryAllProcess(schedule);
@@ -104,11 +105,6 @@
 
             var isconnect = _bus.IsConnected;
             return _bus.Request<ScheduleRequestMessage, List<Schedule>>(scheduleRequest);
-        }
-
-        public MailingList GetMailingList(int mailId)
-        {
-            return _bus.Request<MailingListRequest, MailingList>(new MailingListRequest() { MailingListId = mailId });
         }
 
         /// <summary>
@@ -152,26 +148,14 @@
         /// </summary>
         /// <param name="maxSize">The maximum size.</param>
         /// <returns>Random string.</returns>
-        private string GetRandomString(int maxSize = 8)
+        private string GetSubscriptionIdKey(string topic)
         {
-            char[] chars = new char[62];
-            string a;
-            a = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-            chars = a.ToCharArray();
-            int size = maxSize;
-            byte[] data = new byte[1];
-            RNGCryptoServiceProvider crypto = new RNGCryptoServiceProvider();
-            crypto.GetNonZeroBytes(data);
-            size = maxSize;
-            data = new byte[size];
-            crypto.GetNonZeroBytes(data);
-            StringBuilder result = new StringBuilder(size);
-            foreach (byte b in data)
-            {
-                result.Append(chars[b % (chars.Length - 1)]);
-            }
-
-            return result.ToString();
+            var ip = (
+                from ips in Dns.GetHostEntry(Dns.GetHostName()).AddressList
+                where ips.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork
+                select ips)
+                .FirstOrDefault();
+            return string.Format("{0}_{1}_{2}", topic, Process.GetProcessById(Process.GetCurrentProcess().Id).ProcessName, ip);
         }
     }
 }

@@ -777,7 +777,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>51518</DevelopmentServerPort>
+          <DevelopmentServerPort>61019</DevelopmentServerPort>
           <DevelopmentServerVPath>/mSite</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>

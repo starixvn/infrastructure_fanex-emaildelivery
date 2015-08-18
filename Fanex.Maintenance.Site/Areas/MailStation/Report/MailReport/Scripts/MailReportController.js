@@ -248,7 +248,11 @@ var MailReportController = function () {
                 case self.Enums.TaskStatus.Sent:
                 case self.Enums.TaskStatus.Failed:
                 case self.Enums.TaskStatus.Abort:
-                    return '<input type="submit" value="Retry" class="button-retry"' + mailIndex + '>';
+                    if (mail.IsUnableToRetry == 0) {
+                        return '<input type="submit" value="Retry" class="button-retry"' + mailIndex + '>';
+                    }
+
+                    return '';
                 case self.Enums.TaskStatus.Missing:
                     return '<input type="submit" value="Retry" class="button-retry-missing-task"'
                         + 'mailId="' + mail.MailId + '"'
@@ -293,7 +297,7 @@ var MailReportController = function () {
             var $this = $(this);
             var mailId = parseInt($this.attr("mailId"));
             var siteId = parseInt($this.attr("siteId"));
-            var scheduledTime = moment($this.attr("scheduledTime")).format('MMM D YYYY, HH:mm:ss');
+            var scheduledTime = moment($this.attr("scheduledTime")).format();
             //var scheduledTime = $this.attr("scheduledTime");
             self.retryMissingTask(mailId, siteId, scheduledTime, function () {
                 setTimeout(function () {

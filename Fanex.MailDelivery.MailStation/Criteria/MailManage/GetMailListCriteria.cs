@@ -13,6 +13,13 @@ namespace Fanex.MailDelivery.MailStation.Criteria.MailManage
     /// </summary>
     public class GetMailListCriteria : CriteriaBase
     {
+        public GetMailListCriteria()
+        {
+            this.IsActive = -1;
+            this.TriggerType = -1;
+            this.SiteId = -1;
+        }
+
         public string MailName { get; set; }
 
         public int IsActive { get; set; }
@@ -24,13 +31,6 @@ namespace Fanex.MailDelivery.MailStation.Criteria.MailManage
         public int TriggerType { get; set; }
 
         public string Emails { get; set; }
-
-        public GetMailListCriteria()
-        {
-            this.IsActive = -1;
-            this.TriggerType = -1;
-            this.SiteId = -1;
-        }
 
         public override bool IsValid()
         {

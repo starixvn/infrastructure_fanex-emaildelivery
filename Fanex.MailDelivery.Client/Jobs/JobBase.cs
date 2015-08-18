@@ -27,7 +27,7 @@
         /// execution.
         /// </remarks>
         public void Execute(IJobExecutionContext context)
-        {            
+        {
             try
             {
                 var schedule = context.MergedJobDataMap[MailDeliveryConstants.ScheduleJobDataKey] as Schedule;
@@ -49,7 +49,10 @@
                     try
                     {
                         jobResult = Run(schedule, context);
-                        jobResult.Mail.MailingListId = schedule.Id;
+                        if (jobResult != null && jobResult.Mail != null)
+                        {
+                            jobResult.Mail.MailingListId = schedule.Id;
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -71,7 +74,10 @@
                     }
 
                     MailClientHandler.ReportJob(jobResult);
-                    schedule.TaskId = 0;
+                    if (jobResult.JobStatus != JobStatus.Running)
+                    {
+                        schedule.TaskId = 0;
+                    }
                 }
             }
             catch (Exception ex)

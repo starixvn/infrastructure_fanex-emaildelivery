@@ -45,11 +45,6 @@
             return _messageBroker.GetSchedules();
         }
 
-        public static MailingList GetMailingList(int mailId)
-        {
-            return _messageBroker.GetMailingList(mailId);
-        }
-
         public static JobResultMessage RequestAddMailTaskForRunningJob(JobResultMessage jobResult)
         {
             return _messageBroker.RequestAddMailTaskForRunningJob(jobResult);

@@ -6,12 +6,8 @@
 
 namespace Fanex.MailDelivery.Client.Jobs
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using Quartz;
     using Fanex.MailDelivery.Client.Handlers;
+    using Quartz;
 
     /// <summary>
     /// TODO: Update summary.

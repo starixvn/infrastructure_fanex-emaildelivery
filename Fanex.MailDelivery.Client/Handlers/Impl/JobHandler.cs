@@ -4,11 +4,10 @@
     using System.Collections.Generic;
     using Fanex.MailDelivery.Client.Configurations;
     using Fanex.MailDelivery.Client.Handlers.Interface;
+    using Fanex.MailDelivery.Client.Jobs;
     using Fanex.MailDelivery.Client.Models;
     using Quartz;
     using Quartz.Impl;
-    using Quartz.Spi;
-    using Fanex.MailDelivery.Client.Jobs;
 
     /// <summary>
     /// Handling job executing.
@@ -149,6 +148,7 @@
                 .ForJob(MailDeliveryConstants.ClientNotificationJobName)
                 .Build();
 
+            _scheduler.DeleteJob(job.Key);
             _scheduler.ScheduleJob(job, trigger);
         }
 

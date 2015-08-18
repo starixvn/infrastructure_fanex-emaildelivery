@@ -28,7 +28,7 @@ namespace Fanex.MailDelivery.MailStation.Controllers
             this._mailGroupService = this._mailGroupService ?? new MailGroupService();
         }
 
-        public ActionResult Index(GetMailListCriteria criteria)
+        public ActionResult Index(GetMailGroupCriteria criteria)
         {
             ViewBag.TimeZoneString = TimeZoneExtension.GetTimeZoneString();
             return View("~/Areas/MailStation/MailGroup/ManageMailGroup/Index.cshtml", criteria);

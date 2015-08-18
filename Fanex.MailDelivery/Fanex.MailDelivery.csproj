@@ -99,26 +99,34 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cache\CacheExtension.cs" />
     <Compile Include="Configurations\AppSettings.cs" />
     <Compile Include="Configurations\MailServiceSection.cs" />
     <Compile Include="Criteria\AddMailTaskCriteria.cs" />
     <Compile Include="Criteria\AddMailLogCriteria.cs" />
+    <Compile Include="Criteria\GetAllScheduleMailCriteria.cs" />
+    <Compile Include="Criteria\GetMailWithEmailAddressByMailIDCriteria.cs" />
     <Compile Include="Criteria\UpdateClientActiveTimeCriteria.cs" />
     <Compile Include="Criteria\GetMailTaskByIDCriteria.cs" />
     <Compile Include="Criteria\UpdateMailTaskMailRecordIDCriteria.cs" />
-    <Compile Include="Criteria\GetMailWithEmailAddressByMailIDCriteria.cs" />
-    <Compile Include="Criteria\GetMailingListTypeCriteria.cs" />
     <Compile Include="Criteria\UpdateTaskRetryCounterCriteria.cs" />
     <Compile Include="Criteria\UpdateMailTaskStatusCriteria.cs" />
     <Compile Include="Criteria\GetScheduleByIDCriteria.cs" />
+    <Compile Include="Handlers\Impl\CheckClientOnlineStatusJob.cs" />
     <Compile Include="Handlers\Impl\JobHandler.cs" />
     <Compile Include="Handlers\Impl\MailServiceMessageBroker.cs" />
     <Compile Include="Handlers\Impl\RabbitMQLogger.cs" />
     <Compile Include="Handlers\Interface\IMessageBroker.cs" />
+    <Compile Include="Models\ClientStatusModel.cs" />
     <Compile Include="Models\MailTask.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\IMailRepository.cs" />
     <Compile Include="Repositories\MailRepository.cs" />
+    <Compile Include="Resources\MailStationResource.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MailStationResource.resx</DependentUpon>
+    </Compile>
     <Compile Include="Services\IMailService.cs" />
     <Compile Include="Services\MailService.cs" />
     <Compile Include="Services\ServiceBase.cs" />
@@ -138,6 +146,12 @@
       <Project>{708E1FCE-82C4-443B-B1E9-0E64BCABE80E}</Project>
       <Name>Fanex.MailDelivery.Client</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\MailStationResource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>MailStationResource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

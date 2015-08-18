@@ -10,9 +10,11 @@
 namespace Fanex.MailDelivery.MailStation.Services.MailReport
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
+    using Fanex.Common;
     using Fanex.Data;
     using Fanex.MailDeliver.Model;
     using Fanex.MailDelivery.Admin.Handlers;
@@ -22,11 +24,9 @@ namespace Fanex.MailDelivery.MailStation.Services.MailReport
     using Fanex.MailDelivery.MailStation.Models;
     using Fanex.Maintenance.Service.Impl.Mail;
     using Fanex.Maintenance.Service.Interface.Mail;
+    using Fanex.NAP.Core.Criteria.Misc;
     using Quartz;
     using Quartz.Spi;
-    using System.Collections;
-    using Fanex.NAP.Core.Criteria.Misc;
-    using Fanex.Common;
 
     /// <summary>
     /// Mail Report Service.
@@ -63,79 +63,51 @@ namespace Fanex.MailDelivery.MailStation.Services.MailReport
                 listMailTaskDetail = db.Query<MailTaskDetailModel>().ToList();
             }
 
-            TimeSpan ts = new TimeSpan(23, 59, 59);
-            criteria.ToDate += ts;
-            //if ((criteria.ToDate > DateTime.Now) && (criteria.Status == (int)JobStatus.Waiting || criteria.Status == (int)JobStatus.Missing || criteria.Status == -1))
-            //{
-            foreach (MailTaskDetailModel schedule in listMailTaskDetail)
+            if (criteria.Status == -1 || criteria.Status == (int)JobStatus.Waiting || criteria.Status == (int)JobStatus.Missing)
             {
-                //if (schedule.LastSent == null || schedule.LastSent < criteria.ToDate)
-                //{
-                //    DateTime fromDate = this.MaxDateTime(criteria.FromDate, DateTime.Today);
-                //    DateTime toDate = this.MaxDateTime(criteria.ToDate, DateTime.Today);
-                //    ITrigger trigger = TriggerBuilder.Create().WithCronSchedule(schedule.CronExpression).Build();
-                //    //// Add 5 seconds to remove delay time between Scheduled Time and real Trigger Time.
-                //    DateTime lastSent = schedule.LastSent == null ? schedule.LastScheduledTime.AddSeconds(5) : schedule.LastSent.Value;
-                //    var listtriggerdate = TriggerUtils.ComputeFireTimesBetween(
-                //        (IOperableTrigger)trigger,
-                //        null,
-                //        new DateTimeOffset(this.MaxDateTime(fromDate, lastSent).ToUniversalTime()),
-                //        new DateTimeOffset(this.MinDateTime(toDate, schedule.EndOn).ToUniversalTime()));
-                //    foreach (var triggertime in listtriggerdate)
-                //    {
-                //        MailTaskModel waitingTask = new MailTaskModel()
-                //        {
-                //            MailName = schedule.MailName,
-                //            MailId = schedule.MailId,
-                //            Attempt = schedule.Attempt,
-                //            LastSent = null,
-                //            ScheduledTime = triggertime.LocalDateTime,
-                //            SiteId = schedule.SiteId,
-                //            SiteName = schedule.SiteName,
-                //            Status = triggertime.LocalDateTime.AddSeconds(5) > DateTime.Now ? (int)JobStatus.Waiting : (int)JobStatus.Missing
-                //        };
-
-                //        result.Add(waitingTask);
-                //    }
-                //}
-
-
-                DateTime fromDate = this.MaxDateTime(criteria.FromDate, schedule.StartOn).ToUniversalTime();
-                DateTime toDate = this.MinDateTime(criteria.ToDate, schedule.EndOn).ToUniversalTime();
-                if (fromDate <= toDate)
+                TimeSpan ts = new TimeSpan(23, 59, 59);
+                criteria.ToDate += ts;
+                foreach (MailTaskDetailModel schedule in listMailTaskDetail)
                 {
-                    ITrigger trigger = TriggerBuilder.Create().WithCronSchedule(schedule.CronExpression).Build();
-                    var listtriggerdate = TriggerUtils.ComputeFireTimesBetween(
-                        (IOperableTrigger)trigger,
-                        null,
-                        new DateTimeOffset(fromDate),
-                        new DateTimeOffset(toDate));
-                    listtriggerdate = (from trigertime in listtriggerdate
-                                       where !(
-                                               from task in result
-                                               where task.MailId == schedule.MailId
-                                               select task.ScheduledTime
-                                           ).Contains(trigertime.LocalDateTime)
-                                       select trigertime).ToList();
-                    foreach (var triggertime in listtriggerdate)
+                    DateTime fromDate = this.MaxDateTime(criteria.FromDate, schedule.StartOn).ToUniversalTime();
+                    DateTime toDate = this.MinDateTime(criteria.ToDate, schedule.EndOn).ToUniversalTime();
+                    if (fromDate <= toDate)
                     {
-                        MailTaskModel waitingTask = new MailTaskModel()
+                        ITrigger trigger = TriggerBuilder.Create().WithCronSchedule(schedule.CronExpression).Build();
+                        var listtriggerdate = TriggerUtils.ComputeFireTimesBetween(
+                            (IOperableTrigger)trigger,
+                            null,
+                            new DateTimeOffset(fromDate),
+                            new DateTimeOffset(toDate));
+                        listtriggerdate = (from trigertime in listtriggerdate
+                            where !(from task in result
+                                    where task.MailId == schedule.MailId
+                                    select task.ScheduledTime)
+                                .Contains(trigertime.LocalDateTime)
+                            select trigertime).ToList();
+                        foreach (var triggertime in listtriggerdate)
                         {
-                            MailName = schedule.MailName,
-                            MailId = schedule.MailId,
-                            Attempt = schedule.Attempt,
-                            LastSent = null,
-                            ScheduledTime = triggertime.LocalDateTime,
-                            SiteId = schedule.SiteId,
-                            SiteName = schedule.SiteName,
-                            Status = triggertime.LocalDateTime.AddSeconds(5) > DateTime.Now ? (int)JobStatus.Waiting : (int)JobStatus.Missing,
-                            TriggerType = (int)MailType.Schedule
-                        };
+                            var status = triggertime.LocalDateTime.AddSeconds(5) > DateTime.Now ? (int)JobStatus.Waiting : (int)JobStatus.Missing;
+                            if (criteria.Status == -1 || criteria.Status == status)
+                            {
+                                MailTaskModel waitingTask = new MailTaskModel()
+                                {
+                                    MailName = schedule.MailName,
+                                    MailId = schedule.MailId,
+                                    Attempt = schedule.Attempt,
+                                    LastSent = null,
+                                    ScheduledTime = triggertime.LocalDateTime,
+                                    SiteId = schedule.SiteId,
+                                    SiteName = schedule.SiteName,
+                                    Status = status,
+                                    TriggerType = (int)MailType.Schedule
+                                };
 
-                        result.Add(waitingTask);
+                                result.Add(waitingTask);
+                            }
+                        }
                     }
                 }
-                //}
             }
 
             return result.OrderBy(m => m.MailName).ThenByDescending(m => m.ScheduledTime).ThenByDescending(m => m.LastSent).ToList();

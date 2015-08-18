@@ -23,7 +23,5 @@ namespace Fanex.MailDelivery.Handlers.Interface
         void SubscribeJobResult();
 
         void SubscribeScheduleRequest();
-
-        void SubscribeMailingListRequest();
     }
 }

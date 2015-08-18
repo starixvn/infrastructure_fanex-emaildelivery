@@ -12,10 +12,13 @@ var MailLogController = function () {
         TaskStatus: {
             All: -1,
             Waiting: 0,
-            Running: 4,
-            Sent: 3,
-            DataNotReady: 1,
-            Failed: 2
+            Running: 1,
+            DataNotReady: 2,
+            Failed: 3,
+            Sent: 4,
+            Abort: 6,
+            Succeeded: 7,
+            Missing: 8
         }
     };
 
@@ -37,7 +40,7 @@ var MailLogController = function () {
     };
 
     self.renderMailLog = function (result) {
-       // result = self.dummyData();
+        // result = self.dummyData();
         var mailLogLength = result.length;
         var bodyData = [];
         for (var i = 0; i < mailLogLength; i++) {
@@ -55,9 +58,9 @@ var MailLogController = function () {
         var gridOptions = {
             columns: [{ HeaderText: viewResources.Symbol_No, Width: 40, Name: "ColId", HeaderAlign: "center", CellAlign: "center" },
                 { HeaderText: viewResources.Status, Width: 100, Name: "ColStatus", HeaderAlign: "center", CellAlign: "center" },
-                { HeaderText: viewResources.Message, Width: 200, Name: "ColMessage", HeaderAlign: "center", CellAlign: "left" },
-                { HeaderText: viewResources.Log_Time, Width: 120, Name: "ColLogTime", HeaderAlign: "center", CellAlign: "center" },
-                { HeaderText: viewResources.Stack_Trace, Width: 500, Name: "ColStackTrace", HeaderAlign: "center", CellAlign: "left"}],
+                { HeaderText: viewResources.Message, Width: 200, Name: "ColMessage", HeaderAlign: "center", CellAlign: "left", AllowTruncate: true },
+                { HeaderText: viewResources.Log_Time, Width: 120, Name: "ColLogTime", HeaderAlign: "center", CellAlign: "center", AllowTruncate: true },
+                { HeaderText: viewResources.Stack_Trace, Width: 500, Name: "ColStackTrace", HeaderAlign: "center", CellAlign: "left", AllowTruncate: true}],
             showTitle: false,
             bodyRows: bodyData,
             numberOfFrozenColumn: 0,

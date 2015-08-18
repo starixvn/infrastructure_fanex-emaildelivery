@@ -1,31 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Fanex.MailDelivery.Client.Handlers;
-using Fanex.MailDelivery.Client.Configurations;
-using Fanex.MailDelivery.Client.Models;
-using System.ServiceProcess;
-using MailClientTest.Installer;
-using System.Reflection;
-using System.IO;
-
-namespace MailClientTest
+﻿namespace MailClientTest
 {
-    class Program
+    using System;
+    using System.Reflection;
+    using System.ServiceProcess;
+    using Fanex.MailDelivery.Client.Handlers;
+    using MailClientTest.Installer;
+
+    public class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
-            //MailClientHandler.Start();
-            //Console.WriteLine("Mail Client Service Site: {0} started.", AppSettings.MailCientConfig.SiteId);
-            //SendFunctionMail();
-            //Console.Read();
-            //MailClientHandler.Stop();
+            ////MailClientHandler.Start();
+            ////Console.WriteLine("Mail Client Service Site: {0} started.", AppSettings.MailCientConfig.SiteId);
+            ////SendFunctionMail();
+            ////Console.Read();
+            ////MailClientHandler.Stop();
+
             ServiceBase[] servicesToRun = new ServiceBase[]
             {
                 new MailClientTestService()
             };
-
 
             if (Environment.UserInteractive)
             {

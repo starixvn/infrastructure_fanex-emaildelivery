@@ -1,16 +1,12 @@
 ﻿namespace MailClientTest.Jobs
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using Fanex.MailDelivery.Client.Models;
-    using Fanex.MailDelivery.Client.Jobs;
-    using Quartz;
-    using Fanex.MailDelivery.Client.Handlers;
-    using Fanex.MailDelivery.Client.Enumerations;
-    using Fanex.MailDelivery.Client.Messages;
     using System.Threading;
+    using Fanex.MailDelivery.Client.Enumerations;
+    using Fanex.MailDelivery.Client.Jobs;
+    using Fanex.MailDelivery.Client.Messages;
+    using Fanex.MailDelivery.Client.Models;
+    using Quartz;
 
     /// <summary>
     /// Hello Job.
@@ -34,7 +30,6 @@
             mail.Subject = "Mail Station Test (Missing Job).";
             mail.Title = "Mail Station Test (Missing Job).";
             mail.Body = "Missing Job";
-            //mail.MailingListId = 2;
             Thread.Sleep(5000);
 
             return new JobResultMessage

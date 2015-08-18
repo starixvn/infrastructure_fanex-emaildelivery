@@ -18,7 +18,6 @@
     <Setting Key="Mail_Core_UpdateRetry" SpName="Mail_Core_UpdateRetry" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
     <Setting Key="Mail_Core_InsertMailLogs" SpName="Mail_Core_InsertMailLogs" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
     <Setting Key="Mail_MailManagement_GetMailWithEmailAddressByMailID" SpName="Mail_MailManagement_GetMailWithEmailAddressByMailID" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
-    <Setting Key="Mail_Core_GetMailingListType" SpName="Mail_Core_GetMailingListType" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
     <Setting Key="Mail_Core_UpdateMailTaskMSiteMailID" SpName="Mail_Core_UpdateMailTaskMSiteMailID" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
   </Function>
   

@@ -17,7 +17,7 @@ namespace Fanex.NAP.Hub.Areas.UserLogin.Controllers
     /// <summary>
     /// Base controller.
     /// </summary>
-    [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
+    [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", Justification = "Reviewed.")]
     public class BaseController : Controller
     {
         protected readonly string Environment = NapSettings.Settings.Environment;

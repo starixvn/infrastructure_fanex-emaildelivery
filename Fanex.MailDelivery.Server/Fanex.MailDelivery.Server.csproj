@@ -111,6 +111,7 @@
   <ItemGroup>
     <Content Include="AppData\StoreProcedureName.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="AppData\UAT\StoreProcedureName.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

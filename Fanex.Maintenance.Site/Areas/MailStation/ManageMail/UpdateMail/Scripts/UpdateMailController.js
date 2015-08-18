@@ -132,22 +132,25 @@ var UpdateMailController = function () {
         });
 
         $("#button-save").click(function () {
-            if (self.validateForm()) {
-                sharedScriptManager.callAjax(
-                    self,
-                    window.rootUrl + "MailStation/MailManage/UpdateMail",
-                    self.getParams(),
-                    function (result) {
-                        if (result.IsSuccessful) {
-                            result.Message = viewResources.UpdateMailSuccessMsg;
-                        }
+            NAP.headlineMsgBox.confirm(viewResources.ConfirmClearHistoryWhenUpdateMail, function () {
+                if (self.validateForm()) {
+                    sharedScriptManager.callAjax(
+                        self,
+                        window.rootUrl + "MailStation/MailManage/UpdateMail",
+                        self.getParams(),
+                        function (result) {
+                            if (result.IsSuccessful) {
+                                result.Message = viewResources.UpdateMailSuccessMsg;
+                            }
 
-                        sharedScriptManager.showNonQueryResult(result, "MailStation/MailManage/Index", 6000);
-                    },
-                    null,
-                    sharedScriptManager.unblockUI
-                );
-            }
+                            sharedScriptManager.showNonQueryResult(result, "MailStation/MailManage/Index", 6000);
+                        },
+                        null,
+                        sharedScriptManager.unblockUI
+                    );
+                }
+            });
+            
         });
     };
 

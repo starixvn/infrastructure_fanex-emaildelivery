@@ -65,7 +65,7 @@ namespace Fanex.MailDelivery.MailStation.Criteria.MailManage
 
         public string MailTo { get; set; }
 
-        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
+        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", Justification = "It's ok here.")]
         public string MailCc { get; set; }
 
         public string MailBcc { get; set; }

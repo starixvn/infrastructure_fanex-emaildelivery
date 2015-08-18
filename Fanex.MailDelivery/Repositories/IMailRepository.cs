@@ -19,8 +19,6 @@
 
         MailingList GetMailingList(GetMailWithEmailAddressByMailId criteria);
 
-        MailType GetMailingListType(GetMailingListTypeCriteria criteria);
-
         void UpdateMailTask(UpdateMailTaskMSiteMailIdCriteria criteria);
 
         MailTask GetMailTask(GetMailTaskByIdCriteria criteria);

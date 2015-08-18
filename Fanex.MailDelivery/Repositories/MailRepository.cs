@@ -9,6 +9,9 @@
     using Fanex.MailDelivery.Criteria;
     using Fanex.MailDelivery.Models;
     using Fanex.NAP.Core.Criteria.Misc;
+    using System.Collections.Generic;
+    using System;
+    using Fanex.MailDelivery.Configurations;
 
     /// <summary>
     /// Mail Repository.
@@ -22,6 +25,32 @@
                 db.AssignParamValues(criteria.GetSpParams());
                 return db.Query<Schedule>().FirstOrDefault();
             }
+        }
+
+        public List<ClientStatusModel> GetAllScheduleMail(GetAllScheduleMailCriteria criteria)
+        {
+            List<ClientStatusModel> restult = new List<ClientStatusModel>();
+            DateTime now = DateTime.Now;
+            using (var db = new ObjectDb(criteria.GetSettingKey()))
+            {
+                db.AssignParamValues(criteria.GetSpParams());
+                var reader = db.ExecuteReader();
+                while (reader.Read())
+                {
+                    ClientStatusModel element = new ClientStatusModel();
+                    element.MailId = Converter.ToInt(reader["MailID"]);
+                    element.MailName = Converter.ToString2(reader["MailName"]);
+                    if (reader["LastActive"] != null)
+                    {
+                        element.LastActive = Converter.ToDateTime(reader["LastActive"]);
+                    }
+
+                    element.IsOnline = element.LastActive != null && element.LastActive.Value >= now.AddSeconds(-AppSettings.MailServiceSection.ClientNotifyTimeOutInSecond);
+                    restult.Add(element);
+                }
+            }
+
+            return restult;
         }
 
         public int AddMailTask(AddMailTaskCriteria criteria)
@@ -93,17 +122,6 @@
             return result;
         }
 
-        public MailType GetMailingListType(GetMailingListTypeCriteria criteria)
-        {
-            using (var db = new ObjectDb(criteria.GetSettingKey()))
-            {
-                db.AssignParamValues(criteria.GetSpParams());
-                db.ExecuteNonQuery();
-                var result = (int)db.GetParameterValue("MailType");
-                return result == 0 ? MailType.Function : MailType.Schedule;
-            }
-        }
-
         public void UpdateMailTask(UpdateMailTaskMSiteMailIdCriteria criteria)
         {
             Hashtable hash = criteria.GetSpParams();
@@ -115,7 +133,7 @@
         }
 
         public MailTask GetMailTask(GetMailTaskByIdCriteria criteria)
-        { 
+        {
             using (var db = new ObjectDb(criteria.GetSettingKey()))
             {
                 db.AssignParamValues(criteria.GetSpParams());

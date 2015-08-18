@@ -18,7 +18,6 @@
     <Setting Key="Mail_Core_UpdateRetry" SpName="Mail_Core_UpdateRetry" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
     <Setting Key="Mail_Core_InsertMailLogs" SpName="Mail_Core_InsertMailLogs" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
     <Setting Key="Mail_MailManagement_GetMailWithEmailAddressByMailID" SpName="Mail_MailManagement_GetMailWithEmailAddressByMailID" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
-    <Setting Key="Mail_Core_GetMailingListType" SpName="Mail_Core_GetMailingListType" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
     <Setting Key="Mail_Core_GetMailTask" SpName="Mail_Core_GetMailTask" DbName="DBMMS.bodb_MMS.bodbAdminNet" >
       <Mapping DataField="TaskID" ObjectProperty="TaskId" />
       <Mapping DataField="MailID" ObjectProperty="MailId" />
@@ -31,6 +30,12 @@
     </Setting>
     <Setting Key="Mail_Core_UpdateMailTaskMSiteMailID" SpName="Mail_Core_UpdateMailTaskMSiteMailID" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
     <Setting Key="Mail_Core_ClientActiveTimeUpdate" SpName="Mail_Core_ClientActiveTimeUpdate" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
+    <Setting Key="Mail_Core_GetAllScheduleMail" SpName="Mail_Core_GetAllScheduleMail" DbName="DBMMS.bodb_MMS.bodbAdminNet" >
+      <Mapping DataField="MailID" ObjectProperty="MailId" />
+      <Mapping DataField="MailName" ObjectProperty="MailName" />
+      <Mapping DataField="CronExpression" ObjectProperty="CronExpression" />
+      <Mapping DataField="LastActive" ObjectProperty="LastActive" />
+    </Setting>
   </Function>
   
   <Function Name="MailDeliver">

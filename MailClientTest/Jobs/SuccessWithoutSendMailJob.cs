@@ -16,7 +16,7 @@
         protected override JobResultMessage Run(Schedule schedule, IJobExecutionContext jobContext)
         {
             var jobLog = string.Format(
-                "Run Normal Job but not send mail: \n\tSite Id: {0}, Schedule: {1}. \n\tSent at {2}",
+                "Run Success Without Send Mail Job: \n\tSite Id: {0}, Schedule: {1}. \n\tSent at {2}",
                 schedule.SiteId,
                 schedule.Id,
                 DateTime.Now);
@@ -26,10 +26,9 @@
 
             //// Compose mail here.
             var mail = new Mail();
-            mail.Subject = "Mail Station Test (Normal Job).";
-            mail.Title = "Mail Station Test (Normal Job).";
+            mail.Subject = "Mail Station Test (Success Without Send Mail Job).";
+            mail.Title = "Mail Station Test (Success Without Send Mail Job).";
             mail.Body = "Email Body";
-            //mail.MailingListId = 2;
             Thread.Sleep(5000);
 
             return new JobResultMessage

@@ -1,11 +1,13 @@
 ﻿namespace Fanex.MailDelivery.MailStation.Constants
 {
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using Fanex.MailDelivery.MailStation.Models;
 
     /// <summary>
     /// Mail station constants.
     /// </summary>
+    [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1311:StaticReadonlyFieldsMustBeginWithUpperCaseLetter", Justification = "Reviewed.")]
     public static class MailStationConstants
     {
         private static readonly List<SelectListItemExtra> active = new List<SelectListItemExtra>()
@@ -35,7 +37,6 @@
             new SelectListItemExtra() { Text = "Abort".ToUpper(), Value = "6" },
             new SelectListItemExtra() { Text = "Succeeded".ToUpper(), Value = "7" },
             new SelectListItemExtra() { Text = "Missing".ToUpper(), Value = "8" }
-            
         };
 
         public static List<SelectListItemExtra> Active

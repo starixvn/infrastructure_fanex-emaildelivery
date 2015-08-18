@@ -1,16 +1,12 @@
 ﻿namespace MailClientTest.Jobs
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using Fanex.MailDelivery.Client.Models;
-    using Fanex.MailDelivery.Client.Jobs;
-    using Quartz;
-    using Fanex.MailDelivery.Client.Handlers;
-    using Fanex.MailDelivery.Client.Enumerations;
-    using Fanex.MailDelivery.Client.Messages;
     using System.Threading;
+    using Fanex.MailDelivery.Client.Enumerations;
+    using Fanex.MailDelivery.Client.Jobs;
+    using Fanex.MailDelivery.Client.Messages;
+    using Fanex.MailDelivery.Client.Models;
+    using Quartz;
 
     /// <summary>
     /// Hello Job.
@@ -20,7 +16,7 @@
         protected override JobResultMessage Run(Schedule schedule, IJobExecutionContext jobContext)
         {
             var jobLog = string.Format(
-                "Run Normal Job but not send mail: \n\tSite Id: {0}, Schedule: {1}. \n\tSent at {2}",
+                "Run Data Not Ready Job : \n\tSite Id: {0}, Schedule: {1}. \n\tSent at {2}",
                 schedule.SiteId,
                 schedule.Id,
                 DateTime.Now);
@@ -30,17 +26,18 @@
 
             //// Compose mail here.
             var mail = new Mail();
-            mail.Subject = "Mail Station Test (Normal Job).";
-            mail.Title = "Mail Station Test (Normal Job).";
+            mail.Subject = "Mail Station Test (Data Not Ready Job).";
+            mail.Title = "Mail Station Test (Data Not Ready Job).";
             mail.Body = "Email Body";
-            //mail.MailingListId = 2;
+
+            // Do something ...
             Thread.Sleep(5000);
 
             return new JobResultMessage
             {
                 Mail = mail,
                 Schedule = schedule,
-                JobStatus = JobStatus.SuccessWithoutSendmail
+                JobStatus = JobStatus.DataIsNotReady
             };
         }
     }

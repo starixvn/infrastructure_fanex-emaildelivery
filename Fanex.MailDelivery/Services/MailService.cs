@@ -102,14 +102,21 @@
 
         public void AddMailTaskForRunningJob(JobResultMessage jobResultMessage)
         {
-            jobResultMessage.Schedule.TaskId = this._mailRepository.AddMailTask(new AddMailTaskCriteria()
+            try
             {
-                MailId = jobResultMessage.Schedule.Id,
-                SiteId = jobResultMessage.Schedule.SiteId,
-                ScheduledTime = jobResultMessage.ScheduledTime,
-                Status = (int)JobStatus.Running,
-                Attempt = jobResultMessage.Schedule.CurrentRetryTimes
-            });
+                jobResultMessage.Schedule.TaskId = this._mailRepository.AddMailTask(new AddMailTaskCriteria()
+                {
+                    MailId = jobResultMessage.Schedule.Id,
+                    SiteId = jobResultMessage.Schedule.SiteId,
+                    ScheduledTime = jobResultMessage.ScheduledTime,
+                    Status = (int)JobStatus.Running,
+                    Attempt = jobResultMessage.Schedule.CurrentRetryTimes
+                });
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+            }
         }
 
         /// <summary>
@@ -178,27 +185,8 @@
             {
                 string error = string.Empty;
                 MailExtension.SendMail(record, out error);
-                LogExtension.LogMessage(string.Format("Sending mail: {0}. Error message: {1}", record.MailID, error));
+                //LogExtension.LogMessage(string.Format("Sending mail: {0}. Error message: {1}", record.MailID, error));
             }
-        }
-
-        /// <summary>
-        /// Gets the mailing list.
-        /// </summary>
-        /// <param name="mailingListId">The mailing list identifier.</param>
-        /// <returns>Mailing List.</returns>
-        public MailingList GetMailingList(int mailingListId)
-        {
-            try
-            {
-                return _mailRepository.GetMailingList(new GetMailWithEmailAddressByMailId() { MailId = mailingListId });
-            }
-            catch (Exception ex)
-            {
-                LogError(ex);
-            }
-
-            return null;
         }
 
         public void UpdateClientActiveTime(ClientInfomationMessage clientInfoMessage)

@@ -45,7 +45,6 @@
             SubscribeMail();
             SubscribeJobResult();
             SubscribeAbortJob();
-            SubscribeMailingListRequest();
             RespondAddMailTaskForRunningJob();
             SubscribeClientNotificationMessage();
         }
@@ -118,18 +117,6 @@
                     List<Schedule> schedules = _mailService.GetSchedules(scheduleRequest.Ids);
 
                     return schedules;
-                });
-        }
-
-        /// <summary>
-        /// Subscribes the function mailing list request.
-        /// </summary>
-        public void SubscribeMailingListRequest()
-        {
-            _bus.Respond<MailingListRequest, MailingList>(
-                mailingListRequest =>
-                {
-                    return _mailService.GetMailingList(mailingListRequest.MailingListId);
                 });
         }
 

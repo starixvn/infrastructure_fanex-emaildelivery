@@ -17,8 +17,6 @@
 
         int SendMail(Mail mail);
 
-        MailingList GetMailingList(int mailingListId);
-
         void AddMailTaskForRunningJob(JobResultMessage jobResultMessage);
 
         void UpdateClientActiveTime(ClientInfomationMessage clientInfoMessage);

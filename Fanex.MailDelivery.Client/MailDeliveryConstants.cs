@@ -23,7 +23,7 @@
         public const string ScheduleJobDataKey = "Fanex.MailDelivery.Client.ScheduleJobDataKey";
         public const string RabbitMQLoginPassword = ";password=1q2w3e$R";
 
-        public const string ClientNotificationJobName = "ClientNotificationJob";
+        public const string ClientNotificationJobName = "ClientNotificationJobName";
         public const string ClientNotificationTriggerName = "ClientNotificationTriggerName";
         public const string ClientNotificationTopic = "ClientNotificationTopic";
 
