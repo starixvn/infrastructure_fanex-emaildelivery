@@ -61,7 +61,7 @@ namespace Fanex.MailDelivery.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Dear Admin,&lt;br&gt;&lt;br&gt;Please find the details below for the latest status of mail services intergrated with Mail Station.&lt;br&gt;{0}&lt;br&gt;&lt;br&gt;{1}&lt;br&gt;&lt;br&gt;Best regards.&lt;br&gt;--------------------------------------------------------------------------------------------------------------&lt;br&gt;This is the automail, please do not reply..
+        ///   Looks up a localized string similar to Dear Admin,&lt;br&gt;&lt;br&gt;Please find the details below for the latest status of mail services integrated with Mail Station.&lt;br&gt;{0}&lt;br&gt;&lt;br&gt;{1}&lt;br&gt;&lt;br&gt;Best regards.&lt;br&gt;--------------------------------------------------------------------------------------------------------------&lt;br&gt;This is the automail, please do not reply..
         /// </summary>
         internal static string NotifyMailBody {
             get {
@@ -88,7 +88,7 @@ namespace Fanex.MailDelivery.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} - Mail Station - Mail Service Status Notifcation.
+        ///   Looks up a localized string similar to {0} - Mail Station - Mail Service Status Notification.
         /// </summary>
         internal static string NotifyMailSubject {
             get {

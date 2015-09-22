@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="NotifyMailBody" xml:space="preserve">
-    <value>Dear Admin,&lt;br&gt;&lt;br&gt;Please find the details below for the latest status of mail services intergrated with Mail Station.&lt;br&gt;{0}&lt;br&gt;&lt;br&gt;{1}&lt;br&gt;&lt;br&gt;Best regards.&lt;br&gt;--------------------------------------------------------------------------------------------------------------&lt;br&gt;This is the automail, please do not reply.</value>
+    <value>Dear Admin,&lt;br&gt;&lt;br&gt;Please find the details below for the latest status of mail services integrated with Mail Station.&lt;br&gt;{0}&lt;br&gt;&lt;br&gt;{1}&lt;br&gt;&lt;br&gt;Best regards.&lt;br&gt;--------------------------------------------------------------------------------------------------------------&lt;br&gt;This is the automail, please do not reply.</value>
   </data>
   <data name="NotifyMailBodyDisconnectServices" xml:space="preserve">
     <value>1&gt; DISCONNECTED service(s):{0}</value>
@@ -127,6 +127,6 @@
     <value>2&gt; RE-CONNECTED service(s):{0}</value>
   </data>
   <data name="NotifyMailSubject" xml:space="preserve">
-    <value>{0} - Mail Station - Mail Service Status Notifcation</value>
+    <value>{0} - Mail Station - Mail Service Status Notification</value>
   </data>
 </root>

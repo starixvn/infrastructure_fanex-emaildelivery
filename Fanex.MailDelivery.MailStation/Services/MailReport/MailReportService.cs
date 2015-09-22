@@ -48,6 +48,8 @@ namespace Fanex.MailDelivery.MailStation.Services.MailReport
         [SuppressMessage("StyleCop.CSharp.Nexcel.NexcelCustomRules", "SP2101:MethodMustNotContainMoreLinesThan", Justification = "Reviewed. Suppression is OK here.")]
         public List<MailTaskModel> MailReport(MailReportCriteria criteria)
         {
+            int oldStatus = criteria.Status;
+            criteria.Status = -1;
             List<MailTaskModel> result = new List<MailTaskModel>();
             using (ObjectDb db = new ObjectDb(criteria.GetSettingKey()))
             {
@@ -55,6 +57,7 @@ namespace Fanex.MailDelivery.MailStation.Services.MailReport
                 result = db.Query<MailTaskModel>().ToList();
             }
 
+            criteria.Status = oldStatus;
             List<MailTaskDetailModel> listMailTaskDetail = new List<MailTaskDetailModel>();
             GetAllScheduleCriteria getAllScheduleCriteria = new GetAllScheduleCriteria() { MailName = criteria.MailName, SiteId = criteria.SiteId };
             using (ObjectDb db = new ObjectDb(getAllScheduleCriteria.GetSettingKey()))
@@ -108,6 +111,11 @@ namespace Fanex.MailDelivery.MailStation.Services.MailReport
                         }
                     }
                 }
+            }
+
+            if(oldStatus != -1)
+            {
+                result = result.Where(m => m.Status == oldStatus).ToList();
             }
 
             return result.OrderBy(m => m.MailName).ThenByDescending(m => m.ScheduledTime).ThenByDescending(m => m.LastSent).ToList();

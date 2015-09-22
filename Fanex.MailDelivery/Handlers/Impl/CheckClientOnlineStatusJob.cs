@@ -37,7 +37,12 @@
                     foreach (var scheduleMail in scheduleMailList)
                     {
                         var cacheScheduleMail = CacheExtension.Find(scheduleMail.MailId);
-                        if (cacheScheduleMail.IsOnline != scheduleMail.IsOnline)
+                        if (cacheScheduleMail == null)
+                        { 
+                            // There is new added Mail.
+                            CacheExtension.ScheduleMailList.Add(scheduleMail);
+                        }
+                        else if (cacheScheduleMail.IsOnline != scheduleMail.IsOnline)
                         {
                             if (scheduleMail.IsOnline)
                             {

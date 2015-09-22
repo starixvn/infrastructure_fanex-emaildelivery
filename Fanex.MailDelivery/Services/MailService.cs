@@ -94,7 +94,7 @@
             }
             catch (Exception ex)
             {
-                LogError(ex);
+                LogError(ex, jobResultMessage.Schedule);
             }
 
             return null;
@@ -115,7 +115,7 @@
             }
             catch (Exception ex)
             {
-                LogError(ex);
+                LogError(ex, jobResultMessage.Schedule);
             }
         }
 
@@ -168,7 +168,7 @@
             }
             catch (Exception ex)
             {
-                LogError(ex);
+                LogError(ex, mail.MailingListId);
             }
 
             return mailId;

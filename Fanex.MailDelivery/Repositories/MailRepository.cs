@@ -45,7 +45,7 @@
                         element.LastActive = Converter.ToDateTime(reader["LastActive"]);
                     }
 
-                    element.IsOnline = element.LastActive != null && element.LastActive.Value >= now.AddSeconds(-AppSettings.MailServiceSection.ClientNotifyTimeOutInSecond);
+                    element.IsOnline = element.LastActive != null && element.LastActive.Value >= now.AddSeconds(-AppSettings.MailServiceSection.ClientNotifyTimeOutInSecond * 2);
                     restult.Add(element);
                 }
             }
