@@ -1,13 +1,14 @@
 ﻿@using Newtonsoft.Json;
 @using Fanex.MailDelivery.MailStation.Resources;
 @using Fanex.MailDelivery.MailStation.Models;
+@using Fanex.MailDelivery.MailStation.Constants;
+@using Fanex.MailDelivery.MailStation.Services;
 ﻿@using Fanex.MailDelivery.MailStation.Criteria.MailManage;
 @model GetMailListCriteria
 @{
     ViewBag.Title = "Manage Mail";
     Layout = "~/Views/Shared/_LayoutWithTimer.cshtml";
-    var hasEditRight = true;
-    var hasSiteRight = true;
+    var hasEditRight = PermissionService.HasHostPermission(MailDeliveryFunctionKeys.ManageMail);
     var recipient = JsonConvert.SerializeObject(Model);
 }
 @section Head {
@@ -97,18 +98,17 @@
         var recipient= @Html.Raw(recipient); 
         var viewResources = {
             hasEditRight: @(hasEditRight ? 1 : 0),
-            hasSiteRight: @(hasSiteRight ? 1 : 0),
-            Id: 'ID',
-            Mail_Name: 'Mail Name',
-            Group: 'Group',
-            Site: 'Site',
-            Trigger: 'Trigger',
-            To: 'To',
-            CC: 'CC',
-            BCC: 'BCC',
-            Last_Sent: 'Last Sent',
-            Active: 'Active',
-            Action: 'Action',
+            Id: '@Labels.ID',
+            Mail_Name: '@Labels.Mail_Name',
+            Group: '@Labels.Group',
+            Site: '@Labels.Site',
+            Trigger: '@Labels.Trigger',
+            To: '@Labels.To',
+            CC: '@Labels.CC',
+            BCC: '@Labels.BCC',
+            Last_Run: '@Labels.Last_Run',
+            Active: '@Labels.Active',
+            Action: '@Labels.Action',
             Confirm_DeleteMail: 'Do you want to delete the Mail?',
             Confirm_RunNow: '@Labels.Confirm_RunNow',
             TimeZone: '@ViewBag.TimeZoneString'

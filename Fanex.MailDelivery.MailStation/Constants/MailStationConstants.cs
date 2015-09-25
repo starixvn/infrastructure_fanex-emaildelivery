@@ -34,7 +34,7 @@
             new SelectListItemExtra() { Text = "Data not ready".ToUpper(), Value = "2" },
             new SelectListItemExtra() { Text = "Job Failed".ToUpper(), Value = "3" },
             new SelectListItemExtra() { Text = "Sent".ToUpper(), Value = "4" },
-            new SelectListItemExtra() { Text = "Abort".ToUpper(), Value = "6" },
+            new SelectListItemExtra() { Text = "Aborted".ToUpper(), Value = "6" },
             new SelectListItemExtra() { Text = "Succeeded".ToUpper(), Value = "7" },
             new SelectListItemExtra() { Text = "Missing".ToUpper(), Value = "8" }
         };

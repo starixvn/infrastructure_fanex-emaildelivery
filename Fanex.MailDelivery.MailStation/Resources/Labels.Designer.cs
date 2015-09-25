@@ -61,7 +61,7 @@ namespace Fanex.MailDelivery.MailStation.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ABORT.
+        ///   Looks up a localized string similar to ABORTED.
         /// </summary>
         public static string Abort {
             get {
@@ -340,6 +340,15 @@ namespace Fanex.MailDelivery.MailStation.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Group.
+        /// </summary>
+        public static string Group {
+            get {
+                return ResourceManager.GetString("Group", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ID.
         /// </summary>
         public static string ID {
@@ -376,11 +385,11 @@ namespace Fanex.MailDelivery.MailStation.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Last Sent.
+        ///   Looks up a localized string similar to Last Run.
         /// </summary>
-        public static string Last_Sent {
+        public static string Last_Run {
             get {
-                return ResourceManager.GetString("Last_Sent", resourceCulture);
+                return ResourceManager.GetString("Last_Run", resourceCulture);
             }
         }
         
@@ -669,6 +678,15 @@ namespace Fanex.MailDelivery.MailStation.Resources {
         public static string To {
             get {
                 return ResourceManager.GetString("To", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Trigger.
+        /// </summary>
+        public static string Trigger {
+            get {
+                return ResourceManager.GetString("Trigger", resourceCulture);
             }
         }
         

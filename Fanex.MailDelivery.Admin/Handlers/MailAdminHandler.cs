@@ -3,6 +3,7 @@
     using Fanex.MailDelivery.Admin.Handlers.Impl;
     using Fanex.MailDelivery.Admin.Handlers.Interface;
     using Fanex.MailDelivery.Client.Models;
+    using System;
 
     /// <summary>
     /// Mail Admin Handler.
@@ -36,5 +37,22 @@
         {
             _messageBroker.PublishAbortJobMessage(taskID);
         }
+
+        public static void RequestCreateRecipientMessage()
+        {
+            throw new NotImplementedException();
+        }
+
+        public static void RequestUpdateRecipientMessage()
+        {
+            throw new NotImplementedException();
+        }
+
+        public static void RequestReadRecipientByEmailMessage()
+        {
+            throw new NotImplementedException();
+        }
+
+
     }
 }

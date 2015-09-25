@@ -38,7 +38,6 @@
         public void PublishScheduleChangeMessage(Schedule schedule)
         {
             string updateSchedulePublishId = string.Format(MailDeliveryConstants.UpdateScheduleRoutingKeyFormat, schedule.SiteId);
-
             _bus.Publish<Schedule>(schedule, updateSchedulePublishId);
         }
 
