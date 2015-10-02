@@ -75,7 +75,7 @@
                 return MailStationConstants.AllItem.Union(MailStationConstants.Active).ToList();
             }
 
-            return MailStationConstants.Active;
+            return MailStationConstants.Active.ToList();
         }
 
         public List<SelectListItemExtra> TaskStatus(bool hasAllElement = true)
@@ -133,7 +133,7 @@
             }
         }
 
-        public MailTaskModel GetMailTaskByID(GetMailTaskByIDCriteria criteria)
+        public MailTaskModel GetMailTaskByID(GetMailTaskByIdCriteria criteria)
         {
             using (ObjectDb db = new ObjectDb(criteria.GetSettingKey()))
             {
@@ -142,7 +142,7 @@
             }
         }
 
-        public Schedule GetScheduleByMailID(GetScheduleByIDCriteria criteria)
+        public Schedule GetScheduleByMailId(GetScheduleByIdCriteria criteria)
         {
             using (ObjectDb db = new ObjectDb(criteria.GetSettingKey()))
             {

@@ -23,17 +23,12 @@
         /// <summary>
         /// The failed status.
         /// </summary>
-        Failed = 3,
+        JobFailed = 3,
 
         /// <summary>
         /// The success status.
         /// </summary>
         Success = 4,
-
-        /// <summary>
-        /// The retry status.
-        /// </summary>
-        Retry = 5,
 
         /// <summary>
         /// The abort status.

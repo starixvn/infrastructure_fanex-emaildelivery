@@ -11,9 +11,9 @@ namespace Fanex.MailDelivery.MailStation.Criteria.MailGroup
     /// <summary>
     /// Get all log category criteria.
     /// </summary>
-    public class GetMailGroupByIDCriteria : CriteriaBase
+    public class GetMailGroupByIdCriteria : CriteriaBase
     {
-        public int MailGroupID { get; set; }
+        public int MailGroupId { get; set; }
 
         public override bool IsValid()
         {

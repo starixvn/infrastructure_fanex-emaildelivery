@@ -11,9 +11,9 @@ namespace Fanex.MailDelivery.Criteria
     /// <summary>
     /// Get all log category criteria.
     /// </summary>
-    public class GetMailTaskByIDCriteria : CriteriaBase
+    public class GetMailTaskByIdCriteria : CriteriaBase
     {
-        public int MailTaskID { get; set; }
+        public int MailTaskId { get; set; }
 
         public override bool IsValid()
         {

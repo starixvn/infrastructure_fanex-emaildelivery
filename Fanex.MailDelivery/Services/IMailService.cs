@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using Fanex.MailDelivery.Client.Messages;
     using Fanex.MailDelivery.Client.Models;
+    using Fanex.MailDelivery.Criteria;
     using Fanex.NAP.Framework.Command;
 
     /// <summary>
@@ -16,8 +17,8 @@
 
         int SendMail(Mail mail);
 
-        MailingList GetMailingList(int mailingListId);
-
         void AddMailTaskForRunningJob(JobResultMessage jobResultMessage);
+
+        void UpdateClientActiveTime(ClientInfomationMessage clientInfoMessage);
     }
 }

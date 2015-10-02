@@ -26,7 +26,7 @@
             }
         }
 
-        public MailModel MailByID(ReadMailByIDCriteria criteria)
+        public MailModel MailByID(ReadMailByIdCriteria criteria)
         {
             using (ObjectDb db = new ObjectDb(criteria.GetSettingKey()))
             {
@@ -55,7 +55,7 @@
             MailAdminHandler.Start();
             MailAdminHandler.PublishScheduleChangeMessage(new Schedule()
             {
-                Id = criteria.MailID,
+                Id = criteria.MailId,
                 Active = criteria.IsActive,
                 EndTime = criteria.EndOn,
                 StartTime = criteria.StartOn ?? DateTime.Now,
@@ -63,7 +63,7 @@
                 Name = criteria.MailName,
                 RepeatExpression = criteria.CronExpression,
                 RetryInterval = criteria.Interval,
-                SiteId = criteria.SiteID
+                SiteId = criteria.SiteId
             });
 
             MailAdminHandler.Stop();
@@ -78,7 +78,7 @@
         public void RunJobImmediately(int mailID)
         {
             MailAdminHandler.Start();
-            Schedule schedule = this.GetScheduleByMailID(new GetScheduleByIDCriteria() { MailId = mailID });
+            Schedule schedule = this.GetScheduleByMailId(new GetScheduleByIdCriteria() { MailId = mailID });
             MailAdminHandler.PublishRetryJobMessage(schedule);
             MailAdminHandler.Stop();
         }

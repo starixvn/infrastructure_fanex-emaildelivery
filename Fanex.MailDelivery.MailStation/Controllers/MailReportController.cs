@@ -53,10 +53,7 @@ namespace Fanex.MailDelivery.MailStation.Controllers
 
         public ActionResult MailDetail(int mailId)
         {
-            var mailDetail = _mailReportService.MailDetail(new MailDetailCriteria
-            {
-                MailId = mailId
-            });
+            var mailDetail = _mailReportService.MailDetail(new MailDetailCriteria { MailId = mailId });
 
             ViewBag.TimeZoneString = TimeZoneExtension.GetTimeZoneString();
             return View("~/Areas/MailStation/Report/MailDetail/Index.cshtml", mailDetail);
@@ -64,10 +61,7 @@ namespace Fanex.MailDelivery.MailStation.Controllers
 
         public ActionResult MailLog(int mailId)
         {
-            var mailLog = _mailReportService.MailLog(new MailLogCriteria
-            {
-                MailId = mailId
-            });
+            var mailLog = _mailReportService.MailLog(new MailLogCriteria { MailId = mailId });
 
             ViewBag.TimeZoneString = TimeZoneExtension.GetTimeZoneString();
             return View("~/Areas/MailStation/Report/MailLog/Index.cshtml", mailLog);
@@ -76,6 +70,12 @@ namespace Fanex.MailDelivery.MailStation.Controllers
         public void AbortTask(int taskId)
         {
             _mailReportService.AbortJob(taskId);
+        }
+
+        public ActionResult RetryMissingTask(RetryMissingTaskCriteria criteria)
+        {
+            _mailReportService.RetryMissingJob(criteria);
+            return new EmptyResult();
         }
     }
 }

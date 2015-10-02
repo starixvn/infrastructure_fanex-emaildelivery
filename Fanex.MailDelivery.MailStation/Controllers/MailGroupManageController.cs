@@ -28,10 +28,10 @@ namespace Fanex.MailDelivery.MailStation.Controllers
             this._mailGroupService = this._mailGroupService ?? new MailGroupService();
         }
 
-        public ActionResult Index(GetMailListCriteria criteria)
+        public ActionResult Index(GetMailGroupCriteria criteria)
         {
             ViewBag.TimeZoneString = TimeZoneExtension.GetTimeZoneString();
-            return View("~/Areas/MailStation/MailGroup/ManageMailGroup/Index.cshtml");
+            return View("~/Areas/MailStation/MailGroup/ManageMailGroup/Index.cshtml", criteria);
         }
 
         /// <summary>
@@ -69,13 +69,13 @@ namespace Fanex.MailDelivery.MailStation.Controllers
         /// </summary>
         /// <param name="criteria">Mail group by id.</param>
         /// <returns>Action Result.</returns>
-        public ActionResult UpdateMailGroupView(GetMailGroupByIDCriteria criteria)
+        public ActionResult UpdateMailGroupView(GetMailGroupByIdCriteria criteria)
         {
             var mailGroup = this._mailGroupService.GetMailGroupByID(criteria);
             var model = new UpdateMailGroupCriteria();
             if (mailGroup != null)
             {
-                model.MailGroupID = mailGroup.MailGroupID;
+                model.MailGroupId = mailGroup.MailGroupId;
                 model.MailGroupName = mailGroup.MailGroupName;
                 model.Description = mailGroup.Description;
             }
@@ -90,9 +90,9 @@ namespace Fanex.MailDelivery.MailStation.Controllers
             return Json(this._mailGroupService.UpdateMailGroup(criteria));
         }
 
-        public ActionResult ViewRelevantMail(int mailGroupID)
+        public ActionResult ViewRelevantMail(int mailGroupId)
         {
-            return RedirectToAction("Index", "MailManage", new { MailGroupID = mailGroupID });
+            return RedirectToAction("Index", "MailManage", new { MailGroupId = mailGroupId });
         }
     }
 }

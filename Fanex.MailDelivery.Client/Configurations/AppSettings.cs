@@ -47,7 +47,7 @@
             {
                 if (scheduleId == schedule.Id)
                 {
-                    return Type.GetType(schedule.Job);
+                    return Type.GetType(schedule.Job.Trim());
                 }
             }
 

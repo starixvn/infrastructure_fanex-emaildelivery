@@ -9,7 +9,7 @@
     /// <summary>
     /// Mail Client Handler.
     /// </summary>
-    public class MailClientHandler
+    public static class MailClientHandler
     {
         private static IJobHandler _jobHandler;
         private static IMailClientMessageBroker _messageBroker;
@@ -45,11 +45,6 @@
             return _messageBroker.GetSchedules();
         }
 
-        public static MailingList GetMailingList(int mailId)
-        {
-            return _messageBroker.GetMailingList(mailId);
-        }
-
         public static JobResultMessage RequestAddMailTaskForRunningJob(JobResultMessage jobResult)
         {
             return _messageBroker.RequestAddMailTaskForRunningJob(jobResult);
@@ -58,6 +53,11 @@
         public static void RetryJob(Schedule schedule)
         {
             _jobHandler.RetryJob(schedule);
+        }
+
+        public static void PublishClientNotifyMessage()
+        {
+            _messageBroker.PublishClientNotifyMessage();
         }
     }
 }

@@ -13,7 +13,7 @@ namespace Fanex.MailDelivery.MailStation.Criteria.MailGroup
     /// </summary>
     public class DeleteMailGroupCriteria : CriteriaBase
     {
-        public int MailGroupID { get; set; }
+        public int MailGroupId { get; set; }
 
         public override bool IsValid()
         {

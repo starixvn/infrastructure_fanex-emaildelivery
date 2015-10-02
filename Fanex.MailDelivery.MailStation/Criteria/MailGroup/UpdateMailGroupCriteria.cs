@@ -13,7 +13,7 @@ namespace Fanex.MailDelivery.MailStation.Criteria.MailGroup
     /// </summary>
     public class UpdateMailGroupCriteria : CriteriaBase
     {
-        public int MailGroupID { get; set; }
+        public int MailGroupId { get; set; }
 
         public string MailGroupName { get; set; }
 

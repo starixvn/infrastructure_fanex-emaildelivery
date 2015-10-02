@@ -13,7 +13,8 @@ var MailReportController = function () {
             Failed: 3,
             Sent: 4,
             Abort: 6,
-            Succeeded: 7
+            Succeeded: 7,
+            Missing: 8
         },
         TriggerType: {
             FunctionMail: 0,
@@ -36,6 +37,14 @@ var MailReportController = function () {
         self.renderDropdownRefresh();
         self.initDatePicker();
         countdownController.initPage();
+        var cookie = $.cookie('MailReport');
+        if (cookie) {
+            $('#MailName').val(cookie.MailName);
+            $('#SiteId').val(cookie.SiteId);
+            $('#FromDate').datepicker('setDate', new Date(cookie.FromDate));
+            $('#ToDate').datepicker('setDate', new Date(cookie.ToDate));
+            $('#Status').val(cookie.Status);
+        }
     };
     self.renderDropdownRefresh = function () {
         var countDowns = [{ Id: 0, Value: viewResources.Not_Refresh },
@@ -113,12 +122,13 @@ var MailReportController = function () {
         sharedScriptManager.blockUI();
         var searchParams = {
             MailName: $("#MailName").val(),
-            SiteID: $("#SiteID").val(),
+            SiteId: $("#SiteId").val(),
             FromDate: $("#FromDate").val(),
             ToDate: $("#ToDate").val(),
             Status: $("#Status").val()
         };
         self.cachedData.searchParams = searchParams;
+        $.cookie('MailReport', searchParams);
         sharedScriptManager.callAjax(self,
             window.rootUrl + "MailStation/MailReport/MailReport",
             searchParams,
@@ -133,11 +143,11 @@ var MailReportController = function () {
         for (var i = 0; i < mailReportLength; i++) {
             var mail = result[i];
             var rowColumns = [];
-            var mailIndex = ' mail-index="' + mail.MSiteMailID + '"';
+            var mailIndex = ' mail-index="' + mail.MSiteMailId + '"';
             rowColumns.push({ Name: "ColId", Value: mail.MailTaskId });
             rowColumns.push({
                 Name: "ColMailName",
-                Value: mail.MSiteMailID == 0 ? mail.MailName : '<a class="link mail-name" href="javascript:;"' + mailIndex + '>' +
+                Value: mail.MSiteMailId == 0 ? mail.MailName : '<a class="link mail-name" href="javascript:;"' + mailIndex + '>' +
                            mail.MailName +
                        '</a>'
             });
@@ -162,7 +172,7 @@ var MailReportController = function () {
         headerColumns.push({ HeaderText: viewResources.Mail_Name, Width: 340, Name: "ColMailName", HeaderAlign: "center", CellAlign: "left" });
         headerColumns.push({ HeaderText: viewResources.Site, Width: 150, Name: "ColSite", HeaderAlign: "center", CellAlign: "left" });
         headerColumns.push({ HeaderText: viewResources.Scheduled_Time, Width: 150, Name: "ColScheduledTime", HeaderAlign: "center", CellAlign: "center", FormatDateTime: "MMM DD, YYYY hh:mm:ss A" });
-        headerColumns.push({ HeaderText: viewResources.Last_Sent, Width: 150, Name: "ColLastSent", HeaderAlign: "center", CellAlign: "center", FormatDateTime: "MMM DD, YYYY hh:mm:ss A" });
+        headerColumns.push({ HeaderText: viewResources.Last_Run, Width: 150, Name: "ColLastSent", HeaderAlign: "center", CellAlign: "center", FormatDateTime: "MMM DD, YYYY hh:mm:ss A" });
         headerColumns.push({ HeaderText: viewResources.Status, Width: 120, Name: "ColStatus", HeaderAlign: "center", CellAlign: "center" });
         if (viewResources.hasEditRight) {
             headerColumns.push({ HeaderText: viewResources.Action, Width: 120, Name: "ColAction", HeaderAlign: "center", CellAlign: "center" });
@@ -177,7 +187,6 @@ var MailReportController = function () {
             showHighlightRow: true,
             gridExpandHeight: 350,
             headerColumnHeight: 29,
-            bodyRowHeight: 30,
             showPager: true,
             timeZone: viewResources.TimeZone,
             customPager: true,
@@ -224,6 +233,8 @@ var MailReportController = function () {
                 return '<div class="column-status abort-status"' + mailIndex + '>' + viewResources.Abort + '</div>';
             case self.Enums.TaskStatus.Succeeded:
                 return '<div class="column-status sent-status"' + mailIndex + '>' + viewResources.Succeeded.toUpperCase() + '</div>';
+            case self.Enums.TaskStatus.Missing:
+                return '<div class="column-status missing-status"' + mailIndex + '>' + viewResources.Missing.toUpperCase() + '</div>';
         }
     };
 
@@ -237,7 +248,17 @@ var MailReportController = function () {
                 case self.Enums.TaskStatus.Sent:
                 case self.Enums.TaskStatus.Failed:
                 case self.Enums.TaskStatus.Abort:
-                    return '<input type="submit" value="Retry" class="button-retry"' + mailIndex + '>';
+                    if (mail.IsUnableToRetry == 0) {
+                        return '<input type="submit" value="Retry" class="button-retry"' + mailIndex + '>';
+                    }
+
+                    return '';
+                case self.Enums.TaskStatus.Missing:
+                    return '<input type="submit" value="Retry" class="button-retry-missing-task"'
+                        + 'mailId="' + mail.MailId + '"'
+                        + 'siteId="' + mail.SiteId + '"'
+                        + 'scheduledTime="' + mail.ScheduledTime + '"'
+                        + ' >';
             }
         }
     };
@@ -265,6 +286,20 @@ var MailReportController = function () {
             var $this = $(this);
             var mailIndex = parseInt($this.attr("mail-index"));
             self.retrySendMail(mailIndex, function () {
+                setTimeout(function () {
+                    NAP.headlineMsgBox.close();
+                    self.refreshMailReport();
+                }, sharedScriptManager.cachedData.alertSuccessTime);
+            });
+        });
+
+        $(".button-retry-missing-task").click(function (event) {
+            var $this = $(this);
+            var mailId = parseInt($this.attr("mailId"));
+            var siteId = parseInt($this.attr("siteId"));
+            var scheduledTime = moment($this.attr("scheduledTime")).format();
+            //var scheduledTime = $this.attr("scheduledTime");
+            self.retryMissingTask(mailId, siteId, scheduledTime, function () {
                 setTimeout(function () {
                     NAP.headlineMsgBox.close();
                     self.refreshMailReport();
@@ -332,6 +367,29 @@ var MailReportController = function () {
         });
     };
 
+    self.retryMissingTask = function (mailId, siteId, scheduledTime, afterRetryEvent) {
+        NAP.headlineMsgBox.confirm(viewResources.Confirm_RetryMissingTask, function () {
+            sharedScriptManager.blockUI();
+            var retryParams = {
+                MailId: mailId,
+                SiteId: siteId,
+                ScheduledTime: scheduledTime
+            };
+            sharedScriptManager.callAjax(self,
+            window.rootUrl + "MailStation/MailReport/RetryMissingTask",
+            retryParams,
+            function (result) {
+                result = {
+                    Code: 0,
+                    Message: 'Job has been retried.'
+                };
+                sharedScriptManager.renderActionResult(result, afterRetryEvent);
+            },
+            null,
+            sharedScriptManager.unblockUI);
+        });
+    };
+
     self.renderActionResult = function (result) {
         sharedScriptManager.renderActionResult(
             result,
@@ -341,22 +399,6 @@ var MailReportController = function () {
                 }, sharedScriptManager.cachedData.alertSuccessTime);
             }
         );
-    };
-
-    self.updateRowStatus = function (mailStatus, index) {
-        var gridContainer = $("#mail-report");
-        switch (mailStatus) {
-            case "RUNNING":
-                gridContainer.find(".column-status[mail-index=" + index + "]")
-                    .removeClass("data-not-ready-status")
-                    .removeClass("sent-status")
-                    .removeClass("failed-status")
-                    .addClass("running-status")
-                    .empty()
-                    .html('<span class="status">' + mailStatus + '</span>');
-                gridContainer.find(".icon-view-log[mail-index=" + index + "]").remove();
-                break;
-        }
     };
 
     self.viewMailDetail = function (mailIndex) {

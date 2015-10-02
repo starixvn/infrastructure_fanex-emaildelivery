@@ -21,7 +21,7 @@
 
         public int Attempt { get; set; }
 
-        public int MailID { get; set; }
+        public int MailId { get; set; }
 
         public string MailName { get; set; }
         

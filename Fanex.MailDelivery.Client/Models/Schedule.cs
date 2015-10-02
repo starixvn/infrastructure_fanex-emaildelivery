@@ -22,7 +22,11 @@ using Fanex.MailDelivery.Client.Enumerations;
 
         public string RepeatExpression { get; set; }
 
-        public DateTime CurrentFireTime { get; set; }
+        /// <summary>
+        /// It's not current fire time of system but the time admin want it to be.
+        /// It's mean the task is run for schedule on the pass (Missing jobs).
+        /// </summary>
+        public DateTime? CurrentFireTime { get; set; }
 
         public DateTime StartTime { get; set; }
 
@@ -88,7 +92,6 @@ using Fanex.MailDelivery.Client.Enumerations;
         {
             int hoursDifferent = this.CalculateHoursDifferentBeetweenLocalAndServer();
             this.StartTime = this.StartTime.AddHours(hoursDifferent);
-            this.CurrentFireTime = this.CurrentFireTime.AddHours(hoursDifferent);
             if (this.EndTime != null)
             {
                 this.EndTime = this.EndTime.Value.AddHours(hoursDifferent);

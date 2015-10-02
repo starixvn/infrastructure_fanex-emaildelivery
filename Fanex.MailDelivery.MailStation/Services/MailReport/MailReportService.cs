@@ -10,9 +10,11 @@
 namespace Fanex.MailDelivery.MailStation.Services.MailReport
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
+    using Fanex.Common;
     using Fanex.Data;
     using Fanex.MailDeliver.Model;
     using Fanex.MailDelivery.Admin.Handlers;
@@ -22,6 +24,7 @@ namespace Fanex.MailDelivery.MailStation.Services.MailReport
     using Fanex.MailDelivery.MailStation.Models;
     using Fanex.Maintenance.Service.Impl.Mail;
     using Fanex.Maintenance.Service.Interface.Mail;
+    using Fanex.NAP.Core.Criteria.Misc;
     using Quartz;
     using Quartz.Spi;
 
@@ -45,6 +48,8 @@ namespace Fanex.MailDelivery.MailStation.Services.MailReport
         [SuppressMessage("StyleCop.CSharp.Nexcel.NexcelCustomRules", "SP2101:MethodMustNotContainMoreLinesThan", Justification = "Reviewed. Suppression is OK here.")]
         public List<MailTaskModel> MailReport(MailReportCriteria criteria)
         {
+            int oldStatus = criteria.Status;
+            criteria.Status = -1;
             List<MailTaskModel> result = new List<MailTaskModel>();
             using (ObjectDb db = new ObjectDb(criteria.GetSettingKey()))
             {
@@ -52,53 +57,68 @@ namespace Fanex.MailDelivery.MailStation.Services.MailReport
                 result = db.Query<MailTaskModel>().ToList();
             }
 
+            criteria.Status = oldStatus;
             List<MailTaskDetailModel> listMailTaskDetail = new List<MailTaskDetailModel>();
-            GetAllScheduleCriteria getAllScheduleCriteria = new GetAllScheduleCriteria() { MailName = criteria.MailName, SiteID = criteria.SiteID };
+            GetAllScheduleCriteria getAllScheduleCriteria = new GetAllScheduleCriteria() { MailName = criteria.MailName, SiteId = criteria.SiteId };
             using (ObjectDb db = new ObjectDb(getAllScheduleCriteria.GetSettingKey()))
             {
                 db.AssignParamValues(getAllScheduleCriteria.GetSpParams());
                 listMailTaskDetail = db.Query<MailTaskDetailModel>().ToList();
             }
 
-            TimeSpan ts = new TimeSpan(23, 59, 59);
-            criteria.ToDate += ts;
-            if ((criteria.ToDate > DateTime.Now) && (criteria.Status == (int)JobStatus.Waiting || criteria.Status == -1))
+            if (criteria.Status == -1 || criteria.Status == (int)JobStatus.Waiting || criteria.Status == (int)JobStatus.Missing)
             {
+                TimeSpan ts = new TimeSpan(23, 59, 59);
+                criteria.ToDate += ts;
                 foreach (MailTaskDetailModel schedule in listMailTaskDetail)
                 {
-                    if (schedule.LastSent == null || schedule.LastSent < criteria.ToDate)
+                    DateTime fromDate = this.MaxDateTime(criteria.FromDate, schedule.StartOn).ToUniversalTime();
+                    DateTime toDate = this.MinDateTime(criteria.ToDate, schedule.EndOn).ToUniversalTime();
+                    if (fromDate <= toDate)
                     {
-                        DateTime fromDate = this.MaxDateTime(criteria.FromDate, DateTime.Today);
-                        DateTime toDate = this.MaxDateTime(criteria.ToDate, DateTime.Today);
                         ITrigger trigger = TriggerBuilder.Create().WithCronSchedule(schedule.CronExpression).Build();
-                        //// Add 5 seconds to remove delay time between Scheduled Time and real Trigger Time.
-                        DateTime lastSent = schedule.LastSent == null ? schedule.LastScheduledTime.AddSeconds(5) : schedule.LastSent.Value;
                         var listtriggerdate = TriggerUtils.ComputeFireTimesBetween(
                             (IOperableTrigger)trigger,
                             null,
-                            new DateTimeOffset(this.MaxDateTime(fromDate, lastSent).ToUniversalTime()),
-                            new DateTimeOffset(this.MinDateTime(toDate, schedule.EndOn).ToUniversalTime()));
+                            new DateTimeOffset(fromDate),
+                            new DateTimeOffset(toDate));
+                        listtriggerdate = (from trigertime in listtriggerdate
+                            where !(from task in result
+                                    where task.MailId == schedule.MailId
+                                    select task.ScheduledTime)
+                                .Contains(trigertime.LocalDateTime)
+                            select trigertime).ToList();
                         foreach (var triggertime in listtriggerdate)
                         {
-                            MailTaskModel waitingTask = new MailTaskModel()
+                            var status = triggertime.LocalDateTime.AddSeconds(5) > DateTime.Now ? (int)JobStatus.Waiting : (int)JobStatus.Missing;
+                            if (criteria.Status == -1 || criteria.Status == status)
                             {
-                                MailName = schedule.MailName,
-                                MailId = schedule.MailID,
-                                Attempt = schedule.Attempt,
-                                LastSent = null,
-                                ScheduledTime = triggertime.LocalDateTime,
-                                SiteId = schedule.SiteId,
-                                SiteName = schedule.SiteName,
-                                Status = (int)JobStatus.Waiting
-                            };
+                                MailTaskModel waitingTask = new MailTaskModel()
+                                {
+                                    MailName = schedule.MailName,
+                                    MailId = schedule.MailId,
+                                    Attempt = schedule.Attempt,
+                                    LastSent = null,
+                                    ScheduledTime = triggertime.LocalDateTime,
+                                    SiteId = schedule.SiteId,
+                                    SiteName = schedule.SiteName,
+                                    Status = status,
+                                    TriggerType = (int)MailType.Schedule
+                                };
 
-                            result.Add(waitingTask);
+                                result.Add(waitingTask);
+                            }
                         }
                     }
                 }
             }
 
-            return result.OrderBy(m => m.Status).ThenByDescending(m => m.ScheduledTime).ToList();
+            if(oldStatus != -1)
+            {
+                result = result.Where(m => m.Status == oldStatus).ToList();
+            }
+
+            return result.OrderBy(m => m.MailName).ThenByDescending(m => m.ScheduledTime).ThenByDescending(m => m.LastSent).ToList();
         }
 
         /// <summary>
@@ -140,8 +160,8 @@ namespace Fanex.MailDelivery.MailStation.Services.MailReport
         public void RetrySendMail(RetrySendMailCriteria criteria)
         {
             MailAdminHandler.Start();
-            MailTaskModel mailTask = this.GetMailTaskByID(new GetMailTaskByIDCriteria() { MailTaskID = criteria.TaskId });
-            Schedule schedule = this.GetScheduleByMailID(new GetScheduleByIDCriteria() { MailId = mailTask.MailId });
+            MailTaskModel mailTask = this.GetMailTaskByID(new GetMailTaskByIdCriteria() { MailTaskId = criteria.TaskId });
+            Schedule schedule = this.GetScheduleByMailId(new GetScheduleByIdCriteria() { MailId = mailTask.MailId });
             schedule.TaskId = mailTask.MailTaskId;
             MailAdminHandler.PublishRetryJobMessage(schedule);
             MailAdminHandler.Stop();
@@ -151,6 +171,27 @@ namespace Fanex.MailDelivery.MailStation.Services.MailReport
         {
             MailAdminHandler.Start();
             MailAdminHandler.PublishAbortJobMessage(taskID);
+            MailAdminHandler.Stop();
+        }
+
+        public void RetryMissingJob(RetryMissingTaskCriteria criteria)
+        {
+            // Add Missing Task to DB first.
+            int mailTaskID;
+            Hashtable hash = criteria.GetSpParams();
+            hash = (new ResultCriteria()).AddSpParams(hash);
+            using (ObjectDb db = new ObjectDb(criteria.GetSettingKey()))
+            {
+                db.ExecuteNonQuery(hash);
+                mailTaskID = Converter.ToInt(db.GetParameterValue("MailTaskID"));
+            }
+
+            MailAdminHandler.Start();
+            MailTaskModel mailTask = this.GetMailTaskByID(new GetMailTaskByIdCriteria() { MailTaskId = mailTaskID });
+            Schedule schedule = this.GetScheduleByMailId(new GetScheduleByIdCriteria() { MailId = mailTask.MailId });
+            schedule.CurrentFireTime = criteria.ScheduledTime;
+            schedule.TaskId = mailTaskID;
+            MailAdminHandler.PublishRetryJobMessage(schedule);
             MailAdminHandler.Stop();
         }
 

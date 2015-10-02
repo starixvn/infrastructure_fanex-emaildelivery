@@ -11,9 +11,9 @@ namespace Fanex.MailDelivery.MailStation.Criteria.MailReport
     /// <summary>
     /// Mail Report Criteria.
     /// </summary>
-    public class GetMailTaskByIDCriteria : CriteriaBase
+    public class GetMailTaskByIdCriteria : CriteriaBase
     {
-        public int MailTaskID { get; set; }
+        public int MailTaskId { get; set; }
 
         public override string GetSettingKey()
         {

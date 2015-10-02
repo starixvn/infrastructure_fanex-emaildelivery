@@ -45,8 +45,8 @@
             SubscribeMail();
             SubscribeJobResult();
             SubscribeAbortJob();
-            SubscribeMailingListRequest();
             RespondAddMailTaskForRunningJob();
+            SubscribeClientNotificationMessage();
         }
 
         public void SubscribeAbortJob()
@@ -89,6 +89,20 @@
         }
 
         /// <summary>
+        /// Subscribes the job result.
+        /// </summary>
+        public void SubscribeClientNotificationMessage()
+        {
+            _bus.Subscribe<ClientInfomationMessage>(
+                MailDeliveryConstants.ClientNotificationTopic,
+                    clientInfoMessage =>
+                    {
+                        _mailService.UpdateClientActiveTime(clientInfoMessage);
+                    },
+                    config => config.WithTopic(MailDeliveryConstants.ClientNotificationTopic));
+        }
+
+        /// <summary>
         /// Subscribes the schedule request.
         /// </summary>
         public void SubscribeScheduleRequest()
@@ -106,18 +120,6 @@
                 });
         }
 
-        /// <summary>
-        /// Subscribes the function mailing list request.
-        /// </summary>
-        public void SubscribeMailingListRequest()
-        {
-            _bus.Respond<MailingListRequest, MailingList>(
-                mailingListRequest =>
-                {
-                    return _mailService.GetMailingList(mailingListRequest.MailingListId);
-                });
-        }
-
         public void RespondAddMailTaskForRunningJob()
         {
             _bus.Respond<JobResultMessage, JobResultMessage>(
@@ -131,6 +133,7 @@
         public void Dispose()
         {
             _bus.Dispose();
+            GC.SuppressFinalize(this);
         }
     }
 }

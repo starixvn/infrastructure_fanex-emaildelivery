@@ -7,7 +7,7 @@
 //   <change who="Edward.Nguyen" date="2013.8.30">Created</change>
 // </history>
 
-namespace Fanex.Maintenance.Site.App_Start
+namespace Fanex.Maintenance.Site.AppStart
 {
     using System.Diagnostics.CodeAnalysis;
     using System.Web.Optimization;

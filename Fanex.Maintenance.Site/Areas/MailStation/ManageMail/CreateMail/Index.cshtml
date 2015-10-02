@@ -38,9 +38,9 @@
         </div>
         <div class="form-row">
             <div class="lbl-field">
-                @Html.LabelFor(m => m.MailGroupID, "Group")
+                @Html.LabelFor(m => m.MailGroupId, "Group")
             </div>
-            @Html.DropDownListFor(m => m.MailGroupID, (IEnumerable<SelectListItem>)ViewBag.ListMailGroup, new { @class = "combobox-autocomplete" })
+            @Html.DropDownListFor(m => m.MailGroupId, (IEnumerable<SelectListItem>)ViewBag.ListMailGroup, new { @class = "combobox-autocomplete" })
             <a id="btn-add-group">+</a>
         </div>
         <div class="form-row">
@@ -53,9 +53,9 @@
         </div>
         <div class="form-row">
             <div class="lbl-field">
-                @Html.LabelFor(m => m.SiteID, "Site")
+                @Html.LabelFor(m => m.SiteId, "Site")
             </div>
-            @Html.DropDownListFor(m => m.SiteID, (IEnumerable<SelectListItem>)ViewBag.ListSite)
+            @Html.DropDownListFor(m => m.SiteId, (IEnumerable<SelectListItem>)ViewBag.ListSite)
         </div>
         <div class="form-row">
             <div class="lbl-field">

@@ -25,9 +25,9 @@ var InsertMailController = function () {
     };
 
     var DOMElements = {
-        MailGroupID: null,
+        MailGroupId: null,
         MailName: null,
-        SiteID: null,
+        SiteId: null,
         TriggerType: null,
         RepeatType: null,
         CronExpression: null,
@@ -82,9 +82,9 @@ var InsertMailController = function () {
     };
 
     self.cacheDOMElement = function () {
-        DOMElements.MailGroupID = $('#MailGroupID');
+        DOMElements.MailGroupId = $('#MailGroupId');
         DOMElements.MailName = $('#MailName');
-        DOMElements.SiteID = $('#SiteID');
+        DOMElements.SiteId = $('#SiteId');
         DOMElements.TriggerType = $('#TriggerType');
         DOMElements.RepeatType = $('#RepeatType');
         DOMElements.NexCron = $('#nexCron');
@@ -185,8 +185,8 @@ var InsertMailController = function () {
         if (triggerType === Enums.TriggerType.Function) {
             return {
                 MailName: DOMElements.MailName.val(),
-                MailGroupID: DOMElements.MailGroupID.val(),
-                SiteID: DOMElements.SiteID.val(),
+                MailGroupId: DOMElements.MailGroupId.val(),
+                SiteId: DOMElements.SiteId.val(),
                 TriggerType: DOMElements.TriggerType.val(),
                 MailFrom: DOMElements.MailFrom.val(),
                 MailTo: DOMElements.MailTo.getValue().join(','),
@@ -200,8 +200,8 @@ var InsertMailController = function () {
         var cronResult = DOMElements.NexCron.nexCron('getCronExpression');
         return {
             MailName: DOMElements.MailName.val(),
-            MailGroupID: DOMElements.MailGroupID.val(),
-            SiteID: DOMElements.SiteID.val(),
+            MailGroupId: DOMElements.MailGroupId.val(),
+            SiteId: DOMElements.SiteId.val(),
             TriggerType: DOMElements.TriggerType.val(),
             RepeatType: cronResult.RepeatType,
             CronExpression: cronResult.CronExpression,
@@ -219,7 +219,7 @@ var InsertMailController = function () {
     };
 
     self.addGroup = function (groupName) {
-        var groupName = $('span[id="MailGroupID"]>input').val();
+        var groupName = $('span[id="MailGroupId"]>input').val();
         if (groupName === undefined || groupName === null || groupName === '') {
             sharedScriptManager.createValidationSummary(['The group name cannot be empty, please try again!'], false);
         }
@@ -257,7 +257,7 @@ var InsertMailController = function () {
                     ' >' + result[i].Text + '</option>';
                 }
 
-                DOMElements.MailGroupID.empty().append(mailGroupHtml);
+                DOMElements.MailGroupId.empty().append(mailGroupHtml);
             },
             null,
             sharedScriptManager.unblockUI);

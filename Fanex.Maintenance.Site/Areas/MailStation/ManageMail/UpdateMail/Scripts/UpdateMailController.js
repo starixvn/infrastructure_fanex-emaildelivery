@@ -26,10 +26,10 @@ var UpdateMailController = function () {
     };
 
     var DOMElements = {
-        MailGroupID: null,
-        MailID: null,
+        MailGroupId: null,
+        MailId: null,
         MailName: null,
-        SiteID: null,
+        SiteId: null,
         TriggerType: null,
         RepeatType: null,
         CronExpression: null,
@@ -98,10 +98,10 @@ var UpdateMailController = function () {
     };
 
     self.cacheDOMElement = function () {
-        DOMElements.MailGroupID = $('#MailGroupID');
-        DOMElements.MailID = $('#MailID');
+        DOMElements.MailGroupId = $('#MailGroupId');
+        DOMElements.MailId = $('#MailId');
         DOMElements.MailName = $('#MailName');
-        DOMElements.SiteID = $('#SiteID');
+        DOMElements.SiteId = $('#SiteId');
         DOMElements.TriggerType = $('#TriggerType');
         DOMElements.RepeatType = $('#RepeatType');
         DOMElements.NexCron = $('#nexCron');
@@ -132,22 +132,25 @@ var UpdateMailController = function () {
         });
 
         $("#button-save").click(function () {
-            if (self.validateForm()) {
-                sharedScriptManager.callAjax(
-                    self,
-                    window.rootUrl + "MailStation/MailManage/UpdateMail",
-                    self.getParams(),
-                    function (result) {
-                        if (result.IsSuccessful) {
-                            result.Message = viewResources.UpdateMailSuccessMsg;
-                        }
+            NAP.headlineMsgBox.confirm(viewResources.ConfirmClearHistoryWhenUpdateMail, function () {
+                if (self.validateForm()) {
+                    sharedScriptManager.callAjax(
+                        self,
+                        window.rootUrl + "MailStation/MailManage/UpdateMail",
+                        self.getParams(),
+                        function (result) {
+                            if (result.IsSuccessful) {
+                                result.Message = viewResources.UpdateMailSuccessMsg;
+                            }
 
-                        sharedScriptManager.showNonQueryResult(result, "MailStation/MailManage/Index", 6000);
-                    },
-                    null,
-                    sharedScriptManager.unblockUI
-                );
-            }
+                            sharedScriptManager.showNonQueryResult(result, "MailStation/MailManage/Index", 6000);
+                        },
+                        null,
+                        sharedScriptManager.unblockUI
+                    );
+                }
+            });
+            
         });
     };
 
@@ -204,10 +207,10 @@ var UpdateMailController = function () {
         var triggerType = DOMElements.TriggerType.val();
         if (triggerType === Enums.TriggerType.Function) {
             return {
-                MailID: DOMElements.MailID.val(),
+                MailId: DOMElements.MailId.val(),
                 MailName: DOMElements.MailName.val(),
-                MailGroupID: DOMElements.MailGroupID.val(),
-                SiteID: DOMElements.SiteID.val(),
+                MailGroupId: DOMElements.MailGroupId.val(),
+                SiteId: DOMElements.SiteId.val(),
                 TriggerType: DOMElements.TriggerType.val(),
                 MailFrom: DOMElements.MailFrom.val(),
                 MailTo: DOMElements.MailTo.getValue().join(','),
@@ -220,10 +223,10 @@ var UpdateMailController = function () {
 
         var cronResult = DOMElements.NexCron.nexCron('getCronExpression');
         return {
-            MailID: DOMElements.MailID.val(),
+            MailId: DOMElements.MailId.val(),
             MailName: DOMElements.MailName.val(),
-            MailGroupID: DOMElements.MailGroupID.val(),
-            SiteID: DOMElements.SiteID.val(),
+            MailGroupId: DOMElements.MailGroupId.val(),
+            SiteId: DOMElements.SiteId.val(),
             TriggerType: DOMElements.TriggerType.val(),
             RepeatType: cronResult.RepeatType,
             CronExpression: cronResult.CronExpression,
@@ -269,7 +272,7 @@ var UpdateMailController = function () {
                     mailGroupHtml += '<option value="' + result[i].Value + '"' + (groupName === result[i].Text ? ' selected' : '') + '>' + result[i].Text + '</option>';
                 }
 
-                DOMElements.MailGroupID.empty().append(mailGroupHtml);
+                DOMElements.MailGroupId.empty().append(mailGroupHtml);
             },
             null,
             sharedScriptManager.unblockUI);

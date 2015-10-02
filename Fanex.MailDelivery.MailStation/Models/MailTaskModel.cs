@@ -27,6 +27,8 @@
 
         public int Attempt { get; set; }
 
-        public int MSiteMailID { get; set; }
+        public int MSiteMailId { get; set; }
+
+        public bool IsUnableToRetry { get; set; }
     }
 }

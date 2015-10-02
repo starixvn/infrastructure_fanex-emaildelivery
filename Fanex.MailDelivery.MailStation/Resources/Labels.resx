@@ -147,8 +147,8 @@
   <data name="Inactive" xml:space="preserve">
     <value>Inactive</value>
   </data>
-  <data name="Last_Sent" xml:space="preserve">
-    <value>Last Sent</value>
+  <data name="Last_Run" xml:space="preserve">
+    <value>Last Run</value>
   </data>
   <data name="Log" xml:space="preserve">
     <value>Log</value>
@@ -310,7 +310,7 @@
     <value>Mail Station</value>
   </data>
   <data name="Abort" xml:space="preserve">
-    <value>ABORT</value>
+    <value>ABORTED</value>
   </data>
   <data name="Confirm_AbortJob" xml:space="preserve">
     <value>Do you want to abort this task?</value>
@@ -320,5 +320,17 @@
   </data>
   <data name="Succeeded" xml:space="preserve">
     <value>Succeeded</value>
+  </data>
+  <data name="Missing" xml:space="preserve">
+    <value>Missing</value>
+  </data>
+  <data name="Confirm_RetryMissingJob" xml:space="preserve">
+    <value>Do you want to retry the missing job of the report?</value>
+  </data>
+  <data name="Group" xml:space="preserve">
+    <value>Group</value>
+  </data>
+  <data name="Trigger" xml:space="preserve">
+    <value>Trigger</value>
   </data>
 </root>

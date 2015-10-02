@@ -18,13 +18,13 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG; CODE_ANALYSIS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
+    <Optimize>false</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -32,11 +32,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Common.Logging">
-      <HintPath>..\packages\Common.Logging.2.1.2\lib\net40\Common.Logging.dll</HintPath>
+      <HintPath>..\packages\Common.Logging.3.0.0\lib\net40\Common.Logging.dll</HintPath>
     </Reference>
-    <Reference Include="EasyNetQ, Version=0.47.10.380, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\EasyNetQ.0.47.10.380\lib\net40\EasyNetQ.dll</HintPath>
+    <Reference Include="Common.Logging.Core">
+      <HintPath>..\packages\Common.Logging.Core.3.0.0\lib\net40\Common.Logging.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="EasyNetQ">
+      <HintPath>..\packages\EasyNetQ.0.50.1.392\lib\net40\EasyNetQ.dll</HintPath>
     </Reference>
     <Reference Include="Fanex.Common">
       <HintPath>..\packages\Fanex.Common.1.0.404.97\lib\net40\Fanex.Common.dll</HintPath>
@@ -60,6 +62,9 @@
     <Reference Include="Fanex.NAP.Framework">
       <HintPath>..\packages\Fanex.NAP.Framework.1.0.0.3\lib\net40\Fanex.NAP.Framework.dll</HintPath>
     </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\_Dependencies\Others\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Practices.EnterpriseLibrary.Common">
       <HintPath>..\packages\EnterpriseLibrary.Common.5.0.414.0\lib\net40\Microsoft.Practices.EnterpriseLibrary.Common.dll</HintPath>
     </Reference>
@@ -79,11 +84,10 @@
       <HintPath>..\packages\EnterpriseLibrary.Unity.5.0.414.0\lib\net40\Microsoft.Practices.Unity.Interception.dll</HintPath>
     </Reference>
     <Reference Include="Quartz">
-      <HintPath>..\packages\Quartz.2.2.4\lib\net40\Quartz.dll</HintPath>
+      <HintPath>..\packages\Quartz.2.3.3\lib\net40\Quartz.dll</HintPath>
     </Reference>
-    <Reference Include="RabbitMQ.Client, Version=3.4.3.0, Culture=neutral, PublicKeyToken=89e7d7c5feba84ce, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\RabbitMQ.Client.3.4.3\lib\net35\RabbitMQ.Client.dll</HintPath>
+    <Reference Include="RabbitMQ.Client">
+      <HintPath>..\packages\RabbitMQ.Client.3.5.4\lib\net40\RabbitMQ.Client.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -95,31 +99,45 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cache\CacheExtension.cs" />
     <Compile Include="Configurations\AppSettings.cs" />
     <Compile Include="Configurations\MailServiceSection.cs" />
     <Compile Include="Criteria\AddMailTaskCriteria.cs" />
     <Compile Include="Criteria\AddMailLogCriteria.cs" />
+    <Compile Include="Criteria\GetAllScheduleMailCriteria.cs" />
+    <Compile Include="Criteria\GetMailWithEmailAddressByMailIDCriteria.cs" />
+    <Compile Include="Criteria\UpdateClientActiveTimeCriteria.cs" />
     <Compile Include="Criteria\GetMailTaskByIDCriteria.cs" />
     <Compile Include="Criteria\UpdateMailTaskMailRecordIDCriteria.cs" />
-    <Compile Include="Criteria\GetMailWithEmailAddressByMailIDCriteria.cs" />
-    <Compile Include="Criteria\GetMailingListTypeCriteria.cs" />
     <Compile Include="Criteria\UpdateTaskRetryCounterCriteria.cs" />
     <Compile Include="Criteria\UpdateMailTaskStatusCriteria.cs" />
     <Compile Include="Criteria\GetScheduleByIDCriteria.cs" />
+    <Compile Include="Handlers\Impl\CheckClientOnlineStatusJob.cs" />
     <Compile Include="Handlers\Impl\JobHandler.cs" />
     <Compile Include="Handlers\Impl\MailServiceMessageBroker.cs" />
     <Compile Include="Handlers\Impl\RabbitMQLogger.cs" />
     <Compile Include="Handlers\Interface\IMessageBroker.cs" />
+    <Compile Include="Models\ClientStatusModel.cs" />
     <Compile Include="Models\MailTask.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\IMailRepository.cs" />
     <Compile Include="Repositories\MailRepository.cs" />
+    <Compile Include="Resources\MailStationResource.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MailStationResource.resx</DependentUpon>
+    </Compile>
     <Compile Include="Services\IMailService.cs" />
     <Compile Include="Services\MailService.cs" />
     <Compile Include="Services\ServiceBase.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="job_scheduling_data_2_0.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -130,6 +148,12 @@
       <Project>{708E1FCE-82C4-443B-B1E9-0E64BCABE80E}</Project>
       <Name>Fanex.MailDelivery.Client</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\MailStationResource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>MailStationResource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

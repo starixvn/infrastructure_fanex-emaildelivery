@@ -24,6 +24,7 @@
         {
             MailClientHandler.Start();
             Console.WriteLine("Mail Client Service Site: {0} started.", AppSettings.MailCientConfig.SiteId);
+            Console.WriteLine("App Name: {0}", System.Diagnostics.Process.GetProcessById(System.Diagnostics.Process.GetCurrentProcess().Id).ProcessName);
             try
             {
                 var schedules = AppSettings.MailCientConfig.Schedules;
@@ -64,26 +65,6 @@
         protected override void OnStop()
         {
             MailClientHandler.Stop();
-        }
-
-        /// <summary>
-        /// Gets the mail list.
-        /// </summary>
-        /// <param name="mailID">The mail identifier.</param>
-        private void GetMaillingList(int mailID)
-        {
-            var mail = MailClientHandler.GetMailingList(mailID);
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("MailID: " + mail.Id.ToString());
-            Console.WriteLine("Mail Type: " + mail.MailType.ToString());
-            Console.WriteLine("Mail Name: " + mail.Name.ToString());
-            Console.WriteLine("Mail Group: " + mail.Group.ToString());
-            Console.WriteLine("Is Active: " + mail.Active.ToString());
-            Console.WriteLine("Site id: " + mail.SiteId.ToString());
-            Console.WriteLine("Mail to: " + mail.TOs.ToString());
-            Console.WriteLine("Mail CC: " + mail.CCs.ToString());
-            Console.WriteLine("Mail BCC: " + mail.BCCs.ToString());
-            Console.ForegroundColor = ConsoleColor.White;
         }
 
         /// <summary>

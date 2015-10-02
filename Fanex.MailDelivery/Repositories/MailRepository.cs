@@ -9,19 +9,48 @@
     using Fanex.MailDelivery.Criteria;
     using Fanex.MailDelivery.Models;
     using Fanex.NAP.Core.Criteria.Misc;
+    using System.Collections.Generic;
+    using System;
+    using Fanex.MailDelivery.Configurations;
 
     /// <summary>
     /// Mail Repository.
     /// </summary>
     public class MailRepository : IMailRepository
     {
-        public Schedule GetScheduleByID(GetScheduleByIDCriteria criteria)
+        public Schedule GetScheduleByID(GetScheduleByIdCriteria criteria)
         {
             using (var db = new ObjectDb(criteria.GetSettingKey()))
             {
                 db.AssignParamValues(criteria.GetSpParams());
                 return db.Query<Schedule>().FirstOrDefault();
             }
+        }
+
+        public List<ClientStatusModel> GetAllScheduleMail(GetAllScheduleMailCriteria criteria)
+        {
+            List<ClientStatusModel> restult = new List<ClientStatusModel>();
+            DateTime now = DateTime.Now;
+            using (var db = new ObjectDb(criteria.GetSettingKey()))
+            {
+                db.AssignParamValues(criteria.GetSpParams());
+                var reader = db.ExecuteReader();
+                while (reader.Read())
+                {
+                    ClientStatusModel element = new ClientStatusModel();
+                    element.MailId = Converter.ToInt(reader["MailID"]);
+                    element.MailName = Converter.ToString2(reader["MailName"]);
+                    if (reader["LastActive"] != null)
+                    {
+                        element.LastActive = Converter.ToDateTime(reader["LastActive"]);
+                    }
+
+                    element.IsOnline = element.LastActive != null && element.LastActive.Value >= now.AddSeconds(-AppSettings.MailServiceSection.ClientNotifyTimeOutInSecond * 2);
+                    restult.Add(element);
+                }
+            }
+
+            return restult;
         }
 
         public int AddMailTask(AddMailTaskCriteria criteria)
@@ -70,7 +99,7 @@
         /// </summary>
         /// <param name="criteria">The criteria.</param>
         /// <returns>Mailing List.</returns>
-        public MailingList GetMailingList(GetMailWithEmailAddressByMailID criteria)
+        public MailingList GetMailingList(GetMailWithEmailAddressByMailId criteria)
         {
             var result = new MailingList();
             using (var db = new ObjectDb(criteria.GetSettingKey()))
@@ -93,18 +122,7 @@
             return result;
         }
 
-        public MailType GetMailingListType(GetMailingListTypeCriteria criteria)
-        {
-            using (var db = new ObjectDb(criteria.GetSettingKey()))
-            {
-                db.AssignParamValues(criteria.GetSpParams());
-                db.ExecuteNonQuery();
-                var result = (int)db.GetParameterValue("MailType");
-                return result == 0 ? MailType.Function : MailType.Schedule;
-            }
-        }
-
-        public void UpdateMailTask(UpdateMailTaskMSiteMailIDCriteria criteria)
+        public void UpdateMailTask(UpdateMailTaskMSiteMailIdCriteria criteria)
         {
             Hashtable hash = criteria.GetSpParams();
             hash = (new ResultCriteria()).AddSpParams(hash);
@@ -114,12 +132,20 @@
             }
         }
 
-        public MailTask GetMailTask(GetMailTaskByIDCriteria criteria)
-        { 
+        public MailTask GetMailTask(GetMailTaskByIdCriteria criteria)
+        {
             using (var db = new ObjectDb(criteria.GetSettingKey()))
             {
                 db.AssignParamValues(criteria.GetSpParams());
                 return db.Query<MailTask>().FirstOrDefault();
+            }
+        }
+
+        public void UpdateClientActiveTime(UpdateClientActiveTimeCriteria criteria)
+        {
+            using (var db = new ObjectDb(criteria.GetSettingKey()))
+            {
+                db.ExecuteNonQuery(criteria.GetSpParams());
             }
         }
     }

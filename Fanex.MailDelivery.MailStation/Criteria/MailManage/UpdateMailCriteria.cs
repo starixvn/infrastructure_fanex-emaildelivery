@@ -23,11 +23,11 @@ namespace Fanex.MailDelivery.MailStation.Criteria.MailManage
         {
             if (model != null)
             {
-                this.MailID = model.MailId;
+                this.MailId = model.MailId;
             }
         }
 
-        public int MailID { get; set; }
+        public int MailId { get; set; }
 
         public override string GetSettingKey()
         {

@@ -34,17 +34,17 @@ var MailList = (function ($) {
                         var linkSendFail = "0";
                         if (value.SentFail > 0) {
                             classFail = "mailfail";
-                            linkSendFail = "<a href='#' class='errormail' data-mailid='" + value.MailID + "'>" + value.SentFail + "</a>";
+                            linkSendFail = "<a href='#' class='errormail' data-mailid='" + value.MailId + "'>" + value.SentFail + "</a>";
                         }
 
-                        var linkResend = "<a href='#' class='resendmail " + classFail + "' data-mailid='" + value.MailID + "'>Resend</a>";
+                        var linkResend = "<a href='#' class='resendmail " + classFail + "' data-mailid='" + value.MailId + "'>Resend</a>";
                         if (result.HasResend === 0) {
                             linkResend = "";
                         }
 
                         var linkViewDetail = value.Subject;
                         if (result.HasViewDetail === 1) {
-                            linkViewDetail = "<a href='#' class='emailMessage' data-mailid='" + value.MailID + "'>" + value.Subject + "</a>";
+                            linkViewDetail = "<a href='#' class='emailMessage' data-mailid='" + value.MailId + "'>" + value.Subject + "</a>";
                         }
 
                         bodyData.push({

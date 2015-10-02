@@ -13,7 +13,7 @@ namespace Fanex.MailDelivery.MailStation.Criteria.MailManage
     /// </summary>
     public class DeleteMailCriteria : CriteriaBase
     {
-        public int MailID { get; set; }
+        public int MailId { get; set; }
 
         public override bool IsValid()
         {

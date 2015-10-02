@@ -18,16 +18,16 @@
         public const string RunJobImmediatelyRoutingKeyFormat = "RoutingKey.RunJobImmediately_{0}";
 
         public const string AutoMailJobNameFormat = "AutoMailJob_{0}";
-        public const string MailCentralizedJobGroup = "Fanex.MailDelivery.Client.MailCentralizedJobGroup";
         public const string MailCentralizedTriggerGroup = "Fanex.MailDelivery.Client.MailCentralizedTriggerGroup";
-        public const string JobRetryNameFormat = "JobRetry_{0}";
-        public const string TriggerRetryNameFormat = "TriggerRetry_{0}";
 
         public const string ScheduleJobDataKey = "Fanex.MailDelivery.Client.ScheduleJobDataKey";
         public const string RabbitMQLoginPassword = ";password=1q2w3e$R";
 
-        public const int JobFailedErrorCode = 1000;
-        public const int RetryDelayInSecond = 5;
+        public const string ClientNotificationJobName = "ClientNotificationJobName";
+        public const string ClientNotificationTriggerName = "ClientNotificationTriggerName";
+        public const string ClientNotificationTopic = "ClientNotificationTopic";
+
+        public const int ClientNotificationIntervalTimeInSecond = 10;
 
         // Server Time is UTC -4.
         public const string LocalServerTimeZone = "Atlantic Standard Time";

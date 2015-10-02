@@ -21,10 +21,10 @@
 
         List<Schedule> GetSchedules();
 
-        MailingList GetMailingList(int mailId);
-
         JobResultMessage RequestAddMailTaskForRunningJob(JobResultMessage jobResult);
 
         void SubscribeRetryJob();
+
+        void PublishClientNotifyMessage();
     }
 }

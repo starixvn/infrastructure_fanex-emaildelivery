@@ -27,7 +27,7 @@
         /// execution.
         /// </remarks>
         public void Execute(IJobExecutionContext context)
-        {            
+        {
             try
             {
                 var schedule = context.MergedJobDataMap[MailDeliveryConstants.ScheduleJobDataKey] as Schedule;
@@ -36,6 +36,7 @@
                     int taskID = schedule.TaskId;
                     JobResultMessage jobResult = new JobResultMessage();
                     jobResult.JobStatus = JobStatus.Running;
+                    jobResult.ScheduledTime = context.ScheduledFireTimeUtc.GetValueOrDefault().DateTime.ToLocalTime();
                     jobResult.RunningTime = context.FireTimeUtc.GetValueOrDefault().DateTime.ToLocalTime();
                     jobResult.Schedule = schedule.Clone();
                     if (schedule != null && schedule.TaskId == 0)
@@ -48,7 +49,10 @@
                     try
                     {
                         jobResult = Run(schedule, context);
-                        jobResult.Mail.MailingListId = schedule.Id;
+                        if (jobResult != null && jobResult.Mail != null)
+                        {
+                            jobResult.Mail.MailingListId = schedule.Id;
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -58,7 +62,8 @@
                             Message = ex.Message,
                             StackTrace = ex.StackTrace
                         };
-                        jobResult.JobStatus = JobStatus.Failed;
+
+                        jobResult.JobStatus = JobStatus.JobFailed;
                     }
 
                     jobResult.Schedule.TaskId = taskID;
@@ -69,7 +74,10 @@
                     }
 
                     MailClientHandler.ReportJob(jobResult);
-                    schedule.TaskId = 0;
+                    if (jobResult.JobStatus != JobStatus.Running)
+                    {
+                        schedule.TaskId = 0;
+                    }
                 }
             }
             catch (Exception ex)

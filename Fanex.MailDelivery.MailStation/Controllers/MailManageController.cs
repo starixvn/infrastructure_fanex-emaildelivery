@@ -33,7 +33,7 @@ namespace Fanex.MailDelivery.MailStation.Controllers
             ViewBag.ListStatus = _mailManageService.Status();
             ViewBag.ListTriggerType = _mailManageService.Trigger();
             ViewBag.TimeZoneString = TimeZoneExtension.GetTimeZoneString();
-            return View("~/Areas/MailStation/ManageMail/ManageMail/Index.cshtml");
+            return View("~/Areas/MailStation/ManageMail/ManageMail/Index.cshtml", criteria);
         }
 
         public JsonResult Sites()
@@ -59,7 +59,7 @@ namespace Fanex.MailDelivery.MailStation.Controllers
         /// </summary>
         /// <param name="criteria">The criteria.</param>
         /// <returns>Create Mail View.</returns>
-        public ActionResult CreateMailView(ReadMailByIDCriteria criteria)
+        public ActionResult CreateMailView(ReadMailByIdCriteria criteria)
         {
             _mailManageService = new MailManageService();
             ViewBag.ListMailGroup = _mailManageService.MailGroups(false);
@@ -110,7 +110,7 @@ namespace Fanex.MailDelivery.MailStation.Controllers
             return Json(_mailManageService.DeleteMail(criteria));
         }
 
-        public ActionResult UpdateMailView(ReadMailByIDCriteria criteria)
+        public ActionResult UpdateMailView(ReadMailByIdCriteria criteria)
         {
             _mailManageService = new MailManageService();
             ViewBag.ListMailGroup = _mailManageService.MailGroups(false);
@@ -135,10 +135,10 @@ namespace Fanex.MailDelivery.MailStation.Controllers
             return Json(_mailManageService.SuggestMails(criteria), JsonRequestBehavior.AllowGet);
         }
 
-        public void RunNow(int mailID)
+        public void RunNow(int mailId)
         {
             _mailManageService = new MailManageService();
-            _mailManageService.RunJobImmediately(mailID);
+            _mailManageService.RunJobImmediately(mailId);
         }
     }
 }
