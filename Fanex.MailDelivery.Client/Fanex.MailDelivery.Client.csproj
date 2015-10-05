@@ -108,6 +108,12 @@
     <Compile Include="Messages\ClientInfomationMessage.cs" />
     <Compile Include="Messages\JobResultMessage.cs" />
     <Compile Include="Messages\MailingListRequest.cs" />
+    <Compile Include="Messages\MailManage\CreateMailMessage.cs" />
+    <Compile Include="Messages\MailManage\GetMailListMessage.cs" />
+    <Compile Include="Messages\MailManage\UpdateMailMessage.cs" />
+    <Compile Include="Messages\Recipient\CreateRecipientMessage.cs" />
+    <Compile Include="Messages\Recipient\RecipientListMessage.cs" />
+    <Compile Include="Messages\Recipient\UpdateRecipientMessage.cs" />
     <Compile Include="Messages\ResultMessage.cs" />
     <Compile Include="Messages\ScheduleRequestMessage.cs" />
     <Compile Include="Enumerations\FileExtension.cs" />
@@ -116,6 +122,8 @@
     <Compile Include="Models\Mail.cs" />
     <Compile Include="Models\MailingList.cs" />
     <Compile Include="Models\MailLinkedResource.cs" />
+    <Compile Include="Models\MailModel.cs" />
+    <Compile Include="Models\RecipientModel.cs" />
     <Compile Include="Models\Schedule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

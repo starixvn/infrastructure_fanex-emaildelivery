@@ -11,6 +11,7 @@
     using Fanex.MailDelivery.MailStation.Criteria.MailReport;
     using Fanex.MailDelivery.MailStation.Models;
     using Fanex.NAP.Framework.Command;
+    using MailModel = Fanex.MailDelivery.MailStation.Models.MailModel;
 
     /// <summary>
     /// Mail Manage Service.

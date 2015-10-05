@@ -61,4 +61,17 @@
     <Setting Key="MailRecorder_GetError" SpName="MailRecorder_GetError" DbName="DBMA.bodb_Maintenance.bodbAdminNet"  />
     <Setting Key="MailRecorder_InsError" SpName="MailRecorder_InsError" DbName="DBMA.bodb_Maintenance.bodbAdminNet"  />
   </Function>
+  
+  <Function Name="Manage Mail">
+    <Setting Key="MailStation_GetMailList" SpName="Mail_MailManagement_GetMailList" DbName="DBMMS.bodb_MMS.bodbAdminNet">
+    </Setting>
+    <Setting Key="MailStation_CreateMail" SpName="Mail_MailManagement_InsertMail" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
+    <Setting Key="MailStation_EditMail" SpName="Mail_MailManagement_UpdateMail" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
+  </Function>
+
+  <Function Name="Manage Recipient">
+    <Setting Key="MailStation_MailReport_GetRecipientList" SpName="Mail_ManageRecipient_GetRecipientList" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
+    <Setting Key="MailStation_MailReport_UpdateRecipient" SpName="Mail_ManageRecipient_UpdateRecipient" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
+    <Setting Key="MailStation_MailReport_InsertRecipient" SpName="Mail_ManageRecipient_InsertRecipient" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
+  </Function>
 </Functions>

@@ -83,11 +83,11 @@ namespace Fanex.MailDelivery.MailStation.Services.MailReport
                             new DateTimeOffset(fromDate),
                             new DateTimeOffset(toDate));
                         listtriggerdate = (from trigertime in listtriggerdate
-                            where !(from task in result
-                                    where task.MailId == schedule.MailId
-                                    select task.ScheduledTime)
-                                .Contains(trigertime.LocalDateTime)
-                            select trigertime).ToList();
+                                           where !(from task in result
+                                                   where task.MailId == schedule.MailId
+                                                   select task.ScheduledTime)
+                                               .Contains(trigertime.LocalDateTime)
+                                           select trigertime).ToList();
                         foreach (var triggertime in listtriggerdate)
                         {
                             var status = triggertime.LocalDateTime.AddSeconds(5) > DateTime.Now ? (int)JobStatus.Waiting : (int)JobStatus.Missing;
@@ -113,7 +113,7 @@ namespace Fanex.MailDelivery.MailStation.Services.MailReport
                 }
             }
 
-            if(oldStatus != -1)
+            if (oldStatus != -1)
             {
                 result = result.Where(m => m.Status == oldStatus).ToList();
             }

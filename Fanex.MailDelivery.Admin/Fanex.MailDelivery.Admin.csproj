@@ -54,7 +54,7 @@
     <Compile Include="Handlers\Impl\MailAdminMessageBroker.cs" />
     <Compile Include="Handlers\Interface\IMailAdminMessageBroker.cs" />
     <Compile Include="Handlers\MailAdminHandler.cs" />
-    <Compile Include="Messages\Recipient\CreateRecipientMessage.cs" />
+    <Compile Include="Handlers\Recipients\RecipientHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

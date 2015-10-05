@@ -5,8 +5,12 @@
     using EasyNetQ;
     using Fanex.MailDelivery.Client;
     using Fanex.MailDelivery.Client.Messages;
+    using Fanex.MailDelivery.Client.Messages.MailManage;
+    using Fanex.MailDelivery.Client.Messages.Recipient;
     using Fanex.MailDelivery.Client.Models;
     using Fanex.MailDelivery.Configurations;
+    using Fanex.MailDelivery.Criteria.Mail;
+    using Fanex.MailDelivery.Criteria.Recipient;
     using Fanex.MailDelivery.Handlers.Interface;
     using Fanex.MailDelivery.Services;
 
@@ -106,7 +110,7 @@
         /// Subscribes the schedule request.
         /// </summary>
         public void SubscribeScheduleRequest()
-        {            
+        {
             _bus.Respond<ScheduleRequestMessage, List<Schedule>>(
                 scheduleRequest =>
                 {
@@ -127,6 +131,128 @@
                 {
                     _mailService.AddMailTaskForRunningJob(jobResult);
                     return jobResult;
+                });
+        }
+
+        public void RespondGetListRecipient()
+        {
+            _bus.Respond<RecipientListMessage, List<RecipientModel>>(
+                requestMessage =>
+                {
+                    return _mailService.GetListRecipient(new RecipientListCriteria()
+                    {
+                        Emails = requestMessage.Emails,
+                        Status = requestMessage.Status,
+                        UserName = requestMessage.UserName
+                    });
+                });
+        }
+
+        public void RespondCreateRecipient()
+        {
+            _bus.Respond<CreateRecipientMessage, ResultMessage>(
+                requestMessage =>
+                {
+                    return _mailService.CreateRecipient(new CreateRecipientCriteria()
+                    {
+                        Email1 = requestMessage.Email1,
+                        Email2 = requestMessage.Email2,
+                        Email3 = requestMessage.Email3,
+                        IsNAPUser = requestMessage.IsNAPUser,
+                        NAPUserID = requestMessage.NAPUserID,
+                        Note = requestMessage.Note,
+                        Status = requestMessage.Status,
+                        UserName = requestMessage.UserName
+                    });
+                });
+        }
+
+        public void RespondUpdateRecipient()
+        {
+            _bus.Respond<UpdateRecipientMessage, ResultMessage>(
+                requestMessage =>
+                {
+                    return _mailService.UpdateRecipient(new UpdateRecipientCriteria()
+                    {
+                        Email1 = requestMessage.Email1,
+                        Email2 = requestMessage.Email2,
+                        Email3 = requestMessage.Email3,
+                        Note = requestMessage.Note,
+                        Status = requestMessage.Status,
+                        Username = requestMessage.Username
+                    });
+                });
+        }
+
+        public void RespondGetListMail()
+        {
+            _bus.Respond<GetMailListMessage, List<MailModel>>(
+                requestMessage =>
+                {
+                    return _mailService.GetListMail(new GetMailListCriteria() 
+                    { 
+                        Emails = requestMessage.Emails,
+                        IsActive = requestMessage.IsActive,
+                        MailGroupId = requestMessage.MailGroupId,
+                        MailName = requestMessage.MailName,
+                        SiteId = requestMessage.SiteId,
+                        TriggerType = requestMessage.TriggerType
+                    });
+                });
+        }
+
+        public void RespondCreateMail()
+        {
+            _bus.Respond<CreateMailMessage, ResultMessage>(
+                    requestMessage =>
+                    {
+                        return _mailService.CreateMail(new CreateMailCriteria() 
+                        {
+                            ////Attempt = requestMessage.Attempt,
+                            ////CronExpression = requestMessage.CronExpression,
+                            Description = requestMessage.Description,
+                            ////EndOn = requestMessage.EndOn,
+                            ////Interval = requestMessage.Interval,
+                            IsActive = requestMessage.IsActive,
+                            MailBcc = requestMessage.MailBcc,
+                            MailCc = requestMessage.MailCc,
+                            MailFrom = requestMessage.MailFrom,
+                            MailGroupId = requestMessage.MailGroupId,
+                            MailName = requestMessage.MailName,
+                            MailTo = requestMessage.MailTo,
+                            ////RepeatType = requestMessage.RepeatType,
+                            SiteId = requestMessage.SiteId,
+                            ////StartOn = requestMessage.StartOn,
+                            TriggerType = 0 // Function Mail
+                        });
+                    });
+        }
+
+        public void RespondUpdateMail()
+        {
+            _bus.Respond<UpdateMailMessage, ResultMessage>(
+                requestMessage =>
+                {
+                    return _mailService.UpdateMail(new UpdateMailCriteria() 
+                    {
+                        ////Attempt = requestMessage.Attempt,
+                        ////CronExpression = requestMessage.CronExpression,
+                        Description = requestMessage.Description,
+                        ////EndOn = requestMessage.EndOn,
+                        ////Interval = requestMessage.Interval,
+                        IsActive = requestMessage.IsActive,
+                        MailBcc = requestMessage.MailBcc,
+                        MailCc = requestMessage.MailCc,
+                        MailFrom = requestMessage.MailFrom,
+                        MailGroupId = requestMessage.MailGroupId,
+                        MailId = requestMessage.MailId,
+                        MailName = requestMessage.MailName,
+                        MailTo = requestMessage.MailTo,
+                        ////RepeatType = requestMessage.RepeatType,
+                        SiteId = requestMessage.SiteId,
+                        ////StartOn = requestMessage.StartOn,
+                        TriggerType = 0 // Function Mail
+                    });
                 });
         }
 

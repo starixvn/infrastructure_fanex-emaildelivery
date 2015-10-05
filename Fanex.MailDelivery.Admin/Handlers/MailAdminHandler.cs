@@ -1,16 +1,44 @@
 ﻿namespace Fanex.MailDelivery.Admin.Handlers
 {
+    using System;
+    using EasyNetQ;
+    using Fanex.MailDelivery.Admin.Configurations;
     using Fanex.MailDelivery.Admin.Handlers.Impl;
     using Fanex.MailDelivery.Admin.Handlers.Interface;
     using Fanex.MailDelivery.Client.Models;
-    using System;
 
     /// <summary>
     /// Mail Admin Handler.
     /// </summary>
-    public class MailAdminHandler
+    public static class MailAdminHandler
     {
+        private static IBus _bus;
+
         private static IMailAdminMessageBroker _messageBroker;
+
+        internal static IBus Bus
+        {
+            get
+            {
+                if (_bus == null)
+                {
+                    lock (_bus)
+                    {
+                        if (_bus == null)
+                        {
+                            _bus = RabbitHutch.CreateBus(
+                                AppSettings.MailAdminConfig.RabbitMQConnectionString,
+                                serviceRegister =>
+                                {
+                                    serviceRegister.Register<IEasyNetQLogger>(_ => new MailAdminLogger());
+                                });
+                        }
+                    }
+                }
+
+                return _bus;
+            }
+        }
 
         public static void Start(IMailAdminMessageBroker messageBroker = null)
         {
@@ -52,7 +80,5 @@
         {
             throw new NotImplementedException();
         }
-
-
     }
 }

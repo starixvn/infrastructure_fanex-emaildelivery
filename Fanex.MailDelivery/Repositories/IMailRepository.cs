@@ -1,8 +1,11 @@
 ﻿namespace Fanex.MailDelivery.Repositories
 {
-    using Fanex.MailDelivery.Client.Enumerations;
+    using System.Collections.Generic;
+    using Fanex.MailDelivery.Client.Messages;
     using Fanex.MailDelivery.Client.Models;
     using Fanex.MailDelivery.Criteria;
+    using Fanex.MailDelivery.Criteria.Mail;
+    using Fanex.MailDelivery.Criteria.Recipient;
     using Fanex.MailDelivery.Models;
 
     public interface IMailRepository
@@ -24,5 +27,17 @@
         MailTask GetMailTask(GetMailTaskByIdCriteria criteria);
 
         void UpdateClientActiveTime(UpdateClientActiveTimeCriteria criteria);
+
+        List<RecipientModel> GetListRecipient(RecipientListCriteria criteria);
+
+        ResultMessage CreateRecipient(CreateRecipientCriteria criteria);
+
+        ResultMessage UpdateRecipient(UpdateRecipientCriteria criteria);
+
+        List<MailModel> GetListMail(GetMailListCriteria criteria);
+
+        ResultMessage CreateMail(CreateMailCriteria criteria);
+
+        ResultMessage UpdateMail(UpdateMailCriteria criteria);
     }
 }

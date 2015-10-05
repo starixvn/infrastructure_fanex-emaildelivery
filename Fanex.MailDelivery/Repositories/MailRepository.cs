@@ -1,17 +1,19 @@
 ﻿namespace Fanex.MailDelivery.Repositories
 {
+    using System;
     using System.Collections;
+    using System.Collections.Generic;
     using System.Linq;
     using Fanex.Common;
     using Fanex.Data;
-    using Fanex.MailDelivery.Client.Enumerations;
+    using Fanex.MailDelivery.Client.Messages;
     using Fanex.MailDelivery.Client.Models;
+    using Fanex.MailDelivery.Configurations;
     using Fanex.MailDelivery.Criteria;
+    using Fanex.MailDelivery.Criteria.Mail;
+    using Fanex.MailDelivery.Criteria.Recipient;
     using Fanex.MailDelivery.Models;
     using Fanex.NAP.Core.Criteria.Misc;
-    using System.Collections.Generic;
-    using System;
-    using Fanex.MailDelivery.Configurations;
 
     /// <summary>
     /// Mail Repository.
@@ -147,6 +149,83 @@
             {
                 db.ExecuteNonQuery(criteria.GetSpParams());
             }
+        }
+
+        public List<RecipientModel> GetListRecipient(RecipientListCriteria criteria)
+        {
+            using (var db = new ObjectDb(criteria.GetSettingKey()))
+            {
+                db.AssignParamValues(criteria.GetSpParams());
+                return db.Query<RecipientModel>().ToList();
+            }
+        }
+
+        public ResultMessage CreateRecipient(CreateRecipientCriteria criteria)
+        {
+            Hashtable hash = criteria.GetSpParams();
+            hash = (new ResultCriteria()).AddSpParams(hash);
+            using (var db = new ObjectDb(criteria.GetSettingKey()))
+            {
+                db.ExecuteNonQuery(hash);
+            }
+
+            return GetCommandResult(hash);
+        }
+
+        public ResultMessage UpdateRecipient(UpdateRecipientCriteria criteria)
+        {
+            Hashtable hash = criteria.GetSpParams();
+            hash = (new ResultCriteria()).AddSpParams(hash);
+            using (var db = new ObjectDb(criteria.GetSettingKey()))
+            {
+                db.ExecuteNonQuery(hash);
+            }
+
+            return GetCommandResult(hash);
+        }
+
+        public List<MailModel> GetListMail(GetMailListCriteria criteria)
+        {
+            using (var db = new ObjectDb(criteria.GetSettingKey()))
+            {
+                db.AssignParamValues(criteria.GetSpParams());
+                return db.Query<MailModel>().ToList();
+            }
+        }
+
+        public ResultMessage CreateMail(CreateMailCriteria criteria)
+        {
+            Hashtable hash = criteria.GetSpParams();
+            hash = (new ResultCriteria()).AddSpParams(hash);
+            using (var db = new ObjectDb(criteria.GetSettingKey()))
+            {
+                db.ExecuteNonQuery(hash);
+            }
+
+            return GetCommandResult(hash);
+        }
+
+        public ResultMessage UpdateMail(UpdateMailCriteria criteria)
+        {
+            Hashtable hash = criteria.GetSpParams();
+            hash = (new ResultCriteria()).AddSpParams(hash);
+            using (var db = new ObjectDb(criteria.GetSettingKey()))
+            {
+                db.ExecuteNonQuery(hash);
+            }
+
+            return GetCommandResult(hash);
+        }
+
+        private ResultMessage GetCommandResult(Hashtable hash)
+        {
+            var errCode = hash["errcode"];
+            var errMsg = hash["errmsg"];
+            return new ResultMessage()
+            {
+                ErrCode = (errCode is DBNull) ? 0 : Convert.ToInt32(errCode),
+                ErrMsg = (errMsg is DBNull) ? string.Empty : Convert.ToString(errMsg)
+            };
         }
     }
 }

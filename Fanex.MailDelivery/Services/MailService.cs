@@ -12,6 +12,8 @@
     using Fanex.MailDelivery.Client.Messages;
     using Fanex.MailDelivery.Client.Models;
     using Fanex.MailDelivery.Criteria;
+    using Fanex.MailDelivery.Criteria.Mail;
+    using Fanex.MailDelivery.Criteria.Recipient;
     using Fanex.MailDelivery.Repositories;
     using Fanex.NAP.Framework.Command;
 
@@ -185,13 +187,43 @@
             {
                 string error = string.Empty;
                 MailExtension.SendMail(record, out error);
-                //LogExtension.LogMessage(string.Format("Sending mail: {0}. Error message: {1}", record.MailID, error));
+                ////LogExtension.LogMessage(string.Format("Sending mail: {0}. Error message: {1}", record.MailID, error));
             }
         }
 
         public void UpdateClientActiveTime(ClientInfomationMessage clientInfoMessage)
         {
             this._mailRepository.UpdateClientActiveTime(new UpdateClientActiveTimeCriteria() { MailIds = clientInfoMessage.MailIds });
+        }
+
+        public List<RecipientModel> GetListRecipient(RecipientListCriteria criteria)
+        {
+            return this._mailRepository.GetListRecipient(criteria);
+        }
+
+        public ResultMessage CreateRecipient(CreateRecipientCriteria criteria)
+        {
+            return this._mailRepository.CreateRecipient(criteria);
+        }
+
+        public ResultMessage UpdateRecipient(UpdateRecipientCriteria criteria)
+        {
+            return this._mailRepository.UpdateRecipient(criteria);
+        }
+
+        public List<MailModel> GetListMail(GetMailListCriteria criteria)
+        {
+            return this._mailRepository.GetListMail(criteria);
+        }
+
+        public ResultMessage CreateMail(CreateMailCriteria criteria)
+        {
+            return this._mailRepository.CreateMail(criteria);
+        }
+
+        public ResultMessage UpdateMail(UpdateMailCriteria criteria)
+        {
+            return this._mailRepository.UpdateMail(criteria);
         }
 
         /// <summary>

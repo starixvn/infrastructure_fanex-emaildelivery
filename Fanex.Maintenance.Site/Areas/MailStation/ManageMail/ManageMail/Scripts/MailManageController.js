@@ -38,7 +38,8 @@ var MailManageController = function () {
             DOMElements.MailName.val(cookie.MailName);
             DOMElements.SiteId.val(cookie.SiteId);
             DOMElements.TriggerType.val(cookie.TriggerType);
-            DOMElements.Emails.val(cookie.Emails);
+            if (cookie.Emails !== undefined && cookie.Emails !== "")
+                DOMElements.Emails.val(cookie.Emails);
             DOMElements.IsActive.val(cookie.IsActive);
         }
     };
@@ -192,7 +193,7 @@ var MailManageController = function () {
 
             bodyData.push({
                 Columns: rowColumns,
-                CssClass: mail.IsClientOnline == false ? 'client-off-line': ''
+                CssClass: mail.IsClientOnline == false ? 'client-off-line' : ''
             });
         }
 

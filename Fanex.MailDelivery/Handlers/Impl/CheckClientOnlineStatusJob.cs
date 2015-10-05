@@ -1,18 +1,18 @@
 ﻿namespace Fanex.MailDelivery.Handlers.Impl
 {
-    using Fanex.MailDelivery.Repositories;
-    using Quartz;
-    using Fanex.MailDelivery.Criteria;
-    using Fanex.MailDelivery.Cache;
-    using Fanex.MailDelivery.Models;
-    using System.Collections.Generic;
-    using Fanex.MailDelivery.Services;
-    using Fanex.MailDeliver.Model;
     using System;
-    using Fanex.MailDelivery.Resources;
-    using Fanex.MailDelivery.Configurations;
+    using System.Collections.Generic;
     using Fanex.MailDeliver.Business.Implement;
     using Fanex.MailDeliver.Core.Infrastructure.Logging;
+    using Fanex.MailDeliver.Model;
+    using Fanex.MailDelivery.Cache;
+    using Fanex.MailDelivery.Configurations;
+    using Fanex.MailDelivery.Criteria;
+    using Fanex.MailDelivery.Models;
+    using Fanex.MailDelivery.Repositories;
+    using Fanex.MailDelivery.Resources;
+    using Fanex.MailDelivery.Services;
+    using Quartz;
 
     /// <summary>
     /// For every 5 mins, load all schedules into cache and identify online status. 

@@ -106,6 +106,12 @@
     <Compile Include="Criteria\AddMailLogCriteria.cs" />
     <Compile Include="Criteria\GetAllScheduleMailCriteria.cs" />
     <Compile Include="Criteria\GetMailWithEmailAddressByMailIDCriteria.cs" />
+    <Compile Include="Criteria\Mail\CreateMailCriteria.cs" />
+    <Compile Include="Criteria\Mail\GetMailListCriteria.cs" />
+    <Compile Include="Criteria\Mail\UpdateMailCriteria.cs" />
+    <Compile Include="Criteria\Recipient\CreateRecipientCriteria.cs" />
+    <Compile Include="Criteria\Recipient\RecipientListCriteria.cs" />
+    <Compile Include="Criteria\Recipient\UpdateRecipientCriteria.cs" />
     <Compile Include="Criteria\UpdateClientActiveTimeCriteria.cs" />
     <Compile Include="Criteria\GetMailTaskByIDCriteria.cs" />
     <Compile Include="Criteria\UpdateMailTaskMailRecordIDCriteria.cs" />
@@ -140,9 +146,7 @@
     </None>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Messages\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Fanex.MailDelivery.Client\Fanex.MailDelivery.Client.csproj">
       <Project>{708E1FCE-82C4-443B-B1E9-0E64BCABE80E}</Project>
