@@ -49,7 +49,7 @@
             }
             catch (Exception ex)
             {
-                LogError(ex);
+                LogError(ex, scheduleIds);
             }
 
             return schedules;

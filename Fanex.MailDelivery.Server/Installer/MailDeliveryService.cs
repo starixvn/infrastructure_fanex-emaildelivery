@@ -5,6 +5,7 @@
     using Fanex.Data.Configuration;
     using Fanex.MailDelivery.Handlers.Impl;
     using Fanex.MailDelivery.Handlers.Interface;
+    using System;
 
     /// <summary>
     /// Mail Centralized Service.
@@ -14,6 +15,8 @@
     {
         private IMessageBroker _messageBroker;
         private JobHandler _jobHandler;
+
+        private string serviceInfo = "Service {0} {1} at {2}.";
 
         public MailDeliveryService()
             : this(null)
@@ -30,12 +33,14 @@
 
         protected override void OnStart(string[] args)
         {
+            Fanex.MailDelivery.Services.ServiceBase.LogInfo(string.Format(serviceInfo, this.ServiceName, "starts", DateTime.Now.ToString()));
             _messageBroker.Start();
             _jobHandler.Start();
         }
 
         protected override void OnStop()
         {
+            Fanex.MailDelivery.Services.ServiceBase.LogInfo(string.Format(serviceInfo, this.ServiceName, "stops", DateTime.Now.ToString()));
             _messageBroker.Dispose();
             _jobHandler.Stop();
         }

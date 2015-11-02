@@ -36,7 +36,7 @@
         private void InitializeComponent()
         {
             _components = new System.ComponentModel.Container();
-            this.ServiceName = "MailCentralizedService";
+            this.ServiceName = "Fanex.MailStation.Service";
         }
 
         #endregion
