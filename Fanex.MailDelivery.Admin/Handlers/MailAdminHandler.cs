@@ -6,6 +6,10 @@
     using Fanex.MailDelivery.Admin.Handlers.Impl;
     using Fanex.MailDelivery.Admin.Handlers.Interface;
     using Fanex.MailDelivery.Client.Models;
+    using System.Collections.Generic;
+    using Fanex.MailDelivery.Client.Messages.MailManage;
+    using Fanex.MailDelivery.Client.Messages;
+    using Fanex.MailDelivery.Client.Messages.Recipient;
 
     /// <summary>
     /// Mail Admin Handler.
@@ -66,19 +70,39 @@
             _messageBroker.PublishAbortJobMessage(taskID);
         }
 
-        public static void RequestCreateRecipientMessage()
+        public static List<MailModel> RequestGetMailMessage(string mailName)
         {
-            throw new NotImplementedException();
+            return _messageBroker.RequestGetMailMessage(mailName);
         }
 
-        public static void RequestUpdateRecipientMessage()
+        public static ResultMessage RequestCreateMailMessage(CreateMailMessage message)
         {
-            throw new NotImplementedException();
+            return _messageBroker.RequestCreateMailMessage(message);
         }
 
-        public static void RequestReadRecipientByEmailMessage()
+        public static ResultMessage RequestUpdateMailMessage(UpdateMailMessage message)
         {
-            throw new NotImplementedException();
+            return _messageBroker.RequestUpdateMailMessage(message);
+        }
+
+        public static List<RecipientModel> RequestGetRecipientMessage(string email)
+        {
+            return _messageBroker.RequestGetRecipientMessage(email);
+        }
+
+        public static ResultMessage RequestCreateRecipientMessage(CreateRecipientMessage message)
+        {
+            return _messageBroker.RequestCreateRecipientMessage(message);
+        }
+
+        public static ResultMessage RequestUpdateRecipientMessage(UpdateRecipientMessage message)
+        {
+            return _messageBroker.RequestUpdateRecipientMessage(message);
+        }
+
+        public static RecipientModel RequestGetRecipientByIdMessage(GetRecipientByIdMessage message)
+        {
+            return _messageBroker.RequestGetRecipientByIdMessage(message);
         }
     }
 }

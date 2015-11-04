@@ -111,6 +111,7 @@
     <Compile Include="Messages\MailManage\CreateMailMessage.cs" />
     <Compile Include="Messages\MailManage\GetMailListMessage.cs" />
     <Compile Include="Messages\MailManage\UpdateMailMessage.cs" />
+    <Compile Include="Messages\Recipient\GetRecipientByIdMessage.cs" />
     <Compile Include="Messages\Recipient\CreateRecipientMessage.cs" />
     <Compile Include="Messages\Recipient\RecipientListMessage.cs" />
     <Compile Include="Messages\Recipient\UpdateRecipientMessage.cs" />

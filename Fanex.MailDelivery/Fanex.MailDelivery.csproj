@@ -110,6 +110,7 @@
     <Compile Include="Criteria\Mail\GetMailListCriteria.cs" />
     <Compile Include="Criteria\Mail\UpdateMailCriteria.cs" />
     <Compile Include="Criteria\Recipient\CreateRecipientCriteria.cs" />
+    <Compile Include="Criteria\Recipient\RecipientByIdCriteria.cs" />
     <Compile Include="Criteria\Recipient\RecipientListCriteria.cs" />
     <Compile Include="Criteria\Recipient\UpdateRecipientCriteria.cs" />
     <Compile Include="Criteria\UpdateClientActiveTimeCriteria.cs" />

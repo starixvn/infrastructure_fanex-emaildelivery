@@ -217,6 +217,20 @@
             return GetCommandResult(hash);
         }
 
+        /// <summary>
+        /// Gets the recipient by identity.
+        /// </summary>
+        /// <param name="criteria">The criteria.</param>
+        /// <returns>The recipient by identity.</returns>
+        public RecipientModel RecipientById(RecipientByIdCriteria criteria)
+        {
+            using (ObjectDb db = new ObjectDb(criteria.GetSettingKey()))
+            {
+                db.AssignParamValues(criteria.GetSpParams());
+                return db.Query<RecipientModel>().FirstOrDefault();
+            }
+        }
+
         private ResultMessage GetCommandResult(Hashtable hash)
         {
             var errCode = hash["errcode"];

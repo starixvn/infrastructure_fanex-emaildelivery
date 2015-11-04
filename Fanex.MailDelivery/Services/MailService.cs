@@ -226,6 +226,11 @@
             return this._mailRepository.UpdateMail(criteria);
         }
 
+        public RecipientModel RecipientById(RecipientByIdCriteria criteria)
+        {
+            return this._mailRepository.RecipientById(criteria);
+        }
+
         /// <summary>
         /// Updates the running job.
         /// </summary>

@@ -39,5 +39,7 @@
         ResultMessage CreateMail(CreateMailCriteria criteria);
 
         ResultMessage UpdateMail(UpdateMailCriteria criteria);
+
+        RecipientModel RecipientById(RecipientByIdCriteria criteria);
     }
 }

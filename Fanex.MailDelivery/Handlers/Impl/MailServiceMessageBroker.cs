@@ -51,6 +51,13 @@
             SubscribeAbortJob();
             RespondAddMailTaskForRunningJob();
             SubscribeClientNotificationMessage();
+            RespondGetListRecipient();
+            RespondCreateRecipient();
+            RespondUpdateRecipient();
+            RespondGetListMail();
+            RespondCreateMail();
+            RespondUpdateMail();
+            RespondGetRecipientById();
         }
 
         public void SubscribeAbortJob()
@@ -252,6 +259,17 @@
                         SiteId = requestMessage.SiteId,
                         ////StartOn = requestMessage.StartOn,
                         TriggerType = 0 // Function Mail
+                    });
+                });
+        }
+
+        public void RespondGetRecipientById()
+        {
+            _bus.Respond<GetRecipientByIdMessage, RecipientModel>(
+                requestMessage =>
+                {
+                    return _mailService.RecipientById(new RecipientByIdCriteria() {
+                        RecipientId = requestMessage.RecipientId
                     });
                 });
         }

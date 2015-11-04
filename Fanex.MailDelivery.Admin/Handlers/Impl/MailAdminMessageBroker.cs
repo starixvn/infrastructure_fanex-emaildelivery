@@ -83,5 +83,10 @@
         {
             return _bus.Request<UpdateRecipientMessage, ResultMessage>(message);
         }
+
+        public RecipientModel RequestGetRecipientByIdMessage(GetRecipientByIdMessage message)
+        {
+            return _bus.Request<GetRecipientByIdMessage, RecipientModel>(message);
+        }
     }
 }
