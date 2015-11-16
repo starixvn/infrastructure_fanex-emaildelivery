@@ -74,6 +74,10 @@
     <Reference Include="Fanex.Data">
       <HintPath>..\packages\Fanex.Data.0.5.404.63\lib\net40\Fanex.Data.dll</HintPath>
     </Reference>
+    <Reference Include="Fanex.NAP.Framework, Version=1.0.0.3, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\_Dependencies\Fanex\Fanex.NAP.Framework.dll</HintPath>
+    </Reference>
     <Reference Include="log4net">
       <HintPath>..\_Dependencies\Others\log4net.dll</HintPath>
     </Reference>
@@ -109,6 +113,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Handlers\MailServiceMessageBroker.cs" />
     <Compile Include="Installer\MailDeliveryService.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -121,14 +126,9 @@
     <Compile Include="Installer\ServiceInstaller.Designer.cs">
       <DependentUpon>ServiceInstaller.cs</DependentUpon>
     </Compile>
+    <Compile Include="Logging\RabbitMQLogger.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Fanex.MailDelivery\Fanex.MailDelivery.csproj">
-      <Project>{1320036B-CD9F-4264-B313-D8D4AD4E04A0}</Project>
-      <Name>Fanex.MailDelivery</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config">
@@ -172,6 +172,20 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Fanex.MailDelivery.Admin\Fanex.MailDelivery.Admin.csproj">
+      <Project>{011C7F64-69E3-4867-9B3E-D6D1D931060B}</Project>
+      <Name>Fanex.MailDelivery.Admin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fanex.MailDelivery.Core\Fanex.MailDelivery.Core.csproj">
+      <Project>{C7ED0DE9-6A20-4223-B251-6EF530B74139}</Project>
+      <Name>Fanex.MailDelivery.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fanex.MailDelivery.Services\Fanex.MailDelivery.Services.csproj">
+      <Project>{1320036B-CD9F-4264-B313-D8D4AD4E04A0}</Project>
+      <Name>Fanex.MailDelivery.Services</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

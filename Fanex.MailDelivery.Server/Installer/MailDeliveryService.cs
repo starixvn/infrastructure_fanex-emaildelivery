@@ -1,10 +1,12 @@
-﻿namespace Fanex.MailDelivery.Server.Installer
+﻿using Fanex.MailDelivery.Server.Handlers;
+using Fanex.MailDelivery.Services.Handlers.Impl;
+using Fanex.MailDelivery.Services.Handlers.Interface;
+
+namespace Fanex.MailDelivery.Server.Installer
 {
     using System.Diagnostics.CodeAnalysis;
     using System.ServiceProcess;
-    using Fanex.Data.Configuration;
-    using Fanex.MailDelivery.Handlers.Impl;
-    using Fanex.MailDelivery.Handlers.Interface;
+    using Data.Configuration;
     using System;
 
     /// <summary>
@@ -33,14 +35,14 @@
 
         protected override void OnStart(string[] args)
         {
-            Fanex.MailDelivery.Services.ServiceBase.LogInfo(string.Format(serviceInfo, this.ServiceName, "starts", DateTime.Now.ToString()));
+            Services.MailService.ServiceBase.LogInfo(string.Format(serviceInfo, this.ServiceName, "starts", DateTime.Now.ToString()));
             _messageBroker.Start();
             _jobHandler.Start();
         }
 
         protected override void OnStop()
         {
-            Fanex.MailDelivery.Services.ServiceBase.LogInfo(string.Format(serviceInfo, this.ServiceName, "stops", DateTime.Now.ToString()));
+            Services.MailService.ServiceBase.LogInfo(string.Format(serviceInfo, this.ServiceName, "stops", DateTime.Now.ToString()));
             _messageBroker.Dispose();
             _jobHandler.Stop();
         }

@@ -1,0 +1,24 @@
+﻿using Fanex.NAP.Framework.Data;
+
+namespace Fanex.MailDelivery.Services.Criteria
+{
+    /// <summary>
+    /// Get all log category criteria.
+    /// </summary>
+    public class UpdateMailTaskMSiteMailIdCriteria : CriteriaBase
+    {
+        public int TaskId { get; set; }
+
+        public int MSiteMailId { get; set; }
+
+        public override bool IsValid()
+        {
+            return true;
+        }
+
+        public override string GetSettingKey()
+        {
+            return "Mail_Core_UpdateMailTaskMSiteMailID";
+        }
+    }
+}

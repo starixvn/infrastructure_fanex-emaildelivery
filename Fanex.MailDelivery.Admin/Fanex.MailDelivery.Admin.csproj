@@ -35,6 +35,21 @@
     <Reference Include="EasyNetQ">
       <HintPath>..\packages\EasyNetQ.0.50.1.392\lib\net40\EasyNetQ.dll</HintPath>
     </Reference>
+    <Reference Include="Fanex.Common, Version=1.0.404.97, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Fanex.Common.1.0.404.97\lib\net40\Fanex.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Fanex.Data, Version=0.5.404.62, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\_Dependencies\Fanex\Fanex.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Fanex.Maintenance.Repository">
+      <HintPath>..\_Dependencies\mSite\Fanex.Maintenance.Repository.dll</HintPath>
+    </Reference>
+    <Reference Include="Fanex.NAP.Framework, Version=1.0.0.3, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\_Dependencies\Fanex\Fanex.NAP.Framework.dll</HintPath>
+    </Reference>
     <Reference Include="RabbitMQ.Client">
       <HintPath>..\packages\RabbitMQ.Client.3.5.4\lib\net40\RabbitMQ.Client.dll</HintPath>
     </Reference>
@@ -50,22 +65,69 @@
   <ItemGroup>
     <Compile Include="Configurations\AppSettings.cs" />
     <Compile Include="Configurations\MailAdminSection.cs" />
-    <Compile Include="Handlers\Impl\MailAdminLogger.cs" />
-    <Compile Include="Handlers\Impl\MailAdminMessageBroker.cs" />
-    <Compile Include="Handlers\Interface\IMailAdminMessageBroker.cs" />
-    <Compile Include="Handlers\MailAdminHandler.cs" />
-    <Compile Include="Handlers\Recipients\RecipientHandler.cs" />
+    <Compile Include="Criteria\Group\CreateGroupCriteria.cs" />
+    <Compile Include="Criteria\Group\DeleteGroupCriteria.cs" />
+    <Compile Include="Criteria\Group\_GetMailGroupByIDCriteria.cs" />
+    <Compile Include="Criteria\Group\GetGroupListCriteria.cs" />
+    <Compile Include="Criteria\Group\UpdateGroupCriteria.cs" />
+    <Compile Include="Criteria\Mail\CreateMailCriteria.cs" />
+    <Compile Include="Criteria\Mail\DeleteMailCriteria.cs" />
+    <Compile Include="Criteria\Mail\GetMailListCriteria.cs" />
+    <Compile Include="Criteria\Mail\UpdateMailCriteria.cs" />
+    <Compile Include="Criteria\Recipient\CreateRecipientCriteria.cs" />
+    <Compile Include="Criteria\Recipient\DeleteRecipientCriteria.cs" />
+    <Compile Include="Criteria\Recipient\RecipientByIdCriteria.cs" />
+    <Compile Include="Criteria\Recipient\RecipientListCriteria.cs" />
+    <Compile Include="Criteria\Recipient\UpdateRecipientCriteria.cs" />
+    <Compile Include="Handlers\MailAdminMessageBroker.cs" />
+    <Compile Include="Handlers\IMailAdminMessageBroker.cs" />
+    <Compile Include="Logging\MailAdminLogger.cs" />
+    <Compile Include="MailAdminService.cs" />
+    <Compile Include="Mapping\GroupModelMapper.cs" />
+    <Compile Include="Mapping\MailModelMapper.cs" />
+    <Compile Include="Mapping\RecipientModelMapper.cs" />
+    <Compile Include="Messaging\ManageGroup\UpdateGroupRequest.cs" />
+    <Compile Include="Messaging\ManageGroup\DeleteGroupRequest.cs" />
+    <Compile Include="Messaging\ManageGroup\CreateGroupRequest.cs" />
+    <Compile Include="Messaging\ManageGroup\GetGroupListResponse.cs" />
+    <Compile Include="Messaging\ManageGroup\GetGroupListRequest.cs" />
+    <Compile Include="Messaging\ManageMail\CreateAutoMailRequest.cs" />
+    <Compile Include="Messaging\ManageMail\CreateFunctionMailRequest.cs" />
+    <Compile Include="Messaging\ManageMail\DeleteMailRequest.cs" />
+    <Compile Include="Messaging\ManageMail\GetMailListRequest.cs" />
+    <Compile Include="Messaging\ManageMail\GetMailListResponse.cs" />
+    <Compile Include="Messaging\ManageMail\MailRequestBase.cs" />
+    <Compile Include="Messaging\ManageMail\UpdateAutoMailRequest.cs" />
+    <Compile Include="Messaging\ManageMail\UpdateFunctionMailRequest.cs" />
+    <Compile Include="Messaging\ManageRecipient\UpdateRecipientRequest.cs" />
+    <Compile Include="Messaging\ManageRecipient\DeleteRecipientRequest.cs" />
+    <Compile Include="Messaging\ManageRecipient\CreateRecipientRequest.cs" />
+    <Compile Include="Messaging\ManageRecipient\GetRecipientListRequest.cs" />
+    <Compile Include="Messaging\ManageRecipient\GetRecipientListResponse.cs" />
+    <Compile Include="Messaging\Schedule\ScheduleRequest.cs" />
+    <Compile Include="Messaging\Schedule\ScheduleResponse.cs" />
+    <Compile Include="Models\MailGroupModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\IAdminRepository.cs" />
+    <Compile Include="Repositories\AdminRepository.cs" />
+    <Compile Include="Services\IAdminService.cs" />
+    <Compile Include="Services\AdminService.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Fanex.MailDelivery.Client\Fanex.MailDelivery.Client.csproj">
-      <Project>{708E1FCE-82C4-443B-B1E9-0E64BCABE80E}</Project>
-      <Name>Fanex.MailDelivery.Client</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Fanex.MailDelivery.Core\Fanex.MailDelivery.Core.csproj">
+      <Project>{C7ED0DE9-6A20-4223-B251-6EF530B74139}</Project>
+      <Name>Fanex.MailDelivery.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fanex.MailDelivery.Services\Fanex.MailDelivery.Services.csproj">
+      <Project>{1320036B-CD9F-4264-B313-D8D4AD4E04A0}</Project>
+      <Name>Fanex.MailDelivery.Services</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

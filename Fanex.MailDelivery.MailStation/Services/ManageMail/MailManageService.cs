@@ -1,18 +1,18 @@
-﻿namespace Fanex.MailDelivery.MailStation.Services.ManageMail
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using Fanex.Data;
-    using Fanex.MailDelivery.Admin.Handlers;
-    using Fanex.MailDelivery.Client.Models;
-    using Fanex.MailDelivery.MailStation.Criteria.MailGroup;
-    using Fanex.MailDelivery.MailStation.Criteria.MailManage;
-    using Fanex.MailDelivery.MailStation.Criteria.MailReport;
-    using Fanex.MailDelivery.MailStation.Models;
-    using Fanex.NAP.Framework.Command;
-    using MailModel = Fanex.MailDelivery.MailStation.Models.MailModel;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Fanex.Data;
+using Fanex.MailDelivery.Admin;
+using Fanex.MailDelivery.Admin.Messaging.Schedule;
+using Fanex.MailDelivery.Core.Models;
+using Fanex.MailDelivery.MailStation.Criteria.MailGroup;
+using Fanex.MailDelivery.MailStation.Criteria.MailManage;
+using Fanex.MailDelivery.MailStation.Criteria.MailReport;
+using Fanex.NAP.Framework.Command;
+using MailModel = Fanex.MailDelivery.MailStation.Models.MailModel;
 
+namespace Fanex.MailDelivery.MailStation.Services.ManageMail
+{
     /// <summary>
     /// Mail Manage Service.
     /// </summary>
@@ -53,8 +53,8 @@
         /// <returns>Command Result.</returns>
         public CommandResult UpdateMail(UpdateMailCriteria criteria)
         {
-            MailAdminHandler.Start();
-            MailAdminHandler.PublishScheduleChangeMessage(new Schedule()
+            MailAdminService.Start();
+            MailAdminService.PublishScheduleChangeMessage(new ScheduleRequest
             {
                 Id = criteria.MailId,
                 Active = criteria.IsActive,
@@ -67,7 +67,7 @@
                 SiteId = criteria.SiteId
             });
 
-            MailAdminHandler.Stop();
+            MailAdminService.Stop();
             return ExecuteNonQuery(criteria);
         }
 
@@ -78,10 +78,11 @@
 
         public void RunJobImmediately(int mailID)
         {
-            MailAdminHandler.Start();
-            Schedule schedule = this.GetScheduleByMailId(new GetScheduleByIdCriteria() { MailId = mailID });
-            MailAdminHandler.PublishRetryJobMessage(schedule);
-            MailAdminHandler.Stop();
+            MailAdminService.Start();
+            //TODO: Will be changed
+            //Schedule schedule = GetScheduleByMailId(new GetScheduleByIdCriteria { MailId = mailID });
+            //MailAdminService.PublishRetryJobMessage(schedule);
+            MailAdminService.Stop();
         }
     }
 }

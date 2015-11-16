@@ -1,4 +1,6 @@
-﻿namespace Fanex.MailDelivery.MailStation.Services
+﻿using Fanex.MailDelivery.Core.Models;
+
+namespace Fanex.MailDelivery.MailStation.Services
 {
     using System;
     using System.Collections;

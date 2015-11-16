@@ -1,9 +1,11 @@
-﻿namespace Fanex.MailDelivery.Client.Handlers
+﻿using Fanex.MailDelivery.Core.Messaging;
+using Fanex.MailDelivery.Core.Models;
+
+namespace Fanex.MailDelivery.Client.Handlers
 {
     using System.Collections.Generic;
     using Fanex.MailDelivery.Client.Handlers.Impl;
     using Fanex.MailDelivery.Client.Handlers.Interface;
-    using Fanex.MailDelivery.Client.Messages;
     using Fanex.MailDelivery.Client.Models;
 
     /// <summary>

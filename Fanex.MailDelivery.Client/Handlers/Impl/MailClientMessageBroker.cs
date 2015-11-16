@@ -1,4 +1,7 @@
-﻿namespace Fanex.MailDelivery.Client.Handlers.Impl
+﻿using Fanex.MailDelivery.Core.Messaging;
+using Fanex.MailDelivery.Core.Models;
+
+namespace Fanex.MailDelivery.Client.Handlers.Impl
 {
     using System.Collections.Generic;
     using System.Diagnostics;
@@ -7,8 +10,6 @@
     using EasyNetQ;
     using Fanex.MailDelivery.Client.Configurations;
     using Fanex.MailDelivery.Client.Handlers.Interface;
-    using Fanex.MailDelivery.Client.Messages;
-    using Fanex.MailDelivery.Client.Models;
 
     /// <summary>
     /// Rabbit MQ Broker for PUB/SUB message.
@@ -95,16 +96,17 @@
         /// <returns>Schedule list.</returns>
         public List<Schedule> GetSchedules()
         {
-            ScheduleRequestMessage scheduleRequest = new ScheduleRequestMessage();
+            Schedule scheduleRequest = new Schedule();
             var schedules = AppSettings.MailCientConfig.Schedules;
 
             foreach (ScheduleElement scheduleConfig in schedules)
             {
-                scheduleRequest.Ids.Add(scheduleConfig.Id);
+                // TODO: Reverse
+                //scheduleRequest.Ids.Add(scheduleConfig.Id);
             }
 
             var isconnect = _bus.IsConnected;
-            return _bus.Request<ScheduleRequestMessage, List<Schedule>>(scheduleRequest);
+            return _bus.Request<Schedule, List<Schedule>>(scheduleRequest);
         }
 
         /// <summary>

@@ -88,6 +88,10 @@
       <Project>{708E1FCE-82C4-443B-B1E9-0E64BCABE80E}</Project>
       <Name>Fanex.MailDelivery.Client</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Fanex.MailDelivery.Core\Fanex.MailDelivery.Core.csproj">
+      <Project>{C7ED0DE9-6A20-4223-B251-6EF530B74139}</Project>
+      <Name>Fanex.MailDelivery.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

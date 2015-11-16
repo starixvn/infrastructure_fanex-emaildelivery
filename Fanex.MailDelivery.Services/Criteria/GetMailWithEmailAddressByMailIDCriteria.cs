@@ -1,0 +1,22 @@
+﻿using Fanex.NAP.Framework.Data;
+
+namespace Fanex.MailDelivery.Services.Criteria
+{
+    /// <summary>
+    /// Get all log category criteria.
+    /// </summary>
+    public class GetMailWithEmailAddressByMailId : CriteriaBase
+    {
+        public int MailId { get; set; }
+
+        public override bool IsValid()
+        {
+            return true;
+        }
+
+        public override string GetSettingKey()
+        {
+            return "Mail_MailManagement_GetMailWithEmailAddressByMailID";
+        }
+    }
+}

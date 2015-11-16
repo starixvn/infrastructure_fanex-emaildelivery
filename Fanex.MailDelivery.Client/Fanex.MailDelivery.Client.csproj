@@ -93,43 +93,22 @@
     <Compile Include="Configurations\MailClientSection.cs" />
     <Compile Include="Configurations\ScheduleElement.cs" />
     <Compile Include="Configurations\ScheduleElementCollection.cs" />
-    <Compile Include="Enumerations\JobStatus.cs" />
     <Compile Include="Handlers\BaseHandler.cs" />
     <Compile Include="Handlers\Impl\MailClientLogger.cs" />
     <Compile Include="Jobs\ClientNotificationJob.cs" />
     <Compile Include="MailDeliveryConstants.cs" />
-    <Compile Include="Enumerations\MailType.cs" />
     <Compile Include="Handlers\Impl\JobHandler.cs" />
     <Compile Include="Handlers\Impl\MailClientMessageBroker.cs" />
     <Compile Include="Handlers\Interface\IJobHandler.cs" />
     <Compile Include="Handlers\Interface\IMailClientMessageBroker.cs" />
     <Compile Include="Handlers\MailClientHandler.cs" />
     <Compile Include="Jobs\JobBase.cs" />
-    <Compile Include="Messages\ClientInfomationMessage.cs" />
-    <Compile Include="Messages\JobResultMessage.cs" />
-    <Compile Include="Messages\MailingListRequest.cs" />
-    <Compile Include="Messages\MailManage\CreateMailMessage.cs" />
-    <Compile Include="Messages\MailManage\GetMailListMessage.cs" />
-    <Compile Include="Messages\MailManage\UpdateMailMessage.cs" />
-    <Compile Include="Messages\Recipient\GetRecipientByIdMessage.cs" />
-    <Compile Include="Messages\Recipient\CreateRecipientMessage.cs" />
-    <Compile Include="Messages\Recipient\RecipientListMessage.cs" />
-    <Compile Include="Messages\Recipient\UpdateRecipientMessage.cs" />
-    <Compile Include="Messages\ResultMessage.cs" />
-    <Compile Include="Messages\ScheduleRequestMessage.cs" />
-    <Compile Include="Enumerations\FileExtension.cs" />
-    <Compile Include="Messages\TaskLog.cs" />
-    <Compile Include="Models\MailAttachment.cs" />
-    <Compile Include="Models\Mail.cs" />
-    <Compile Include="Models\MailingList.cs" />
-    <Compile Include="Models\MailLinkedResource.cs" />
-    <Compile Include="Models\MailModel.cs" />
-    <Compile Include="Models\RecipientModel.cs" />
-    <Compile Include="Models\Schedule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="job_scheduling_data_2_0.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -139,6 +118,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="CodeAnalysis\CodeAnalysisConfiguration.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Fanex.MailDelivery.Core\Fanex.MailDelivery.Core.csproj">
+      <Project>{C7ED0DE9-6A20-4223-B251-6EF530B74139}</Project>
+      <Name>Fanex.MailDelivery.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

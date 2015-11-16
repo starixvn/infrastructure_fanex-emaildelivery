@@ -10,36 +10,42 @@
     {
         public static void Main(string[] args)
         {
-            ////MailClientHandler.Start();
-            ////Console.WriteLine("Mail Client Service Site: {0} started.", AppSettings.MailCientConfig.SiteId);
-            ////SendFunctionMail();
-            ////Console.Read();
-            ////MailClientHandler.Stop();
+            MailClientHandler.Start();
+            //Console.WriteLine("Mail Client Service Site: {0} started.", AppSettings.MailCientConfig.SiteId);
+            //SendFunctionMail();
+            //Console.Read();
 
-            ServiceBase[] servicesToRun = new ServiceBase[]
-            {
-                new MailClientTestService()
-            };
+            Type type = typeof(MailClientTestService);
+            MethodInfo method = type.GetMethod("SendFunctionMail", BindingFlags.Instance | BindingFlags.NonPublic);
+            method.Invoke(new MailClientTestService(), null);
 
-            if (Environment.UserInteractive)
-            {
-                Type type = typeof(ServiceBase);
-                BindingFlags flags = BindingFlags.Instance | BindingFlags.NonPublic;
-                MethodInfo method = type.GetMethod("OnStart", flags);
-                foreach (ServiceBase service in servicesToRun)
-                {
-                    method.Invoke(service, new object[] { args });
-                }
+            MailClientHandler.Stop();
 
-                foreach (ServiceBase service in servicesToRun)
-                {
-                    service.Stop();
-                }
-            }
-            else
-            {
-                ServiceBase.Run(servicesToRun);
-            }
+            //ServiceBase[] servicesToRun = new ServiceBase[]
+            //{
+            //    new MailClientTestService()
+            //};
+
+            //if (Environment.UserInteractive)
+            //{
+            //    Type type = typeof(ServiceBase);
+            //    BindingFlags flags = BindingFlags.Instance | BindingFlags.NonPublic;
+
+            //    MethodInfo method = type.GetMethod("OnStart", flags);
+            //    foreach (ServiceBase service in servicesToRun)
+            //    {
+            //        method.Invoke(service, new object[] { args });
+            //    }
+
+            //    foreach (ServiceBase service in servicesToRun)
+            //    {
+            //        service.Stop();
+            //    }
+            //}
+            //else
+            //{
+            //    ServiceBase.Run(servicesToRun);
+            //}
         }
     }
 }

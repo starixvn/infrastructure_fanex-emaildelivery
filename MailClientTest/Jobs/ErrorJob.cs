@@ -1,9 +1,11 @@
-﻿namespace MailClientTest.Jobs
+﻿using Fanex.MailDelivery.Core.Messaging;
+using Fanex.MailDelivery.Core.Models;
+
+namespace MailClientTest.Jobs
 {
     using System;
     using System.Threading;
     using Fanex.MailDelivery.Client.Jobs;
-    using Fanex.MailDelivery.Client.Messages;
     using Fanex.MailDelivery.Client.Models;
     using Quartz;
 

@@ -24,6 +24,17 @@
     </SccAuxPath>
     <SccProvider>
     </SccProvider>
+    <MvcProjectUpgradeChecked>true</MvcProjectUpgradeChecked>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>4.0</OldToolsVersion>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -257,6 +268,12 @@
     <Content Include="Areas\MailStation\ManageMail\ManageMail\Scripts\MailManageController.js" />
     <Content Include="Areas\MailStation\ManageMail\ManageMail\Styles\Images\trigger.png" />
     <Content Include="Areas\MailStation\ManageRecipient\ManageRecipient\Scripts\ManageRecipientController.js" />
+    <Content Include="Areas\UserLogin\themes\select-site.css">
+      <DependentUpon>select-site.less</DependentUpon>
+    </Content>
+    <Content Include="Areas\UserLogin\themes\select-site.min.css">
+      <DependentUpon>select-site.css</DependentUpon>
+    </Content>
     <Content Include="scripts\lib\ContextMenu\ContextMenuController.js" />
     <Content Include="scripts\lib\Countdown\CountdownController.js" />
     <Content Include="scripts\lib\Countdown\Images\countdownCheck.png" />
@@ -711,14 +728,6 @@
     <Content Include="Areas\MailStation\Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Fanex.MailDelivery.Admin\Fanex.MailDelivery.Admin.csproj">
-      <Project>{011C7F64-69E3-4867-9B3E-D6D1D931060B}</Project>
-      <Name>Fanex.MailDelivery.Admin</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Fanex.MailDelivery.Client\Fanex.MailDelivery.Client.csproj">
-      <Project>{708E1FCE-82C4-443B-B1E9-0E64BCABE80E}</Project>
-      <Name>Fanex.MailDelivery.Client</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Fanex.MailDelivery.MailStation\Fanex.MailDelivery.MailStation.csproj">
       <Project>{108C1D8A-CAE1-46DA-B951-60E1FC67EF12}</Project>
       <Name>Fanex.MailDelivery.MailStation</Name>
@@ -751,6 +760,10 @@
     <None Include="BundleTransformer.Configuration.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="compilerconfig.json" />
+    <Content Include="compilerconfig.json.defaults">
+      <DependentUpon>compilerconfig.json</DependentUpon>
+    </Content>
     <None Include="scripts\lib\InputCombobox\colors.less" />
     <None Include="scripts\lib\InputCombobox\common.less" />
     <None Include="scripts\lib\InputCombobox\fonts.less" />

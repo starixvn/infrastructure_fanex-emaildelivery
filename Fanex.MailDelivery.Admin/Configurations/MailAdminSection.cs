@@ -1,4 +1,6 @@
-﻿namespace Fanex.MailDelivery.Admin.Configurations
+﻿using Fanex.MailDelivery.Core;
+
+namespace Fanex.MailDelivery.Admin.Configurations
 {
     using System.Configuration;
 
@@ -10,7 +12,7 @@
         [ConfigurationProperty("rabbitMQConnectionString", IsRequired = true)]
         public string RabbitMQConnectionString
         {
-            get { return (string)this["rabbitMQConnectionString"] + Fanex.MailDelivery.Client.MailDeliveryConstants.RabbitMQLoginPassword; }
+            get { return (string)this["rabbitMQConnectionString"] + MailDeliveryConstants.RabbitMQLoginPassword; }
             set { this["rabbitMQConnectionString"] = value; }
         }
 

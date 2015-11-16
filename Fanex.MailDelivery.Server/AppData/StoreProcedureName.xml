@@ -37,7 +37,7 @@
       <Mapping DataField="LastActive" ObjectProperty="LastActive" />
     </Setting>
   </Function>
-  
+
   <Function Name="MailDeliver">
     <Setting Key="StoreConfig" SpName="MailRecorder_InsConfig" DbName="DBMA.bodb_Maintenance.bodbAdminNet" />
     <Setting Key="GetConfig" SpName="MailRecorder_GetConfig" DbName="DBMA.bodb_Maintenance.bodbAdminNet" />
@@ -61,18 +61,30 @@
     <Setting Key="MailRecorder_GetError" SpName="MailRecorder_GetError" DbName="DBMA.bodb_Maintenance.bodbAdminNet"  />
     <Setting Key="MailRecorder_InsError" SpName="MailRecorder_InsError" DbName="DBMA.bodb_Maintenance.bodbAdminNet"  />
   </Function>
-  
+
   <Function Name="Manage Mail">
-    <Setting Key="MailStation_GetMailList" SpName="Mail_MailManagement_GetMailList" DbName="DBMMS.bodb_MMS.bodbAdminNet">
-    </Setting>
+    <Setting Key="MailStation_GetMailList" SpName="Mail_MailManagement_GetMailList" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
     <Setting Key="MailStation_CreateMail" SpName="Mail_MailManagement_InsertMail" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
     <Setting Key="MailStation_EditMail" SpName="Mail_MailManagement_UpdateMail" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
+    <Setting Key="MailStation_DeleteMail" SpName="Mail_MailManagement_DeleteMail" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
   </Function>
 
   <Function Name="Manage Recipient">
-    <Setting Key="MailStation_MailReport_GetRecipientById" SpName="Mail_ManageRecipient_GetRecipientByID" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
+    <!--<Setting Key="MailStation_MailReport_GetRecipientById" SpName="Mail_ManageRecipient_GetRecipientByID" DbName="DBMMS.bodb_MMS.bodbAdminNet" />-->
     <Setting Key="MailStation_MailReport_GetRecipientList" SpName="Mail_ManageRecipient_GetRecipientList" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
     <Setting Key="MailStation_MailReport_UpdateRecipient" SpName="Mail_ManageRecipient_UpdateRecipient" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
     <Setting Key="MailStation_MailReport_InsertRecipient" SpName="Mail_ManageRecipient_InsertRecipient" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
+    <Setting Key="MailStation_MailReport_DeleteRecipient" SpName="Mail_ManageRecipient_DeleteRecipient" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
   </Function>
+
+  <Function Name="Manage Group">
+    <Setting Key="MailStation_Group_GetMailGroup" SpName="Mail_Group_GetMailGroup" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
+    
+    <Setting Key="MailStation_Group_CreateMailGroup" SpName="Mail_Group_InsertGroup" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
+    <Setting Key="MailStation_Group_UpdateMailGroup" SpName="Mail_Group_UpdateGroup" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
+    <Setting Key="MailStation_Group_DeleteMailGroup" SpName="Mail_Group_DeleteGroup" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
+    <Setting Key="MailStation_Group_GetMailGroupByID" SpName="Mail_Group_GetMailGroupByID" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
+  </Function>
+  
+  
 </Functions>

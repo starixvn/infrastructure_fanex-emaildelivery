@@ -1,4 +1,6 @@
-﻿namespace Fanex.MailDelivery.Client.Handlers.Impl
+﻿using Fanex.MailDelivery.Core.Models;
+
+namespace Fanex.MailDelivery.Client.Handlers.Impl
 {
     using System;
     using System.Collections.Generic;

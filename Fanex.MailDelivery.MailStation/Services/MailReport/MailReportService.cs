@@ -7,6 +7,10 @@
 //   <change who="Louis.Nguyen" date="2014.10.03">Created</change>
 // </history>
 
+using Fanex.MailDelivery.Admin;
+using Fanex.MailDelivery.Core.Enumerations;
+using Fanex.MailDelivery.Core.Models;
+
 namespace Fanex.MailDelivery.MailStation.Services.MailReport
 {
     using System;
@@ -18,8 +22,6 @@ namespace Fanex.MailDelivery.MailStation.Services.MailReport
     using Fanex.Data;
     using Fanex.MailDeliver.Model;
     using Fanex.MailDelivery.Admin.Handlers;
-    using Fanex.MailDelivery.Client.Enumerations;
-    using Fanex.MailDelivery.Client.Models;
     using Fanex.MailDelivery.MailStation.Criteria.MailReport;
     using Fanex.MailDelivery.MailStation.Models;
     using Fanex.Maintenance.Service.Impl.Mail;
@@ -159,19 +161,22 @@ namespace Fanex.MailDelivery.MailStation.Services.MailReport
         /// <param name="criteria">The criteria.</param>
         public void RetrySendMail(RetrySendMailCriteria criteria)
         {
-            MailAdminHandler.Start();
+            MailAdminService.Start();
             MailTaskModel mailTask = this.GetMailTaskByID(new GetMailTaskByIdCriteria() { MailTaskId = criteria.TaskId });
-            Schedule schedule = this.GetScheduleByMailId(new GetScheduleByIdCriteria() { MailId = mailTask.MailId });
-            schedule.TaskId = mailTask.MailTaskId;
-            MailAdminHandler.PublishRetryJobMessage(schedule);
-            MailAdminHandler.Stop();
+
+            //TODO: Will be changed
+
+            //Schedule schedule = this.GetScheduleByMailId(new GetScheduleByIdCriteria() { MailId = mailTask.MailId });
+            //schedule.TaskId = mailTask.MailTaskId;
+            //MailAdminService.PublishRetryJobMessage(schedule);
+            MailAdminService.Stop();
         }
 
         public void AbortJob(int taskID)
         {
-            MailAdminHandler.Start();
-            MailAdminHandler.PublishAbortJobMessage(taskID);
-            MailAdminHandler.Stop();
+            MailAdminService.Start();
+            MailAdminService.PublishAbortJobMessage(taskID);
+            MailAdminService.Stop();
         }
 
         public void RetryMissingJob(RetryMissingTaskCriteria criteria)
@@ -186,13 +191,17 @@ namespace Fanex.MailDelivery.MailStation.Services.MailReport
                 mailTaskID = Converter.ToInt(db.GetParameterValue("MailTaskID"));
             }
 
-            MailAdminHandler.Start();
+            MailAdminService.Start();
             MailTaskModel mailTask = this.GetMailTaskByID(new GetMailTaskByIdCriteria() { MailTaskId = mailTaskID });
-            Schedule schedule = this.GetScheduleByMailId(new GetScheduleByIdCriteria() { MailId = mailTask.MailId });
-            schedule.CurrentFireTime = criteria.ScheduledTime;
-            schedule.TaskId = mailTaskID;
-            MailAdminHandler.PublishRetryJobMessage(schedule);
-            MailAdminHandler.Stop();
+
+            //TODO: Will be changed 
+            //Schedule schedule = this.GetScheduleByMailId(new GetScheduleByIdCriteria() { MailId = mailTask.MailId });
+            //schedule.CurrentFireTime = criteria.ScheduledTime;
+            //schedule.TaskId = mailTaskID;
+            //MailAdminService.PublishRetryJobMessage(schedule);
+
+
+            MailAdminService.Stop();
         }
 
         /// <summary>
