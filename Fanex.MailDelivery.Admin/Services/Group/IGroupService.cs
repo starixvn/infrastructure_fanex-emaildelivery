@@ -8,6 +8,8 @@ namespace Fanex.MailDelivery.Admin.Services.Group
     {
         GetGroupListResponse GetGroupList(GetGroupListRequest request);
 
+        GetMailGroupByIdResponse GetMailGroupById(GetMailGroupByIdRequest request);
+
         ResultResponse CreateGroup(CreateGroupRequest request);
 
         ResultResponse UpdateGroup(UpdateGroupRequest request);

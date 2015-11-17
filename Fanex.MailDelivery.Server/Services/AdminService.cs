@@ -72,6 +72,11 @@ namespace Fanex.MailDelivery.Server.Services
             return _mailRepository.GetGroupList(criteria);
         }
 
+        public GroupModel GetGroupById(GetGroupByIdCriteria criteria)
+        {
+            return _mailRepository.GetGroupById(criteria);
+        }
+
         public ResultResponse CreateGroup(CreateGroupCriteria criteria)
         {
             return _mailRepository.CreateGroup(criteria);

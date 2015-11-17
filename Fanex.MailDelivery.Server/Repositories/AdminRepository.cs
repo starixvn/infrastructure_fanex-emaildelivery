@@ -291,6 +291,15 @@ namespace Fanex.MailDelivery.Server.Repositories
             }
         }
 
+        public GroupModel GetGroupById(GetGroupByIdCriteria criteria)
+        {
+            using (ObjectDb db = new ObjectDb(criteria.GetSettingKey()))
+            {
+                db.AssignParamValues(criteria.GetSpParams());
+                return db.Query<GroupModel>().FirstOrDefault();
+            };
+        }
+
         public ResultResponse CreateGroup(CreateGroupCriteria criteria)
         {
             Hashtable hash = criteria.GetSpParams();

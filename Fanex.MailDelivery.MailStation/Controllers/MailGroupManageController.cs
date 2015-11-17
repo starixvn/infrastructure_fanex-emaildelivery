@@ -7,6 +7,7 @@
 //   <change who="Louis" date="2012.12.07">Created</change>
 // </history>
 
+using Fanex.MailDelivery.Admin.Messaging;
 using Fanex.MailDelivery.Admin.Messaging.ManageGroup;
 using Fanex.MailDelivery.Admin.Services.Group;
 using Fanex.NAP.Framework.Command;
@@ -16,7 +17,6 @@ namespace Fanex.MailDelivery.MailStation.Controllers
     using System.Web.Mvc;
     using Fanex.MailDelivery.MailStation.Criteria.MailGroup;
     using Fanex.MailDelivery.MailStation.Extensions;
-    using Fanex.MailDelivery.MailStation.Services.MailGroup;
     using Fanex.Maintenance.Controller;
 
     /// <summary>
@@ -24,14 +24,10 @@ namespace Fanex.MailDelivery.MailStation.Controllers
     /// </summary>
     public class MailGroupManageController : BaseController
     {
-        private MailGroupService _mailGroupService;
-
-        private IGroupService _groupService;
+        private readonly IGroupService _groupService;
 
         public MailGroupManageController()
         {
-            this._mailGroupService = this._mailGroupService ?? new MailGroupService();
-
             _groupService = new GroupService();
         }
 
@@ -64,16 +60,15 @@ namespace Fanex.MailDelivery.MailStation.Controllers
                 Description = criteria.Description
             };
 
-            //ResultResponse response = _groupService.CreateGroup(request);
+            ResultResponse response = _groupService.CreateGroup(request);
 
-            //CommandResult commandResult = new CommandResult
-            //{
-            //    Code = response.ErrCode,
-            //    Message = response.ErrMsg
-            //};
+            CommandResult commandResult = new CommandResult
+            {
+                Code = response.ErrCode,
+                Message = response.ErrMsg
+            };
 
-           // return Json(commandResult);
-             return Json(this._mailGroupService.CreateMailGroup(criteria));
+            return Json(commandResult);
         }
 
         public JsonResult MailGroupList(GetMailGroupCriteria criteria)
@@ -86,12 +81,24 @@ namespace Fanex.MailDelivery.MailStation.Controllers
             GetGroupListResponse response = _groupService.GetGroupList(request);
 
             return Json(response.GroupDtos);
-            // return Json(this._mailGroupService.GetMailGroup(criteria));
         }
 
         public ActionResult DeleteMailGroup(DeleteMailGroupCriteria criteria)
         {
-            return Json(this._mailGroupService.DeleteMailGroup(criteria));
+            DeleteGroupRequest request = new DeleteGroupRequest
+            {
+                Id = criteria.MailGroupId,
+            };
+
+            ResultResponse response = _groupService.DeleteGroup(request);
+
+            CommandResult commandResult = new CommandResult
+            {
+                Code = response.ErrCode,
+                Message = response.ErrMsg
+            };
+
+            return Json(commandResult);
         }
 
         /// <summary>
@@ -101,13 +108,19 @@ namespace Fanex.MailDelivery.MailStation.Controllers
         /// <returns>Action Result.</returns>
         public ActionResult UpdateMailGroupView(GetMailGroupByIdCriteria criteria)
         {
-            var mailGroup = this._mailGroupService.GetMailGroupByID(criteria);
-            var model = new UpdateMailGroupCriteria();
-            if (mailGroup != null)
+            GetMailGroupByIdRequest request = new GetMailGroupByIdRequest
             {
-                model.MailGroupId = mailGroup.MailGroupId;
-                model.MailGroupName = mailGroup.MailGroupName;
-                model.Description = mailGroup.Description;
+                Id = criteria.MailGroupId
+            };
+
+            GetMailGroupByIdResponse response = _groupService.GetMailGroupById(request);
+
+            var model = new UpdateMailGroupCriteria();
+            if (response != null)
+            {
+                model.MailGroupId = response.GroupDto.Id;
+                model.MailGroupName = response.GroupDto.Name;
+                model.Description = response.GroupDto.Description;
             }
 
             ViewBag.TimeZoneString = TimeZoneExtension.GetTimeZoneString();
@@ -117,7 +130,22 @@ namespace Fanex.MailDelivery.MailStation.Controllers
         [HttpPost]
         public JsonResult UpdateMailGroup(UpdateMailGroupCriteria criteria)
         {
-            return Json(this._mailGroupService.UpdateMailGroup(criteria));
+            UpdateGroupRequest request = new UpdateGroupRequest
+            {
+                Id = criteria.MailGroupId,
+                Name = criteria.MailGroupName,
+                Description = criteria.Description
+            };
+
+            ResultResponse response = _groupService.UpdateGroup(request);
+
+            CommandResult commandResult = new CommandResult
+            {
+                Code = response.ErrCode,
+                Message = response.ErrMsg
+            };
+
+            return Json(commandResult);
         }
 
         public ActionResult ViewRelevantMail(int mailGroupId)

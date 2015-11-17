@@ -10,6 +10,11 @@ namespace Fanex.MailDelivery.Admin.Services.Group
             return Bus.Request<GetGroupListRequest, GetGroupListResponse>(request);
         }
 
+        public GetMailGroupByIdResponse GetMailGroupById(GetMailGroupByIdRequest request)
+        {
+            return Bus.Request<GetMailGroupByIdRequest, GetMailGroupByIdResponse>(request);
+        }
+
         public ResultResponse CreateGroup(CreateGroupRequest request)
         {
             return Bus.Request<CreateGroupRequest, ResultResponse>(request);

@@ -86,6 +86,8 @@
     <Compile Include="Mapping\MailModelMapper.cs" />
     <Compile Include="Mapping\RecipientModelMapper.cs" />
     <Compile Include="Messaging\Job\AbortJobRequest.cs" />
+    <Compile Include="Messaging\ManageGroup\GetMailGroupByIdRequest.cs" />
+    <Compile Include="Messaging\ManageGroup\GetMailGroupByIdResponse.cs" />
     <Compile Include="Messaging\ManageGroup\UpdateGroupRequest.cs" />
     <Compile Include="Messaging\ManageGroup\DeleteGroupRequest.cs" />
     <Compile Include="Messaging\ManageGroup\CreateGroupRequest.cs" />

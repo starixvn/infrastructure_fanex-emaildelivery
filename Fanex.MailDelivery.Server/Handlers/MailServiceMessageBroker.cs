@@ -86,6 +86,7 @@ namespace Fanex.MailDelivery.Server.Handlers
             RespondDeleteRecipient();
 
             ResponseGetGroupList();
+            ResponseGetGroupById();
             ResponseCreateGroup();
             ResponseUpdateGroup();
             ResponseDeleteGroup();
@@ -437,6 +438,20 @@ namespace Fanex.MailDelivery.Server.Handlers
                    IList<GroupDto> groupDtos = groupModels.Select(n => n.ToGroupDto()).ToList();
 
                    return new GetGroupListResponse { GroupDtos = groupDtos };
+               });
+        }
+
+        private void ResponseGetGroupById()
+        {
+            _bus.Respond<GetMailGroupByIdRequest, GetMailGroupByIdResponse>(
+               request =>
+               {
+                   GroupModel groupModel = _adminService.GetGroupById(new GetGroupByIdCriteria
+                   {
+                       MailGroupId = request.Id
+                   });
+
+                   return new GetMailGroupByIdResponse { GroupDto = groupModel.ToGroupDto() };
                });
         }
 

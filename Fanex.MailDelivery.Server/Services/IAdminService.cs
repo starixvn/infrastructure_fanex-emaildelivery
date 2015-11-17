@@ -28,6 +28,7 @@ namespace Fanex.MailDelivery.Server.Services
         ResultResponse DeleteRecipient(DeleteRecipientCriteria criteria);
 
         IList<GroupModel> GetGroupList(GetGroupListCriteria criteria);
+        GroupModel GetGroupById(GetGroupByIdCriteria criteria);
         ResultResponse CreateGroup(CreateGroupCriteria criteria);
         ResultResponse UpdateGroup(UpdateGroupCriteria criteria);
         ResultResponse DeleteGroup(DeleteGroupCriteria criteria);

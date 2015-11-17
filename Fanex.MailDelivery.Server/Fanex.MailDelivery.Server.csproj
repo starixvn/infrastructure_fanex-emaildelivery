@@ -165,6 +165,7 @@
     <Compile Include="Criteria\Group\CreateGroupCriteria.cs" />
     <Compile Include="Criteria\Group\DeleteGroupCriteria.cs" />
     <Compile Include="Criteria\Group\GetGroupListCriteria.cs" />
+    <Compile Include="Criteria\Group\GetGroupByIdCriteria.cs" />
     <Compile Include="Criteria\Group\UpdateGroupCriteria.cs" />
     <Compile Include="Criteria\Mail\CreateMailCriteria.cs" />
     <Compile Include="Criteria\Mail\DeleteMailCriteria.cs" />
