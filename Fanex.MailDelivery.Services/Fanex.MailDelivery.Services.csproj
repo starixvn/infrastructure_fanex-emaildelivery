@@ -102,25 +102,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Criteria\AddMailTaskCriteria.cs" />
-    <Compile Include="Criteria\AddMailLogCriteria.cs" />
-    <Compile Include="Criteria\GetAllScheduleMailCriteria.cs" />
-    <Compile Include="Criteria\GetMailWithEmailAddressByMailIDCriteria.cs" />
-    <Compile Include="Criteria\ManageMail\CreateMailCriteria.cs" />
-    <Compile Include="Criteria\ManageMail\DeleteMailCriteria.cs" />
-    <Compile Include="Criteria\ManageMail\GetMailListCriteria.cs" />
-    <Compile Include="Criteria\ManageMail\UpdateMailCriteria.cs" />
-    <Compile Include="Criteria\Recipient\CreateRecipientCriteria.cs" />
-    <Compile Include="Criteria\Recipient\DeleteRecipientCriteria.cs" />
-    <Compile Include="Criteria\Recipient\RecipientByIdCriteria.cs" />
-    <Compile Include="Criteria\Recipient\RecipientListCriteria.cs" />
-    <Compile Include="Criteria\Recipient\UpdateRecipientCriteria.cs" />
-    <Compile Include="Criteria\UpdateClientActiveTimeCriteria.cs" />
-    <Compile Include="Criteria\GetMailTaskByIDCriteria.cs" />
-    <Compile Include="Criteria\UpdateMailTaskMailRecordIDCriteria.cs" />
-    <Compile Include="Criteria\UpdateTaskRetryCounterCriteria.cs" />
-    <Compile Include="Criteria\UpdateMailTaskStatusCriteria.cs" />
-    <Compile Include="Criteria\GetScheduleByIDCriteria.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
