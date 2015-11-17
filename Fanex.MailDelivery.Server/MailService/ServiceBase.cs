@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using Fanex.Logging;
 using Fanex.MailDelivery.Core.Models;
 
-namespace Fanex.MailDelivery.Services.MailService
+namespace Fanex.MailDelivery.Server.MailService
 {
     /// <summary>
     /// Base service for base logging.
@@ -16,7 +15,7 @@ namespace Fanex.MailDelivery.Services.MailService
                 "<br>\r\nSOURCE: " + ex.Source +
                 "<br>\r\nTARGETSITE: " + ex.TargetSite +
                 "<br>\r\nSTACKTRACE: " + ex.StackTrace;
-            Logger.Log.Error(message);
+          //  Logger.Log.Error(message);
         }
 
         public static void LogError(Exception ex, Schedule schedule)
@@ -38,7 +37,7 @@ namespace Fanex.MailDelivery.Services.MailService
                 "<br>\r\nSOURCE: " + ex.Source +
                 "<br>\r\nTARGETSITE: " + ex.TargetSite +
                 "<br>\r\nSTACKTRACE: " + ex.StackTrace;
-            Logger.Log.Error(message);
+         //   Logger.Log.Error(message);
         }
 
         public static void LogError(Exception ex, int id)
@@ -56,7 +55,7 @@ namespace Fanex.MailDelivery.Services.MailService
                "<br>\r\nSOURCE: " + ex.Source +
                "<br>\r\nTARGETSITE: " + ex.TargetSite +
                "<br>\r\nSTACKTRACE: " + ex.StackTrace;
-            Logger.Log.Error(message);
+         //   Logger.Log.Error(message);
         }
 
         public static void LogError(Exception ex, List<int> scheduleIds)
@@ -74,12 +73,12 @@ namespace Fanex.MailDelivery.Services.MailService
                "<br>\r\nSOURCE: " + ex.Source +
                "<br>\r\nTARGETSITE: " + ex.TargetSite +
                "<br>\r\nSTACKTRACE: " + ex.StackTrace;
-            Logger.Log.Error(message);
+         //   Logger.Log.Error(message);
         }
 
         public static void LogInfo(string messsage)
         {
-            Logger.Log.Info(messsage);
+          //  Logger.Log.Info(messsage);
         }
     }
 }

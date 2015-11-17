@@ -5,17 +5,17 @@ using Fanex.MailDeliver.Business.Implement;
 using Fanex.MailDeliver.Business.Interface;
 using Fanex.MailDeliver.Core.Infrastructure.Logging;
 using Fanex.MailDeliver.Model;
+using Fanex.MailDelivery.Admin.Messaging;
 using Fanex.MailDelivery.Core.Enumerations;
 using Fanex.MailDelivery.Core.Messaging;
 using Fanex.MailDelivery.Core.Models;
+using Fanex.MailDelivery.Server.Repositories;
 using Fanex.MailDelivery.Services.Criteria;
 using Fanex.MailDelivery.Services.Criteria.ManageMail;
 using Fanex.MailDelivery.Services.Criteria.Recipient;
-using Fanex.MailDelivery.Services.Messaging;
-using Fanex.MailDelivery.Services.Repositories;
 using Fanex.NAP.Framework.Command;
 
-namespace Fanex.MailDelivery.Services.MailService
+namespace Fanex.MailDelivery.Server.MailService
 {
     /// <summary>
     /// Mail Service.

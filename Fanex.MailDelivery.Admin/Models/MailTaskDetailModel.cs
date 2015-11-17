@@ -1,7 +1,7 @@
-﻿namespace Fanex.MailDelivery.MailStation.Models
-{
-    using System;
+﻿using System;
 
+namespace Fanex.MailDelivery.Admin.Models
+{
     /// <summary>
     /// Mail Task Detail Model.
     /// </summary>

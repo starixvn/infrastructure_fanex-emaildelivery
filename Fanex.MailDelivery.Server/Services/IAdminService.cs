@@ -6,7 +6,6 @@ using Fanex.MailDelivery.Server.Criteria.Group;
 using Fanex.MailDelivery.Server.Criteria.Mail;
 using Fanex.MailDelivery.Server.Criteria.Recipient;
 using Fanex.MailDelivery.Server.Criteria.Report;
-using Fanex.MailDelivery.Services.Messaging;
 
 namespace Fanex.MailDelivery.Server.Services
 {

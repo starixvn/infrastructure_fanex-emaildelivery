@@ -8,22 +8,20 @@ using Fanex.MailDelivery.Admin.Messaging.ManageGroup;
 using Fanex.MailDelivery.Admin.Messaging.ManageMail;
 using Fanex.MailDelivery.Admin.Messaging.ManageRecipient;
 using Fanex.MailDelivery.Admin.Messaging.ManageReport;
+using Fanex.MailDelivery.Admin.Messaging.Schedule;
 using Fanex.MailDelivery.Admin.Models;
 using Fanex.MailDelivery.Core;
 using Fanex.MailDelivery.Core.Messaging;
 using Fanex.MailDelivery.Core.Messaging.Recipient;
 using Fanex.MailDelivery.Core.Models;
+using Fanex.MailDelivery.Server.Configurations;
 using Fanex.MailDelivery.Server.Criteria.Group;
 using Fanex.MailDelivery.Server.Criteria.Report;
 using Fanex.MailDelivery.Server.Logging;
+using Fanex.MailDelivery.Server.MailService;
 using Fanex.MailDelivery.Server.Services;
-using Fanex.MailDelivery.Services.Configurations;
 using Fanex.MailDelivery.Services.Criteria.ManageMail;
 using Fanex.MailDelivery.Services.Criteria.Recipient;
-using Fanex.MailDelivery.Services.Handlers.Interface;
-using Fanex.MailDelivery.Services.MailService;
-using Fanex.MailDelivery.Services.Messaging;
-using Fanex.MailDelivery.Services.Messaging.Schedule;
 using CreateRecipientCriteria = Fanex.MailDelivery.Server.Criteria.Recipient.CreateRecipientCriteria;
 using DeleteRecipientCriteria = Fanex.MailDelivery.Server.Criteria.Recipient.DeleteRecipientCriteria;
 using RecipientListCriteria = Fanex.MailDelivery.Server.Criteria.Recipient.RecipientListCriteria;
@@ -47,7 +45,7 @@ namespace Fanex.MailDelivery.Server.Handlers
 
         public MailServiceMessageBroker(IMailService mailService)
         {
-            _mailService = mailService ?? new MailService();
+            _mailService = mailService ?? new MailService.MailService();
 
             _adminService = new AdminService();
         }

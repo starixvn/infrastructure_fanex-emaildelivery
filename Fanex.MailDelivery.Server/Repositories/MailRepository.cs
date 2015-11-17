@@ -4,16 +4,16 @@ using System.Collections.Generic;
 using System.Linq;
 using Fanex.Common;
 using Fanex.Data;
+using Fanex.MailDelivery.Admin.Messaging;
+using Fanex.MailDelivery.Admin.Models;
 using Fanex.MailDelivery.Core.Models;
-using Fanex.MailDelivery.Services.Configurations;
+using Fanex.MailDelivery.Server.Configurations;
 using Fanex.MailDelivery.Services.Criteria;
 using Fanex.MailDelivery.Services.Criteria.ManageMail;
 using Fanex.MailDelivery.Services.Criteria.Recipient;
-using Fanex.MailDelivery.Services.Messaging;
-using Fanex.MailDelivery.Services.Models;
-using Fanex.NAP.Core.Criteria.Misc;
+using Fanex.Maintenance.Repository.Criteria.Misc;
 
-namespace Fanex.MailDelivery.Services.Repositories
+namespace Fanex.MailDelivery.Server.Repositories
 {
     /// <summary>
     /// Mail Repository.

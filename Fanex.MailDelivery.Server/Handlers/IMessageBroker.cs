@@ -6,7 +6,7 @@
 
 using System;
 
-namespace Fanex.MailDelivery.Services.Handlers.Interface
+namespace Fanex.MailDelivery.Server.Handlers
 {
     /// <summary>
     /// TODO: Update summary.

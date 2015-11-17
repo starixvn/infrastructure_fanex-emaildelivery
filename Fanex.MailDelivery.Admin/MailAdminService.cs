@@ -9,7 +9,6 @@ using Fanex.MailDelivery.Admin.Messaging.ManageMail;
 using Fanex.MailDelivery.Admin.Messaging.ManageRecipient;
 using Fanex.MailDelivery.Admin.Messaging.ManageReport;
 using Fanex.MailDelivery.Admin.Messaging.Schedule;
-using Fanex.MailDelivery.Services.Messaging;
 
 namespace Fanex.MailDelivery.Admin
 {

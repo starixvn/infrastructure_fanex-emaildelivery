@@ -1,7 +1,7 @@
 ﻿using System.Configuration;
 using Fanex.MailDelivery.Core;
 
-namespace Fanex.MailDelivery.Services.Configurations
+namespace Fanex.MailDelivery.Server.Configurations
 {
     /// <summary>
     /// Mail Service Section.

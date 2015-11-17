@@ -6,9 +6,9 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using Fanex.MailDelivery.Services.Models;
+using Fanex.MailDelivery.Admin.Models;
 
-namespace Fanex.MailDelivery.Services.Cache
+namespace Fanex.MailDelivery.Server.Cache
 {
     /// <summary>
     /// TODO: Update summary.

@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
+using Fanex.MailDelivery.Admin.Messaging;
 using Fanex.MailDelivery.Core.Messaging;
 using Fanex.MailDelivery.Core.Models;
 using Fanex.MailDelivery.Services.Criteria.ManageMail;
 using Fanex.MailDelivery.Services.Criteria.Recipient;
-using Fanex.MailDelivery.Services.Messaging;
 using Fanex.NAP.Framework.Command;
 
-namespace Fanex.MailDelivery.Services.MailService
+namespace Fanex.MailDelivery.Server.MailService
 {
     /// <summary>
     /// Mail Service interface.

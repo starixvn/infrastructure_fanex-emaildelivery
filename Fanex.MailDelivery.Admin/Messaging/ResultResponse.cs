@@ -1,4 +1,4 @@
-﻿namespace Fanex.MailDelivery.Services.Messaging
+﻿namespace Fanex.MailDelivery.Admin.Messaging
 {
     /// <summary>
     /// Result Response.

@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
+using Fanex.MailDelivery.Admin.Messaging;
+using Fanex.MailDelivery.Admin.Models;
 using Fanex.MailDelivery.Core.Models;
 using Fanex.MailDelivery.Services.Criteria;
 using Fanex.MailDelivery.Services.Criteria.ManageMail;
 using Fanex.MailDelivery.Services.Criteria.Recipient;
-using Fanex.MailDelivery.Services.Messaging;
-using Fanex.MailDelivery.Services.Models;
 
-namespace Fanex.MailDelivery.Services.Repositories
+namespace Fanex.MailDelivery.Server.Repositories
 {
     public interface IMailRepository
     {

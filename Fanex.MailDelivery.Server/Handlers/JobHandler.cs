@@ -1,8 +1,8 @@
-﻿using Fanex.MailDelivery.Services.Configurations;
+﻿using Fanex.MailDelivery.Server.Configurations;
 using Quartz;
 using Quartz.Impl;
 
-namespace Fanex.MailDelivery.Services.Handlers.Impl
+namespace Fanex.MailDelivery.Server.Handlers
 {
     /// <summary>
     /// Job Handler.

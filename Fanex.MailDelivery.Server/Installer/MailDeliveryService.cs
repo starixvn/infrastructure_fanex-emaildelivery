@@ -1,7 +1,4 @@
 ﻿using Fanex.MailDelivery.Server.Handlers;
-using Fanex.MailDelivery.Services.Handlers.Impl;
-using Fanex.MailDelivery.Services.Handlers.Interface;
-using Fanex.MailDelivery.Services.MailService;
 
 namespace Fanex.MailDelivery.Server.Installer
 {
@@ -36,14 +33,14 @@ namespace Fanex.MailDelivery.Server.Installer
 
         protected override void OnStart(string[] args)
         {
-            MailService.LogInfo(string.Format(serviceInfo, ServiceName, "starts", DateTime.Now.ToString()));
+            MailService.MailService.LogInfo(string.Format(serviceInfo, ServiceName, "starts", DateTime.Now.ToString()));
             _messageBroker.Start();
             _jobHandler.Start();
         }
 
         protected override void OnStop()
         {
-            MailService.LogInfo(string.Format(serviceInfo, this.ServiceName, "stops", DateTime.Now.ToString()));
+            MailService.MailService.LogInfo(string.Format(serviceInfo, this.ServiceName, "stops", DateTime.Now.ToString()));
             _messageBroker.Dispose();
             _jobHandler.Stop();
         }

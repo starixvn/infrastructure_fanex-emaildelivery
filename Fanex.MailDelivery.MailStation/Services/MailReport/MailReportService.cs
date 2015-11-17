@@ -10,7 +10,6 @@
 using Fanex.MailDelivery.Admin;
 using Fanex.MailDelivery.Admin.Messaging.Job;
 using Fanex.MailDelivery.Core.Enumerations;
-using Fanex.MailDelivery.Core.Models;
 
 namespace Fanex.MailDelivery.MailStation.Services.MailReport
 {
@@ -22,7 +21,6 @@ namespace Fanex.MailDelivery.MailStation.Services.MailReport
     using Fanex.Common;
     using Fanex.Data;
     using Fanex.MailDeliver.Model;
-    using Fanex.MailDelivery.Admin.Handlers;
     using Fanex.MailDelivery.MailStation.Criteria.MailReport;
     using Fanex.MailDelivery.MailStation.Models;
     using Fanex.Maintenance.Service.Impl.Mail;

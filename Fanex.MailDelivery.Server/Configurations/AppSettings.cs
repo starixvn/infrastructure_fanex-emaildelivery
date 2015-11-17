@@ -4,7 +4,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Fanex.MailDelivery.Services.Configurations
+namespace Fanex.MailDelivery.Server.Configurations
 {
     /// <summary>
     /// TODO: Update summary.

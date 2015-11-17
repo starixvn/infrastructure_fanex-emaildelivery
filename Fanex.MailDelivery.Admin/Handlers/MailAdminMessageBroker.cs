@@ -11,7 +11,6 @@ using Fanex.MailDelivery.Admin.Messaging.Schedule;
 using Fanex.MailDelivery.Core;
 using Fanex.MailDelivery.Core.Messaging;
 using Fanex.MailDelivery.Core.Models;
-using Fanex.MailDelivery.Services.Messaging;
 
 namespace Fanex.MailDelivery.Admin.Handlers
 {

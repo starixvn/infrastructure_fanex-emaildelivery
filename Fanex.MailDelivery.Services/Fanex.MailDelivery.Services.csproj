@@ -56,6 +56,9 @@
     <Reference Include="Fanex.MailDeliver.MailClient">
       <HintPath>..\_Dependencies\MailService\Fanex.MailDeliver.MailClient.dll</HintPath>
     </Reference>
+    <Reference Include="Fanex.Maintenance.Service">
+      <HintPath>..\_Dependencies\mSite\Fanex.Maintenance.Service.dll</HintPath>
+    </Reference>
     <Reference Include="Fanex.NAP.Core">
       <HintPath>..\_Dependencies\Fanex\Fanex.NAP.Core.dll</HintPath>
     </Reference>
@@ -99,9 +102,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Cache\CacheExtension.cs" />
-    <Compile Include="Configurations\AppSettings.cs" />
-    <Compile Include="Configurations\MailServiceSection.cs" />
     <Compile Include="Criteria\AddMailTaskCriteria.cs" />
     <Compile Include="Criteria\AddMailLogCriteria.cs" />
     <Compile Include="Criteria\GetAllScheduleMailCriteria.cs" />
@@ -121,48 +121,15 @@
     <Compile Include="Criteria\UpdateTaskRetryCounterCriteria.cs" />
     <Compile Include="Criteria\UpdateMailTaskStatusCriteria.cs" />
     <Compile Include="Criteria\GetScheduleByIDCriteria.cs" />
-    <Compile Include="Handlers\Impl\CheckClientOnlineStatusJob.cs" />
-    <Compile Include="Handlers\Impl\JobHandler.cs" />
-    <Compile Include="Handlers\Interface\IMessageBroker.cs" />
-    <Compile Include="Messaging\ResultResponse.cs" />
-    <Compile Include="Messaging\Schedule\ScheduleRequest.cs" />
-    <Compile Include="Messaging\Schedule\ScheduleResponse.cs" />
-    <Compile Include="Models\ClientStatusModel.cs" />
-    <Compile Include="Models\MailTask.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repositories\IMailRepository.cs" />
-    <Compile Include="Repositories\MailRepository.cs" />
-    <Compile Include="Resources\MailStationResource.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>MailStationResource.resx</DependentUpon>
-    </Compile>
-    <Compile Include="MailService\IMailService.cs" />
-    <Compile Include="MailService\MailService.cs" />
-    <Compile Include="MailService\ServiceBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="job_scheduling_data_2_0.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Fanex.MailDelivery.Core\Fanex.MailDelivery.Core.csproj">
-      <Project>{C7ED0DE9-6A20-4223-B251-6EF530B74139}</Project>
-      <Name>Fanex.MailDelivery.Core</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\MailStationResource.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>MailStationResource.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

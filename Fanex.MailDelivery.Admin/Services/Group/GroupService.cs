@@ -1,6 +1,5 @@
 ﻿using Fanex.MailDelivery.Admin.Messaging;
 using Fanex.MailDelivery.Admin.Messaging.ManageGroup;
-using Fanex.MailDelivery.Services.Messaging;
 
 namespace Fanex.MailDelivery.Admin.Services.Group
 {

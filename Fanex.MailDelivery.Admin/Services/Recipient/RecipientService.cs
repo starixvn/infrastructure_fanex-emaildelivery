@@ -1,6 +1,5 @@
 ﻿using Fanex.MailDelivery.Admin.Messaging;
 using Fanex.MailDelivery.Admin.Messaging.ManageRecipient;
-using Fanex.MailDelivery.Services.Messaging;
 
 namespace Fanex.MailDelivery.Admin.Services.Recipient
 {
@@ -14,6 +13,11 @@ namespace Fanex.MailDelivery.Admin.Services.Recipient
         public ResultResponse CreateRecipient(CreateRecipientRequest request)
         {
             return Bus.Request<CreateRecipientRequest, ResultResponse>(request);
+        }
+
+        public ResultResponse UpdateRecipient(UpdateRecipientRequest request)
+        {
+            return Bus.Request<UpdateRecipientRequest, ResultResponse>(request);
         }
 
         public ResultResponse DeleteRecipient(DeleteRecipientRequest request)
