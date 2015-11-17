@@ -131,6 +131,8 @@
     <Compile Include="Repositories\IAdminRepository.cs" />
     <Compile Include="Repositories\AdminRepository.cs" />
     <Compile Include="Services\IAdminService.cs" />
+    <Compile Include="Services\Group\GroupService.cs" />
+    <Compile Include="Services\Group\IGroupService.cs" />
     <Compile Include="Services\AdminService.cs" />
   </ItemGroup>
   <ItemGroup>
