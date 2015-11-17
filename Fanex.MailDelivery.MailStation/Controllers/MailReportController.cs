@@ -7,6 +7,9 @@
 //   <change who="Louis" date="2012.12.07">Created</change>
 // </history>
 
+using Fanex.MailDelivery.Admin;
+using Fanex.MailDelivery.Admin.Messaging.ManageReport;
+
 namespace Fanex.MailDelivery.MailStation.Controllers
 {
     using System.Web.Mvc;
@@ -41,6 +44,23 @@ namespace Fanex.MailDelivery.MailStation.Controllers
 
         public ActionResult MailReport(MailReportCriteria criteria)
         {
+            //MailAdminService.Start();
+
+            //GetReportListRequest request = new GetReportListRequest
+            //{
+            //    MailName = criteria.MailName,
+            //    SiteId = criteria.SiteId,
+            //    FromDate = criteria.FromDate,
+            //    ToDate = criteria.ToDate,
+            //    Status = criteria.Status
+            //};
+
+            //GetReportListResponse response = MailAdminService.GetReportList(request);
+
+            //MailAdminService.Stop();
+
+            //return Json(response.MailTaskDtos);
+            
             return Json(_mailReportService.MailReport(criteria));
         }
 

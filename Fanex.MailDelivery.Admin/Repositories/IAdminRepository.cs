@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Fanex.MailDelivery.Admin.Criteria.Group;
+using Fanex.MailDelivery.Admin.Criteria.Report;
 using Fanex.MailDelivery.Admin.Models;
 using Fanex.MailDelivery.Core.Models;
 using Fanex.MailDelivery.Services.Criteria;
@@ -53,5 +54,7 @@ namespace Fanex.MailDelivery.Admin.Repositories
         ResultResponse CreateGroup(CreateGroupCriteria criteria);
         ResultResponse UpdateGroup(UpdateGroupCriteria criteria);
         ResultResponse DeleteGroup(DeleteGroupCriteria criteria);
+
+        IList<MailTaskModel> GetReportList(GetReportListCriteria criteria);
     }
 }

@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using EasyNetQ;
 using Fanex.MailDelivery.Admin.Criteria.Group;
+using Fanex.MailDelivery.Admin.Criteria.Report;
 using Fanex.MailDelivery.Admin.Mapping;
 using Fanex.MailDelivery.Admin.Messaging.ManageGroup;
 using Fanex.MailDelivery.Admin.Messaging.ManageMail;
 using Fanex.MailDelivery.Admin.Messaging.ManageRecipient;
+using Fanex.MailDelivery.Admin.Messaging.ManageReport;
 using Fanex.MailDelivery.Admin.Models;
 using Fanex.MailDelivery.Admin.Services;
 using Fanex.MailDelivery.Core;
@@ -85,6 +87,8 @@ namespace Fanex.MailDelivery.Server.Handlers
             ResponseCreateGroup();
             ResponseUpdateGroup();
             ResponseDeleteGroup();
+
+            ResponseGetReportList();
         }
 
         public void SubscribeAbortJob()
@@ -470,6 +474,30 @@ namespace Fanex.MailDelivery.Server.Handlers
                   {
                       MailGroupId = request.Id
                   });
+              });
+        }
+
+        #endregion
+
+        #region Report
+
+        private void ResponseGetReportList()
+        {
+            _bus.Respond<GetReportListRequest, GetReportListResponse>(
+              request =>
+              {
+                  IList<MailTaskModel> mailTaskModels = _adminService.GetReportList(new GetReportListCriteria
+                  {
+                      MailName = request.MailName,
+                      SiteId = request.SiteId,
+                      FromDate = request.FromDate,
+                      ToDate = request.ToDate,
+                      Status = request.Status
+                  });
+
+                  IList<MailTaskDto> mailTaskDtos = mailTaskModels.Select(n => n.ToMailTaskDto()).ToList();
+
+                  return new GetReportListResponse { MailTaskDtos = mailTaskDtos };
               });
         }
 

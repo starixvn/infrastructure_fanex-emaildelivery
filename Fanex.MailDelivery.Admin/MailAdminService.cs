@@ -2,11 +2,12 @@
 using Fanex.MailDelivery.Admin.Configurations;
 using Fanex.MailDelivery.Admin.Handlers;
 using Fanex.MailDelivery.Admin.Logging;
+using Fanex.MailDelivery.Admin.Messaging.Job;
 using Fanex.MailDelivery.Admin.Messaging.ManageGroup;
 using Fanex.MailDelivery.Admin.Messaging.ManageMail;
 using Fanex.MailDelivery.Admin.Messaging.ManageRecipient;
+using Fanex.MailDelivery.Admin.Messaging.ManageReport;
 using Fanex.MailDelivery.Admin.Messaging.Schedule;
-using Fanex.MailDelivery.Core.Models;
 using Fanex.MailDelivery.Services.Messaging;
 
 namespace Fanex.MailDelivery.Admin
@@ -63,9 +64,9 @@ namespace Fanex.MailDelivery.Admin
             _messageBroker.PublishScheduleChangeMessage(schedule);
         }
 
-        public static void PublishAbortJobMessage(int taskId)
+        public static void AbortJob(AbortJobRequest request)
         {
-            _messageBroker.PublishAbortJobMessage(taskId);
+            _messageBroker.AbortJob(request);
         }
 
 
@@ -138,7 +139,13 @@ namespace Fanex.MailDelivery.Admin
         }
         #endregion
 
+        #region Report
 
+        public static GetReportListResponse GetReportList(GetReportListRequest request)
+        {
+            return _messageBroker.GetReportList(request);
+        }
 
+        #endregion
     }
 }

@@ -1,9 +1,11 @@
 ﻿using EasyNetQ;
 using Fanex.MailDelivery.Admin.Configurations;
 using Fanex.MailDelivery.Admin.Logging;
+using Fanex.MailDelivery.Admin.Messaging.Job;
 using Fanex.MailDelivery.Admin.Messaging.ManageGroup;
 using Fanex.MailDelivery.Admin.Messaging.ManageMail;
 using Fanex.MailDelivery.Admin.Messaging.ManageRecipient;
+using Fanex.MailDelivery.Admin.Messaging.ManageReport;
 using Fanex.MailDelivery.Admin.Messaging.Schedule;
 using Fanex.MailDelivery.Core;
 using Fanex.MailDelivery.Core.Messaging;
@@ -44,9 +46,9 @@ namespace Fanex.MailDelivery.Admin.Handlers
             _bus.Publish<ScheduleRequest>(schedule, updateSchedulePublishId);
         }
 
-        public void PublishAbortJobMessage(int taskId)
+        public void AbortJob(AbortJobRequest request)
         {
-            JobResultMessage jobResultMessage = new JobResultMessage() { JobStatus = Core.Enumerations.JobStatus.Abort, Schedule = new Schedule() { TaskId = taskId } };
+            JobResultMessage jobResultMessage = new JobResultMessage() { JobStatus = Core.Enumerations.JobStatus.Abort, Schedule = new Schedule() { TaskId = request.TaskId } };
             _bus.Publish<JobResultMessage>(jobResultMessage, MailDeliveryConstants.AbortJobRoutingKeyFormat);
         }
 
@@ -124,6 +126,15 @@ namespace Fanex.MailDelivery.Admin.Handlers
         public ResultResponse DeleteGroup(DeleteGroupRequest request)
         {
             return _bus.Request<DeleteGroupRequest, ResultResponse>(request);
+        }
+
+        #endregion
+
+        #region Report
+
+        public GetReportListResponse GetReportList(GetReportListRequest request)
+        {
+            return _bus.Request<GetReportListRequest, GetReportListResponse>(request);
         }
 
         #endregion

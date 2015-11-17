@@ -2,6 +2,7 @@
 using Fanex.MailDelivery.Admin.Criteria.Group;
 using Fanex.MailDelivery.Admin.Criteria.Mail;
 using Fanex.MailDelivery.Admin.Criteria.Recipient;
+using Fanex.MailDelivery.Admin.Criteria.Report;
 using Fanex.MailDelivery.Admin.Models;
 using Fanex.MailDelivery.Admin.Repositories;
 using Fanex.MailDelivery.Core.Models;
@@ -84,6 +85,11 @@ namespace Fanex.MailDelivery.Admin.Services
         public ResultResponse DeleteGroup(DeleteGroupCriteria criteria)
         {
             return _mailRepository.DeleteGroup(criteria);
+        }
+
+        public IList<MailTaskModel> GetReportList(GetReportListCriteria criteria)
+        {
+            return _mailRepository.GetReportList(criteria);
         }
     }
 }

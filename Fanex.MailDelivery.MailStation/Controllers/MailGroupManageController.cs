@@ -7,11 +7,15 @@
 //   <change who="Louis" date="2012.12.07">Created</change>
 // </history>
 
+using Fanex.MailDelivery.Admin;
+using Fanex.MailDelivery.Admin.Messaging;
+using Fanex.MailDelivery.Admin.Messaging.ManageGroup;
+using Fanex.NAP.Framework.Command;
+
 namespace Fanex.MailDelivery.MailStation.Controllers
 {
     using System.Web.Mvc;
     using Fanex.MailDelivery.MailStation.Criteria.MailGroup;
-    using Fanex.MailDelivery.MailStation.Criteria.MailManage;
     using Fanex.MailDelivery.MailStation.Extensions;
     using Fanex.MailDelivery.MailStation.Services.MailGroup;
     using Fanex.Maintenance.Controller;
@@ -51,12 +55,39 @@ namespace Fanex.MailDelivery.MailStation.Controllers
         /// <returns>Result message.</returns>
         public JsonResult CreateMailGroup(CreateMailGroupCriteria criteria)
         {
-            return Json(this._mailGroupService.CreateMailGroup(criteria));
+            CreateGroupRequest request = new CreateGroupRequest
+            {
+                Name = criteria.MailGroupName,
+                Description = criteria.Description
+            };
+
+            //MailAdminService.Start();
+            //ResultResponse response = MailAdminService.CreateGroup(request);
+            //MailAdminService.Stop();
+
+            //CommandResult commandResult = new CommandResult
+            //{
+            //    Code = response.ErrCode,
+            //    Message = response.ErrMsg
+            //};
+
+           // return Json(commandResult);
+             return Json(this._mailGroupService.CreateMailGroup(criteria));
         }
 
         public JsonResult MailGroupList(GetMailGroupCriteria criteria)
         {
-            return Json(this._mailGroupService.GetMailGroup(criteria));
+            GetGroupListRequest request = new GetGroupListRequest
+            {
+                Name = criteria.MailGroupName
+            };
+
+            MailAdminService.Start();
+            GetGroupListResponse response = MailAdminService.GetGroupList(request);
+            MailAdminService.Stop();
+
+            return Json(response.GroupDtos);
+            // return Json(this._mailGroupService.GetMailGroup(criteria));
         }
 
         public ActionResult DeleteMailGroup(DeleteMailGroupCriteria criteria)

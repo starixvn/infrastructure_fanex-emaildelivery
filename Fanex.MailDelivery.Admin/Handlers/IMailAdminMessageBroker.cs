@@ -1,6 +1,8 @@
-﻿using Fanex.MailDelivery.Admin.Messaging.ManageGroup;
+﻿using Fanex.MailDelivery.Admin.Messaging.Job;
+using Fanex.MailDelivery.Admin.Messaging.ManageGroup;
 using Fanex.MailDelivery.Admin.Messaging.ManageMail;
 using Fanex.MailDelivery.Admin.Messaging.ManageRecipient;
+using Fanex.MailDelivery.Admin.Messaging.ManageReport;
 using Fanex.MailDelivery.Admin.Messaging.Schedule;
 using Fanex.MailDelivery.Services.Messaging;
 
@@ -19,7 +21,7 @@ namespace Fanex.MailDelivery.Admin.Handlers
 
         void PublishScheduleChangeMessage(ScheduleRequest schedule);
 
-        void PublishAbortJobMessage(int taskId);
+        void AbortJob(AbortJobRequest request);
 
 
         GetMailListResponse GetMailList(GetMailListRequest request);
@@ -42,6 +44,8 @@ namespace Fanex.MailDelivery.Admin.Handlers
         ResultResponse CreateGroup(CreateGroupRequest request);
         ResultResponse UpdateGroup(UpdateGroupRequest request);
         ResultResponse DeleteGroup(DeleteGroupRequest request);
+
+        GetReportListResponse GetReportList(GetReportListRequest request);
 
     }
 }

@@ -2,6 +2,8 @@
 using Fanex.MailDelivery.Admin.Criteria.Group;
 using Fanex.MailDelivery.Admin.Criteria.Mail;
 using Fanex.MailDelivery.Admin.Criteria.Recipient;
+using Fanex.MailDelivery.Admin.Criteria.Report;
+using Fanex.MailDelivery.Admin.Messaging.ManageReport;
 using Fanex.MailDelivery.Admin.Models;
 using Fanex.MailDelivery.Core.Models;
 using Fanex.MailDelivery.Services.Messaging;
@@ -30,5 +32,7 @@ namespace Fanex.MailDelivery.Admin.Services
         ResultResponse CreateGroup(CreateGroupCriteria criteria);
         ResultResponse UpdateGroup(UpdateGroupCriteria criteria);
         ResultResponse DeleteGroup(DeleteGroupCriteria criteria);
+
+        IList<MailTaskModel> GetReportList(GetReportListCriteria criteria);
     }
 }

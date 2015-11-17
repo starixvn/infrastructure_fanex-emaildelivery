@@ -8,6 +8,7 @@
 // </history>
 
 using Fanex.MailDelivery.Admin;
+using Fanex.MailDelivery.Admin.Messaging.Job;
 using Fanex.MailDelivery.Core.Enumerations;
 using Fanex.MailDelivery.Core.Models;
 
@@ -175,7 +176,13 @@ namespace Fanex.MailDelivery.MailStation.Services.MailReport
         public void AbortJob(int taskID)
         {
             MailAdminService.Start();
-            MailAdminService.PublishAbortJobMessage(taskID);
+
+            AbortJobRequest request = new AbortJobRequest
+            {
+                TaskId = taskID,
+            };
+
+            MailAdminService.AbortJob(request);
             MailAdminService.Stop();
         }
 

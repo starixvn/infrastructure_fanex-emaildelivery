@@ -5,13 +5,18 @@ using System.Linq;
 using Fanex.Common;
 using Fanex.Data;
 using Fanex.MailDelivery.Admin.Criteria.Group;
+using Fanex.MailDelivery.Admin.Criteria.Report;
 using Fanex.MailDelivery.Admin.Models;
+using Fanex.MailDelivery.Core.Enumerations;
 using Fanex.MailDelivery.Core.Models;
+using Fanex.MailDelivery.MailStation.Models;
 using Fanex.MailDelivery.Services.Configurations;
 using Fanex.MailDelivery.Services.Criteria;
 using Fanex.MailDelivery.Services.Messaging;
 using Fanex.MailDelivery.Services.Models;
 using Fanex.Maintenance.Repository.Criteria.Misc;
+using Quartz;
+using Quartz.Spi;
 using CreateMailCriteria = Fanex.MailDelivery.Admin.Criteria.Mail.CreateMailCriteria;
 using CreateRecipientCriteria = Fanex.MailDelivery.Admin.Criteria.Recipient.CreateRecipientCriteria;
 using DeleteMailCriteria = Fanex.MailDelivery.Admin.Criteria.Mail.DeleteMailCriteria;
@@ -316,6 +321,119 @@ namespace Fanex.MailDelivery.Admin.Repositories
             {
                 db.ExecuteNonQuery(hash);
                 return GetCommandResult(hash);
+            }
+        }
+
+        public IList<MailTaskModel> GetReportList(GetReportListCriteria criteria)
+        {
+            int oldStatus = criteria.Status;
+            criteria.Status = -1;
+            List<MailTaskModel> result = new List<MailTaskModel>();
+            using (ObjectDb db = new ObjectDb(criteria.GetSettingKey()))
+            {
+                db.AssignParamValues(criteria.GetSpParams());
+                result = db.Query<MailTaskModel>().ToList();
+            }
+
+            criteria.Status = oldStatus;
+            List<MailTaskDetailModel> listMailTaskDetail;
+            GetAllScheduleCriteria getAllScheduleCriteria = new GetAllScheduleCriteria() { MailName = criteria.MailName, SiteId = criteria.SiteId };
+            using (ObjectDb db = new ObjectDb(getAllScheduleCriteria.GetSettingKey()))
+            {
+                db.AssignParamValues(getAllScheduleCriteria.GetSpParams());
+                listMailTaskDetail = db.Query<MailTaskDetailModel>().ToList();
+            }
+
+            if (criteria.Status == -1 || criteria.Status == (int)JobStatus.Waiting || criteria.Status == (int)JobStatus.Missing)
+            {
+                TimeSpan ts = new TimeSpan(23, 59, 59);
+                criteria.ToDate += ts;
+                foreach (MailTaskDetailModel schedule in listMailTaskDetail)
+                {
+                    DateTime fromDate = this.MaxDateTime(criteria.FromDate, schedule.StartOn).ToUniversalTime();
+                    DateTime toDate = this.MinDateTime(criteria.ToDate, schedule.EndOn).ToUniversalTime();
+                    if (fromDate <= toDate)
+                    {
+                        ITrigger trigger = TriggerBuilder.Create().WithCronSchedule(schedule.CronExpression).Build();
+                        var listtriggerdate = TriggerUtils.ComputeFireTimesBetween(
+                            (IOperableTrigger)trigger,
+                            null,
+                            new DateTimeOffset(fromDate),
+                            new DateTimeOffset(toDate));
+                        listtriggerdate = (from trigertime in listtriggerdate
+                                           where !(from task in result
+                                                   where task.MailId == schedule.MailId
+                                                   select task.ScheduledTime)
+                                               .Contains(trigertime.LocalDateTime)
+                                           select trigertime).ToList();
+                        foreach (var triggertime in listtriggerdate)
+                        {
+                            var status = triggertime.LocalDateTime.AddSeconds(5) > DateTime.Now ? (int)JobStatus.Waiting : (int)JobStatus.Missing;
+                            if (criteria.Status == -1 || criteria.Status == status)
+                            {
+                                MailTaskModel waitingTask = new MailTaskModel()
+                                {
+                                    MailName = schedule.MailName,
+                                    MailId = schedule.MailId,
+                                    Attempt = schedule.Attempt,
+                                    LastSent = null,
+                                    ScheduledTime = triggertime.LocalDateTime,
+                                    SiteId = schedule.SiteId,
+                                    SiteName = schedule.SiteName,
+                                    Status = status,
+                                    TriggerType = (int)MailType.Schedule
+                                };
+
+                                result.Add(waitingTask);
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (oldStatus != -1)
+            {
+                result = result.Where(m => m.Status == oldStatus).ToList();
+            }
+
+            return result.OrderBy(m => m.MailName).ThenByDescending(m => m.ScheduledTime).ThenByDescending(m => m.LastSent).ToList();
+        }
+
+        /// <summary>
+        /// Get maximum date time.
+        /// </summary>
+        /// <param name="date1">The date1.</param>
+        /// <param name="date2">The date2.</param>
+        /// <returns>The max date.</returns>
+        private DateTime MaxDateTime(DateTime date1, DateTime? date2)
+        {
+            if (date2.HasValue)
+            {
+                // Add 5 seconds for the number ratio.
+                return date1 >= date2.Value ? date1 : date2.Value.AddSeconds(5);
+            }
+            else
+            {
+                return date1;
+            }
+        }
+
+        /// <summary>
+        /// Get minimum date time.
+        /// </summary>
+        /// <param name="date1">The date1.</param>
+        /// <param name="date2">The date2.</param>
+        /// <returns>The min date.</returns>
+        private DateTime MinDateTime(DateTime date1, DateTime? date2)
+        {
+            if (date2.HasValue)
+            {
+                // Add 5 seconds for the number ratio.
+                return date1 < date2.Value ? date1 : date2.Value.AddSeconds(5);
+            }
+            else
+            {
+                return date1;
             }
         }
 
