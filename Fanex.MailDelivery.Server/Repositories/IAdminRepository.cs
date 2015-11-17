@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Fanex.MailDelivery.Admin.Messaging;
 using Fanex.MailDelivery.Admin.Models;
 using Fanex.MailDelivery.Core.Models;
 using Fanex.MailDelivery.Server.Criteria.Group;

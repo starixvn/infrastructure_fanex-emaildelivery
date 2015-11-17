@@ -1,4 +1,5 @@
-﻿using Fanex.MailDelivery.Admin.Messaging.Job;
+﻿using Fanex.MailDelivery.Admin.Messaging;
+using Fanex.MailDelivery.Admin.Messaging.Job;
 using Fanex.MailDelivery.Admin.Messaging.ManageGroup;
 using Fanex.MailDelivery.Admin.Messaging.ManageMail;
 using Fanex.MailDelivery.Admin.Messaging.ManageRecipient;

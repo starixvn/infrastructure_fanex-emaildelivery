@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using EasyNetQ;
 using Fanex.MailDelivery.Admin.Mapping;
+using Fanex.MailDelivery.Admin.Messaging;
 using Fanex.MailDelivery.Admin.Messaging.ManageGroup;
 using Fanex.MailDelivery.Admin.Messaging.ManageMail;
 using Fanex.MailDelivery.Admin.Messaging.ManageRecipient;

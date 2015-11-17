@@ -1,4 +1,5 @@
 ﻿using System;
+using Fanex.MailDelivery.Admin.Messaging;
 using Fanex.MailDelivery.Admin.Messaging.ManageRecipient;
 using Fanex.MailDelivery.Services.Messaging;
 

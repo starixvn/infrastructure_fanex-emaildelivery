@@ -9,6 +9,7 @@
 
 using Fanex.MailDelivery.Admin.Messaging.ManageGroup;
 using Fanex.MailDelivery.Admin.Services.Group;
+using Fanex.NAP.Framework.Command;
 
 namespace Fanex.MailDelivery.MailStation.Controllers
 {
@@ -25,9 +26,13 @@ namespace Fanex.MailDelivery.MailStation.Controllers
     {
         private MailGroupService _mailGroupService;
 
+        private IGroupService _groupService;
+
         public MailGroupManageController()
         {
             this._mailGroupService = this._mailGroupService ?? new MailGroupService();
+
+            _groupService = new GroupService();
         }
 
         public ActionResult Index(GetMailGroupCriteria criteria)
@@ -59,9 +64,7 @@ namespace Fanex.MailDelivery.MailStation.Controllers
                 Description = criteria.Description
             };
 
-            //MailAdminService.Start();
-            //ResultResponse response = MailAdminService.CreateGroup(request);
-            //MailAdminService.Stop();
+            //ResultResponse response = _groupService.CreateGroup(request);
 
             //CommandResult commandResult = new CommandResult
             //{
@@ -69,23 +72,18 @@ namespace Fanex.MailDelivery.MailStation.Controllers
             //    Message = response.ErrMsg
             //};
 
-            // return Json(commandResult);
-            return Json(this._mailGroupService.CreateMailGroup(criteria));
+           // return Json(commandResult);
+             return Json(this._mailGroupService.CreateMailGroup(criteria));
         }
 
         public JsonResult MailGroupList(GetMailGroupCriteria criteria)
         {
-            GetGroupListResponse response;
-
             GetGroupListRequest request = new GetGroupListRequest
             {
                 Name = criteria.MailGroupName
             };
 
-            using (IGroupService groupService = new GroupService())
-            {
-                response = groupService.GetGroupList(request);
-            }
+            GetGroupListResponse response = _groupService.GetGroupList(request);
 
             return Json(response.GroupDtos);
             // return Json(this._mailGroupService.GetMailGroup(criteria));
@@ -125,6 +123,16 @@ namespace Fanex.MailDelivery.MailStation.Controllers
         public ActionResult ViewRelevantMail(int mailGroupId)
         {
             return RedirectToAction("Index", "MailManage", new { MailGroupId = mailGroupId });
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && _groupService != null)
+            {
+                _groupService.Dispose();
+            }
+
+            base.Dispose(disposing);
         }
     }
 }
