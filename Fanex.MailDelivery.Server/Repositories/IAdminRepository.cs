@@ -1,22 +1,22 @@
 ﻿using System.Collections.Generic;
-using Fanex.MailDelivery.Admin.Criteria.Group;
-using Fanex.MailDelivery.Admin.Criteria.Report;
 using Fanex.MailDelivery.Admin.Models;
 using Fanex.MailDelivery.Core.Models;
+using Fanex.MailDelivery.Server.Criteria.Group;
+using Fanex.MailDelivery.Server.Criteria.Report;
 using Fanex.MailDelivery.Services.Criteria;
 using Fanex.MailDelivery.Services.Messaging;
 using Fanex.MailDelivery.Services.Models;
-using CreateMailCriteria = Fanex.MailDelivery.Admin.Criteria.Mail.CreateMailCriteria;
-using CreateRecipientCriteria = Fanex.MailDelivery.Admin.Criteria.Recipient.CreateRecipientCriteria;
-using DeleteMailCriteria = Fanex.MailDelivery.Admin.Criteria.Mail.DeleteMailCriteria;
-using DeleteRecipientCriteria = Fanex.MailDelivery.Admin.Criteria.Recipient.DeleteRecipientCriteria;
-using GetMailListCriteria = Fanex.MailDelivery.Admin.Criteria.Mail.GetMailListCriteria;
-using RecipientByIdCriteria = Fanex.MailDelivery.Admin.Criteria.Recipient.RecipientByIdCriteria;
-using RecipientListCriteria = Fanex.MailDelivery.Admin.Criteria.Recipient.RecipientListCriteria;
-using UpdateMailCriteria = Fanex.MailDelivery.Admin.Criteria.Mail.UpdateMailCriteria;
-using UpdateRecipientCriteria = Fanex.MailDelivery.Admin.Criteria.Recipient.UpdateRecipientCriteria;
+using CreateMailCriteria = Fanex.MailDelivery.Server.Criteria.Mail.CreateMailCriteria;
+using CreateRecipientCriteria = Fanex.MailDelivery.Server.Criteria.Recipient.CreateRecipientCriteria;
+using DeleteMailCriteria = Fanex.MailDelivery.Server.Criteria.Mail.DeleteMailCriteria;
+using DeleteRecipientCriteria = Fanex.MailDelivery.Server.Criteria.Recipient.DeleteRecipientCriteria;
+using GetMailListCriteria = Fanex.MailDelivery.Server.Criteria.Mail.GetMailListCriteria;
+using RecipientByIdCriteria = Fanex.MailDelivery.Server.Criteria.Recipient.RecipientByIdCriteria;
+using RecipientListCriteria = Fanex.MailDelivery.Server.Criteria.Recipient.RecipientListCriteria;
+using UpdateMailCriteria = Fanex.MailDelivery.Server.Criteria.Mail.UpdateMailCriteria;
+using UpdateRecipientCriteria = Fanex.MailDelivery.Server.Criteria.Recipient.UpdateRecipientCriteria;
 
-namespace Fanex.MailDelivery.Admin.Repositories
+namespace Fanex.MailDelivery.Server.Repositories
 {
     public interface IAdminRepository
     {

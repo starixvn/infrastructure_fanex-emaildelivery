@@ -116,28 +116,28 @@ namespace Fanex.MailDelivery.Admin
             return _messageBroker.DeleteRecipient(deleteRecipientRequest);
         }
 
-        #region Group
+        //#region Group
 
-        public static GetGroupListResponse GetGroupList(GetGroupListRequest getGroupListRequest)
-        {
-            return _messageBroker.GetGroupList(getGroupListRequest);
-        }
+        //public static GetGroupListResponse GetGroupList(GetGroupListRequest getGroupListRequest)
+        //{
+        //    return _messageBroker.GetGroupList(getGroupListRequest);
+        //}
 
-        public static ResultResponse CreateGroup(CreateGroupRequest request)
-        {
-            return _messageBroker.CreateGroup(request);
-        }
+        //public static ResultResponse CreateGroup(CreateGroupRequest request)
+        //{
+        //    return _messageBroker.CreateGroup(request);
+        //}
 
-        public static ResultResponse UpdateGroup(UpdateGroupRequest request)
-        {
-            return _messageBroker.UpdateGroup(request);
-        }
+        //public static ResultResponse UpdateGroup(UpdateGroupRequest request)
+        //{
+        //    return _messageBroker.UpdateGroup(request);
+        //}
 
-        public static ResultResponse DeleteGroup(DeleteGroupRequest request)
-        {
-            return _messageBroker.DeleteGroup(request);
-        }
-        #endregion
+        //public static ResultResponse DeleteGroup(DeleteGroupRequest request)
+        //{
+        //    return _messageBroker.DeleteGroup(request);
+        //}
+        //#endregion
 
         #region Report
 

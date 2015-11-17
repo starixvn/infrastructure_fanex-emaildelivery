@@ -6,7 +6,7 @@
 
 using Fanex.NAP.Framework.Data;
 
-namespace Fanex.MailDelivery.Admin.Criteria.Mail
+namespace Fanex.MailDelivery.Server.Criteria.Mail
 {
     /// <summary>
     /// Get all log category criteria.

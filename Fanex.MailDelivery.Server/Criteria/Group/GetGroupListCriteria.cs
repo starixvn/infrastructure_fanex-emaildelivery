@@ -1,19 +1,19 @@
 ﻿// --------------------------------------------------------------------------
-// <copyright file="GetMailGroupByIDCriteria.cs" company="Nexcel Solutions Vietnam">
+// <copyright file="GetMailGroupCriteria.cs" company="Nexcel Solutions Vietnam">
 // Copyright (c) Nexcel Solutions Vietnam. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------
 
 using Fanex.NAP.Framework.Data;
 
-namespace Fanex.MailDelivery.Admin.Criteria.Group
+namespace Fanex.MailDelivery.Server.Criteria.Group
 {
     /// <summary>
     /// Get all log category criteria.
     /// </summary>
-    public class GetMailGroupByIdCriteria : CriteriaBase
+    public class GetGroupListCriteria : CriteriaBase
     {
-        public int MailGroupId { get; set; }
+        public string MailGroupName { get; set; }
 
         public override bool IsValid()
         {
@@ -22,7 +22,7 @@ namespace Fanex.MailDelivery.Admin.Criteria.Group
 
         public override string GetSettingKey()
         {
-            return "MailStation_Group_GetMailGroupByID";
+            return "MailStation_Group_GetMailGroup";
         }
     }
 }

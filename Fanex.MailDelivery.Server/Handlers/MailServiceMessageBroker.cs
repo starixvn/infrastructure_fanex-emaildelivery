@@ -2,20 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using EasyNetQ;
-using Fanex.MailDelivery.Admin.Criteria.Group;
-using Fanex.MailDelivery.Admin.Criteria.Report;
 using Fanex.MailDelivery.Admin.Mapping;
 using Fanex.MailDelivery.Admin.Messaging.ManageGroup;
 using Fanex.MailDelivery.Admin.Messaging.ManageMail;
 using Fanex.MailDelivery.Admin.Messaging.ManageRecipient;
 using Fanex.MailDelivery.Admin.Messaging.ManageReport;
 using Fanex.MailDelivery.Admin.Models;
-using Fanex.MailDelivery.Admin.Services;
 using Fanex.MailDelivery.Core;
 using Fanex.MailDelivery.Core.Messaging;
 using Fanex.MailDelivery.Core.Messaging.Recipient;
 using Fanex.MailDelivery.Core.Models;
+using Fanex.MailDelivery.Server.Criteria.Group;
+using Fanex.MailDelivery.Server.Criteria.Report;
 using Fanex.MailDelivery.Server.Logging;
+using Fanex.MailDelivery.Server.Services;
 using Fanex.MailDelivery.Services.Configurations;
 using Fanex.MailDelivery.Services.Criteria.ManageMail;
 using Fanex.MailDelivery.Services.Criteria.Recipient;
@@ -23,6 +23,9 @@ using Fanex.MailDelivery.Services.Handlers.Interface;
 using Fanex.MailDelivery.Services.MailService;
 using Fanex.MailDelivery.Services.Messaging;
 using Fanex.MailDelivery.Services.Messaging.Schedule;
+using CreateRecipientCriteria = Fanex.MailDelivery.Server.Criteria.Recipient.CreateRecipientCriteria;
+using DeleteRecipientCriteria = Fanex.MailDelivery.Server.Criteria.Recipient.DeleteRecipientCriteria;
+using RecipientListCriteria = Fanex.MailDelivery.Server.Criteria.Recipient.RecipientListCriteria;
 
 namespace Fanex.MailDelivery.Server.Handlers
 {
@@ -43,7 +46,7 @@ namespace Fanex.MailDelivery.Server.Handlers
 
         public MailServiceMessageBroker(IMailService mailService)
         {
-            _mailService = mailService ?? new Services.MailService.MailService();
+            _mailService = mailService ?? new MailService();
 
             _adminService = new AdminService();
         }
@@ -352,7 +355,7 @@ namespace Fanex.MailDelivery.Server.Handlers
             _bus.Respond<GetRecipientListRequest, GetRecipientListResponse>(
                 requestMessage =>
                 {
-                    IList<RecipientModel> recipientModels = _adminService.GetListRecipient(new Admin.Criteria.Recipient.RecipientListCriteria
+                    IList<RecipientModel> recipientModels = _adminService.GetListRecipient(new RecipientListCriteria
                     {
                         Emails = requestMessage.Emails,
                         Status = requestMessage.Status,
@@ -375,7 +378,7 @@ namespace Fanex.MailDelivery.Server.Handlers
             _bus.Respond<CreateRecipientRequest, ResultResponse>(
                 requestMessage =>
                 {
-                    return _adminService.CreateRecipient(new Admin.Criteria.Recipient.CreateRecipientCriteria()
+                    return _adminService.CreateRecipient(new CreateRecipientCriteria()
                     {
                         Email1 = requestMessage.Email1,
                         Email2 = requestMessage.Email2,
@@ -411,7 +414,7 @@ namespace Fanex.MailDelivery.Server.Handlers
             _bus.Respond<DeleteRecipientRequest, ResultResponse>(
                 requestMessage =>
                 {
-                    return _adminService.DeleteRecipient(new Admin.Criteria.Recipient.DeleteRecipientCriteria
+                    return _adminService.DeleteRecipient(new DeleteRecipientCriteria
                     {
                         RecipientId = requestMessage.RecipientId
                     });

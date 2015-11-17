@@ -77,22 +77,6 @@
   <ItemGroup>
     <Compile Include="Configurations\AppSettings.cs" />
     <Compile Include="Configurations\MailAdminSection.cs" />
-    <Compile Include="Criteria\Group\CreateGroupCriteria.cs" />
-    <Compile Include="Criteria\Group\DeleteGroupCriteria.cs" />
-    <Compile Include="Criteria\Group\_GetMailGroupByIDCriteria.cs" />
-    <Compile Include="Criteria\Group\GetGroupListCriteria.cs" />
-    <Compile Include="Criteria\Group\UpdateGroupCriteria.cs" />
-    <Compile Include="Criteria\Report\GetAllScheduleCriteria.cs" />
-    <Compile Include="Criteria\Report\GetReportListCriteria.cs" />
-    <Compile Include="Criteria\Mail\CreateMailCriteria.cs" />
-    <Compile Include="Criteria\Mail\DeleteMailCriteria.cs" />
-    <Compile Include="Criteria\Mail\GetMailListCriteria.cs" />
-    <Compile Include="Criteria\Mail\UpdateMailCriteria.cs" />
-    <Compile Include="Criteria\Recipient\CreateRecipientCriteria.cs" />
-    <Compile Include="Criteria\Recipient\DeleteRecipientCriteria.cs" />
-    <Compile Include="Criteria\Recipient\RecipientByIdCriteria.cs" />
-    <Compile Include="Criteria\Recipient\RecipientListCriteria.cs" />
-    <Compile Include="Criteria\Recipient\UpdateRecipientCriteria.cs" />
     <Compile Include="Handlers\MailAdminMessageBroker.cs" />
     <Compile Include="Handlers\IMailAdminMessageBroker.cs" />
     <Compile Include="Logging\MailAdminLogger.cs" />
@@ -128,12 +112,11 @@
     <Compile Include="Models\MailTaskDetailModel.cs" />
     <Compile Include="Models\MailTaskModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repositories\IAdminRepository.cs" />
-    <Compile Include="Repositories\AdminRepository.cs" />
-    <Compile Include="Services\IAdminService.cs" />
+    <Compile Include="Services\AdminService.cs" />
     <Compile Include="Services\Group\GroupService.cs" />
     <Compile Include="Services\Group\IGroupService.cs" />
-    <Compile Include="Services\AdminService.cs" />
+    <Compile Include="Services\Recipient\RecipientService.cs" />
+    <Compile Include="Services\Recipient\IRecipientService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config">

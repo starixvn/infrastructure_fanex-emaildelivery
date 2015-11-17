@@ -8,7 +8,7 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using Fanex.NAP.Framework.Data;
 
-namespace Fanex.MailDelivery.Admin.Criteria.Mail
+namespace Fanex.MailDelivery.Server.Criteria.Mail
 {
     /// <summary>
     /// TODO: Update summary.

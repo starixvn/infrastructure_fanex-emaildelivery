@@ -9,7 +9,7 @@
 
 using Fanex.NAP.Framework.Data;
 
-namespace Fanex.MailDelivery.Admin.Criteria.Recipient
+namespace Fanex.MailDelivery.Server.Criteria.Recipient
 {
     /// <summary>
     /// Deletes Recipient Criteria.

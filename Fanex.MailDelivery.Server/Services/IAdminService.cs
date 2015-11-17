@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
-using Fanex.MailDelivery.Admin.Criteria.Group;
-using Fanex.MailDelivery.Admin.Criteria.Mail;
-using Fanex.MailDelivery.Admin.Criteria.Recipient;
-using Fanex.MailDelivery.Admin.Criteria.Report;
 using Fanex.MailDelivery.Admin.Models;
 using Fanex.MailDelivery.Core.Models;
+using Fanex.MailDelivery.Server.Criteria.Group;
+using Fanex.MailDelivery.Server.Criteria.Mail;
+using Fanex.MailDelivery.Server.Criteria.Recipient;
+using Fanex.MailDelivery.Server.Criteria.Report;
 using Fanex.MailDelivery.Services.Messaging;
 
-namespace Fanex.MailDelivery.Admin.Services
+namespace Fanex.MailDelivery.Server.Services
 {
     /// <summary>
     /// Mail Service interface.

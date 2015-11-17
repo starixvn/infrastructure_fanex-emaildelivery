@@ -1,6 +1,7 @@
 ﻿using Fanex.MailDelivery.Admin.Messaging.ManageGroup;
 using Fanex.MailDelivery.Admin.Messaging.ManageMail;
 using Fanex.MailDelivery.Admin.Messaging.ManageRecipient;
+using Fanex.MailDelivery.Admin.Services.Group;
 using Fanex.MailDelivery.Services.Messaging;
 using NUnit.Framework;
 
@@ -200,7 +201,12 @@ namespace Fanex.MailDelivery.Admin.UserTest
             {
             };
 
-            GetGroupListResponse response = MailAdminService.GetGroupList(request);
+            GetGroupListResponse response;
+
+            using (IGroupService groupService = new GroupService())
+            {
+                response = groupService.GetGroupList(request);
+            }
         }
 
         #endregion

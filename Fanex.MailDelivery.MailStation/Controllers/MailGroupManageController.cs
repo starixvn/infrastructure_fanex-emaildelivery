@@ -7,10 +7,8 @@
 //   <change who="Louis" date="2012.12.07">Created</change>
 // </history>
 
-using Fanex.MailDelivery.Admin;
-using Fanex.MailDelivery.Admin.Messaging;
 using Fanex.MailDelivery.Admin.Messaging.ManageGroup;
-using Fanex.NAP.Framework.Command;
+using Fanex.MailDelivery.Admin.Services.Group;
 
 namespace Fanex.MailDelivery.MailStation.Controllers
 {
@@ -71,20 +69,23 @@ namespace Fanex.MailDelivery.MailStation.Controllers
             //    Message = response.ErrMsg
             //};
 
-           // return Json(commandResult);
-             return Json(this._mailGroupService.CreateMailGroup(criteria));
+            // return Json(commandResult);
+            return Json(this._mailGroupService.CreateMailGroup(criteria));
         }
 
         public JsonResult MailGroupList(GetMailGroupCriteria criteria)
         {
+            GetGroupListResponse response;
+
             GetGroupListRequest request = new GetGroupListRequest
             {
                 Name = criteria.MailGroupName
             };
 
-            MailAdminService.Start();
-            GetGroupListResponse response = MailAdminService.GetGroupList(request);
-            MailAdminService.Stop();
+            using (IGroupService groupService = new GroupService())
+            {
+                response = groupService.GetGroupList(request);
+            }
 
             return Json(response.GroupDtos);
             // return Json(this._mailGroupService.GetMailGroup(criteria));

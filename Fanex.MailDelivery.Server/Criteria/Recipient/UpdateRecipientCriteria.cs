@@ -1,30 +1,35 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="CreateRecipientCriteria.cs" company="Microsoft">
+// <copyright file="UpdateRecipientCriteria.cs" company="Microsoft">
 // TODO: Update copyright text.
 // </copyright>
 // -----------------------------------------------------------------------
 
 using Fanex.NAP.Framework.Data;
 
-namespace Fanex.MailDelivery.Admin.Criteria.Recipient
+namespace Fanex.MailDelivery.Server.Criteria.Recipient
 {
     /// <summary>
-    /// Insert Recipient Criteria.
+    /// Update Recipient Criteria.
     /// </summary>
-    public class CreateRecipientCriteria : CriteriaBase
+    public class UpdateRecipientCriteria : CriteriaBase
     {
+        [SpParam(SqlParamName = "RecipientID")]
+        public int RecipientId { get; set; }
+
         [SpParam(SqlParamName = "RecipientName")]
-        public string UserName { get; set; }
+        public string Username { get; set; }
+
+        public int EmailID1 { get; set; }
+
+        public int EmailID2 { get; set; }
+
+        public int EmailID3 { get; set; }
 
         public string Email1 { get; set; }
 
         public string Email2 { get; set; }
 
         public string Email3 { get; set; }
-
-        public bool IsNAPUser { get; set; }
-
-        public int NAPUserID { get; set; }
 
         public string Note { get; set; }
 
@@ -33,7 +38,7 @@ namespace Fanex.MailDelivery.Admin.Criteria.Recipient
 
         public override string GetSettingKey()
         {
-            return "MailStation_MailReport_InsertRecipient";
+            return "MailStation_MailReport_UpdateRecipient";
         }
     }
 }
