@@ -9,6 +9,7 @@
 
 using System.Collections.Generic;
 using Fanex.MailDelivery.Admin.Messaging.ManageMail;
+using Fanex.MailDelivery.Admin.Services.Job;
 using Fanex.MailDelivery.Admin.Services.Mail;
 using Fanex.NAP.Framework.Command;
 
@@ -18,7 +19,6 @@ namespace Fanex.MailDelivery.MailStation.Controllers
     using Fanex.MailDelivery.MailStation.Criteria.MailGroup;
     using Fanex.MailDelivery.MailStation.Criteria.MailManage;
     using Fanex.MailDelivery.MailStation.Extensions;
-    using Fanex.MailDelivery.MailStation.Models;
     using Fanex.MailDelivery.MailStation.Resources;
     using Fanex.MailDelivery.MailStation.Services.ManageMail;
     using Fanex.Maintenance.Controller;
@@ -33,7 +33,7 @@ namespace Fanex.MailDelivery.MailStation.Controllers
 
         public MailManageController()
         {
-            _mailManageService = new MailManageService(new MailService());
+            _mailManageService = new MailManageService(new MailService(), new JobService());
         }
 
         public ActionResult Index(GetMailListCriteria criteria)
@@ -71,7 +71,7 @@ namespace Fanex.MailDelivery.MailStation.Controllers
             ViewBag.ListMailGroup = _mailManageService.MailGroups(false);
             ViewBag.ListSite = _mailManageService.Sites(false);
             ViewBag.ListTriggerType = _mailManageService.Trigger(false);
-  
+
             MailDto mailDto = _mailManageService.MailById(criteria);
 
             if (mailDto != null)

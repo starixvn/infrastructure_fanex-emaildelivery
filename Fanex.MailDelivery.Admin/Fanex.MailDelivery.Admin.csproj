@@ -77,10 +77,7 @@
   <ItemGroup>
     <Compile Include="Configurations\AppSettings.cs" />
     <Compile Include="Configurations\MailAdminSection.cs" />
-    <Compile Include="Handlers\MailAdminMessageBroker.cs" />
-    <Compile Include="Handlers\IMailAdminMessageBroker.cs" />
     <Compile Include="Logging\MailAdminLogger.cs" />
-    <Compile Include="MailAdminService.cs" />
     <Compile Include="Mapping\GroupModelMapper.cs" />
     <Compile Include="Mapping\MailTaskModelMapper.cs" />
     <Compile Include="Mapping\MailModelMapper.cs" />
@@ -114,8 +111,8 @@
     <Compile Include="Messaging\ManageReport\GetReportListResponse.cs" />
     <Compile Include="Messaging\ManageReport\GetReportListRequest.cs" />
     <Compile Include="Messaging\ResultResponse.cs" />
-    <Compile Include="Messaging\Schedule\ScheduleRequest.cs" />
-    <Compile Include="Messaging\Schedule\ScheduleResponse.cs" />
+    <Compile Include="Messaging\Job\ScheduleRequest.cs" />
+    <Compile Include="Messaging\Job\ScheduleResponse.cs" />
     <Compile Include="Models\ClientStatusModel.cs" />
     <Compile Include="Models\MailGroupModel.cs" />
     <Compile Include="Models\MailTask.cs" />
@@ -125,6 +122,8 @@
     <Compile Include="Services\AdminService.cs" />
     <Compile Include="Services\Group\GroupService.cs" />
     <Compile Include="Services\Group\IGroupService.cs" />
+    <Compile Include="Services\Job\IJobService.cs" />
+    <Compile Include="Services\Job\JobService.cs" />
     <Compile Include="Services\Mail\IMailService.cs" />
     <Compile Include="Services\Mail\MailService.cs" />
     <Compile Include="Services\Recipient\RecipientService.cs" />

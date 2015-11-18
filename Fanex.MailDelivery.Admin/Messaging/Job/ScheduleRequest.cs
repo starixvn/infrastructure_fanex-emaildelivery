@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Fanex.MailDelivery.Admin.Messaging.Schedule
+namespace Fanex.MailDelivery.Admin.Messaging.Job
 {
     public class ScheduleRequest
     {

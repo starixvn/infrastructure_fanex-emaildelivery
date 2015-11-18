@@ -160,28 +160,28 @@ namespace Fanex.MailDelivery.MailStation.Services.MailReport
         /// <param name="criteria">The criteria.</param>
         public void RetrySendMail(RetrySendMailCriteria criteria)
         {
-            MailAdminService.Start();
-            MailTaskModel mailTask = this.GetMailTaskByID(new GetMailTaskByIdCriteria() { MailTaskId = criteria.TaskId });
+            //MailAdminService.Start();
+            //MailTaskModel mailTask = this.GetMailTaskByID(new GetMailTaskByIdCriteria() { MailTaskId = criteria.TaskId });
 
             //TODO: Will be changed
 
             //Schedule schedule = this.GetScheduleByMailId(new GetScheduleByIdCriteria() { MailId = mailTask.MailId });
             //schedule.TaskId = mailTask.MailTaskId;
             //MailAdminService.PublishRetryJobMessage(schedule);
-            MailAdminService.Stop();
+            //MailAdminService.Stop();
         }
 
         public void AbortJob(int taskID)
         {
-            MailAdminService.Start();
+            //MailAdminService.Start();
 
             AbortJobRequest request = new AbortJobRequest
             {
                 TaskId = taskID,
             };
 
-            MailAdminService.AbortJob(request);
-            MailAdminService.Stop();
+            //MailAdminService.AbortJob(request);
+            //MailAdminService.Stop();
         }
 
         public void RetryMissingJob(RetryMissingTaskCriteria criteria)
@@ -196,7 +196,7 @@ namespace Fanex.MailDelivery.MailStation.Services.MailReport
                 mailTaskID = Converter.ToInt(db.GetParameterValue("MailTaskID"));
             }
 
-            MailAdminService.Start();
+            //MailAdminService.Start();
             MailTaskModel mailTask = this.GetMailTaskByID(new GetMailTaskByIdCriteria() { MailTaskId = mailTaskID });
 
             //TODO: Will be changed 
@@ -206,7 +206,7 @@ namespace Fanex.MailDelivery.MailStation.Services.MailReport
             //MailAdminService.PublishRetryJobMessage(schedule);
 
 
-            MailAdminService.Stop();
+            //MailAdminService.Stop();
         }
 
         /// <summary>

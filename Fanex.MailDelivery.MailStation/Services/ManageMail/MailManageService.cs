@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using Fanex.MailDelivery.Admin;
 using Fanex.MailDelivery.Admin.Messaging;
+using Fanex.MailDelivery.Admin.Messaging.Job;
 using Fanex.MailDelivery.Admin.Messaging.ManageMail;
-using Fanex.MailDelivery.Admin.Messaging.Schedule;
+using Fanex.MailDelivery.Admin.Services.Job;
 using Fanex.MailDelivery.Admin.Services.Mail;
 using Fanex.MailDelivery.MailStation.Criteria.MailGroup;
 using Fanex.MailDelivery.MailStation.Criteria.MailManage;
@@ -18,9 +18,12 @@ namespace Fanex.MailDelivery.MailStation.Services.ManageMail
     {
         IMailService _mailService;
 
-        public MailManageService(IMailService mailService)
+        IJobService _jobService;
+
+        public MailManageService(IMailService mailService, IJobService jobService)
         {
             _mailService = mailService;
+            _jobService = jobService;
         }
 
         public List<MailDto> MailList(GetMailListCriteria criteria)
@@ -131,8 +134,7 @@ namespace Fanex.MailDelivery.MailStation.Services.ManageMail
 
         public CommandResult UpdateMail(UpdateMailCriteria criteria)
         {
-            MailAdminService.Start();
-            MailAdminService.PublishScheduleChangeMessage(new ScheduleRequest
+            _jobService.PublishScheduleChangeMessage(new ScheduleRequest
             {
                 Id = criteria.MailId,
                 Active = criteria.IsActive,
@@ -144,8 +146,6 @@ namespace Fanex.MailDelivery.MailStation.Services.ManageMail
                 RetryInterval = criteria.Interval,
                 SiteId = criteria.SiteId
             });
-
-            MailAdminService.Stop();
 
             if (criteria.TriggerType == 0)
             {
@@ -245,16 +245,15 @@ namespace Fanex.MailDelivery.MailStation.Services.ManageMail
 
         public void RunJobImmediately(int mailId)
         {
-            MailAdminService.Start();
             //TODO: Will be changed
             //Schedule schedule = GetScheduleByMailId(new GetScheduleByIdCriteria { MailId = mailId });
             //MailAdminService.PublishRetryJobMessage(schedule);
-            MailAdminService.Stop();
         }
 
         public void Dispose()
         {
             _mailService.Dispose();
+            _jobService.Dispose();
         }
     }
 }
