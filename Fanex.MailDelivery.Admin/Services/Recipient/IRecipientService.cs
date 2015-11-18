@@ -8,6 +8,8 @@ namespace Fanex.MailDelivery.Admin.Services.Recipient
     {
         GetRecipientListResponse GetRecipientList(GetRecipientListRequest request);
 
+        GetRecipientByIdResponse GetRecipientById(GetRecipientByIdRequest request);
+
         ResultResponse CreateRecipient(CreateRecipientRequest request);
 
         ResultResponse UpdateRecipient(UpdateRecipientRequest request);

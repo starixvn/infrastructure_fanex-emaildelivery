@@ -18,19 +18,23 @@ namespace Fanex.MailDelivery.MailStation.Models
 
         public string RecipientName { get; set; }
 
-        public bool IsNapUser { get; set; }
 
-        public int EmailID1 { get; set; }
+        public int EmailId1 { get; set; }
 
-        public int EmailID2 { get; set; }
+        public int EmailId2 { get; set; }
 
-        public int EmailID3 { get; set; }
+        public int EmailId3 { get; set; }
 
         public string Email1 { get; set; }
 
         public string Email2 { get; set; }
 
         public string Email3 { get; set; }
+
+
+        public bool IsNapUser { get; set; }
+
+        public int NapUserId { get; set; }
 
         public bool IsActive { get; set; }
 

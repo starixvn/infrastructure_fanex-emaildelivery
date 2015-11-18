@@ -16,15 +16,19 @@ using Fanex.MailDelivery.Core.Messaging.Recipient;
 using Fanex.MailDelivery.Core.Models;
 using Fanex.MailDelivery.Server.Configurations;
 using Fanex.MailDelivery.Server.Criteria.Group;
+using Fanex.MailDelivery.Server.Criteria.Mail;
 using Fanex.MailDelivery.Server.Criteria.Recipient;
 using Fanex.MailDelivery.Server.Criteria.Report;
 using Fanex.MailDelivery.Server.Logging;
 using Fanex.MailDelivery.Server.MailService;
 using Fanex.MailDelivery.Server.Services;
-using Fanex.MailDelivery.Services.Criteria.ManageMail;
+using CreateMailCriteria = Fanex.MailDelivery.Services.Criteria.ManageMail.CreateMailCriteria;
 using CreateRecipientCriteria = Fanex.MailDelivery.Server.Criteria.Recipient.CreateRecipientCriteria;
+using DeleteMailCriteria = Fanex.MailDelivery.Services.Criteria.ManageMail.DeleteMailCriteria;
 using DeleteRecipientCriteria = Fanex.MailDelivery.Server.Criteria.Recipient.DeleteRecipientCriteria;
-using RecipientListCriteria = Fanex.MailDelivery.Server.Criteria.Recipient.RecipientListCriteria;
+using GetMailListCriteria = Fanex.MailDelivery.Services.Criteria.ManageMail.GetMailListCriteria;
+using GetRecipientListCriteria = Fanex.MailDelivery.Server.Criteria.Recipient.GetRecipientListCriteria;
+using UpdateMailCriteria = Fanex.MailDelivery.Services.Criteria.ManageMail.UpdateMailCriteria;
 
 namespace Fanex.MailDelivery.Server.Handlers
 {
@@ -76,11 +80,13 @@ namespace Fanex.MailDelivery.Server.Handlers
 
 
             RespondGetMailList();
+            ResponseGetMailById();
             RespondCreateMail();
             RespondUpdateMail();
             RespondDeleteMail();
 
             RespondGetRecipientList();
+            ResponseGetRecipientById();
             RespondCreateRecipient();
             RespondUpdateRecipient();
             RespondDeleteRecipient();
@@ -180,7 +186,7 @@ namespace Fanex.MailDelivery.Server.Handlers
             _bus.Respond<GetRecipientByIdMessage, RecipientModel>(
                 requestMessage =>
                 {
-                    return _mailService.RecipientById(new RecipientByIdCriteria()
+                    return _mailService.RecipientById(new GetRecipientByIdCriteria()
                     {
                         RecipientId = requestMessage.RecipientId
                     });
@@ -210,7 +216,7 @@ namespace Fanex.MailDelivery.Server.Handlers
                         TriggerType = requestMessage.TriggerType
                     });
 
-                    List<GetMailListResponseDto> getMailListResponseDtos = mailModels.Select(n => n.ToGetMailListResponseDto()).ToList();
+                    List<MailDto> getMailListResponseDtos = mailModels.Select(n => n.ToMailDto()).ToList();
 
                     GetMailListResponse getMailListResponse = new GetMailListResponse
                     {
@@ -218,6 +224,20 @@ namespace Fanex.MailDelivery.Server.Handlers
                     };
 
                     return getMailListResponse;
+                });
+        }
+
+        private void ResponseGetMailById()
+        {
+            _bus.Respond<GetMailByIdRequest, GetMailByIdResponse>(
+                request =>
+                {
+                    MailModel mailModel = _adminService.GetMailById(new GetMailByIdCriteria
+                    {
+                        MailId = request.Id
+                    });
+
+                    return new GetMailByIdResponse { MailDto = mailModel == null ? null : mailModel.ToMailDto() };
                 });
         }
 
@@ -355,7 +375,7 @@ namespace Fanex.MailDelivery.Server.Handlers
             _bus.Respond<GetRecipientListRequest, GetRecipientListResponse>(
                 requestMessage =>
                 {
-                    IList<RecipientModel> recipientModels = _adminService.GetListRecipient(new RecipientListCriteria
+                    IList<RecipientModel> recipientModels = _adminService.GetListRecipient(new GetRecipientListCriteria
                     {
                         Emails = requestMessage.Emails,
                         Status = requestMessage.Status,
@@ -371,6 +391,20 @@ namespace Fanex.MailDelivery.Server.Handlers
 
                     return getMailListResponse;
                 });
+        }
+
+        private void ResponseGetRecipientById()
+        {
+            _bus.Respond<GetRecipientByIdRequest, GetRecipientByIdResponse>(
+               request =>
+               {
+                   RecipientModel recipientModel = _adminService.GetRecipientById(new GetRecipientByIdCriteria
+                   {
+                       RecipientId = request.Id
+                   });
+
+                   return new GetRecipientByIdResponse { RecipientDto = recipientModel.ToRecipientDto() };
+               });
         }
 
         public void RespondCreateRecipient()
@@ -399,12 +433,18 @@ namespace Fanex.MailDelivery.Server.Handlers
                 {
                     return _mailService.UpdateRecipient(new UpdateRecipientCriteria()
                     {
+                        RecipientId = requestMessage.RecipientId,
+                        Username = requestMessage.UserName,
+
+                        EmailID1 = requestMessage.EmailId1,
+                        EmailID2 = requestMessage.EmailId2,
+                        EmailID3 = requestMessage.EmailId3,
                         Email1 = requestMessage.Email1,
                         Email2 = requestMessage.Email2,
                         Email3 = requestMessage.Email3,
+
                         Note = requestMessage.Note,
                         Status = requestMessage.Status,
-                        Username = requestMessage.UserName
                     });
                 });
         }

@@ -10,6 +10,11 @@ namespace Fanex.MailDelivery.Admin.Services.Mail
             return Bus.Request<GetMailListRequest, GetMailListResponse>(request);
         }
 
+        public GetMailByIdResponse GetMailById(GetMailByIdRequest request)
+        {
+            return Bus.Request<GetMailByIdRequest, GetMailByIdResponse>(request);
+        }
+
         public ResultResponse CreateFunctionMail(CreateFunctionMailRequest request)
         {
             return Bus.Request<CreateFunctionMailRequest, ResultResponse>(request);

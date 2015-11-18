@@ -7,6 +7,11 @@
 //   <change who="Louis" date="2012.12.07">Created</change>
 // </history>
 
+using System.Collections.Generic;
+using Fanex.MailDelivery.Admin.Messaging.ManageMail;
+using Fanex.MailDelivery.Admin.Services.Mail;
+using Fanex.NAP.Framework.Command;
+
 namespace Fanex.MailDelivery.MailStation.Controllers
 {
     using System.Web.Mvc;
@@ -25,9 +30,14 @@ namespace Fanex.MailDelivery.MailStation.Controllers
     {
         private MailManageService _mailManageService;
 
+
+        public MailManageController()
+        {
+            _mailManageService = new MailManageService(new MailService());
+        }
+
         public ActionResult Index(GetMailListCriteria criteria)
         {
-            _mailManageService = new MailManageService();
             ViewBag.ListMailGroup = _mailManageService.MailGroups();
             ViewBag.ListSite = _mailManageService.Sites();
             ViewBag.ListStatus = _mailManageService.Status();
@@ -38,19 +48,16 @@ namespace Fanex.MailDelivery.MailStation.Controllers
 
         public JsonResult Sites()
         {
-            _mailManageService = new MailManageService();
             return Json(_mailManageService.Sites());
         }
 
         public JsonResult MailGroups(bool hasAllElement = true)
         {
-            _mailManageService = new MailManageService();
             return Json(_mailManageService.MailGroups(hasAllElement));
         }
 
         public JsonResult AddMailGroup(CreateMailGroupCriteria criteria)
         {
-            _mailManageService = new MailManageService();
             return Json(_mailManageService.CreateMailGroup(criteria));
         }
 
@@ -59,20 +66,21 @@ namespace Fanex.MailDelivery.MailStation.Controllers
         /// </summary>
         /// <param name="criteria">The criteria.</param>
         /// <returns>Create Mail View.</returns>
-        public ActionResult CreateMailView(ReadMailByIdCriteria criteria)
+        public ActionResult CreateMailView(GetMailByIdCriteria criteria)
         {
-            _mailManageService = new MailManageService();
             ViewBag.ListMailGroup = _mailManageService.MailGroups(false);
             ViewBag.ListSite = _mailManageService.Sites(false);
             ViewBag.ListTriggerType = _mailManageService.Trigger(false);
-            MailModel mail = _mailManageService.MailByID(criteria);
-            if (mail != null)
+  
+            MailDto mailDto = _mailManageService.MailById(criteria);
+
+            if (mailDto != null)
             {
-                mail.MailName += Labels.CopyPrefix;
+                mailDto.MailName += Labels.CopyPrefix;
             }
 
             ViewBag.TimeZoneString = TimeZoneExtension.GetTimeZoneString();
-            CreateMailCriteria model = new CreateMailCriteria(mail);
+            CreateMailCriteria model = new CreateMailCriteria(null);
             return View("~/Areas/MailStation/ManageMail/CreateMail/Index.cshtml", model);
         }
 
@@ -93,31 +101,30 @@ namespace Fanex.MailDelivery.MailStation.Controllers
                 criteria.EndOn = criteria.EndOn.Value.ToUniversalTime();
             }
 
-            _mailManageService = new MailManageService();
             return Json(_mailManageService.CreateMail(criteria), JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult MailList(GetMailListCriteria criteria)
         {
-            _mailManageService = new MailManageService();
-            var result = _mailManageService.MailList(criteria);
+            List<MailDto> result = _mailManageService.MailList(criteria);
             return Json(result);
         }
 
         public ActionResult DeleteMail(DeleteMailCriteria criteria)
         {
-            _mailManageService = new MailManageService();
-            return Json(_mailManageService.DeleteMail(criteria));
+            CommandResult commandResult = _mailManageService.DeleteMail(criteria);
+            return Json(commandResult);
         }
 
-        public ActionResult UpdateMailView(ReadMailByIdCriteria criteria)
+        public ActionResult UpdateMailView(GetMailByIdCriteria criteria)
         {
-            _mailManageService = new MailManageService();
             ViewBag.ListMailGroup = _mailManageService.MailGroups(false);
             ViewBag.ListSite = _mailManageService.Sites(false);
             ViewBag.ListTriggerType = _mailManageService.Trigger(false);
-            MailModel mail = _mailManageService.MailByID(criteria);
-            UpdateMailCriteria model = new UpdateMailCriteria(mail);
+
+            MailDto mailDto = _mailManageService.MailById(criteria);
+
+            UpdateMailCriteria model = new UpdateMailCriteria(mailDto);
             ViewBag.TimeZoneString = TimeZoneExtension.GetTimeZoneString();
             return View("~/Areas/MailStation/ManageMail/UpdateMail/Index.cshtml", model);
         }
@@ -125,19 +132,17 @@ namespace Fanex.MailDelivery.MailStation.Controllers
         [HttpPost]
         public JsonResult UpdateMail(UpdateMailCriteria criteria)
         {
-            _mailManageService = new MailManageService();
-            return Json(_mailManageService.UpdateMail(criteria), JsonRequestBehavior.AllowGet);
+            CommandResult commandResult = _mailManageService.UpdateMail(criteria);
+            return Json(commandResult, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult SuggestMail(SuggestMailCriteria criteria)
         {
-            _mailManageService = new MailManageService();
             return Json(_mailManageService.SuggestMails(criteria), JsonRequestBehavior.AllowGet);
         }
 
         public void RunNow(int mailId)
         {
-            _mailManageService = new MailManageService();
             _mailManageService.RunJobImmediately(mailId);
         }
     }

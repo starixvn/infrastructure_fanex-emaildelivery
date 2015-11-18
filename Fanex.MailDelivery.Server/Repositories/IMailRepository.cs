@@ -35,11 +35,11 @@ namespace Fanex.MailDelivery.Server.Repositories
         ResultResponse UpdateMail(UpdateMailCriteria criteria);
         ResultResponse DeleteMail(DeleteMailCriteria criteria);
 
-        List<RecipientModel> GetListRecipient(RecipientListCriteria criteria);
+        List<RecipientModel> GetListRecipient(GetRecipientListCriteria criteria);
         ResultResponse CreateRecipient(CreateRecipientCriteria criteria);
         ResultResponse UpdateRecipient(UpdateRecipientCriteria criteria);
         ResultResponse DeleteRecipient(DeleteRecipientCriteria criteria);
 
-        RecipientModel RecipientById(RecipientByIdCriteria criteria);
+        RecipientModel RecipientById(GetRecipientByIdCriteria criteria);
     }
 }

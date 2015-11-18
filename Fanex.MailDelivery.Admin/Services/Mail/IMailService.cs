@@ -1,11 +1,13 @@
-﻿using Fanex.MailDelivery.Admin.Messaging;
+﻿using System;
+using Fanex.MailDelivery.Admin.Messaging;
 using Fanex.MailDelivery.Admin.Messaging.ManageMail;
 
 namespace Fanex.MailDelivery.Admin.Services.Mail
 {
-    public interface IMailService
+    public interface IMailService: IDisposable
     {
         GetMailListResponse GetMailList(GetMailListRequest request);
+        GetMailByIdResponse GetMailById(GetMailByIdRequest request);
 
         ResultResponse CreateFunctionMail(CreateFunctionMailRequest request);
         ResultResponse CreateAutoMail(CreateAutoMailRequest request);

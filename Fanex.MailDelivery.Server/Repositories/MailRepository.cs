@@ -151,7 +151,7 @@ namespace Fanex.MailDelivery.Server.Repositories
             }
         }
 
-        public List<RecipientModel> GetListRecipient(RecipientListCriteria criteria)
+        public List<RecipientModel> GetListRecipient(GetRecipientListCriteria criteria)
         {
             using (var db = new ObjectDb(criteria.GetSettingKey()))
             {
@@ -245,7 +245,7 @@ namespace Fanex.MailDelivery.Server.Repositories
         /// </summary>
         /// <param name="criteria">The criteria.</param>
         /// <returns>The recipient by identity.</returns>
-        public RecipientModel RecipientById(RecipientByIdCriteria criteria)
+        public RecipientModel RecipientById(GetRecipientByIdCriteria criteria)
         {
             using (ObjectDb db = new ObjectDb(criteria.GetSettingKey()))
             {

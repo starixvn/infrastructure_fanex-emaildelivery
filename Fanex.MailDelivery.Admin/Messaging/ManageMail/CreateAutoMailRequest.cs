@@ -4,8 +4,6 @@ namespace Fanex.MailDelivery.Admin.Messaging.ManageMail
 {
     public class CreateAutoMailRequest : MailRequestBase
     {
-        public int TriggerType { get; set; }
-
         public int RepeatType { get; set; }
 
         public string CronExpression { get; set; }

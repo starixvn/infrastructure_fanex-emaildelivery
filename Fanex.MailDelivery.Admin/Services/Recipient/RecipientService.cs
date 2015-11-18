@@ -10,6 +10,11 @@ namespace Fanex.MailDelivery.Admin.Services.Recipient
             return Bus.Request<GetRecipientListRequest, GetRecipientListResponse>(request);
         }
 
+        public GetRecipientByIdResponse GetRecipientById(GetRecipientByIdRequest request)
+        {
+            return Bus.Request<GetRecipientByIdRequest, GetRecipientByIdResponse>(request);
+        }
+
         public ResultResponse CreateRecipient(CreateRecipientRequest request)
         {
             return Bus.Request<CreateRecipientRequest, ResultResponse>(request);

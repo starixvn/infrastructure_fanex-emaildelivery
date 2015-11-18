@@ -15,8 +15,8 @@ using Fanex.NAP.Framework.Command;
 namespace Fanex.MailDelivery.MailStation.Controllers
 {
     using System.Web.Mvc;
-    using Fanex.MailDelivery.MailStation.Criteria.MailGroup;
-    using Fanex.MailDelivery.MailStation.Extensions;
+    using Criteria.MailGroup;
+    using Extensions;
     using Fanex.Maintenance.Controller;
 
     /// <summary>

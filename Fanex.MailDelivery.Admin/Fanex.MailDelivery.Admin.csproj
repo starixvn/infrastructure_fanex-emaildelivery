@@ -96,11 +96,16 @@
     <Compile Include="Messaging\ManageMail\CreateAutoMailRequest.cs" />
     <Compile Include="Messaging\ManageMail\CreateFunctionMailRequest.cs" />
     <Compile Include="Messaging\ManageMail\DeleteMailRequest.cs" />
+    <Compile Include="Messaging\ManageMail\GetMailByIdRequest.cs" />
+    <Compile Include="Messaging\ManageMail\GetMailByIdResponse.cs" />
     <Compile Include="Messaging\ManageMail\GetMailListRequest.cs" />
     <Compile Include="Messaging\ManageMail\GetMailListResponse.cs" />
+    <Compile Include="Messaging\ManageMail\MailDto.cs" />
     <Compile Include="Messaging\ManageMail\MailRequestBase.cs" />
     <Compile Include="Messaging\ManageMail\UpdateAutoMailRequest.cs" />
     <Compile Include="Messaging\ManageMail\UpdateFunctionMailRequest.cs" />
+    <Compile Include="Messaging\ManageRecipient\GetRecipientByIdRequest.cs" />
+    <Compile Include="Messaging\ManageRecipient\GetRecipientByIdResponse.cs" />
     <Compile Include="Messaging\ManageRecipient\UpdateRecipientRequest.cs" />
     <Compile Include="Messaging\ManageRecipient\DeleteRecipientRequest.cs" />
     <Compile Include="Messaging\ManageRecipient\CreateRecipientRequest.cs" />

@@ -15,86 +15,96 @@ namespace Fanex.MailDelivery.Server.Services
     /// </summary>
     public class AdminService : IAdminService
     {
-        private readonly IAdminRepository _mailRepository;
+        private readonly IAdminRepository _adminRepository;
 
         public AdminService()
         {
-            _mailRepository = _mailRepository ?? new AdminRepository();
+            _adminRepository = _adminRepository ?? new AdminRepository();
         }
 
-        public List<RecipientModel> GetListRecipient(RecipientListCriteria criteria)
+        public List<RecipientModel> GetListRecipient(GetRecipientListCriteria criteria)
         {
-            return _mailRepository.GetListRecipient(criteria);
+            return _adminRepository.GetRecipientList(criteria);
+        }
+
+        public RecipientModel GetRecipientById(GetRecipientByIdCriteria criteria)
+        {
+            return _adminRepository.GetRecipientById(criteria);
         }
 
         public ResultResponse CreateRecipient(CreateRecipientCriteria criteria)
         {
-            return _mailRepository.CreateRecipient(criteria);
+            return _adminRepository.CreateRecipient(criteria);
         }
 
         public ResultResponse UpdateRecipient(UpdateRecipientCriteria criteria)
         {
-            return _mailRepository.UpdateRecipient(criteria);
+            return _adminRepository.UpdateRecipient(criteria);
         }
 
         public ResultResponse DeleteRecipient(DeleteRecipientCriteria criteria)
         {
-            return _mailRepository.DeleteRecipient(criteria);
+            return _adminRepository.DeleteRecipient(criteria);
         }
 
         public List<MailModel> GetListMail(GetMailListCriteria criteria)
         {
-            return _mailRepository.GetListMail(criteria);
+            return _adminRepository.GetMailList(criteria);
+        }
+
+        public MailModel GetMailById(GetMailByIdCriteria criteria)
+        {
+            return _adminRepository.GetMailById(criteria);
         }
 
         public ResultResponse CreateMail(CreateMailCriteria criteria)
         {
-            return _mailRepository.CreateMail(criteria);
+            return _adminRepository.CreateMail(criteria);
         }
 
         public ResultResponse UpdateMail(UpdateMailCriteria criteria)
         {
-            return _mailRepository.UpdateMail(criteria);
+            return _adminRepository.UpdateMail(criteria);
         }
 
         public ResultResponse DeleteMail(DeleteMailCriteria criteria)
         {
-            return _mailRepository.DeleteMail(criteria);
+            return _adminRepository.DeleteMail(criteria);
         }
 
-        public RecipientModel RecipientById(RecipientByIdCriteria criteria)
+        public RecipientModel RecipientById(GetRecipientByIdCriteria criteria)
         {
-            return _mailRepository.RecipientById(criteria);
+            return _adminRepository.RecipientById(criteria);
         }
 
         public IList<GroupModel> GetGroupList(GetGroupListCriteria criteria)
         {
-            return _mailRepository.GetGroupList(criteria);
+            return _adminRepository.GetGroupList(criteria);
         }
 
         public GroupModel GetGroupById(GetGroupByIdCriteria criteria)
         {
-            return _mailRepository.GetGroupById(criteria);
+            return _adminRepository.GetGroupById(criteria);
         }
 
         public ResultResponse CreateGroup(CreateGroupCriteria criteria)
         {
-            return _mailRepository.CreateGroup(criteria);
+            return _adminRepository.CreateGroup(criteria);
         }
 
         public ResultResponse UpdateGroup(UpdateGroupCriteria criteria)
         {
-            return _mailRepository.UpdateGroup(criteria);
+            return _adminRepository.UpdateGroup(criteria);
         }
 
         public ResultResponse DeleteGroup(DeleteGroupCriteria criteria)
         {
-            return _mailRepository.DeleteGroup(criteria);
+            return _adminRepository.DeleteGroup(criteria);
         }
 
         public IList<MailTaskModel> GetReportList(GetReportListCriteria criteria)
         {
-            return _mailRepository.GetReportList(criteria);
+            return _adminRepository.GetReportList(criteria);
         }
     }
 }

@@ -103,7 +103,7 @@
     <Compile Include="Criteria\MailGroup\DeleteMailGroupCriteria.cs" />
     <Compile Include="Criteria\MailGroup\UpdateMailGroupCriteria.cs" />
     <Compile Include="Criteria\MailManage\DeleteMailCriteria.cs" />
-    <Compile Include="Criteria\MailManage\ReadMailByIDCriteria.cs" />
+    <Compile Include="Criteria\MailManage\GetMailByIdCriteria.cs" />
     <Compile Include="Criteria\MailManage\UpdateMailCriteria.cs" />
     <Compile Include="Criteria\MailManage\CreateMailCriteria.cs" />
     <Compile Include="Criteria\MailGroup\CreateMailGroupCriteria.cs" />

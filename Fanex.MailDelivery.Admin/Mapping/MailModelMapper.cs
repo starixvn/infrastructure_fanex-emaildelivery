@@ -5,9 +5,9 @@ namespace Fanex.MailDelivery.Admin.Mapping
 {
     public static class MailModelMapper
     {
-        public static GetMailListResponseDto ToGetMailListResponseDto(this MailModel mailModel)
+        public static MailDto ToMailDto(this MailModel mailModel)
         {
-            return new GetMailListResponseDto
+            return new MailDto
             {
                 MailId = mailModel.MailId,
                 MailName = mailModel.MailName,
@@ -25,7 +25,18 @@ namespace Fanex.MailDelivery.Admin.Mapping
                 MailBcc = mailModel.MailBcc,
 
                 LastSent = mailModel.LastSent,
-                IsActive = mailModel.IsActive
+                IsActive = mailModel.IsActive,
+
+                // Auto mail
+                RepeatType = mailModel.RepeatType,
+                CronExpression = mailModel.CronExpression,
+                MailFrom = mailModel.MailFrom,
+                StartOn = mailModel.StartOn,
+                EndOn = mailModel.EndOn,
+                Attempt = mailModel.Attempt,
+                Interval = mailModel.Interval,
+                Description = mailModel.Description,
+                LastActive = mailModel.LastActive
             };
         }
     }

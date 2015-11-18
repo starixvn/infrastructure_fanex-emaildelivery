@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using Fanex.Data;
 using Fanex.MailDelivery.Admin;
+using Fanex.MailDelivery.Admin.Messaging;
+using Fanex.MailDelivery.Admin.Messaging.ManageMail;
 using Fanex.MailDelivery.Admin.Messaging.Schedule;
-using Fanex.MailDelivery.Core.Models;
+using Fanex.MailDelivery.Admin.Services.Mail;
 using Fanex.MailDelivery.MailStation.Criteria.MailGroup;
 using Fanex.MailDelivery.MailStation.Criteria.MailManage;
-using Fanex.MailDelivery.MailStation.Criteria.MailReport;
 using Fanex.NAP.Framework.Command;
-using MailModel = Fanex.MailDelivery.MailStation.Models.MailModel;
 
 namespace Fanex.MailDelivery.MailStation.Services.ManageMail
 {
@@ -18,39 +16,119 @@ namespace Fanex.MailDelivery.MailStation.Services.ManageMail
     /// </summary>
     public class MailManageService : MailStationBaseService
     {
-        public List<MailModel> MailList(GetMailListCriteria criteria)
+        IMailService _mailService;
+
+        public MailManageService(IMailService mailService)
         {
-            using (ObjectDb db = new ObjectDb(criteria.GetSettingKey()))
-            {
-                db.AssignParamValues(criteria.GetSpParams());
-                return db.Query<MailModel>().ToList();
-            }
+            _mailService = mailService;
         }
 
-        public MailModel MailByID(ReadMailByIdCriteria criteria)
+        public List<MailDto> MailList(GetMailListCriteria criteria)
         {
-            using (ObjectDb db = new ObjectDb(criteria.GetSettingKey()))
+            GetMailListRequest request = new GetMailListRequest
             {
-                db.AssignParamValues(criteria.GetSpParams());
-                return db.Query<MailModel>().ToList().FirstOrDefault();
-            }
+                MailName = criteria.MailName,
+                IsActive = criteria.IsActive,
+                MailGroupId = criteria.MailGroupId,
+                TriggerType = criteria.TriggerType,
+                Emails = criteria.Emails,
+                SiteId = criteria.SiteId
+            };
+
+            GetMailListResponse response = _mailService.GetMailList(request);
+
+            return response.GetMailListResponseDtos;
         }
 
-        public CommandResult CreateMailGroup(CreateMailGroupCriteria criteria)
+        public MailDto MailById(GetMailByIdCriteria criteria)
         {
-            return ExecuteNonQuery(criteria);
+            GetMailByIdRequest request = new GetMailByIdRequest
+            {
+                Id = criteria.MailId
+            };
+
+            GetMailByIdResponse response = _mailService.GetMailById(request);
+
+            return response.MailDto;
         }
 
         public CommandResult CreateMail(CreateMailCriteria criteria)
         {
-            return ExecuteNonQuery(criteria);
+            if (criteria.TriggerType == 0)
+            {
+                return CreateFunctionMail(criteria);
+            }
+
+            return CreateAutoMail(criteria);
         }
 
-        /// <summary>
-        /// Updates the mail.
-        /// </summary>
-        /// <param name="criteria">The criteria.</param>
-        /// <returns>Command Result.</returns>
+        private CommandResult CreateFunctionMail(CreateMailCriteria criteria)
+        {
+            CreateFunctionMailRequest request = new CreateFunctionMailRequest
+            {
+                MailGroupId = criteria.MailGroupId,
+                MailName = criteria.MailName,
+                SiteId = criteria.SiteId,
+
+                // TODO: Remove?
+                MailFrom = criteria.MailFrom,
+
+                MailTo = criteria.MailTo,
+                MailCc = criteria.MailCc,
+                MailBcc = criteria.MailBcc,
+
+                Description = criteria.Description,
+                IsActive = criteria.IsActive,
+            };
+
+            ResultResponse response = _mailService.CreateFunctionMail(request);
+
+            CommandResult commandResult = new CommandResult
+            {
+                Code = response.ErrCode,
+                Message = response.ErrMsg
+            };
+
+            return commandResult;
+        }
+
+        private CommandResult CreateAutoMail(CreateMailCriteria criteria)
+        {
+            CreateAutoMailRequest request = new CreateAutoMailRequest
+            {
+                MailGroupId = criteria.MailGroupId,
+                MailName = criteria.MailName,
+                SiteId = criteria.SiteId,
+
+                // TODO: Remove?
+                MailFrom = criteria.MailFrom,
+
+                MailTo = criteria.MailTo,
+                MailCc = criteria.MailCc,
+                MailBcc = criteria.MailBcc,
+
+                Description = criteria.Description,
+                IsActive = criteria.IsActive,
+
+                RepeatType = criteria.RepeatType,
+                CronExpression = criteria.CronExpression,
+                StartOn = criteria.StartOn,
+                EndOn = criteria.EndOn,
+                Attempt = criteria.Attempt,
+                Interval = criteria.Attempt
+            };
+
+            ResultResponse response = _mailService.CreateAutoMail(request);
+
+            CommandResult commandResult = new CommandResult
+            {
+                Code = response.ErrCode,
+                Message = response.ErrMsg
+            };
+
+            return commandResult;
+        }
+
         public CommandResult UpdateMail(UpdateMailCriteria criteria)
         {
             MailAdminService.Start();
@@ -68,21 +146,115 @@ namespace Fanex.MailDelivery.MailStation.Services.ManageMail
             });
 
             MailAdminService.Stop();
-            return ExecuteNonQuery(criteria);
+
+            if (criteria.TriggerType == 0)
+            {
+                return UpdateFunctionMail(criteria);
+            }
+
+            return UpdateAutoMail(criteria);
+        }
+
+        private CommandResult UpdateFunctionMail(UpdateMailCriteria criteria)
+        {
+            UpdateFunctionMailRequest request = new UpdateFunctionMailRequest
+            {
+                MailId = criteria.MailId,
+                MailName = criteria.MailName,
+                MailGroupId = criteria.MailGroupId,
+                SiteId = criteria.SiteId,
+                MailTo = criteria.MailTo,
+                MailCc = criteria.MailCc,
+                MailBcc = criteria.MailBcc,
+                // TODO: remove?
+                MailFrom = criteria.MailFrom,
+                Description = criteria.Description,
+                IsActive = criteria.IsActive
+            };
+
+            ResultResponse response = _mailService.UpdateFunctionMail(request);
+
+            CommandResult commandResult = new CommandResult
+            {
+                Code = response.ErrCode,
+                Message = response.ErrMsg
+            };
+
+            return commandResult;
+        }
+
+        private CommandResult UpdateAutoMail(UpdateMailCriteria criteria)
+        {
+            UpdateAutoMailRequest request = new UpdateAutoMailRequest
+            {
+                MailId = criteria.MailId,
+                MailName = criteria.MailName,
+                MailGroupId = criteria.MailGroupId,
+                SiteId = criteria.SiteId,
+                MailTo = criteria.MailTo,
+                MailCc = criteria.MailCc,
+                MailBcc = criteria.MailBcc,
+                // TODO: remove?
+                MailFrom = criteria.MailFrom,
+                Description = criteria.Description,
+                IsActive = criteria.IsActive,
+
+                RepeatType = criteria.RepeatType,
+                CronExpression = criteria.CronExpression,
+                StartOn = criteria.StartOn,
+                EndOn = criteria.EndOn,
+                Attempt = criteria.Attempt,
+                Interval = criteria.Interval
+            };
+
+            ResultResponse response = _mailService.UpdateAutoMail(request);
+
+            CommandResult commandResult = new CommandResult
+            {
+                Code = response.ErrCode,
+                Message = response.ErrMsg
+            };
+
+            return commandResult;
         }
 
         public CommandResult DeleteMail(DeleteMailCriteria criteria)
         {
+            DeleteMailRequest request = new DeleteMailRequest
+            {
+                MailId = criteria.MailId
+            };
+
+            ResultResponse response = _mailService.DeleteMail(request);
+
+            CommandResult commandResult = new CommandResult
+            {
+                Code = response.ErrCode,
+                Message = response.ErrMsg
+            };
+
+            return commandResult;
+        }
+
+
+
+        public CommandResult CreateMailGroup(CreateMailGroupCriteria criteria)
+        {
             return ExecuteNonQuery(criteria);
         }
 
-        public void RunJobImmediately(int mailID)
+        public void RunJobImmediately(int mailId)
         {
             MailAdminService.Start();
             //TODO: Will be changed
-            //Schedule schedule = GetScheduleByMailId(new GetScheduleByIdCriteria { MailId = mailID });
+            //Schedule schedule = GetScheduleByMailId(new GetScheduleByIdCriteria { MailId = mailId });
             //MailAdminService.PublishRetryJobMessage(schedule);
             MailAdminService.Stop();
+        }
+
+        public void Dispose()
+        {
+            _mailService.Dispose();
         }
     }
 }

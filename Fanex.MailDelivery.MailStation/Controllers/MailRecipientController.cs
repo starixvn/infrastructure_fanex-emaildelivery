@@ -1,4 +1,4 @@
-﻿﻿// --------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------
 // <copyright file="MailRecipientController.cs" company="Nexcel Solutions Vietnam">
 // Copyright (c) Nexcel Solutions Vietnam. All rights reserved.
 // </copyright>
@@ -6,6 +6,12 @@
 // <history>
 //   <change who="Louis" date="2012.12.07">Created</change>
 // </history>
+
+using Fanex.MailDelivery.Admin.Messaging;
+using Fanex.MailDelivery.Admin.Messaging.ManageRecipient;
+using Fanex.MailDelivery.Admin.Services.Recipient;
+using Fanex.MailDelivery.MailStation.Models;
+using Fanex.NAP.Framework.Command;
 
 namespace Fanex.MailDelivery.MailStation.Controllers
 {
@@ -22,9 +28,13 @@ namespace Fanex.MailDelivery.MailStation.Controllers
     {
         private ManageRecipientService _manageRecipientService;
 
+        private IRecipientService _recipientService;
+
         public MailRecipientController()
         {
             _manageRecipientService = _manageRecipientService ?? new ManageRecipientService();
+
+            _recipientService = new RecipientService();
         }
 
         public ActionResult Index()
@@ -42,32 +52,125 @@ namespace Fanex.MailDelivery.MailStation.Controllers
 
         public ActionResult RecipientList(RecipientListCriteria criteria)
         {
-            return Json(_manageRecipientService.RecipientList(criteria));
+            GetRecipientListRequest request = new GetRecipientListRequest
+            {
+                UserName = criteria.UserName,
+                Emails = criteria.Emails,
+                Status = criteria.Status
+            };
+
+            GetRecipientListResponse response = _recipientService.GetRecipientList(request);
+
+            return Json(response.RecipientDtos);
         }
 
         public ActionResult UpdateRecipientView(RecipientByIdCriteria criteria)
         {
-            var recipient = _manageRecipientService.RecipientById(criteria);
+            GetRecipientByIdRequest request = new GetRecipientByIdRequest
+            {
+                Id = criteria.RecipientId
+            };
+
+            GetRecipientByIdResponse response = _recipientService.GetRecipientById(request);
+
+            RecipientModel recipientModel = new RecipientModel
+            {
+                RecipientId = response.RecipientDto.RecipientId,
+                RecipientName = response.RecipientDto.RecipientName,
+
+                EmailId1 = response.RecipientDto.EmailId1,
+                EmailId2 = response.RecipientDto.EmailId2,
+                EmailId3 = response.RecipientDto.EmailId3,
+                Email1 = response.RecipientDto.Email1,
+                Email2 = response.RecipientDto.Email2,
+                Email3 = response.RecipientDto.Email3,
+
+                IsNapUser = response.RecipientDto.IsNapUser,
+                NapUserId = response.RecipientDto.NapUserId,
+
+                IsActive = response.RecipientDto.IsActive,
+                MailRelevant = response.RecipientDto.MailRelevant,
+                Note = response.RecipientDto.Note
+            };
+
             ViewBag.TimeZoneString = TimeZoneExtension.GetTimeZoneString();
-            return View("~/Areas/MailStation/ManageRecipient/UpdateRecipient/Index.cshtml", recipient);
+            return View("~/Areas/MailStation/ManageRecipient/UpdateRecipient/Index.cshtml", recipientModel);
         }
 
         [HttpPost]
         public JsonResult UpdateRecipient(UpdateRecipientCriteria criteria)
         {
-            return Json(_manageRecipientService.EditRecipient(criteria));
+            UpdateRecipientRequest request = new UpdateRecipientRequest
+            {
+                RecipientId = criteria.RecipientId,
+                UserName = criteria.Username,
+
+                EmailId1 = criteria.EmailID1,
+                EmailId2 = criteria.EmailID2,
+                EmailId3 = criteria.EmailID3,
+
+                Email1 = criteria.Email1,
+                Email2 = criteria.Email2,
+                Email3 = criteria.Email3,
+
+                Note = criteria.Note,
+                Status = criteria.Status
+            };
+
+            ResultResponse response = _recipientService.UpdateRecipient(request);
+
+            CommandResult commandResult = new CommandResult
+            {
+                Code = response.ErrCode,
+                Message = response.ErrMsg
+            };
+
+            return Json(commandResult);
         }
 
         [HttpPost]
         public JsonResult DeleteRecipient(DeleteRecipientCriteria criteria)
         {
-            return Json(_manageRecipientService.DeleteRecipient(criteria));
+            DeleteRecipientRequest request = new DeleteRecipientRequest
+            {
+                RecipientId = criteria.RecipientId
+            };
+
+            ResultResponse response = _recipientService.DeleteRecipient(request);
+
+            CommandResult commandResult = new CommandResult
+            {
+                Code = response.ErrCode,
+                Message = response.ErrMsg
+            };
+
+            return Json(response);
         }
 
         [HttpPost]
         public JsonResult CreateRecipient(CreateRecipientCriteria criteria)
         {
-            return Json(_manageRecipientService.InsertRecipient(criteria));
+            CreateRecipientRequest request = new CreateRecipientRequest
+            {
+                UserName = criteria.UserName,
+                Email1 = criteria.Email1,
+                Email2 = criteria.Email2,
+                Email3 = criteria.Email3,
+                IsNapUser = criteria.IsNAPUser,
+                NapUserId = criteria.NAPUserID,
+                Note = criteria.Note,
+                Status = criteria.Status
+            };
+
+            ResultResponse response = _recipientService.CreateRecipient(request);
+
+            CommandResult commandResult = new CommandResult
+            {
+                Code = response.ErrCode,
+                Message = response.ErrMsg
+            };
+
+            return Json(commandResult);
         }
 
         [HttpPost]

@@ -4,6 +4,8 @@
 // </copyright>
 // --------------------------------------------------------------------------
 
+using Fanex.MailDelivery.Admin.Messaging.ManageMail;
+
 namespace Fanex.MailDelivery.MailStation.Criteria.MailManage
 {
     using System;
@@ -21,7 +23,7 @@ namespace Fanex.MailDelivery.MailStation.Criteria.MailManage
             this.IsActive = true;
         }
 
-        public CreateMailCriteria(MailModel model)
+        public CreateMailCriteria(MailDto model)
             : this()
         {
             if (model != null)

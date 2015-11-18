@@ -169,12 +169,13 @@
     <Compile Include="Criteria\Group\UpdateGroupCriteria.cs" />
     <Compile Include="Criteria\Mail\CreateMailCriteria.cs" />
     <Compile Include="Criteria\Mail\DeleteMailCriteria.cs" />
+    <Compile Include="Criteria\Mail\GetMailByIdCriteria.cs" />
     <Compile Include="Criteria\Mail\GetMailListCriteria.cs" />
     <Compile Include="Criteria\Mail\UpdateMailCriteria.cs" />
     <Compile Include="Criteria\Recipient\CreateRecipientCriteria.cs" />
     <Compile Include="Criteria\Recipient\DeleteRecipientCriteria.cs" />
-    <Compile Include="Criteria\Recipient\RecipientByIdCriteria.cs" />
-    <Compile Include="Criteria\Recipient\RecipientListCriteria.cs" />
+    <Compile Include="Criteria\Recipient\GetRecipientByIdCriteria.cs" />
+    <Compile Include="Criteria\Recipient\GetRecipientListCriteria.cs" />
     <Compile Include="Criteria\Recipient\UpdateRecipientCriteria.cs" />
     <Compile Include="Criteria\Report\GetAllScheduleCriteria.cs" />
     <Compile Include="Criteria\Report\GetReportListCriteria.cs" />

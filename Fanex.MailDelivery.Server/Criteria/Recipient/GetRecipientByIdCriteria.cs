@@ -5,7 +5,7 @@ namespace Fanex.MailDelivery.Server.Criteria.Recipient
     /// <summary>
     /// Recipient By Identify Criteria.
     /// </summary>
-    public class RecipientByIdCriteria : CriteriaBase
+    public class GetRecipientByIdCriteria : CriteriaBase
     {
         [SpParam(SqlParamName = "RecipientID")]
         public int RecipientId { get; set; }

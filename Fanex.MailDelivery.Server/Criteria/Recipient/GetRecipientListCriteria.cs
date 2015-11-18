@@ -11,7 +11,7 @@ namespace Fanex.MailDelivery.Server.Criteria.Recipient
     /// <summary>
     /// Recipient List Criteria.
     /// </summary>
-    public class RecipientListCriteria : CriteriaBase
+    public class GetRecipientListCriteria : CriteriaBase
     {
         [SpParam(SqlParamName = "RecipientName")]
         public string UserName { get; set; }

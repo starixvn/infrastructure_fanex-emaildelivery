@@ -3,6 +3,7 @@ using Fanex.MailDelivery.Admin.Messaging;
 using Fanex.MailDelivery.Admin.Models;
 using Fanex.MailDelivery.Core.Models;
 using Fanex.MailDelivery.Server.Criteria.Group;
+using Fanex.MailDelivery.Server.Criteria.Mail;
 using Fanex.MailDelivery.Server.Criteria.Report;
 using Fanex.MailDelivery.Services.Criteria;
 using CreateMailCriteria = Fanex.MailDelivery.Server.Criteria.Mail.CreateMailCriteria;
@@ -11,8 +12,8 @@ using DeleteMailCriteria = Fanex.MailDelivery.Server.Criteria.Mail.DeleteMailCri
 using DeleteRecipientCriteria = Fanex.MailDelivery.Server.Criteria.Recipient.DeleteRecipientCriteria;
 using GetMailListCriteria = Fanex.MailDelivery.Server.Criteria.Mail.GetMailListCriteria;
 using MailTask = Fanex.MailDelivery.Admin.Models.MailTask;
-using RecipientByIdCriteria = Fanex.MailDelivery.Server.Criteria.Recipient.RecipientByIdCriteria;
-using RecipientListCriteria = Fanex.MailDelivery.Server.Criteria.Recipient.RecipientListCriteria;
+using GetRecipientByIdCriteria = Fanex.MailDelivery.Server.Criteria.Recipient.GetRecipientByIdCriteria;
+using GetRecipientListCriteria = Fanex.MailDelivery.Server.Criteria.Recipient.GetRecipientListCriteria;
 using UpdateMailCriteria = Fanex.MailDelivery.Server.Criteria.Mail.UpdateMailCriteria;
 using UpdateRecipientCriteria = Fanex.MailDelivery.Server.Criteria.Recipient.UpdateRecipientCriteria;
 
@@ -38,14 +39,16 @@ namespace Fanex.MailDelivery.Server.Repositories
 
         void UpdateClientActiveTime(UpdateClientActiveTimeCriteria criteria);
 
-        RecipientModel RecipientById(RecipientByIdCriteria criteria);
+        RecipientModel RecipientById(GetRecipientByIdCriteria criteria);
 
-        List<MailModel> GetListMail(GetMailListCriteria criteria);
+        List<MailModel> GetMailList(GetMailListCriteria criteria);
+        MailModel GetMailById(GetMailByIdCriteria criteria);
         ResultResponse CreateMail(CreateMailCriteria criteria);
         ResultResponse UpdateMail(UpdateMailCriteria criteria);
         ResultResponse DeleteMail(DeleteMailCriteria criteria);
 
-        List<RecipientModel> GetListRecipient(RecipientListCriteria criteria);
+        List<RecipientModel> GetRecipientList(GetRecipientListCriteria criteria);
+        RecipientModel GetRecipientById(GetRecipientByIdCriteria criteria);
         ResultResponse CreateRecipient(CreateRecipientCriteria criteria);
         ResultResponse UpdateRecipient(UpdateRecipientCriteria criteria);
         ResultResponse DeleteRecipient(DeleteRecipientCriteria criteria);

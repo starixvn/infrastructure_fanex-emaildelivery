@@ -2,9 +2,13 @@
 using Fanex.MailDelivery.Admin.Messaging;
 using Fanex.MailDelivery.Core.Messaging;
 using Fanex.MailDelivery.Core.Models;
+using Fanex.MailDelivery.Server.Criteria.Mail;
 using Fanex.MailDelivery.Server.Criteria.Recipient;
-using Fanex.MailDelivery.Services.Criteria.ManageMail;
 using Fanex.NAP.Framework.Command;
+using CreateMailCriteria = Fanex.MailDelivery.Services.Criteria.ManageMail.CreateMailCriteria;
+using DeleteMailCriteria = Fanex.MailDelivery.Services.Criteria.ManageMail.DeleteMailCriteria;
+using GetMailListCriteria = Fanex.MailDelivery.Services.Criteria.ManageMail.GetMailListCriteria;
+using UpdateMailCriteria = Fanex.MailDelivery.Services.Criteria.ManageMail.UpdateMailCriteria;
 
 namespace Fanex.MailDelivery.Server.MailService
 {
@@ -23,12 +27,11 @@ namespace Fanex.MailDelivery.Server.MailService
 
         void UpdateClientActiveTime(ClientInfomationMessage clientInfoMessage);
 
-        List<RecipientModel> GetListRecipient(RecipientListCriteria criteria);
+        List<RecipientModel> GetListRecipient(GetRecipientListCriteria criteria);
 
 
 
         List<MailModel> GetListMail(GetMailListCriteria criteria);
-
         ResultResponse CreateMail(CreateMailCriteria criteria);
         ResultResponse UpdateMail(UpdateMailCriteria criteria);
         ResultResponse DeleteMail(DeleteMailCriteria criteria);
@@ -37,6 +40,6 @@ namespace Fanex.MailDelivery.Server.MailService
         ResultResponse UpdateRecipient(UpdateRecipientCriteria criteria);
         ResultResponse DeleteRecipient(DeleteRecipientCriteria criteria);
 
-        RecipientModel RecipientById(RecipientByIdCriteria criteria);
+        RecipientModel RecipientById(GetRecipientByIdCriteria criteria);
     }
 }

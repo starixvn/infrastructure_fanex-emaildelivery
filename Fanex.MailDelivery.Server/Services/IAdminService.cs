@@ -14,15 +14,16 @@ namespace Fanex.MailDelivery.Server.Services
     /// </summary>
     public interface IAdminService
     {
-        RecipientModel RecipientById(RecipientByIdCriteria criteria);
-
+        RecipientModel RecipientById(GetRecipientByIdCriteria criteria);
 
         List<MailModel> GetListMail(GetMailListCriteria criteria);
+        MailModel GetMailById(GetMailByIdCriteria criteria);
         ResultResponse CreateMail(CreateMailCriteria criteria);
         ResultResponse UpdateMail(UpdateMailCriteria criteria);
         ResultResponse DeleteMail(DeleteMailCriteria criteria);
 
-        List<RecipientModel> GetListRecipient(RecipientListCriteria criteria);
+        List<RecipientModel> GetListRecipient(GetRecipientListCriteria criteria);
+        RecipientModel GetRecipientById(GetRecipientByIdCriteria criteria);
         ResultResponse CreateRecipient(CreateRecipientCriteria criteria);
         ResultResponse UpdateRecipient(UpdateRecipientCriteria criteria);
         ResultResponse DeleteRecipient(DeleteRecipientCriteria criteria);

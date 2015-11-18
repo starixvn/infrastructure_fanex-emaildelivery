@@ -10,6 +10,7 @@ using Fanex.MailDelivery.Core.Enumerations;
 using Fanex.MailDelivery.Core.Models;
 using Fanex.MailDelivery.Server.Configurations;
 using Fanex.MailDelivery.Server.Criteria.Group;
+using Fanex.MailDelivery.Server.Criteria.Mail;
 using Fanex.MailDelivery.Server.Criteria.Report;
 using Fanex.MailDelivery.Services.Criteria;
 using Fanex.Maintenance.Repository.Criteria.Misc;
@@ -22,8 +23,8 @@ using DeleteMailCriteria = Fanex.MailDelivery.Server.Criteria.Mail.DeleteMailCri
 using DeleteRecipientCriteria = Fanex.MailDelivery.Server.Criteria.Recipient.DeleteRecipientCriteria;
 using GetMailListCriteria = Fanex.MailDelivery.Server.Criteria.Mail.GetMailListCriteria;
 using MailTask = Fanex.MailDelivery.Admin.Models.MailTask;
-using RecipientByIdCriteria = Fanex.MailDelivery.Server.Criteria.Recipient.RecipientByIdCriteria;
-using RecipientListCriteria = Fanex.MailDelivery.Server.Criteria.Recipient.RecipientListCriteria;
+using GetRecipientByIdCriteria = Fanex.MailDelivery.Server.Criteria.Recipient.GetRecipientByIdCriteria;
+using GetRecipientListCriteria = Fanex.MailDelivery.Server.Criteria.Recipient.GetRecipientListCriteria;
 using UpdateMailCriteria = Fanex.MailDelivery.Server.Criteria.Mail.UpdateMailCriteria;
 using UpdateRecipientCriteria = Fanex.MailDelivery.Server.Criteria.Recipient.UpdateRecipientCriteria;
 
@@ -165,12 +166,21 @@ namespace Fanex.MailDelivery.Server.Repositories
             }
         }
 
-        public List<RecipientModel> GetListRecipient(RecipientListCriteria criteria)
+        public List<RecipientModel> GetRecipientList(GetRecipientListCriteria criteria)
         {
             using (var db = new ObjectDb(criteria.GetSettingKey()))
             {
                 db.AssignParamValues(criteria.GetSpParams());
                 return db.Query<RecipientModel>().ToList();
+            }
+        }
+
+        public RecipientModel GetRecipientById(GetRecipientByIdCriteria criteria)
+        {
+            using (ObjectDb db = new ObjectDb(criteria.GetSettingKey()))
+            {
+                db.AssignParamValues(criteria.GetSpParams());
+                return db.Query<RecipientModel>().FirstOrDefault();
             }
         }
 
@@ -209,13 +219,22 @@ namespace Fanex.MailDelivery.Server.Repositories
             }
         }
 
-        public List<MailModel> GetListMail(GetMailListCriteria criteria)
+        public List<MailModel> GetMailList(GetMailListCriteria criteria)
         {
             using (var db = new ObjectDb(criteria.GetSettingKey()))
             {
                 db.AssignParamValues(criteria.GetSpParams());
                 return db.Query<MailModel>().ToList();
             }
+        }
+
+        public MailModel GetMailById(GetMailByIdCriteria criteria)
+        {
+            using (ObjectDb db = new ObjectDb(criteria.GetSettingKey()))
+            {
+                db.AssignParamValues(criteria.GetSpParams());
+                return db.Query<MailModel>().FirstOrDefault();
+            };
         }
 
         public ResultResponse CreateMail(CreateMailCriteria criteria)
@@ -259,7 +278,7 @@ namespace Fanex.MailDelivery.Server.Repositories
         /// </summary>
         /// <param name="criteria">The criteria.</param>
         /// <returns>The recipient by identity.</returns>
-        public RecipientModel RecipientById(RecipientByIdCriteria criteria)
+        public RecipientModel RecipientById(GetRecipientByIdCriteria criteria)
         {
             using (ObjectDb db = new ObjectDb(criteria.GetSettingKey()))
             {
