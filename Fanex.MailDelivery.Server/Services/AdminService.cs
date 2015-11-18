@@ -72,11 +72,6 @@ namespace Fanex.MailDelivery.Server.Services
             return _adminRepository.DeleteMail(criteria);
         }
 
-        public RecipientModel RecipientById(GetRecipientByIdCriteria criteria)
-        {
-            return _adminRepository.RecipientById(criteria);
-        }
-
         public IList<GroupModel> GetGroupList(GetGroupListCriteria criteria)
         {
             return _adminRepository.GetGroupList(criteria);

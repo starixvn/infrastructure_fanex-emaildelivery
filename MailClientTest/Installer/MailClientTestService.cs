@@ -6,7 +6,6 @@ namespace MailClientTest.Installer
     using System.ServiceProcess;
     using Fanex.MailDelivery.Client.Configurations;
     using Fanex.MailDelivery.Client.Handlers;
-    using Fanex.MailDelivery.Client.Models;
 
     /// <summary>
     /// Mail client service for testing.

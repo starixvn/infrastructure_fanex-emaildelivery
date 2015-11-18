@@ -1,4 +1,4 @@
-﻿namespace Fanex.MailDelivery.Core.Models
+﻿namespace Fanex.MailDelivery.Admin.Models
 {
     public class RecipientModel
     {

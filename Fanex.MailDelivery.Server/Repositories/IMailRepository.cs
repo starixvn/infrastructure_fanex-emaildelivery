@@ -1,9 +1,5 @@
-﻿using System.Collections.Generic;
-using Fanex.MailDelivery.Admin.Messaging;
-using Fanex.MailDelivery.Admin.Models;
+﻿using Fanex.MailDelivery.Admin.Models;
 using Fanex.MailDelivery.Core.Models;
-using Fanex.MailDelivery.Server.Criteria.Mail;
-using Fanex.MailDelivery.Server.Criteria.Recipient;
 using Fanex.MailDelivery.Services.Criteria;
 
 namespace Fanex.MailDelivery.Server.Repositories
@@ -28,18 +24,5 @@ namespace Fanex.MailDelivery.Server.Repositories
 
         void UpdateClientActiveTime(UpdateClientActiveTimeCriteria criteria);
 
-
-
-        List<MailModel> GetListMail(GetMailListCriteria criteria);
-        ResultResponse CreateMail(CreateMailCriteria criteria);
-        ResultResponse UpdateMail(UpdateMailCriteria criteria);
-        ResultResponse DeleteMail(DeleteMailCriteria criteria);
-
-        List<RecipientModel> GetListRecipient(GetRecipientListCriteria criteria);
-        ResultResponse CreateRecipient(CreateRecipientCriteria criteria);
-        ResultResponse UpdateRecipient(UpdateRecipientCriteria criteria);
-        ResultResponse DeleteRecipient(DeleteRecipientCriteria criteria);
-
-        RecipientModel RecipientById(GetRecipientByIdCriteria criteria);
     }
 }

@@ -14,7 +14,7 @@ namespace MailClientTest.Jobs
     /// </summary>
     public class UnstableJob : JobBase
     {
-        protected override JobResultMessage Run(Schedule schedule, IJobExecutionContext jobContext)
+        protected override JobRequest Run(Schedule schedule, IJobExecutionContext jobContext)
         {
             var jobLog = string.Format(
                 "Run Unstable Job: \n\tSite Id: {0}, Schedule: {1}. \n\tSent at {2}",
@@ -41,7 +41,7 @@ namespace MailClientTest.Jobs
                 throw new InvalidCastException("Cannot Complete this Job.");
             }
 
-            return new JobResultMessage
+            return new JobRequest
             {
                 Mail = mail,
                 Schedule = schedule,

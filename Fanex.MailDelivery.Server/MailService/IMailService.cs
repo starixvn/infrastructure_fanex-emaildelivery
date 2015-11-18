@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using Fanex.MailDelivery.Core.Messaging;
 using Fanex.MailDelivery.Core.Models;
-using Fanex.MailDelivery.Server.Criteria.Recipient;
 using Fanex.NAP.Framework.Command;
 
 namespace Fanex.MailDelivery.Server.MailService
@@ -13,11 +12,11 @@ namespace Fanex.MailDelivery.Server.MailService
     {
         List<Schedule> GetSchedules(List<int> scheduleId);
 
-        CommandResult UpdateJobStatus(JobResultMessage jobResultMessage);
+        CommandResult UpdateJobStatus(Job job);
 
         int SendMail(Mail mail);
 
-        void AddMailTaskForRunningJob(JobResultMessage jobResultMessage);
+        void AddMailTaskForRunningJob(Job job);
 
         void UpdateClientActiveTime(ClientInfomationMessage clientInfoMessage);
 

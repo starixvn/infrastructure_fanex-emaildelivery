@@ -1,20 +1,7 @@
-﻿// --------------------------------------------------------------------------
-// <copyright file="MailModel.cs" company="Nexcel Solutions Vietnam">
-// Copyright (c) Nexcel Solutions Vietnam. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------
-// <history>
-//   <change who="Louis.Nguyen" date="2014.10.03">Created</change>
-// </history>
+﻿using System;
 
-namespace Fanex.MailDelivery.MailStation.Models
+namespace Fanex.MailDelivery.Admin.Models
 {
-    using System;
-    using Fanex.MailDelivery.Admin.Configurations;
-
-    /// <summary>
-    /// Mail Model.
-    /// </summary>
     public class MailModel
     {
         public int MailId { get; set; }
@@ -74,13 +61,5 @@ namespace Fanex.MailDelivery.MailStation.Models
         public string Description { get; set; }
 
         public DateTime? LastActive { get; set; }
-
-        public bool IsClientOnline
-        {
-            get
-            {
-                return LastActive != null && LastActive.Value >= DateTime.Now.AddSeconds(-AppSettings.MailAdminConfig.ClientNotifyTimeOutInSecond);
-            }
-        }
     }
 }

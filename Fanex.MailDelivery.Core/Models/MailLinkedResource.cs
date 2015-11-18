@@ -4,16 +4,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using Fanex.MailDelivery.Core.Enumerations;
-using Fanex.MailDelivery.Core.Models;
-
-namespace Fanex.MailDelivery.Client.Models
+namespace Fanex.MailDelivery.Core.Models
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-
     /// <summary>
     /// TODO: Update summary.
     /// </summary>

@@ -1,13 +1,10 @@
-﻿using Fanex.MailDelivery.Core.Enumerations;
-using Fanex.MailDelivery.Core.Messaging;
+﻿using Fanex.MailDelivery.Core.Messaging;
 using Fanex.MailDelivery.Core.Models;
 
 namespace Fanex.MailDelivery.Client.Jobs
 {
     using System;
-    using Fanex.Logging;
     using Fanex.MailDelivery.Client.Handlers;
-    using Fanex.MailDelivery.Client.Models;
     using Quartz;
 
     /// <summary>
@@ -36,7 +33,7 @@ namespace Fanex.MailDelivery.Client.Jobs
                 if (schedule != null && schedule.Active == true)
                 {
                     int taskID = schedule.TaskId;
-                    JobResultMessage jobResult = new JobResultMessage();
+                    JobRequest jobResult = new JobRequest();
                     jobResult.JobStatus = JobStatus.Running;
                     jobResult.ScheduledTime = context.ScheduledFireTimeUtc.GetValueOrDefault().DateTime.ToLocalTime();
                     jobResult.RunningTime = context.FireTimeUtc.GetValueOrDefault().DateTime.ToLocalTime();
@@ -88,7 +85,7 @@ namespace Fanex.MailDelivery.Client.Jobs
             }
         }
 
-        protected abstract JobResultMessage Run(Schedule schedule, IJobExecutionContext jobContext);
+        protected abstract JobRequest Run(Schedule schedule, IJobExecutionContext jobContext);
 
         private void RetryJob(Schedule schedule, JobDataMap jobDataMap)
         {

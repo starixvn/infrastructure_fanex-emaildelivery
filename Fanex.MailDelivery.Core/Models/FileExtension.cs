@@ -1,4 +1,4 @@
-﻿namespace Fanex.MailDelivery.Core.Enumerations
+﻿namespace Fanex.MailDelivery.Core.Models
 {
     /// <summary>
     /// File Extension.

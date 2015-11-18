@@ -8,7 +8,6 @@ namespace Fanex.MailDelivery.MailStation.Services
     using System.Linq;
     using System.Web.Mvc;
     using Fanex.Data;
-    using Fanex.MailDelivery.Client.Models;
     using Fanex.MailDelivery.MailStation.Constants;
     using Fanex.MailDelivery.MailStation.Criteria.MailManage;
     using Fanex.MailDelivery.MailStation.Criteria.MailReport;

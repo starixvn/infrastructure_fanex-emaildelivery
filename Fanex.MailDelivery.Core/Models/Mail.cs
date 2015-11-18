@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Fanex.MailDelivery.Client.Models;
 
 namespace Fanex.MailDelivery.Core.Models
 {

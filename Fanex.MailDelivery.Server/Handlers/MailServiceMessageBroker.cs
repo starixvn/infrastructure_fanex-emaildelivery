@@ -21,9 +21,6 @@ using Fanex.MailDelivery.Server.Criteria.Report;
 using Fanex.MailDelivery.Server.Logging;
 using Fanex.MailDelivery.Server.MailService;
 using Fanex.MailDelivery.Server.Services;
-using CreateRecipientCriteria = Fanex.MailDelivery.Server.Criteria.Recipient.CreateRecipientCriteria;
-using DeleteRecipientCriteria = Fanex.MailDelivery.Server.Criteria.Recipient.DeleteRecipientCriteria;
-using GetRecipientListCriteria = Fanex.MailDelivery.Server.Criteria.Recipient.GetRecipientListCriteria;
 
 namespace Fanex.MailDelivery.Server.Handlers
 {
@@ -68,6 +65,7 @@ namespace Fanex.MailDelivery.Server.Handlers
             SubscribeMail();
             SubscribeJobResult();
             SubscribeAbortJob();
+
             RespondAddMailTaskForRunningJob();
             SubscribeClientNotificationMessage();
             RespondGetRecipientById();
@@ -97,7 +95,7 @@ namespace Fanex.MailDelivery.Server.Handlers
 
         public void SubscribeAbortJob()
         {
-            _bus.Subscribe<JobResultMessage>(
+            _bus.Subscribe<Job>(
                 MailDeliveryConstants.AbortJobRoutingKeyFormat,
                     jobStatus =>
                     {
@@ -125,7 +123,7 @@ namespace Fanex.MailDelivery.Server.Handlers
         /// </summary>
         public void SubscribeJobResult()
         {
-            _bus.Subscribe<JobResultMessage>(
+            _bus.Subscribe<Job>(
                 MailDeliveryConstants.JobResultRoutingKey,
                     jobStatus =>
                     {
@@ -168,7 +166,7 @@ namespace Fanex.MailDelivery.Server.Handlers
 
         public void RespondAddMailTaskForRunningJob()
         {
-            _bus.Respond<JobResultMessage, JobResultMessage>(
+            _bus.Respond<Job, Job>(
                 jobResult =>
                 {
                     _mailService.AddMailTaskForRunningJob(jobResult);
@@ -181,7 +179,7 @@ namespace Fanex.MailDelivery.Server.Handlers
             _bus.Respond<GetRecipientByIdRequest, RecipientModel>(
                 request =>
                 {
-                    return _adminService.RecipientById(new GetRecipientByIdCriteria()
+                    return _adminService.GetRecipientById(new GetRecipientByIdCriteria()
                     {
                         RecipientId = request.Id
                     });

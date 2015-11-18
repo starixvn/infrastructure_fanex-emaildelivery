@@ -2,11 +2,7 @@
 
 namespace Fanex.MailDelivery.Client.Handlers.Interface
 {
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using Fanex.MailDelivery.Client.Models;
 
     /// <summary>
     /// Job Handler interface.

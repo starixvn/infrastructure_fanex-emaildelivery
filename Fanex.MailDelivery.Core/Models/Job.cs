@@ -1,13 +1,12 @@
 ﻿using System;
-using Fanex.MailDelivery.Core.Enumerations;
-using Fanex.MailDelivery.Core.Models;
+using Fanex.MailDelivery.Core.Messaging;
 
-namespace Fanex.MailDelivery.Core.Messaging
+namespace Fanex.MailDelivery.Core.Models
 {
     /// <summary>
     /// Job Status Message.
     /// </summary>
-    public class JobResultMessage
+    public class Job
     {
         public Schedule Schedule { get; set; }
 

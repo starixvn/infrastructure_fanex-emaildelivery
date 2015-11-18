@@ -117,12 +117,12 @@ namespace Fanex.MailDelivery.Client.Handlers.Impl
         /// <returns>
         /// Job Result Message.
         /// </returns>
-        public JobResultMessage RequestAddMailTaskForRunningJob(JobResultMessage jobResult)
+        public JobRequest RequestAddMailTaskForRunningJob(JobRequest jobResult)
         {
-            return _bus.Request<JobResultMessage, JobResultMessage>(jobResult);
+            return _bus.Request<JobRequest, JobRequest>(jobResult);
         }
 
-        public void Publish(JobResultMessage jobStatus)
+        public void Publish(JobRequest jobStatus)
         {
             if (jobStatus.Mail != null && jobStatus.Mail.ApplicationSendMailId == 0)
             {

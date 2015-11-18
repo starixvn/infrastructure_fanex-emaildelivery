@@ -7,7 +7,6 @@ namespace MailClientTest.Jobs
     using System;
     using System.Threading;
     using Fanex.MailDelivery.Client.Jobs;
-    using Fanex.MailDelivery.Client.Models;
     using Quartz;
 
     /// <summary>
@@ -15,7 +14,7 @@ namespace MailClientTest.Jobs
     /// </summary>
     public class SuccessWithoutSendMailJob : JobBase
     {
-        protected override JobResultMessage Run(Schedule schedule, IJobExecutionContext jobContext)
+        protected override JobRequest Run(Schedule schedule, IJobExecutionContext jobContext)
         {
             var jobLog = string.Format(
                 "Run Success Without Send Mail Job: \n\tSite Id: {0}, Schedule: {1}. \n\tSent at {2}",
@@ -33,7 +32,7 @@ namespace MailClientTest.Jobs
             mail.Body = "Email Body";
             Thread.Sleep(5000);
 
-            return new JobResultMessage
+            return new JobRequest
             {
                 Mail = mail,
                 Schedule = schedule,

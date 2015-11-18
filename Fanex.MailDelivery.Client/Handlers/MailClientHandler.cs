@@ -6,7 +6,6 @@ namespace Fanex.MailDelivery.Client.Handlers
     using System.Collections.Generic;
     using Fanex.MailDelivery.Client.Handlers.Impl;
     using Fanex.MailDelivery.Client.Handlers.Interface;
-    using Fanex.MailDelivery.Client.Models;
 
     /// <summary>
     /// Mail Client Handler.
@@ -37,7 +36,7 @@ namespace Fanex.MailDelivery.Client.Handlers
             _messageBroker.Publish(mail);
         }
 
-        public static void ReportJob(JobResultMessage jobResult)
+        public static void ReportJob(JobRequest jobResult)
         {
             _messageBroker.Publish(jobResult);
         }
@@ -47,7 +46,7 @@ namespace Fanex.MailDelivery.Client.Handlers
             return _messageBroker.GetSchedules();
         }
 
-        public static JobResultMessage RequestAddMailTaskForRunningJob(JobResultMessage jobResult)
+        public static JobRequest RequestAddMailTaskForRunningJob(JobRequest jobResult)
         {
             return _messageBroker.RequestAddMailTaskForRunningJob(jobResult);
         }

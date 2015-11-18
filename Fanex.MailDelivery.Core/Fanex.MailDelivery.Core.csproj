@@ -42,25 +42,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Enumerations\FileExtension.cs" />
-    <Compile Include="Enumerations\JobStatus.cs" />
-    <Compile Include="Enumerations\MailType.cs" />
+    <Compile Include="Models\FileExtension.cs" />
+    <Compile Include="Models\MailType.cs" />
     <Compile Include="MailDeliveryConstants.cs" />
     <Compile Include="Messaging\ClientInfomationMessage.cs" />
-    <Compile Include="Messaging\JobResultMessage.cs" />
     <Compile Include="Messaging\MailingListRequest.cs" />
     <Compile Include="Messaging\TaskLog.cs" />
+    <Compile Include="Models\ClientStatusModel.cs" />
+    <Compile Include="Models\Job.cs" />
+    <Compile Include="Models\JobRequest.cs" />
+    <Compile Include="Models\JobStatus.cs" />
     <Compile Include="Models\Mail.cs" />
     <Compile Include="Models\MailAttachment.cs" />
     <Compile Include="Models\MailingList.cs" />
     <Compile Include="Models\MailLinkedResource.cs" />
-    <Compile Include="Models\MailModel.cs" />
-    <Compile Include="Models\RecipientModel.cs" />
     <Compile Include="Models\Schedule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

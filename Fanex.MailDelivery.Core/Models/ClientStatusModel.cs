@@ -6,7 +6,7 @@
 
 using System;
 
-namespace Fanex.MailDelivery.Admin.Models
+namespace Fanex.MailDelivery.Core.Models
 {
     /// <summary>
     /// TODO: Update summary.

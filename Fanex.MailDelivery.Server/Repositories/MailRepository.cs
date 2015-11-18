@@ -8,8 +8,6 @@ using Fanex.MailDelivery.Admin.Messaging;
 using Fanex.MailDelivery.Admin.Models;
 using Fanex.MailDelivery.Core.Models;
 using Fanex.MailDelivery.Server.Configurations;
-using Fanex.MailDelivery.Server.Criteria.Mail;
-using Fanex.MailDelivery.Server.Criteria.Recipient;
 using Fanex.MailDelivery.Services.Criteria;
 using Fanex.Maintenance.Repository.Criteria.Misc;
 
@@ -148,109 +146,6 @@ namespace Fanex.MailDelivery.Server.Repositories
             using (var db = new ObjectDb(criteria.GetSettingKey()))
             {
                 db.ExecuteNonQuery(criteria.GetSpParams());
-            }
-        }
-
-        public List<RecipientModel> GetListRecipient(GetRecipientListCriteria criteria)
-        {
-            using (var db = new ObjectDb(criteria.GetSettingKey()))
-            {
-                db.AssignParamValues(criteria.GetSpParams());
-                return db.Query<RecipientModel>().ToList();
-            }
-        }
-
-        public ResultResponse CreateRecipient(CreateRecipientCriteria criteria)
-        {
-            Hashtable hash = criteria.GetSpParams();
-            hash = (new ResultCriteria()).AddSpParams(hash);
-            using (var db = new ObjectDb(criteria.GetSettingKey()))
-            {
-                db.ExecuteNonQuery(hash);
-            }
-
-            return GetCommandResult(hash);
-        }
-
-        public ResultResponse UpdateRecipient(UpdateRecipientCriteria criteria)
-        {
-            Hashtable hash = criteria.GetSpParams();
-            hash = (new ResultCriteria()).AddSpParams(hash);
-            using (var db = new ObjectDb(criteria.GetSettingKey()))
-            {
-                db.ExecuteNonQuery(hash);
-            }
-
-            return GetCommandResult(hash);
-        }
-
-        public ResultResponse DeleteRecipient(DeleteRecipientCriteria criteria)
-        {
-            Hashtable hash = criteria.GetSpParams();
-            hash = (new ResultCriteria()).AddSpParams(hash);
-            using (var db = new ObjectDb(criteria.GetSettingKey()))
-            {
-                db.ExecuteNonQuery(hash);
-                return GetCommandResult(hash);
-            }
-        }
-
-        public List<MailModel> GetListMail(GetMailListCriteria criteria)
-        {
-            using (var db = new ObjectDb(criteria.GetSettingKey()))
-            {
-                db.AssignParamValues(criteria.GetSpParams());
-                return db.Query<MailModel>().ToList();
-            }
-        }
-
-        public ResultResponse CreateMail(CreateMailCriteria criteria)
-        {
-            Hashtable hash = criteria.GetSpParams();
-            hash = (new ResultCriteria()).AddSpParams(hash);
-            using (var db = new ObjectDb(criteria.GetSettingKey()))
-            {
-                db.ExecuteNonQuery(hash);
-            }
-
-            return GetCommandResult(hash);
-        }
-
-        public ResultResponse UpdateMail(UpdateMailCriteria criteria)
-        {
-            Hashtable hash = criteria.GetSpParams();
-            hash = (new ResultCriteria()).AddSpParams(hash);
-            using (var db = new ObjectDb(criteria.GetSettingKey()))
-            {
-                db.ExecuteNonQuery(hash);
-            }
-
-            return GetCommandResult(hash);
-        }
-
-        public ResultResponse DeleteMail(DeleteMailCriteria criteria)
-        {
-            Hashtable hash = criteria.GetSpParams();
-            hash = (new ResultCriteria()).AddSpParams(hash);
-            using (var db = new ObjectDb(criteria.GetSettingKey()))
-            {
-                db.ExecuteNonQuery(hash);
-            }
-
-            return GetCommandResult(hash);
-        }
-
-        /// <summary>
-        /// Gets the recipient by identity.
-        /// </summary>
-        /// <param name="criteria">The criteria.</param>
-        /// <returns>The recipient by identity.</returns>
-        public RecipientModel RecipientById(GetRecipientByIdCriteria criteria)
-        {
-            using (ObjectDb db = new ObjectDb(criteria.GetSettingKey()))
-            {
-                db.AssignParamValues(criteria.GetSpParams());
-                return db.Query<RecipientModel>().FirstOrDefault();
             }
         }
 

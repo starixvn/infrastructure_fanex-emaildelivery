@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Fanex.MailDelivery.Admin.Models;
+using Fanex.MailDelivery.Core.Models;
 using Quartz;
 
 namespace Fanex.MailDelivery.Server.Handlers

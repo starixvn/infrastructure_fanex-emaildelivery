@@ -9,6 +9,7 @@
 
 using Fanex.MailDelivery.Admin;
 using Fanex.MailDelivery.Admin.Messaging.ManageReport;
+using Fanex.MailDelivery.MailStation.Services;
 
 namespace Fanex.MailDelivery.MailStation.Controllers
 {
@@ -16,8 +17,6 @@ namespace Fanex.MailDelivery.MailStation.Controllers
     using Fanex.MailDelivery.MailStation.Constants;
     using Fanex.MailDelivery.MailStation.Criteria.MailReport;
     using Fanex.MailDelivery.MailStation.Extensions;
-    using Fanex.MailDelivery.MailStation.Services.MailReport;
-    using Fanex.MailDelivery.MailStation.Services.ManageMail;
     using Fanex.Maintenance.Controller;
     using Fanex.NAP.Core.Business;
     using Fanex.NAP.Core.Web.Attribute;

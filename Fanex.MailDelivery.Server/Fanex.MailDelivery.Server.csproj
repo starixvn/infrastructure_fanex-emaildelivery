@@ -154,10 +154,6 @@
     <Compile Include="Criteria\Criteria\GetMailTaskByIDCriteria.cs" />
     <Compile Include="Criteria\Criteria\GetMailWithEmailAddressByMailIDCriteria.cs" />
     <Compile Include="Criteria\Criteria\GetScheduleByIDCriteria.cs" />
-    <Compile Include="Criteria\Criteria\ManageMail\CreateMailCriteria.cs" />
-    <Compile Include="Criteria\Criteria\ManageMail\DeleteMailCriteria.cs" />
-    <Compile Include="Criteria\Criteria\ManageMail\GetMailListCriteria.cs" />
-    <Compile Include="Criteria\Criteria\ManageMail\UpdateMailCriteria.cs" />
     <Compile Include="Criteria\Criteria\UpdateClientActiveTimeCriteria.cs" />
     <Compile Include="Criteria\Criteria\UpdateMailTaskMailRecordIDCriteria.cs" />
     <Compile Include="Criteria\Criteria\UpdateMailTaskStatusCriteria.cs" />

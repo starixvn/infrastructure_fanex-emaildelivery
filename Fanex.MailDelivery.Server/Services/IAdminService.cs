@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using Fanex.MailDelivery.Admin.Messaging;
 using Fanex.MailDelivery.Admin.Models;
-using Fanex.MailDelivery.Core.Models;
 using Fanex.MailDelivery.Server.Criteria.Group;
 using Fanex.MailDelivery.Server.Criteria.Mail;
 using Fanex.MailDelivery.Server.Criteria.Recipient;
@@ -14,8 +13,6 @@ namespace Fanex.MailDelivery.Server.Services
     /// </summary>
     public interface IAdminService
     {
-        RecipientModel RecipientById(GetRecipientByIdCriteria criteria);
-
         IList<MailModel> GetListMail(GetMailListCriteria criteria);
         MailModel GetMailById(GetMailByIdCriteria criteria);
         ResultResponse CreateMail(CreateMailCriteria criteria);

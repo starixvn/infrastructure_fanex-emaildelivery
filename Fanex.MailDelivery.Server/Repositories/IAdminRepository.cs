@@ -4,18 +4,11 @@ using Fanex.MailDelivery.Admin.Models;
 using Fanex.MailDelivery.Core.Models;
 using Fanex.MailDelivery.Server.Criteria.Group;
 using Fanex.MailDelivery.Server.Criteria.Mail;
+using Fanex.MailDelivery.Server.Criteria.Recipient;
 using Fanex.MailDelivery.Server.Criteria.Report;
 using Fanex.MailDelivery.Services.Criteria;
-using CreateMailCriteria = Fanex.MailDelivery.Server.Criteria.Mail.CreateMailCriteria;
-using CreateRecipientCriteria = Fanex.MailDelivery.Server.Criteria.Recipient.CreateRecipientCriteria;
-using DeleteMailCriteria = Fanex.MailDelivery.Server.Criteria.Mail.DeleteMailCriteria;
-using DeleteRecipientCriteria = Fanex.MailDelivery.Server.Criteria.Recipient.DeleteRecipientCriteria;
-using GetMailListCriteria = Fanex.MailDelivery.Server.Criteria.Mail.GetMailListCriteria;
 using MailTask = Fanex.MailDelivery.Admin.Models.MailTask;
-using GetRecipientByIdCriteria = Fanex.MailDelivery.Server.Criteria.Recipient.GetRecipientByIdCriteria;
-using GetRecipientListCriteria = Fanex.MailDelivery.Server.Criteria.Recipient.GetRecipientListCriteria;
-using UpdateMailCriteria = Fanex.MailDelivery.Server.Criteria.Mail.UpdateMailCriteria;
-using UpdateRecipientCriteria = Fanex.MailDelivery.Server.Criteria.Recipient.UpdateRecipientCriteria;
+
 
 namespace Fanex.MailDelivery.Server.Repositories
 {

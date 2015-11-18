@@ -33,14 +33,14 @@ namespace Fanex.MailDelivery.Server.Installer
 
         protected override void OnStart(string[] args)
         {
-            MailService.MailService.LogInfo(string.Format(serviceInfo, ServiceName, "starts", DateTime.Now.ToString()));
+            MailService.ServiceBase.LogInfo(string.Format(serviceInfo, ServiceName, "starts", DateTime.Now.ToString()));
             _messageBroker.Start();
             _jobHandler.Start();
         }
 
         protected override void OnStop()
         {
-            MailService.MailService.LogInfo(string.Format(serviceInfo, this.ServiceName, "stops", DateTime.Now.ToString()));
+            MailService.ServiceBase.LogInfo(string.Format(serviceInfo, this.ServiceName, "stops", DateTime.Now.ToString()));
             _messageBroker.Dispose();
             _jobHandler.Stop();
         }

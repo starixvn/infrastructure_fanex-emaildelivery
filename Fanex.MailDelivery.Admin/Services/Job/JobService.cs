@@ -1,6 +1,4 @@
 ﻿using Fanex.MailDelivery.Admin.Messaging.Job;
-using Fanex.MailDelivery.Core;
-using Fanex.MailDelivery.Core.Messaging;
 using Fanex.MailDelivery.Core.Models;
 
 namespace Fanex.MailDelivery.Admin.Services.Job
@@ -9,8 +7,8 @@ namespace Fanex.MailDelivery.Admin.Services.Job
     {
         public void AbortJob(AbortJobRequest request)
         {
-            JobResultMessage jobResultMessage = new JobResultMessage() { JobStatus = Core.Enumerations.JobStatus.Abort, Schedule = new Schedule() { TaskId = request.TaskId } };
-            Bus.Publish<JobResultMessage>(jobResultMessage, MailDeliveryConstants.AbortJobRoutingKeyFormat);
+            Core.Models.Job job = new Core.Models.Job() { JobStatus = JobStatus.Abort, Schedule = new Schedule() { TaskId = request.TaskId } };
+            Bus.Publish<Core.Models.Job>(job, MailDeliveryConstants.AbortJobRoutingKeyFormat);
         }
 
         public void RetryJobMessage(ScheduleRequest schedule)

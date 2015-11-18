@@ -7,6 +7,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Fanex.MailDelivery.Admin.Models;
+using Fanex.MailDelivery.Core.Models;
 
 namespace Fanex.MailDelivery.Server.Cache
 {

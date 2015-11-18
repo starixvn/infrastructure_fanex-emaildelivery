@@ -18,11 +18,11 @@ namespace Fanex.MailDelivery.Client.Handlers.Interface
 
         void Publish(Mail mail);
 
-        void Publish(JobResultMessage jobStatus);
+        void Publish(JobRequest jobStatus);
 
         List<Schedule> GetSchedules();
 
-        JobResultMessage RequestAddMailTaskForRunningJob(JobResultMessage jobResult);
+        JobRequest RequestAddMailTaskForRunningJob(JobRequest jobResult);
 
         void SubscribeRetryJob();
 

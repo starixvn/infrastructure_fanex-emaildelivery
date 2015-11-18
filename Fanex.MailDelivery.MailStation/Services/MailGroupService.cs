@@ -7,15 +7,15 @@
 //   <change who="Louis.Nguyen" date="2014.10.03">Created</change>
 // </history>
 
-namespace Fanex.MailDelivery.MailStation.Services.MailGroup
-{
-    using System.Collections.Generic;
-    using System.Linq;
-    using Fanex.Data;
-    using Fanex.MailDelivery.MailStation.Criteria.MailGroup;
-    using Fanex.MailDelivery.MailStation.Models;
-    using Fanex.NAP.Framework.Command;
+using System.Collections.Generic;
+using System.Linq;
+using Fanex.Data;
+using Fanex.MailDelivery.MailStation.Criteria.MailGroup;
+using Fanex.MailDelivery.MailStation.Models;
+using Fanex.NAP.Framework.Command;
 
+namespace Fanex.MailDelivery.MailStation.Services
+{
     /// <summary>
     /// Mail Report Service.
     /// </summary>

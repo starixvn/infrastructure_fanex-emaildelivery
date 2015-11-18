@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using Fanex.MailDelivery.Admin.Messaging.ManageMail;
 using Fanex.MailDelivery.Admin.Services.Job;
 using Fanex.MailDelivery.Admin.Services.Mail;
+using Fanex.MailDelivery.MailStation.Services;
 using Fanex.NAP.Framework.Command;
 
 namespace Fanex.MailDelivery.MailStation.Controllers
@@ -20,7 +21,6 @@ namespace Fanex.MailDelivery.MailStation.Controllers
     using Fanex.MailDelivery.MailStation.Criteria.MailManage;
     using Fanex.MailDelivery.MailStation.Extensions;
     using Fanex.MailDelivery.MailStation.Resources;
-    using Fanex.MailDelivery.MailStation.Services.ManageMail;
     using Fanex.Maintenance.Controller;
 
     /// <summary>

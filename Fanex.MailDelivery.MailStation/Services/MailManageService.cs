@@ -9,7 +9,7 @@ using Fanex.MailDelivery.MailStation.Criteria.MailGroup;
 using Fanex.MailDelivery.MailStation.Criteria.MailManage;
 using Fanex.NAP.Framework.Command;
 
-namespace Fanex.MailDelivery.MailStation.Services.ManageMail
+namespace Fanex.MailDelivery.MailStation.Services
 {
     /// <summary>
     /// Mail Manage Service.

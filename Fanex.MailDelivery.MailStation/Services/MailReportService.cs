@@ -7,28 +7,30 @@
 //   <change who="Louis.Nguyen" date="2014.10.03">Created</change>
 // </history>
 
-using Fanex.MailDelivery.Admin;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Fanex.Common;
+using Fanex.Data;
+using Fanex.MailDeliver.Model;
 using Fanex.MailDelivery.Admin.Messaging.Job;
-using Fanex.MailDelivery.Core.Enumerations;
+using Fanex.MailDelivery.Admin.Models;
+using Fanex.MailDelivery.Admin.Services.Job;
+using Fanex.MailDelivery.Core.Models;
+using Fanex.MailDelivery.MailStation.Criteria.MailReport;
+using Fanex.MailDelivery.MailStation.Models;
+using Fanex.Maintenance.Service.Impl.Mail;
+using Fanex.Maintenance.Service.Interface.Mail;
+using Fanex.NAP.Core.Criteria.Misc;
+using Quartz;
+using Quartz.Spi;
+using MailTaskDetailModel = Fanex.MailDelivery.MailStation.Models.MailTaskDetailModel;
+using MailTaskModel = Fanex.MailDelivery.MailStation.Models.MailTaskModel;
 
-namespace Fanex.MailDelivery.MailStation.Services.MailReport
+namespace Fanex.MailDelivery.MailStation.Services
 {
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
-    using System.Linq;
-    using Fanex.Common;
-    using Fanex.Data;
-    using Fanex.MailDeliver.Model;
-    using Fanex.MailDelivery.MailStation.Criteria.MailReport;
-    using Fanex.MailDelivery.MailStation.Models;
-    using Fanex.Maintenance.Service.Impl.Mail;
-    using Fanex.Maintenance.Service.Interface.Mail;
-    using Fanex.NAP.Core.Criteria.Misc;
-    using Quartz;
-    using Quartz.Spi;
-
     /// <summary>
     /// Mail Report Service.
     /// </summary>
@@ -36,9 +38,14 @@ namespace Fanex.MailDelivery.MailStation.Services.MailReport
     {
         private IMailService _mailServer;
 
+        private IJobService _jobService;
+
+
         public MailReportService()
         {
             _mailServer = _mailServer ?? MailService.Create();
+
+            _jobService = new JobService();
         }
 
         /// <summary>
@@ -171,18 +178,16 @@ namespace Fanex.MailDelivery.MailStation.Services.MailReport
             //MailAdminService.Stop();
         }
 
-        public void AbortJob(int taskID)
+        public void AbortJob(int taskId)
         {
-            //MailAdminService.Start();
-
             AbortJobRequest request = new AbortJobRequest
             {
-                TaskId = taskID,
+                TaskId = taskId,
             };
 
-            //MailAdminService.AbortJob(request);
-            //MailAdminService.Stop();
+            _jobService.AbortJob(request);
         }
+
 
         public void RetryMissingJob(RetryMissingTaskCriteria criteria)
         {

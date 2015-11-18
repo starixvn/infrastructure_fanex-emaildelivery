@@ -7,7 +7,6 @@ namespace Fanex.MailDelivery.Client.Handlers.Impl
     using Fanex.MailDelivery.Client.Configurations;
     using Fanex.MailDelivery.Client.Handlers.Interface;
     using Fanex.MailDelivery.Client.Jobs;
-    using Fanex.MailDelivery.Client.Models;
     using Quartz;
     using Quartz.Impl;
 

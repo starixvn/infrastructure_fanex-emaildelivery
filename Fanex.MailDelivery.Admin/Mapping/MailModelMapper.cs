@@ -1,5 +1,5 @@
 ﻿using Fanex.MailDelivery.Admin.Messaging.ManageMail;
-using Fanex.MailDelivery.Core.Models;
+using Fanex.MailDelivery.Admin.Models;
 
 namespace Fanex.MailDelivery.Admin.Mapping
 {
