@@ -117,9 +117,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="CodeAnalysis\CodeAnalysisConfiguration.xml" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Fanex.MailDelivery.Core\Fanex.MailDelivery.Core.csproj">
       <Project>{C7ED0DE9-6A20-4223-B251-6EF530B74139}</Project>
       <Name>Fanex.MailDelivery.Core</Name>

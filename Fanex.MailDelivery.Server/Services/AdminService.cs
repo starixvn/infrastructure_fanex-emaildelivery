@@ -47,7 +47,7 @@ namespace Fanex.MailDelivery.Server.Services
             return _adminRepository.DeleteRecipient(criteria);
         }
 
-        public List<MailModel> GetListMail(GetMailListCriteria criteria)
+        public IList<MailModel> GetListMail(GetMailListCriteria criteria)
         {
             return _adminRepository.GetMailList(criteria);
         }

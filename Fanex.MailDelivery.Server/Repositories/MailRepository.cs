@@ -8,9 +8,9 @@ using Fanex.MailDelivery.Admin.Messaging;
 using Fanex.MailDelivery.Admin.Models;
 using Fanex.MailDelivery.Core.Models;
 using Fanex.MailDelivery.Server.Configurations;
+using Fanex.MailDelivery.Server.Criteria.Mail;
 using Fanex.MailDelivery.Server.Criteria.Recipient;
 using Fanex.MailDelivery.Services.Criteria;
-using Fanex.MailDelivery.Services.Criteria.ManageMail;
 using Fanex.Maintenance.Repository.Criteria.Misc;
 
 namespace Fanex.MailDelivery.Server.Repositories

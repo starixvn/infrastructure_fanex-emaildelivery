@@ -49,8 +49,6 @@
     <Compile Include="Messaging\ClientInfomationMessage.cs" />
     <Compile Include="Messaging\JobResultMessage.cs" />
     <Compile Include="Messaging\MailingListRequest.cs" />
-    <Compile Include="Messaging\Recipient\GetRecipientByIdMessage.cs" />
-    <Compile Include="Messaging\Recipient\UpdateRecipientMessage.cs" />
     <Compile Include="Messaging\TaskLog.cs" />
     <Compile Include="Models\Mail.cs" />
     <Compile Include="Models\MailAttachment.cs" />

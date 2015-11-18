@@ -16,7 +16,7 @@ namespace Fanex.MailDelivery.Server.Services
     {
         RecipientModel RecipientById(GetRecipientByIdCriteria criteria);
 
-        List<MailModel> GetListMail(GetMailListCriteria criteria);
+        IList<MailModel> GetListMail(GetMailListCriteria criteria);
         MailModel GetMailById(GetMailByIdCriteria criteria);
         ResultResponse CreateMail(CreateMailCriteria criteria);
         ResultResponse UpdateMail(UpdateMailCriteria criteria);

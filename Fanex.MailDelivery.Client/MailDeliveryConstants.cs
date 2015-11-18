@@ -1,10 +1,5 @@
 ﻿namespace Fanex.MailDelivery.Client
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-
     /// <summary>
     /// Route key for deliver message.
     /// </summary>

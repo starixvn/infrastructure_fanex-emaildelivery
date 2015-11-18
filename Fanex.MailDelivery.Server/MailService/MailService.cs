@@ -195,52 +195,7 @@ namespace Fanex.MailDelivery.Server.MailService
         {
             this._mailRepository.UpdateClientActiveTime(new UpdateClientActiveTimeCriteria() { MailIds = clientInfoMessage.MailIds });
         }
-
-        public List<RecipientModel> GetListRecipient(GetRecipientListCriteria criteria)
-        {
-            return this._mailRepository.GetListRecipient(criteria);
-        }
-
-        public ResultResponse CreateRecipient(CreateRecipientCriteria criteria)
-        {
-            return this._mailRepository.CreateRecipient(criteria);
-        }
-
-        public ResultResponse UpdateRecipient(UpdateRecipientCriteria criteria)
-        {
-            return this._mailRepository.UpdateRecipient(criteria);
-        }
-
-        public ResultResponse DeleteRecipient(DeleteRecipientCriteria criteria)
-        {
-            return _mailRepository.DeleteRecipient(criteria);
-        }
-
-        public List<MailModel> GetListMail(GetMailListCriteria criteria)
-        {
-            return this._mailRepository.GetListMail(criteria);
-        }
-
-        public ResultResponse CreateMail(CreateMailCriteria criteria)
-        {
-            return this._mailRepository.CreateMail(criteria);
-        }
-
-        public ResultResponse UpdateMail(UpdateMailCriteria criteria)
-        {
-            return this._mailRepository.UpdateMail(criteria);
-        }
-
-        public ResultResponse DeleteMail(DeleteMailCriteria criteria)
-        {
-            return _mailRepository.DeleteMail(criteria);
-        }
-
-        public RecipientModel RecipientById(GetRecipientByIdCriteria criteria)
-        {
-            return this._mailRepository.RecipientById(criteria);
-        }
-
+     
         /// <summary>
         /// Updates the running job.
         /// </summary>
