@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using EasyNetQ;
 using Fanex.MailDelivery.Admin.Messaging;
 using Fanex.MailDelivery.Admin.Messaging.Job;
@@ -13,14 +12,8 @@ using Fanex.MailDelivery.Core.Messaging;
 using Fanex.MailDelivery.Core.Models;
 using Fanex.MailDelivery.Server.Logging;
 using Fanex.MailDelivery.Server.MailService;
-using Fanex.MailDelivery.Server.Mapping;
 using Fanex.MailDelivery.Server.Services;
 using Fanex.MailDelivery.Services.Configurations;
-using Fanex.MailDelivery.Services.Criteria.Group;
-using Fanex.MailDelivery.Services.Criteria.Mail;
-using Fanex.MailDelivery.Services.Criteria.Recipient;
-using Fanex.MailDelivery.Services.Criteria.Report;
-using Fanex.MailDelivery.Services.Models;
 using Fanex.MailDelivery.Services.Services;
 
 namespace Fanex.MailDelivery.Server.Handlers
@@ -33,8 +26,6 @@ namespace Fanex.MailDelivery.Server.Handlers
         private IBus _bus;
         private IMailService _mailService;
 
-        private IAdminService _adminService;
-
         private IAdminServerService _adminServerService;
 
         public MailServiceMessageBroker()
@@ -46,10 +37,7 @@ namespace Fanex.MailDelivery.Server.Handlers
         {
             _mailService = mailService ?? new MailService.MailService();
 
-            _adminService = new AdminService();
-
             _adminServerService = new AdminServerService(new AdminService());
-
         }
 
         /// <summary>
@@ -74,30 +62,53 @@ namespace Fanex.MailDelivery.Server.Handlers
 
             RespondAddMailTaskForRunningJob();
             SubscribeClientNotificationMessage();
-            RespondGetRecipientById();
 
-
-
-            RespondGetMailList();
-            ResponseGetMailById();
-            RespondCreateMail();
-            RespondUpdateMail();
-            RespondDeleteMail();
-
-            RespondGetRecipientList();
-            ResponseGetRecipientById();
-            RespondCreateRecipient();
-            RespondUpdateRecipient();
-            RespondDeleteRecipient();
-
-            ResponseGetGroupList();
-            ResponseGetGroupById();
-            ResponseCreateGroup();
-            ResponseUpdateGroup();
-            ResponseDeleteGroup();
-
-            ResponseGetReportList();
+            // Register admin functions
+            ResponseMailFunctions();
+            ResponseRecipientFunctions();
+            ResponseGroupFunctions();
+            ResponseReportFunctions();
         }
+
+        private void ResponseRecipientFunctions()
+        {
+            _bus.Respond<GetRecipientListRequest, GetRecipientListResponse>(request => _adminServerService.GetRecipientList(request));
+            _bus.Respond<GetRecipientByIdRequest, GetRecipientByIdResponse>(request => _adminServerService.GetRecipientById(request));
+
+            _bus.Respond<CreateRecipientRequest, ResultResponse>(request => _adminServerService.CreateRecipient(request));
+            _bus.Respond<UpdateRecipientRequest, ResultResponse>(request => _adminServerService.UpdateRecipient(request));
+            _bus.Respond<DeleteRecipientRequest, ResultResponse>(request => _adminServerService.DeleteRecipient(request));
+        }
+
+        private void ResponseMailFunctions()
+        {
+            _bus.Respond<GetMailListRequest, GetMailListResponse>(request => _adminServerService.GetMailList(request));
+
+            _bus.Respond<GetMailByIdRequest, GetMailByIdResponse>(request => _adminServerService.GetMailById(request));
+            _bus.Respond<CreateFunctionMailRequest, ResultResponse>(request => _adminServerService.CreateFunctionMail(request));
+
+            _bus.Respond<CreateAutoMailRequest, ResultResponse>(request => _adminServerService.CreateAutoMail(request));
+            _bus.Respond<UpdateFunctionMailRequest, ResultResponse>(request => _adminServerService.UpdateFunctionMail(request));
+
+            _bus.Respond<UpdateAutoMailRequest, ResultResponse>(request => _adminServerService.UpdateAutoMail(request));
+            _bus.Respond<DeleteMailRequest, ResultResponse>(request => _adminServerService.DeleteMail(request));
+        }
+
+        private void ResponseGroupFunctions()
+        {
+            _bus.Respond<GetGroupListRequest, GetGroupListResponse>(request => _adminServerService.GetGroupList(request));
+            _bus.Respond<GetMailGroupByIdRequest, GetMailGroupByIdResponse>(request => _adminServerService.GetGroupById(request));
+
+            _bus.Respond<CreateGroupRequest, ResultResponse>(request => _adminServerService.CreateGroup(request));
+            _bus.Respond<UpdateGroupRequest, ResultResponse>(request => _adminServerService.UpdateGroup(request));
+            _bus.Respond<DeleteGroupRequest, ResultResponse>(request => _adminServerService.DeleteGroup(request));
+        }
+
+        private void ResponseReportFunctions()
+        {
+            _bus.Respond<GetReportListRequest, GetReportListResponse>(request => _adminServerService.GetReportList(request));
+        }
+
 
         public void SubscribeAbortJob()
         {
@@ -180,137 +191,10 @@ namespace Fanex.MailDelivery.Server.Handlers
                 });
         }
 
-        public void RespondGetRecipientById()
-        {
-            _bus.Respond<GetRecipientByIdRequest, RecipientModel>(
-                request =>
-                {
-                    return _adminService.GetRecipientById(new GetRecipientByIdCriteria()
-                    {
-                        RecipientId = request.Id
-                    });
-                });
-        }
-
         public void Dispose()
         {
             _bus.Dispose();
             GC.SuppressFinalize(this);
         }
-
-        #region Mail
-
-        public void RespondGetMailList()
-        {
-            _bus.Respond<GetMailListRequest, GetMailListResponse>(request => _adminServerService.GetMailList(request));
-        }
-
-        private void ResponseGetMailById()
-        {
-            _bus.Respond<GetMailByIdRequest, GetMailByIdResponse>(request => _adminServerService.GetMailById(request));
-        }
-
-        public void RespondCreateMail()
-        {
-            _bus.Respond<CreateFunctionMailRequest, ResultResponse>(request => _adminServerService.CreateFunctionMail(request));
-
-            _bus.Respond<CreateAutoMailRequest, ResultResponse>(request => _adminServerService.CreateAutoMail(request));
-        }
-
-        public void RespondUpdateMail()
-        {
-            _bus.Respond<UpdateFunctionMailRequest, ResultResponse>(request => _adminServerService.UpdateFunctionMail(request));
-
-            _bus.Respond<UpdateAutoMailRequest, ResultResponse>(request => _adminServerService.UpdateAutoMail(request));
-        }
-
-        public void RespondDeleteMail()
-        {
-            _bus.Respond<DeleteMailRequest, ResultResponse>(request => _adminServerService.DeleteMail(request));
-        }
-
-        #endregion
-
-        #region Recipient
-
-        public void RespondGetRecipientList()
-        {
-            _bus.Respond<GetRecipientListRequest, GetRecipientListResponse>(request => _adminServerService.GetRecipientList(request));
-        }
-
-        private void ResponseGetRecipientById()
-        {
-            _bus.Respond<GetRecipientByIdRequest, GetRecipientByIdResponse>(request => _adminServerService.GetRecipientById(request));
-        }
-
-        public void RespondCreateRecipient()
-        {
-            _bus.Respond<CreateRecipientRequest, ResultResponse>(request => _adminServerService.CreateRecipient(request));
-        }
-
-        public void RespondUpdateRecipient()
-        {
-            _bus.Respond<UpdateRecipientRequest, ResultResponse>(request => _adminServerService.UpdateRecipient(request));
-        }
-
-        public void RespondDeleteRecipient()
-        {
-            _bus.Respond<DeleteRecipientRequest, ResultResponse>(request => _adminServerService.DeleteRecipient(request));
-        }
-
-        #endregion
-
-        #region Group
-
-        private void ResponseGetGroupList()
-        {
-            _bus.Respond<GetGroupListRequest, GetGroupListResponse>(request => _adminServerService.GetGroupList(request));
-        }
-
-        private void ResponseGetGroupById()
-        {
-            _bus.Respond<GetMailGroupByIdRequest, GetMailGroupByIdResponse>(request => _adminServerService.GetGroupById(request));
-        }
-
-        private void ResponseCreateGroup()
-        {
-            _bus.Respond<CreateGroupRequest, ResultResponse>(request => _adminServerService.CreateGroup(request));
-        }
-
-        private void ResponseUpdateGroup()
-        {
-            _bus.Respond<UpdateGroupRequest, ResultResponse>(request => _adminServerService.UpdateGroup(request));
-        }
-
-        private void ResponseDeleteGroup()
-        {
-            _bus.Respond<DeleteGroupRequest, ResultResponse>(request => _adminServerService.DeleteGroup(request));
-        }
-
-        #endregion
-
-        #region Report
-
-        private void ResponseGetReportList()
-        {
-            _bus.Respond<GetReportListRequest, GetReportListResponse>(
-              request =>
-              {
-                  IList<MailTaskModel> mailTaskModels = _adminService.GetReportList(new GetReportListCriteria
-                  {
-                      MailName = request.MailName,
-                      SiteId = request.SiteId,
-                      FromDate = request.FromDate,
-                      ToDate = request.ToDate,
-                      Status = request.Status
-                  });
-
-                  IList<MailTaskDto> mailTaskDtos = mailTaskModels.Select(n => n.ToMailTaskDto()).ToList();
-
-                  return new GetReportListResponse { MailTaskDtos = mailTaskDtos };
-              });
-        }
-
-        #endregion
     }
 }

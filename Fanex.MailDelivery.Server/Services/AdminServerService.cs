@@ -9,6 +9,7 @@ using Fanex.MailDelivery.Server.Mapping;
 using Fanex.MailDelivery.Services.Criteria.Group;
 using Fanex.MailDelivery.Services.Criteria.Mail;
 using Fanex.MailDelivery.Services.Criteria.Recipient;
+using Fanex.MailDelivery.Services.Criteria.Report;
 using Fanex.MailDelivery.Services.Models;
 using Fanex.MailDelivery.Services.Services;
 
@@ -287,7 +288,18 @@ namespace Fanex.MailDelivery.Server.Services
 
         public GetReportListResponse GetReportList(GetReportListRequest request)
         {
-            throw new System.NotImplementedException();
+            IList<MailTaskModel> mailTaskModels = _adminService.GetReportList(new GetReportListCriteria
+            {
+                MailName = request.MailName,
+                SiteId = request.SiteId,
+                FromDate = request.FromDate,
+                ToDate = request.ToDate,
+                Status = request.Status
+            });
+
+            IList<MailTaskDto> mailTaskDtos = mailTaskModels.Select(n => n.ToMailTaskDto()).ToList();
+
+            return new GetReportListResponse { MailTaskDtos = mailTaskDtos };
         }
     }
 }
