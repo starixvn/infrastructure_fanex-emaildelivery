@@ -1,4 +1,4 @@
-﻿using Fanex.MailDelivery.Server.Configurations;
+﻿using Fanex.MailDelivery.Services.Configurations;
 using Quartz;
 using Quartz.Impl;
 

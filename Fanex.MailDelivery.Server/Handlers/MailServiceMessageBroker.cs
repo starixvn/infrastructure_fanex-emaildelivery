@@ -11,16 +11,16 @@ using Fanex.MailDelivery.Admin.Messaging.ManageReport;
 using Fanex.MailDelivery.Core;
 using Fanex.MailDelivery.Core.Messaging;
 using Fanex.MailDelivery.Core.Models;
-using Fanex.MailDelivery.Server.Configurations;
-using Fanex.MailDelivery.Server.Criteria.Group;
-using Fanex.MailDelivery.Server.Criteria.Mail;
-using Fanex.MailDelivery.Server.Criteria.Recipient;
-using Fanex.MailDelivery.Server.Criteria.Report;
 using Fanex.MailDelivery.Server.Logging;
 using Fanex.MailDelivery.Server.MailService;
 using Fanex.MailDelivery.Server.Mapping;
-using Fanex.MailDelivery.Server.Models;
-using Fanex.MailDelivery.Server.Services;
+using Fanex.MailDelivery.Services.Configurations;
+using Fanex.MailDelivery.Services.Criteria.Group;
+using Fanex.MailDelivery.Services.Criteria.Mail;
+using Fanex.MailDelivery.Services.Criteria.Recipient;
+using Fanex.MailDelivery.Services.Criteria.Report;
+using Fanex.MailDelivery.Services.Models;
+using Fanex.MailDelivery.Services.Services;
 
 namespace Fanex.MailDelivery.Server.Handlers
 {
@@ -254,7 +254,7 @@ namespace Fanex.MailDelivery.Server.Handlers
                            Description = requestMessage.Description,
 
                            TriggerType = 0 // Function Mail
-                       });
+                       }).ToResultResponse();
                    });
 
             _bus.Respond<CreateAutoMailRequest, ResultResponse>(
@@ -284,7 +284,7 @@ namespace Fanex.MailDelivery.Server.Handlers
                             Interval = requestMessage.Interval,
 
                             TriggerType = 1 // Auto Mail
-                        });
+                        }).ToResultResponse();
                     });
 
         }
@@ -311,7 +311,7 @@ namespace Fanex.MailDelivery.Server.Handlers
                         Description = requestMessage.Description,
 
                         TriggerType = 0 // Function Mail
-                    });
+                    }).ToResultResponse();
                 });
 
             _bus.Respond<UpdateAutoMailRequest, ResultResponse>(
@@ -343,7 +343,7 @@ namespace Fanex.MailDelivery.Server.Handlers
                         Interval = requestMessage.Interval,
 
                         TriggerType = 1 // Auto Mail
-                    });
+                    }).ToResultResponse();
                 });
         }
 
@@ -355,7 +355,7 @@ namespace Fanex.MailDelivery.Server.Handlers
                 return _adminService.DeleteMail(new DeleteMailCriteria
                 {
                     MailId = requestMessage.MailId
-                });
+                }).ToResultResponse();
             });
         }
 
@@ -415,7 +415,7 @@ namespace Fanex.MailDelivery.Server.Handlers
                         Note = requestMessage.Note,
                         Status = requestMessage.Status,
                         UserName = requestMessage.UserName
-                    });
+                    }).ToResultResponse();
                 });
         }
 
@@ -438,7 +438,7 @@ namespace Fanex.MailDelivery.Server.Handlers
 
                         Note = requestMessage.Note,
                         Status = requestMessage.Status,
-                    });
+                    }).ToResultResponse();
                 });
         }
 
@@ -450,7 +450,7 @@ namespace Fanex.MailDelivery.Server.Handlers
                     return _adminService.DeleteRecipient(new DeleteRecipientCriteria
                     {
                         RecipientId = requestMessage.RecipientId
-                    });
+                    }).ToResultResponse();
                 });
         }
 
@@ -497,7 +497,7 @@ namespace Fanex.MailDelivery.Server.Handlers
                   {
                       MailGroupName = request.Name,
                       Description = request.Description
-                  });
+                  }).ToResultResponse();
               });
         }
 
@@ -511,7 +511,7 @@ namespace Fanex.MailDelivery.Server.Handlers
                        MailGroupId = request.Id,
                        MailGroupName = request.Name,
                        Description = request.Description
-                   });
+                   }).ToResultResponse();
                });
         }
 
@@ -523,7 +523,7 @@ namespace Fanex.MailDelivery.Server.Handlers
                   return _adminService.DeleteGroup(new DeleteGroupCriteria
                   {
                       MailGroupId = request.Id
-                  });
+                  }).ToResultResponse();
               });
         }
 

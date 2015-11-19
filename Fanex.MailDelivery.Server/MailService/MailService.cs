@@ -7,8 +7,8 @@ using Fanex.MailDeliver.Core.Infrastructure.Logging;
 using Fanex.MailDeliver.Model;
 using Fanex.MailDelivery.Core.Messaging;
 using Fanex.MailDelivery.Core.Models;
-using Fanex.MailDelivery.Server.Repositories;
-using Fanex.MailDelivery.Services.Criteria;
+using Fanex.MailDelivery.Services.Criteria.Criteria;
+using Fanex.MailDelivery.Services.Repositories;
 using Fanex.NAP.Framework.Command;
 
 namespace Fanex.MailDelivery.Server.MailService
