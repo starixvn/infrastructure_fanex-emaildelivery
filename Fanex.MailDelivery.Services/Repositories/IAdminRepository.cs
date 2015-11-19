@@ -12,26 +12,6 @@ namespace Fanex.MailDelivery.Services.Repositories
 {
     public interface IAdminRepository
     {
-        Schedule GetScheduleById(GetScheduleByIdCriteria criteria);
-
-        int AddMailTask(AddMailTaskCriteria criteria);
-
-        void UpdateMailTaskStatus(UpdateMailTaskStatusCriteria criteria);
-
-        void UpdateRetryCounter(UpdateTaskRetryCounterCriteria criteria);
-
-        void AddMailLog(AddMailLogCriteria criteria);
-
-        MailingList GetMailingList(GetMailWithEmailAddressByMailId criteria);
-
-        void UpdateMailTask(UpdateMailTaskMSiteMailIdCriteria criteria);
-
-        MailTask GetMailTask(GetMailTaskByIdCriteria criteria);
-
-        void UpdateClientActiveTime(UpdateClientActiveTimeCriteria criteria);
-
-        RecipientModel RecipientById(GetRecipientByIdCriteria criteria);
-
         List<MailModel> GetMailList(GetMailListCriteria criteria);
         MailModel GetMailById(GetMailByIdCriteria criteria);
         ResultModel CreateMail(CreateMailCriteria criteria);
