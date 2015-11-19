@@ -47,6 +47,7 @@ namespace Fanex.MailDelivery.Server.Handlers
         {
             //// Standard practice is to create a single IBus instance for the lifetime of your application. Dispose it when your application closes.
             //// https://github.com/mikehadlow/EasyNetQ/wiki/Connecting-to-RabbitMQ
+            // TODO => Singleton
             _bus = RabbitHutch.CreateBus(
                 AppSettings.MailServiceSection.RabbitMQConnectionString,
                 serviceRegister =>

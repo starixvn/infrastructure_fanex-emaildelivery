@@ -10,8 +10,6 @@ namespace Fanex.MailDelivery.Server.MailService
     /// </summary>
     public interface IMailService
     {
-        List<Schedule> GetSchedules(List<int> scheduleId);
-
         CommandResult UpdateJobStatus(Job job);
 
         int SendMail(Mail mail);
@@ -19,7 +17,5 @@ namespace Fanex.MailDelivery.Server.MailService
         void AddMailTaskForRunningJob(Job job);
 
         void UpdateClientActiveTime(ClientInfomationMessage clientInfoMessage);
-
-
     }
 }

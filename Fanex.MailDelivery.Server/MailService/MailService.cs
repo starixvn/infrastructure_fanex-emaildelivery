@@ -28,30 +28,6 @@ namespace Fanex.MailDelivery.Server.MailService
         }
 
         /// <summary>
-        /// Gets the schedules.
-        /// </summary>
-        /// <param name="scheduleIds">The schedule ids.</param>
-        /// <returns>Schedule list.</returns>
-        public List<Schedule> GetSchedules(List<int> scheduleIds)
-        {
-            List<Schedule> schedules = new List<Schedule>();
-
-            try
-            {
-                foreach (int scheduleId in scheduleIds)
-                {
-                    schedules.Add(this._mailRepository.GetScheduleById(new GetScheduleByIdCriteria() { MailId = scheduleId }));
-                }
-            }
-            catch (Exception ex)
-            {
-                LogError(ex, scheduleIds);
-            }
-
-            return schedules;
-        }
-
-        /// <summary>
         /// Updates the job status.
         /// Just incase of status is Running, Retry, DataIsNotReady using this function.
         /// </summary>
