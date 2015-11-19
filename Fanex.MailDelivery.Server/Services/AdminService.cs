@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using Fanex.MailDelivery.Admin.Messaging;
-using Fanex.MailDelivery.Admin.Models;
 using Fanex.MailDelivery.Core.Models;
 using Fanex.MailDelivery.Server.Criteria.Group;
 using Fanex.MailDelivery.Server.Criteria.Mail;
 using Fanex.MailDelivery.Server.Criteria.Recipient;
 using Fanex.MailDelivery.Server.Criteria.Report;
+using Fanex.MailDelivery.Server.Models;
 using Fanex.MailDelivery.Server.Repositories;
 
 namespace Fanex.MailDelivery.Server.Services

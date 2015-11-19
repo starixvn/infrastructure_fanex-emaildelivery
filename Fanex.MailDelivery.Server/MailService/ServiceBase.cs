@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Fanex.MailDelivery.Admin.Models;
 using Fanex.MailDelivery.Core.Models;
 
 namespace Fanex.MailDelivery.Server.MailService

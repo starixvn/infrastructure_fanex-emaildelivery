@@ -16,7 +16,6 @@ using Fanex.Common;
 using Fanex.Data;
 using Fanex.MailDeliver.Model;
 using Fanex.MailDelivery.Admin.Messaging.Job;
-using Fanex.MailDelivery.Admin.Models;
 using Fanex.MailDelivery.Admin.Services.Job;
 using Fanex.MailDelivery.Core.Models;
 using Fanex.MailDelivery.MailStation.Criteria.MailReport;
@@ -26,8 +25,6 @@ using Fanex.Maintenance.Service.Interface.Mail;
 using Fanex.NAP.Core.Criteria.Misc;
 using Quartz;
 using Quartz.Spi;
-using MailTaskDetailModel = Fanex.MailDelivery.MailStation.Models.MailTaskDetailModel;
-using MailTaskModel = Fanex.MailDelivery.MailStation.Models.MailTaskModel;
 
 namespace Fanex.MailDelivery.MailStation.Services
 {

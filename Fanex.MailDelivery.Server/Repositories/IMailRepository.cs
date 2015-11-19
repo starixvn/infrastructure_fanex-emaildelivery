@@ -1,5 +1,5 @@
-﻿using Fanex.MailDelivery.Admin.Models;
-using Fanex.MailDelivery.Core.Models;
+﻿using Fanex.MailDelivery.Core.Models;
+using Fanex.MailDelivery.Server.Models;
 using Fanex.MailDelivery.Services.Criteria;
 
 namespace Fanex.MailDelivery.Server.Repositories

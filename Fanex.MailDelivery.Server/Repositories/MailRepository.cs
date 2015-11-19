@@ -5,9 +5,9 @@ using System.Linq;
 using Fanex.Common;
 using Fanex.Data;
 using Fanex.MailDelivery.Admin.Messaging;
-using Fanex.MailDelivery.Admin.Models;
 using Fanex.MailDelivery.Core.Models;
 using Fanex.MailDelivery.Server.Configurations;
+using Fanex.MailDelivery.Server.Models;
 using Fanex.MailDelivery.Services.Criteria;
 using Fanex.Maintenance.Repository.Criteria.Misc;
 

@@ -1,7 +1,7 @@
 ﻿using Fanex.MailDelivery.Admin.Messaging.ManageReport;
-using Fanex.MailDelivery.Admin.Models;
+using Fanex.MailDelivery.Server.Models;
 
-namespace Fanex.MailDelivery.Admin.Mapping
+namespace Fanex.MailDelivery.Server.Mapping
 {
     public static class MailTaskModelMapper
     {

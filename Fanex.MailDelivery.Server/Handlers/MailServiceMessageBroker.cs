@@ -2,14 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using EasyNetQ;
-using Fanex.MailDelivery.Admin.Mapping;
 using Fanex.MailDelivery.Admin.Messaging;
 using Fanex.MailDelivery.Admin.Messaging.Job;
 using Fanex.MailDelivery.Admin.Messaging.ManageGroup;
 using Fanex.MailDelivery.Admin.Messaging.ManageMail;
 using Fanex.MailDelivery.Admin.Messaging.ManageRecipient;
 using Fanex.MailDelivery.Admin.Messaging.ManageReport;
-using Fanex.MailDelivery.Admin.Models;
 using Fanex.MailDelivery.Core;
 using Fanex.MailDelivery.Core.Messaging;
 using Fanex.MailDelivery.Core.Models;
@@ -20,6 +18,8 @@ using Fanex.MailDelivery.Server.Criteria.Recipient;
 using Fanex.MailDelivery.Server.Criteria.Report;
 using Fanex.MailDelivery.Server.Logging;
 using Fanex.MailDelivery.Server.MailService;
+using Fanex.MailDelivery.Server.Mapping;
+using Fanex.MailDelivery.Server.Models;
 using Fanex.MailDelivery.Server.Services;
 
 namespace Fanex.MailDelivery.Server.Handlers
