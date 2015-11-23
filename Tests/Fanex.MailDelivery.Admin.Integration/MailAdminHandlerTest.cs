@@ -3,6 +3,7 @@ using Fanex.MailDelivery.Admin.Messaging.ManageGroup;
 using Fanex.MailDelivery.Admin.Messaging.ManageMail;
 using Fanex.MailDelivery.Admin.Messaging.ManageRecipient;
 using Fanex.MailDelivery.Admin.Services.Group;
+using Fanex.MailDelivery.Admin.Services.Mail;
 using NUnit.Framework;
 
 namespace Fanex.MailDelivery.Admin.UserTest
@@ -10,18 +11,23 @@ namespace Fanex.MailDelivery.Admin.UserTest
     [TestFixture]
     public class MailAdminHandlerTest
     {
-        //[Test]
-        //public void GetMailListTest()
-        //{
-        //    GetMailListRequest getMailListRequest = new GetMailListRequest();
+        [Test]
+        public void GetMailListTest()
+        {
+            GetMailListRequest getMailListRequest = new GetMailListRequest();
 
-        //    getMailListRequest.MailName = "George.Funcs.Test";
-        //    getMailListRequest.SiteId = -1;
-        //    getMailListRequest.IsActive = 1;
-        //    //GetMailListRequest.TriggerType = -1;
+            getMailListRequest.MailName = "Create";
+            getMailListRequest.SiteId = -1;
+            getMailListRequest.IsActive = -1;
+            getMailListRequest.TriggerType = -1;
 
-        //    GetMailListResponse mailModels = MailAdminService.GetMailList(getMailListRequest);
-        //}
+            GetMailListResponse mails;
+
+            using (IMailService mailService = new MailService())
+            {
+                mails = mailService.GetMailList(getMailListRequest);
+            }
+        }
 
         //[Test]
         //public void CreateFunctionMailTest()

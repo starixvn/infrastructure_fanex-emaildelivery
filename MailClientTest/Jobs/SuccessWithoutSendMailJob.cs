@@ -1,6 +1,4 @@
-﻿using Fanex.MailDelivery.Core.Enumerations;
-using Fanex.MailDelivery.Core.Messaging;
-using Fanex.MailDelivery.Core.Models;
+﻿using Fanex.MailDelivery.Core.Models;
 
 namespace MailClientTest.Jobs
 {

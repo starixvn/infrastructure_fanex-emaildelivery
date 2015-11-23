@@ -16,9 +16,9 @@ namespace Fanex.MailDelivery.MailStation.Services
     /// </summary>
     public class MailManageService : MailStationBaseService
     {
-        IMailService _mailService;
+        readonly IMailService _mailService;
 
-        IJobService _jobService;
+        readonly IJobService _jobService;
 
         public MailManageService(IMailService mailService, IJobService jobService)
         {

@@ -1,13 +1,10 @@
-﻿namespace Fanex.MailDelivery.Client.Handlers.Impl
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using EasyNetQ;
-    using Fanex.Logging;
-    using Fanex.MailDelivery.Client.Configurations;
+﻿using System;
+using EasyNetQ;
+using Fanex.Logging;
+using Fanex.MailDelivery.Client.Configurations;
 
+namespace Fanex.MailDelivery.Client.Logging
+{
     /// <summary>
     /// Mail Client Logger.
     /// </summary>

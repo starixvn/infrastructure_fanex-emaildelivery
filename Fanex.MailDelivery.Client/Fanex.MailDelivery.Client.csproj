@@ -94,7 +94,7 @@
     <Compile Include="Configurations\ScheduleElement.cs" />
     <Compile Include="Configurations\ScheduleElementCollection.cs" />
     <Compile Include="Handlers\BaseHandler.cs" />
-    <Compile Include="Handlers\Impl\MailClientLogger.cs" />
+    <Compile Include="Logging\MailClientLogger.cs" />
     <Compile Include="Jobs\ClientNotificationJob.cs" />
     <Compile Include="MailDeliveryConstants.cs" />
     <Compile Include="Handlers\Impl\JobHandler.cs" />
