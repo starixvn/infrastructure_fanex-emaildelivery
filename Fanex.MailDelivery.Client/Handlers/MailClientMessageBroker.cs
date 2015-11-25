@@ -1,17 +1,16 @@
-﻿using Fanex.MailDelivery.Client.Logging;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Net;
+using EasyNetQ;
+using Fanex.MailDelivery.Client.Configurations;
+using Fanex.MailDelivery.Client.Logging;
+using Fanex.MailDelivery.Core;
 using Fanex.MailDelivery.Core.Messaging;
 using Fanex.MailDelivery.Core.Models;
 
-namespace Fanex.MailDelivery.Client.Handlers.Impl
+namespace Fanex.MailDelivery.Client.Handlers
 {
-    using System.Collections.Generic;
-    using System.Diagnostics;
-    using System.Linq;
-    using System.Net;
-    using EasyNetQ;
-    using Fanex.MailDelivery.Client.Configurations;
-    using Fanex.MailDelivery.Client.Handlers.Interface;
-
     /// <summary>
     /// Rabbit MQ Broker for PUB/SUB message.
     /// </summary>
@@ -19,7 +18,7 @@ namespace Fanex.MailDelivery.Client.Handlers.Impl
     {
         private string _updateScheduleSubscriptionId = string.Format(MailDeliveryConstants.UpdateScheduleRoutingKeyFormat, AppSettings.MailCientConfig.SiteId);
         private string _retryJobSubscriptionId = string.Format(MailDeliveryConstants.RetryJobRoutingKeyFormat, AppSettings.MailCientConfig.SiteId);
-        private string _runJobImmediatelySubscriptionId = string.Format(MailDeliveryConstants.RunJobImmediatelyRoutingKeyFormat, AppSettings.MailCientConfig.SiteId);
+        private string _runNowJobSubscriptionId = string.Format(MailDeliveryConstants.RunNowJobRoutingKeyFormat, AppSettings.MailCientConfig.SiteId);
         private IBus _bus;
         private IJobHandler _jobHandler;
 
@@ -37,14 +36,27 @@ namespace Fanex.MailDelivery.Client.Handlers.Impl
                     serviceRegister.Register<IEasyNetQLogger>(_ => new MailClientLogger());
                 });
 
+            SubscribeRunNowJob();
+
             SubscribeScheduleChange();
             SubscribeRetryJob();
-            SubscribeRunJobImmediately();
         }
 
         public void Stop()
         {
             _bus.Dispose();
+        }
+
+
+        public void SubscribeRunNowJob()
+        {
+            _bus.Subscribe<Schedule>(
+                this.GetSubscriptionIdKey(_runNowJobSubscriptionId),
+                    request =>
+                    {
+                        _jobHandler.RetryAllProcess(request);
+                    },
+                    config => config.WithTopic(_runNowJobSubscriptionId));
         }
 
         public void SubscribeScheduleChange()
@@ -69,16 +81,7 @@ namespace Fanex.MailDelivery.Client.Handlers.Impl
                     config => config.WithTopic(_retryJobSubscriptionId));
         }
 
-        public void SubscribeRunJobImmediately()
-        {
-            _bus.Subscribe<Schedule>(
-                this.GetSubscriptionIdKey(_runJobImmediatelySubscriptionId),
-                    schedule =>
-                    {
-                        _jobHandler.RetryAllProcess(schedule);
-                    },
-                    config => config.WithTopic(_runJobImmediatelySubscriptionId));
-        }
+
 
         public void Publish(Mail mail)
         {

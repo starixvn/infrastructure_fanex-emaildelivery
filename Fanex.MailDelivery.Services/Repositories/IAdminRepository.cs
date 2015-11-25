@@ -2,6 +2,7 @@
 using Fanex.MailDelivery.Core.Models;
 using Fanex.MailDelivery.Services.Criteria.Criteria;
 using Fanex.MailDelivery.Services.Criteria.Group;
+using Fanex.MailDelivery.Services.Criteria.Job;
 using Fanex.MailDelivery.Services.Criteria.Mail;
 using Fanex.MailDelivery.Services.Criteria.Recipient;
 using Fanex.MailDelivery.Services.Criteria.Report;
@@ -31,5 +32,7 @@ namespace Fanex.MailDelivery.Services.Repositories
         ResultModel DeleteGroup(DeleteGroupCriteria criteria);
 
         IList<MailTaskModel> GetReportList(GetReportListCriteria criteria);
+
+        Schedule GetScheduleByMailId(GetScheduleByMailIdCriteria criteria);
     }
 }

@@ -1,12 +1,17 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Fanex.MailDelivery.Admin.Messaging;
+using Fanex.MailDelivery.Admin.Messaging.Job;
 using Fanex.MailDelivery.Admin.Messaging.ManageGroup;
 using Fanex.MailDelivery.Admin.Messaging.ManageMail;
 using Fanex.MailDelivery.Admin.Messaging.ManageRecipient;
 using Fanex.MailDelivery.Admin.Messaging.ManageReport;
+using Fanex.MailDelivery.Core.Messaging.Schedule;
+using Fanex.MailDelivery.Core.Models;
 using Fanex.MailDelivery.Server.Mapping;
 using Fanex.MailDelivery.Services.Criteria.Group;
+using Fanex.MailDelivery.Services.Criteria.Job;
 using Fanex.MailDelivery.Services.Criteria.Mail;
 using Fanex.MailDelivery.Services.Criteria.Recipient;
 using Fanex.MailDelivery.Services.Criteria.Report;
@@ -300,6 +305,33 @@ namespace Fanex.MailDelivery.Server.Services
             IList<MailTaskDto> mailTaskDtos = mailTaskModels.Select(n => n.ToMailTaskDto()).ToList();
 
             return new GetReportListResponse { MailTaskDtos = mailTaskDtos };
+        }
+
+        public GetScheduleByMailIdResponse GetScheduleByMailId(GetScheduleByMailIdRequest request)
+        {
+            Schedule schedule = _adminService.GetScheduleByMailId(new GetScheduleByMailIdCriteria
+            {
+                MailId = request.MailId
+            });
+
+            return new GetScheduleByMailIdResponse { ScheduleDto = schedule.ToScheduleDto() };
+        }
+
+        public GetScheduleListResponse GetScheduleList(GetScheduleListRequest request)
+        {
+            IList<ScheduleDto> scheduleDtos = new List<ScheduleDto>();
+
+            foreach (int mail in request.MailIds)
+            {
+                Schedule schedule = _adminService.GetScheduleByMailId(new GetScheduleByMailIdCriteria
+                {
+                    MailId = mail
+                });
+
+                scheduleDtos.Add(schedule.ToScheduleDto());
+            }
+
+            return new GetScheduleListResponse { ScheduleDtos = scheduleDtos };
         }
     }
 }

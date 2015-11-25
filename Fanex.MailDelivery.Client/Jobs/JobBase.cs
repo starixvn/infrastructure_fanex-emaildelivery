@@ -1,4 +1,5 @@
-﻿using Fanex.MailDelivery.Core.Messaging;
+﻿using Fanex.MailDelivery.Core;
+using Fanex.MailDelivery.Core.Messaging;
 using Fanex.MailDelivery.Core.Models;
 
 namespace Fanex.MailDelivery.Client.Jobs

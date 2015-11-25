@@ -42,6 +42,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Messaging\JobOperation\RunNowRequest.cs" />
+    <Compile Include="Messaging\Schedule\GetScheduleListRequest.cs" />
+    <Compile Include="Messaging\Schedule\GetScheduleListResponse.cs" />
+    <Compile Include="Messaging\Schedule\ScheduleDto.cs" />
     <Compile Include="Models\FileExtension.cs" />
     <Compile Include="Models\MailType.cs" />
     <Compile Include="MailDeliveryConstants.cs" />

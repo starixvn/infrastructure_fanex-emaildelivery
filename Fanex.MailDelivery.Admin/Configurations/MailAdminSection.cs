@@ -1,4 +1,6 @@
 ﻿
+using Fanex.MailDelivery.Core;
+
 namespace Fanex.MailDelivery.Admin.Configurations
 {
     using System.Configuration;

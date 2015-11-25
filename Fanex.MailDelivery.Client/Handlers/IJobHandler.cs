@@ -1,9 +1,8 @@
-﻿using Fanex.MailDelivery.Core.Models;
+﻿using System.Collections.Generic;
+using Fanex.MailDelivery.Core.Models;
 
-namespace Fanex.MailDelivery.Client.Handlers.Interface
+namespace Fanex.MailDelivery.Client.Handlers
 {
-    using System.Collections.Generic;
-
     /// <summary>
     /// Job Handler interface.
     /// </summary>

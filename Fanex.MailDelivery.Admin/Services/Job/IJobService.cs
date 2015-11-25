@@ -10,5 +10,7 @@ namespace Fanex.MailDelivery.Admin.Services.Job
         void RetryJobMessage(ScheduleRequest schedule);
 
         void PublishScheduleChangeMessage(ScheduleRequest schedule);
+
+        GetScheduleByMailIdResponse GetScheduleByIdsRequest(GetScheduleByMailIdRequest request);
     }
 }

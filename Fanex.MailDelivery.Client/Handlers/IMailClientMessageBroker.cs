@@ -1,10 +1,8 @@
-﻿using Fanex.MailDelivery.Core.Messaging;
+﻿using System.Collections.Generic;
 using Fanex.MailDelivery.Core.Models;
 
-namespace Fanex.MailDelivery.Client.Handlers.Interface
+namespace Fanex.MailDelivery.Client.Handlers
 {
-    using System.Collections.Generic;
-
     /// <summary>
     /// Mail Client Message Broker.
     /// </summary>

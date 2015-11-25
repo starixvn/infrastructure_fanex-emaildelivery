@@ -4,8 +4,6 @@ using Fanex.MailDelivery.Core.Models;
 namespace Fanex.MailDelivery.Client.Handlers
 {
     using System.Collections.Generic;
-    using Fanex.MailDelivery.Client.Handlers.Impl;
-    using Fanex.MailDelivery.Client.Handlers.Interface;
 
     /// <summary>
     /// Mail Client Handler.

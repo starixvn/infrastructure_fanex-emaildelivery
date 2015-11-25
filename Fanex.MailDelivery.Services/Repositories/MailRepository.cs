@@ -7,6 +7,7 @@ using Fanex.Data;
 using Fanex.MailDelivery.Core.Models;
 using Fanex.MailDelivery.Services.Configurations;
 using Fanex.MailDelivery.Services.Criteria.Criteria;
+using Fanex.MailDelivery.Services.Criteria.Job;
 using Fanex.MailDelivery.Services.Models;
 using Fanex.Maintenance.Repository.Criteria.Misc;
 
@@ -17,7 +18,7 @@ namespace Fanex.MailDelivery.Services.Repositories
     /// </summary>
     public class MailRepository : IMailRepository
     {
-        public Schedule GetScheduleById(GetScheduleByIdCriteria criteria)
+        public Schedule GetScheduleById(GetScheduleByMailIdCriteria criteria)
         {
             using (var db = new ObjectDb(criteria.GetSettingKey()))
             {

@@ -96,11 +96,10 @@
     <Compile Include="Handlers\BaseHandler.cs" />
     <Compile Include="Logging\MailClientLogger.cs" />
     <Compile Include="Jobs\ClientNotificationJob.cs" />
-    <Compile Include="MailDeliveryConstants.cs" />
-    <Compile Include="Handlers\Impl\JobHandler.cs" />
-    <Compile Include="Handlers\Impl\MailClientMessageBroker.cs" />
-    <Compile Include="Handlers\Interface\IJobHandler.cs" />
-    <Compile Include="Handlers\Interface\IMailClientMessageBroker.cs" />
+    <Compile Include="Handlers\JobHandler.cs" />
+    <Compile Include="Handlers\MailClientMessageBroker.cs" />
+    <Compile Include="Handlers\IJobHandler.cs" />
+    <Compile Include="Handlers\IMailClientMessageBroker.cs" />
     <Compile Include="Handlers\MailClientHandler.cs" />
     <Compile Include="Jobs\JobBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

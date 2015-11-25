@@ -1,15 +1,14 @@
-﻿using Fanex.MailDelivery.Core.Models;
+﻿using System;
+using System.Collections.Generic;
+using Fanex.MailDelivery.Client.Configurations;
+using Fanex.MailDelivery.Client.Jobs;
+using Fanex.MailDelivery.Core;
+using Fanex.MailDelivery.Core.Models;
+using Quartz;
+using Quartz.Impl;
 
-namespace Fanex.MailDelivery.Client.Handlers.Impl
+namespace Fanex.MailDelivery.Client.Handlers
 {
-    using System;
-    using System.Collections.Generic;
-    using Fanex.MailDelivery.Client.Configurations;
-    using Fanex.MailDelivery.Client.Handlers.Interface;
-    using Fanex.MailDelivery.Client.Jobs;
-    using Quartz;
-    using Quartz.Impl;
-
     /// <summary>
     /// Handling job executing.
     /// </summary>
@@ -157,7 +156,7 @@ namespace Fanex.MailDelivery.Client.Handlers.Impl
         {
             string jobName = GetJobName(schedule.Id);
             //// Define the job and tie it to our Job class
-            var jobType = AppSettings.GetJobType(schedule.Id);
+            Type jobType = AppSettings.GetJobType(schedule.Id);
             IJobDetail job = JobBuilder.Create(jobType)
                 .WithIdentity(jobName, MailDeliveryConstants.MailCentralizedTriggerGroup)
                 .Build();

@@ -1,8 +1,10 @@
 ﻿using Fanex.MailDelivery.Admin.Messaging;
+using Fanex.MailDelivery.Admin.Messaging.Job;
 using Fanex.MailDelivery.Admin.Messaging.ManageGroup;
 using Fanex.MailDelivery.Admin.Messaging.ManageMail;
 using Fanex.MailDelivery.Admin.Messaging.ManageRecipient;
 using Fanex.MailDelivery.Admin.Messaging.ManageReport;
+using Fanex.MailDelivery.Core.Messaging.Schedule;
 
 namespace Fanex.MailDelivery.Server.Services
 {
@@ -29,5 +31,8 @@ namespace Fanex.MailDelivery.Server.Services
         ResultResponse DeleteGroup(DeleteGroupRequest request);
 
         GetReportListResponse GetReportList(GetReportListRequest request);
+
+        GetScheduleByMailIdResponse GetScheduleByMailId(GetScheduleByMailIdRequest request);
+        GetScheduleListResponse GetScheduleList(GetScheduleListRequest request);
     }
 }

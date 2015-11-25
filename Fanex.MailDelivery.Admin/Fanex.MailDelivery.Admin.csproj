@@ -47,7 +47,12 @@
     <Compile Include="Configurations\MailAdminSection.cs" />
     <Compile Include="Logging\MailAdminLogger.cs" />
     <Compile Include="MailDeliveryConstants.cs" />
+    <Compile Include="Mapping\ScheduleDtoMapper.cs" />
     <Compile Include="Messaging\Job\AbortJobRequest.cs" />
+    <Compile Include="Messaging\Job\GetScheduleByMailIdResponse.cs" />
+    <Compile Include="Messaging\Job\GetScheduleByMailIdRequest.cs" />
+    <Compile Include="Messaging\Job\GetScheduleListResponse.cs" />
+    <Compile Include="Messaging\Job\GetScheduleListRequest.cs" />
     <Compile Include="Messaging\ManageGroup\GetMailGroupByIdRequest.cs" />
     <Compile Include="Messaging\ManageGroup\GetMailGroupByIdResponse.cs" />
     <Compile Include="Messaging\ManageGroup\UpdateGroupRequest.cs" />
@@ -82,10 +87,12 @@
     <Compile Include="Services\AdminService.cs" />
     <Compile Include="Services\Group\GroupService.cs" />
     <Compile Include="Services\Group\IGroupService.cs" />
+    <Compile Include="Services\JobOperation\JobOperationService.cs" />
     <Compile Include="Services\Job\IJobService.cs" />
     <Compile Include="Services\Job\JobService.cs" />
     <Compile Include="Services\Mail\IMailService.cs" />
     <Compile Include="Services\Mail\MailService.cs" />
+    <Compile Include="Services\JobOperation\IJobOperationService.cs" />
     <Compile Include="Services\Recipient\RecipientService.cs" />
     <Compile Include="Services\Recipient\IRecipientService.cs" />
     <Compile Include="Services\Report\IReportService.cs" />

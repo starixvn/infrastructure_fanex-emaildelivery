@@ -1,11 +1,11 @@
 ﻿using Fanex.Data.Repository;
 
-namespace Fanex.MailDelivery.Services.Criteria.Criteria
+namespace Fanex.MailDelivery.Services.Criteria.Job
 {
     /// <summary>
     /// Get all log category criteria.
     /// </summary>
-    public class GetScheduleByIdCriteria : CriteriaBase
+    public class GetScheduleByMailIdCriteria : CriteriaBase
     {
         public int MailId { get; set; }
 

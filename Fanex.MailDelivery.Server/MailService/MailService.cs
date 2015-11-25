@@ -8,6 +8,7 @@ using Fanex.MailDeliver.Model;
 using Fanex.MailDelivery.Core.Messaging;
 using Fanex.MailDelivery.Core.Models;
 using Fanex.MailDelivery.Services.Criteria.Criteria;
+using Fanex.MailDelivery.Services.Criteria.Job;
 using Fanex.MailDelivery.Services.Repositories;
 using Fanex.NAP.Framework.Command;
 
@@ -106,7 +107,7 @@ namespace Fanex.MailDelivery.Server.MailService
                 var mailService = new MailDeliver.MailClient.API.MailDeliver();
                 var mailRecord = this.ConvertFromMailToMailRecord(mail);
                 mailId = (int)_mailDeliverBusiness.InsertMailRecord(mailRecord);
-                var schedule = this._mailRepository.GetScheduleById(new GetScheduleByIdCriteria() { MailId = mail.MailingListId });
+                var schedule = this._mailRepository.GetScheduleById(new GetScheduleByMailIdCriteria() { MailId = mail.MailingListId });
                 if (schedule.Active)
                 {
                     if (mailId > 0)

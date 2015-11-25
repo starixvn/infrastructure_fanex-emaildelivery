@@ -69,7 +69,12 @@ namespace Fanex.MailDelivery.Server.Handlers
             ResponseRecipientFunctions();
             ResponseGroupFunctions();
             ResponseReportFunctions();
+            ResponseJobFunctions();
+
+
         }
+
+
 
         private void ResponseRecipientFunctions()
         {
@@ -110,6 +115,30 @@ namespace Fanex.MailDelivery.Server.Handlers
             _bus.Respond<GetReportListRequest, GetReportListResponse>(request => _adminServerService.GetReportList(request));
         }
 
+        private void ResponseJobFunctions()
+        {
+            _bus.Respond<GetScheduleByMailIdRequest, GetScheduleByMailIdResponse>(request => _adminServerService.GetScheduleByMailId(request));
+        }
+
+
+
+        /// <summary>
+        /// Subscribes the schedule request.
+        /// </summary>
+        public void SubscribeScheduleRequest()
+        {
+            _bus.Respond<ScheduleRequest, List<Schedule>>(
+                scheduleRequest =>
+                {
+                    var jobLog = "Subscribe schedule request.";
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine(jobLog);
+                    Console.ForegroundColor = ConsoleColor.White;
+                    //  List<Schedule> schedules = _mailService.GetSchedules(scheduleRequest.Ids);
+
+                    return null;
+                });
+        }
 
         public void SubscribeAbortJob()
         {
@@ -164,23 +193,7 @@ namespace Fanex.MailDelivery.Server.Handlers
                     config => config.WithTopic(MailDeliveryConstants.ClientNotificationTopic));
         }
 
-        /// <summary>
-        /// Subscribes the schedule request.
-        /// </summary>
-        public void SubscribeScheduleRequest()
-        {
-            _bus.Respond<ScheduleRequest, List<Schedule>>(
-                scheduleRequest =>
-                {
-                    var jobLog = "Subscribe schedule request.";
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine(jobLog);
-                    Console.ForegroundColor = ConsoleColor.White;
-                    //  List<Schedule> schedules = _mailService.GetSchedules(scheduleRequest.Ids);
 
-                    return null;
-                });
-        }
 
         public void RespondAddMailTaskForRunningJob()
         {

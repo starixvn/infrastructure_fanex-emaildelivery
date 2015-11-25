@@ -62,7 +62,7 @@
     <Compile Include="Criteria\Criteria\GetAllScheduleMailCriteria.cs" />
     <Compile Include="Criteria\Criteria\GetMailTaskByIDCriteria.cs" />
     <Compile Include="Criteria\Criteria\GetMailWithEmailAddressByMailIDCriteria.cs" />
-    <Compile Include="Criteria\Criteria\GetScheduleByIDCriteria.cs" />
+    <Compile Include="Criteria\Job\GetScheduleByMailIdCriteria.cs" />
     <Compile Include="Criteria\Criteria\UpdateClientActiveTimeCriteria.cs" />
     <Compile Include="Criteria\Criteria\UpdateMailTaskMailRecordIDCriteria.cs" />
     <Compile Include="Criteria\Criteria\UpdateMailTaskStatusCriteria.cs" />

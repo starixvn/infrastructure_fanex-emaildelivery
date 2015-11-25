@@ -1,12 +1,13 @@
 ﻿using Fanex.MailDelivery.Core.Models;
 using Fanex.MailDelivery.Services.Criteria.Criteria;
+using Fanex.MailDelivery.Services.Criteria.Job;
 using Fanex.MailDelivery.Services.Models;
 
 namespace Fanex.MailDelivery.Services.Repositories
 {
     public interface IMailRepository
     {
-        Schedule GetScheduleById(GetScheduleByIdCriteria criteria);
+        Schedule GetScheduleById(GetScheduleByMailIdCriteria criteria);
 
         int AddMailTask(AddMailTaskCriteria criteria);
 

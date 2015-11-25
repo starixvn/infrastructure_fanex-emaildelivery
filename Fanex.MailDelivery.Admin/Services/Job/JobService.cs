@@ -1,4 +1,5 @@
 ﻿using Fanex.MailDelivery.Admin.Messaging.Job;
+using Fanex.MailDelivery.Core;
 using Fanex.MailDelivery.Core.Models;
 
 namespace Fanex.MailDelivery.Admin.Services.Job
@@ -21,6 +22,11 @@ namespace Fanex.MailDelivery.Admin.Services.Job
         {
             string updateSchedulePublishId = string.Format(MailDeliveryConstants.UpdateScheduleRoutingKeyFormat, schedule.SiteId);
             Bus.Publish<ScheduleRequest>(schedule, updateSchedulePublishId);
+        }
+
+        public GetScheduleByMailIdResponse GetScheduleByIdsRequest(GetScheduleByMailIdRequest request)
+        {
+            return Bus.Request<GetScheduleByMailIdRequest, GetScheduleByMailIdResponse>(request);
         }
     }
 }

@@ -1,9 +1,11 @@
-﻿using Fanex.MailDelivery.Admin.Messaging;
+﻿using System.Data.SqlTypes;
+using Fanex.MailDelivery.Admin.Messaging;
 using Fanex.MailDelivery.Admin.Messaging.ManageGroup;
 using Fanex.MailDelivery.Admin.Messaging.ManageMail;
 using Fanex.MailDelivery.Admin.Messaging.ManageRecipient;
 using Fanex.MailDelivery.Admin.Services.Group;
 using Fanex.MailDelivery.Admin.Services.Mail;
+using Fanex.MailDelivery.Admin.Services.Recipient;
 using NUnit.Framework;
 
 namespace Fanex.MailDelivery.Admin.UserTest
@@ -27,6 +29,30 @@ namespace Fanex.MailDelivery.Admin.UserTest
             {
                 mails = mailService.GetMailList(getMailListRequest);
             }
+        }
+
+        [Test]
+        public void GetMailListBugTest()
+        {
+            GetMailListRequest getMailListRequest = GenerateMailListRequest("TestAfterRefactor1");
+
+            GetMailListResponse mails;
+
+            using (IMailService mailService = new MailService())
+            {
+                mails = mailService.GetMailList(getMailListRequest);
+            }
+        }
+
+        private GetMailListRequest GenerateMailListRequest(string mailName)
+        {
+            return new GetMailListRequest
+            {
+                MailName = mailName,
+                IsActive = 1,
+                TriggerType = -1,
+                SiteId = 95
+            };
         }
 
         //[Test]
@@ -139,16 +165,22 @@ namespace Fanex.MailDelivery.Admin.UserTest
         //}
 
 
-        //[Test]
-        //public void GetRecipientListTest()
-        //{
-        //    GetRecipientListRequest request = new GetRecipientListRequest
-        //    {
-        //        Status = "-1"
-        //    };
+        [Test]
+        public void GetRecipientListTest()
+        {
+            GetRecipientListRequest request = new GetRecipientListRequest
+            {
+                Emails = "LongTest2_To@gmail.com",
+                Status = "-1"
+            };
 
-        //    GetRecipientListResponse response = MailAdminService.GetRecipientList(request);
-        //}
+            GetRecipientListResponse response;
+
+            using (IRecipientService recipientService = new RecipientService())
+            {
+                response = recipientService.GetRecipientList(request);
+            }
+        }
 
         //[Test]
         //public void CreateRecipienttTest()
