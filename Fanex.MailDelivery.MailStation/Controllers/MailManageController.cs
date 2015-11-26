@@ -8,12 +8,12 @@
 // </history>
 
 using System.Collections.Generic;
-using Fanex.MailDelivery.Admin.Mapping;
 using Fanex.MailDelivery.Admin.Messaging.Job;
 using Fanex.MailDelivery.Admin.Messaging.ManageMail;
 using Fanex.MailDelivery.Admin.Services.Job;
 using Fanex.MailDelivery.Admin.Services.JobOperation;
 using Fanex.MailDelivery.Admin.Services.Mail;
+using Fanex.MailDelivery.Core.Mapping;
 using Fanex.MailDelivery.MailStation.Services;
 using Fanex.NAP.Framework.Command;
 

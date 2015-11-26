@@ -8,14 +8,14 @@ namespace MailClientTest.Jobs
     using Quartz;
 
     /// <summary>
-    /// Hello Job.
+    /// Hello JobRequest.
     /// </summary>
     public class DataNotReadyJob : JobBase
     {
-        protected override JobRequest Run(Schedule schedule, IJobExecutionContext jobContext)
+        protected override JobMessage Run(Schedule schedule, IJobExecutionContext jobContext)
         {
             var jobLog = string.Format(
-                "Run Data Not Ready Job : \n\tSite Id: {0}, Schedule: {1}. \n\tSent at {2}",
+                "Run Data Not Ready JobRequest : \n\tSite Id: {0}, Schedule: {1}. \n\tSent at {2}",
                 schedule.SiteId,
                 schedule.Id,
                 DateTime.Now);
@@ -25,14 +25,14 @@ namespace MailClientTest.Jobs
 
             //// Compose mail here.
             var mail = new Mail();
-            mail.Subject = "Mail Station Test (Data Not Ready Job).";
-            mail.Title = "Mail Station Test (Data Not Ready Job).";
+            mail.Subject = "Mail Station Test (Data Not Ready JobRequest).";
+            mail.Title = "Mail Station Test (Data Not Ready JobRequest).";
             mail.Body = "Email Body";
 
             // Do something ...
             Thread.Sleep(5000);
 
-            return new JobRequest
+            return new JobMessage
             {
                 Mail = mail,
                 Schedule = schedule,

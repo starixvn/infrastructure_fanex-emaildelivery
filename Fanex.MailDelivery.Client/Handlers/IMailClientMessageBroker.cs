@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Fanex.MailDelivery.Core.Messaging.Schedule;
 using Fanex.MailDelivery.Core.Models;
 
 namespace Fanex.MailDelivery.Client.Handlers
@@ -16,11 +17,11 @@ namespace Fanex.MailDelivery.Client.Handlers
 
         void Publish(Mail mail);
 
-        void Publish(JobRequest jobStatus);
+        void Publish(JobMessage jobStatus);
 
-        List<Schedule> GetSchedules();
+        IList<Schedule> GetSchedules();
 
-        JobRequest RequestAddMailTaskForRunningJob(JobRequest jobResult);
+        JobMessage RequestAddMailTaskForRunningJob(JobMessage jobResult);
 
         void SubscribeRetryJob();
 

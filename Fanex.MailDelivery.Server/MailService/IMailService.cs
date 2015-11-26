@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Fanex.MailDelivery.Core.Messaging;
+using Fanex.MailDelivery.Core.Messaging.Schedule;
 using Fanex.MailDelivery.Core.Models;
 using Fanex.NAP.Framework.Command;
 
@@ -10,12 +11,12 @@ namespace Fanex.MailDelivery.Server.MailService
     /// </summary>
     public interface IMailService
     {
-        CommandResult UpdateJobStatus(Job job);
+        CommandResult UpdateJobStatus(JobMessage jobMessage);
 
         int SendMail(Mail mail);
 
-        void AddMailTaskForRunningJob(Job job);
+        void AddMailTaskForRunningJob(JobMessage jobMessage);
 
-        void UpdateClientActiveTime(ClientInfomationMessage clientInfoMessage);
+        void UpdateClientActiveTime(UpdateActiveTimeRequest clientInfoMessage);
     }
 }

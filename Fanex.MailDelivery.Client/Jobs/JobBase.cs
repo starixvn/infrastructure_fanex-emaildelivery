@@ -1,5 +1,4 @@
 ﻿using Fanex.MailDelivery.Core;
-using Fanex.MailDelivery.Core.Messaging;
 using Fanex.MailDelivery.Core.Models;
 
 namespace Fanex.MailDelivery.Client.Jobs
@@ -9,7 +8,7 @@ namespace Fanex.MailDelivery.Client.Jobs
     using Quartz;
 
     /// <summary>
-    /// Job Base abstract.
+    /// JobRequest Base abstract.
     /// </summary>
     public abstract class JobBase : IJob
     {
@@ -30,25 +29,31 @@ namespace Fanex.MailDelivery.Client.Jobs
         {
             try
             {
-                var schedule = context.MergedJobDataMap[MailDeliveryConstants.ScheduleJobDataKey] as Schedule;
+                Schedule schedule = context.MergedJobDataMap[MailDeliveryConstants.ScheduleJobDataKey] as Schedule;
+
                 if (schedule != null && schedule.Active == true)
                 {
-                    int taskID = schedule.TaskId;
-                    JobRequest jobResult = new JobRequest();
+                    int taskId = schedule.TaskId;
+
+                    JobMessage jobResult = new JobMessage();
                     jobResult.JobStatus = JobStatus.Running;
                     jobResult.ScheduledTime = context.ScheduledFireTimeUtc.GetValueOrDefault().DateTime.ToLocalTime();
                     jobResult.RunningTime = context.FireTimeUtc.GetValueOrDefault().DateTime.ToLocalTime();
                     jobResult.Schedule = schedule.Clone();
-                    if (schedule != null && schedule.TaskId == 0)
+
+                    if (schedule.TaskId == 0)
                     {
                         jobResult = MailClientHandler.RequestAddMailTaskForRunningJob(jobResult);
-                        taskID = jobResult.Schedule.TaskId;
+
+                        taskId = jobResult.Schedule.TaskId;
                     }
 
                     MailClientHandler.ReportJob(jobResult);
+
                     try
                     {
                         jobResult = Run(schedule, context);
+
                         if (jobResult != null && jobResult.Mail != null)
                         {
                             jobResult.Mail.MailingListId = schedule.Id;
@@ -66,14 +71,17 @@ namespace Fanex.MailDelivery.Client.Jobs
                         jobResult.JobStatus = JobStatus.JobFailed;
                     }
 
-                    jobResult.Schedule.TaskId = taskID;
+                    jobResult.Schedule.TaskId = taskId;
+
                     if (jobResult.JobStatus != JobStatus.Success && jobResult.JobStatus != JobStatus.SuccessWithoutSendmail)
                     {
-                        RetryJob(jobResult.Schedule, context.MergedJobDataMap);
+                        RetryJob(jobResult.Schedule);
+
                         jobResult.JobStatus = jobResult.Schedule.IsRunning() ? JobStatus.Running : jobResult.JobStatus;
                     }
 
                     MailClientHandler.ReportJob(jobResult);
+
                     if (jobResult.JobStatus != JobStatus.Running)
                     {
                         schedule.TaskId = 0;
@@ -86,9 +94,9 @@ namespace Fanex.MailDelivery.Client.Jobs
             }
         }
 
-        protected abstract JobRequest Run(Schedule schedule, IJobExecutionContext jobContext);
+        protected abstract JobMessage Run(Schedule schedule, IJobExecutionContext jobContext);
 
-        private void RetryJob(Schedule schedule, JobDataMap jobDataMap)
+        private void RetryJob(Schedule schedule)
         {
             schedule.CurrentRetryTimes++;
 

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
@@ -6,7 +7,9 @@ using EasyNetQ;
 using Fanex.MailDelivery.Client.Configurations;
 using Fanex.MailDelivery.Client.Logging;
 using Fanex.MailDelivery.Core;
+using Fanex.MailDelivery.Core.Mapping;
 using Fanex.MailDelivery.Core.Messaging;
+using Fanex.MailDelivery.Core.Messaging.Schedule;
 using Fanex.MailDelivery.Core.Models;
 
 namespace Fanex.MailDelivery.Client.Handlers
@@ -98,35 +101,39 @@ namespace Fanex.MailDelivery.Client.Handlers
         /// Gets the schedules.
         /// </summary>
         /// <returns>Schedule list.</returns>
-        public List<Schedule> GetSchedules()
+        public IList<Schedule> GetSchedules()
         {
             Schedule scheduleRequest = new Schedule();
-            var schedules = AppSettings.MailCientConfig.Schedules;
+            ScheduleElementCollection scheduleEles = AppSettings.MailCientConfig.Schedules;
 
-            foreach (ScheduleElement scheduleConfig in schedules)
+            GetScheduleListRequest request = new GetScheduleListRequest();
+
+            foreach (ScheduleElement scheduleConfig in scheduleEles)
             {
-                // TODO: Reverse
-                //scheduleRequest.Ids.Add(scheduleConfig.Id);
+                request.MailIds.Add(scheduleConfig.Id);
             }
 
-            var isconnect = _bus.IsConnected;
-            return _bus.Request<Schedule, List<Schedule>>(scheduleRequest);
+            GetScheduleListResponse response = _bus.Request<GetScheduleListRequest, GetScheduleListResponse>(request);
+            IList<Schedule> schedules = new List<Schedule>();
+            response.ScheduleDtos.ToList().ForEach(n => schedules.Add(n.ToScheduleModel()));
+
+            return schedules;
         }
 
         /// <summary>
-        /// For the first time Job is running, we need to get back the TaskId of the current running Job.
+        /// For the first time JobRequest is running, we need to get back the TaskId of the current running JobRequest.
         /// By insert new record at DB, it get back itself with additional TaskId's value.
         /// </summary>
-        /// <param name="jobResult">Job Result.</param>
+        /// <param name="jobResult">JobRequest Result.</param>
         /// <returns>
-        /// Job Result Message.
+        /// JobRequest Result Message.
         /// </returns>
-        public JobRequest RequestAddMailTaskForRunningJob(JobRequest jobResult)
+        public JobMessage RequestAddMailTaskForRunningJob(JobMessage jobResult)
         {
-            return _bus.Request<JobRequest, JobRequest>(jobResult);
+            return _bus.Request<JobMessage, JobMessage>(jobResult);
         }
 
-        public void Publish(JobRequest jobStatus)
+        public void Publish(JobMessage jobStatus)
         {
             if (jobStatus.Mail != null && jobStatus.Mail.ApplicationSendMailId == 0)
             {
@@ -139,14 +146,14 @@ namespace Fanex.MailDelivery.Client.Handlers
         public void PublishClientNotifyMessage()
         {
             string mailIds = string.Empty;
-            var schedules = AppSettings.MailCientConfig.Schedules;
+            ScheduleElementCollection schedules = AppSettings.MailCientConfig.Schedules;
             foreach (ScheduleElement schedule in schedules)
             {
                 mailIds += schedule.Id + ",";
             }
 
             mailIds = mailIds.Trim(',');
-            _bus.Publish(new ClientInfomationMessage() { MailIds = mailIds }, MailDeliveryConstants.ClientNotificationTopic);
+            _bus.Publish(new UpdateActiveTimeRequest() { MailIds = mailIds }, MailDeliveryConstants.ClientNotificationTopic);
         }
 
         /// <summary>

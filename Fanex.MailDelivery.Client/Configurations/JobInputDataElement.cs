@@ -3,7 +3,7 @@
     using System.Configuration;
 
     /// <summary>
-    /// Job Input Data Element.
+    /// JobRequest Input Data Element.
     /// </summary>
     public class JobInputDataElement : ConfigurationElement
     {

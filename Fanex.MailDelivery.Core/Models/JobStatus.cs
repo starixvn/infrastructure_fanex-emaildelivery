@@ -1,7 +1,7 @@
 ﻿namespace Fanex.MailDelivery.Core.Models
 {
     /// <summary>
-    /// Job Status.
+    /// JobRequest Status.
     /// </summary>
     public enum JobStatus : int
     {

@@ -9,14 +9,14 @@ namespace MailClientTest.Jobs
     using Quartz;
 
     /// <summary>
-    /// Hello Job.
+    /// Hello JobRequest.
     /// </summary>
     public class ErrorJob : JobBase
     {
-        protected override JobRequest Run(Schedule schedule, IJobExecutionContext jobContext)
+        protected override JobMessage Run(Schedule schedule, IJobExecutionContext jobContext)
         {
             var jobLog = string.Format(
-                "Run Error Job: \n\tSite Id: {0}, Schedule: {1}. \n\tSent at {2}",
+                "Run Error JobRequest: \n\tSite Id: {0}, Schedule: {1}. \n\tSent at {2}",
                 schedule.SiteId,
                 schedule.Id,
                 DateTime.Now);
@@ -24,16 +24,16 @@ namespace MailClientTest.Jobs
             Console.WriteLine(jobLog);
             Console.ForegroundColor = ConsoleColor.White;
             
-            // Get Job init value here
+            // Get JobRequest init value here
             ////jobContext.MergedJobDataMap
 
             // Compose mail here.
             var mail = new Mail();
-            mail.Subject = "Mail Station Test (Error Job).";
-            mail.Title = "Mail Station Test (Error Job).";
+            mail.Subject = "Mail Station Test (Error JobRequest).";
+            mail.Title = "Mail Station Test (Error JobRequest).";
             mail.Body = "Email Body.";
             Thread.Sleep(5000);
-            throw new InvalidCastException("Cannot Complete this Job.");
+            throw new InvalidCastException("Cannot Complete this JobRequest.");
         }
     }
 }

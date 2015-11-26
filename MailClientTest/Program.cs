@@ -1,4 +1,6 @@
-﻿namespace MailClientTest
+﻿using Fanex.MailDelivery.Client;
+
+namespace MailClientTest
 {
     using System;
     using System.Reflection;
@@ -18,6 +20,9 @@
             Type type = typeof(MailClientTestService);
             MethodInfo method = type.GetMethod("SendFunctionMail", BindingFlags.Instance | BindingFlags.NonPublic);
             method.Invoke(new MailClientTestService(), null);
+
+            Console.WriteLine("Wait!");
+            Console.ReadLine();
 
             MailClientHandler.Stop();
 
@@ -46,6 +51,8 @@
             //{
             //    ServiceBase.Run(servicesToRun);
             //}
+
+  
         }
     }
 }

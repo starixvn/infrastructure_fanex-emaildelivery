@@ -8,6 +8,7 @@ namespace Fanex.MailDelivery.Core.Models
     [Serializable]
     public class Schedule
     {
+        // MailId
         public int Id { get; set; }
 
         public int SiteId { get; set; }
@@ -89,13 +90,14 @@ namespace Fanex.MailDelivery.Core.Models
         public void ConvertToServerTime()
         {
             int hoursDifferent = this.CalculateHoursDifferentBeetweenLocalAndServer();
-            this.StartTime = this.StartTime.AddHours(hoursDifferent);
-            if (this.EndTime != null)
+
+            StartTime = StartTime.AddHours(hoursDifferent);
+            if (EndTime != null)
             {
-                this.EndTime = this.EndTime.Value.AddHours(hoursDifferent);
+                EndTime = EndTime.Value.AddHours(hoursDifferent);
             }
 
-            this.ConvertCronExpressionToServerTime(hoursDifferent);
+            ConvertCronExpressionToServerTime(hoursDifferent);
         }
 
         /// <summary>
@@ -106,8 +108,8 @@ namespace Fanex.MailDelivery.Core.Models
         {
             try
             {
-                var cron = this.RepeatExpression.Split(' ');
-                var hour = int.Parse(cron[2]);
+                string[] cron = this.RepeatExpression.Split(' ');
+                int hour = int.Parse(cron[2]);
                 hour += hoursDifferent;
                 while (hour > 23)
                 {
@@ -126,9 +128,9 @@ namespace Fanex.MailDelivery.Core.Models
         private int CalculateHoursDifferentBeetweenLocalAndServer()
         {
             string environment ="";//MailClientSection.GetConfig().Environment ?? string.Empty;
-            bool isLocal = environment.Length == 0 || environment.Trim().Equals("local") ? true : false;
+            bool isLocal = environment.Length == 0 || environment.Trim().Equals("local");
             string timezoneName = isLocal ? MailDeliveryConstants.LocalServerTimeZone : MailDeliveryConstants.LiveServerTimeZone;
-            var nowDate = DateTime.Now;
+            DateTime nowDate = DateTime.Now;
             return -(TimeZoneInfo.ConvertTime(nowDate, TimeZoneInfo.FindSystemTimeZoneById(timezoneName)) - nowDate).Hours;
         }
     }

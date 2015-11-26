@@ -1,8 +1,7 @@
-﻿using Fanex.MailDelivery.Admin.Messaging.Job;
-using Fanex.MailDelivery.Core.Messaging.Schedule;
+﻿using Fanex.MailDelivery.Core.Messaging.Schedule;
 using Fanex.MailDelivery.Core.Models;
 
-namespace Fanex.MailDelivery.Admin.Mapping
+namespace Fanex.MailDelivery.Core.Mapping
 {
     public static class ScheduleDtoMapper
     {

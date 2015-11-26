@@ -4,7 +4,7 @@ using Fanex.MailDelivery.Core.Models;
 namespace Fanex.MailDelivery.Client.Handlers
 {
     /// <summary>
-    /// Job Handler interface.
+    /// JobRequest Handler interface.
     /// </summary>
     public interface IJobHandler
     {
@@ -12,7 +12,7 @@ namespace Fanex.MailDelivery.Client.Handlers
 
         void Stop();
 
-        void StartJobs(List<Schedule> schedules);
+        void StartJobs(IList<Schedule> schedules);
 
         void UpdateSchedule(Schedule schedule);
 

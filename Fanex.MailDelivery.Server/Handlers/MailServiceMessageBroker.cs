@@ -8,7 +8,7 @@ using Fanex.MailDelivery.Admin.Messaging.ManageMail;
 using Fanex.MailDelivery.Admin.Messaging.ManageRecipient;
 using Fanex.MailDelivery.Admin.Messaging.ManageReport;
 using Fanex.MailDelivery.Core;
-using Fanex.MailDelivery.Core.Messaging;
+using Fanex.MailDelivery.Core.Messaging.Schedule;
 using Fanex.MailDelivery.Core.Models;
 using Fanex.MailDelivery.Server.Logging;
 using Fanex.MailDelivery.Server.MailService;
@@ -55,15 +55,6 @@ namespace Fanex.MailDelivery.Server.Handlers
                     serviceRegister.Register<IEasyNetQLogger>(_ => new RabbitMqLogger());
                 });
 
-            SubscribeScheduleRequest();
-
-            SubscribeMail();
-            SubscribeJobResult();
-            SubscribeAbortJob();
-
-            RespondAddMailTaskForRunningJob();
-            SubscribeClientNotificationMessage();
-
             // Register admin functions
             ResponseMailFunctions();
             ResponseRecipientFunctions();
@@ -71,10 +62,16 @@ namespace Fanex.MailDelivery.Server.Handlers
             ResponseReportFunctions();
             ResponseJobFunctions();
 
+            ResponseGetScheduleList();
 
+            SubscribeMail();
+            SubscribeJobResult();
+            SubscribeAbortJob();
+
+            RespondAddMailTaskForRunningJob();
+
+            SubscribeClientNotificationMessage();
         }
-
-
 
         private void ResponseRecipientFunctions()
         {
@@ -120,29 +117,14 @@ namespace Fanex.MailDelivery.Server.Handlers
             _bus.Respond<GetScheduleByMailIdRequest, GetScheduleByMailIdResponse>(request => _adminServerService.GetScheduleByMailId(request));
         }
 
-
-
-        /// <summary>
-        /// Subscribes the schedule request.
-        /// </summary>
-        public void SubscribeScheduleRequest()
+        private void ResponseGetScheduleList()
         {
-            _bus.Respond<ScheduleRequest, List<Schedule>>(
-                scheduleRequest =>
-                {
-                    var jobLog = "Subscribe schedule request.";
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine(jobLog);
-                    Console.ForegroundColor = ConsoleColor.White;
-                    //  List<Schedule> schedules = _mailService.GetSchedules(scheduleRequest.Ids);
-
-                    return null;
-                });
+            _bus.Respond<GetScheduleListRequest, GetScheduleListResponse>(request => _adminServerService.GetScheduleList(request));
         }
 
         public void SubscribeAbortJob()
         {
-            _bus.Subscribe<Job>(
+            _bus.Subscribe<JobMessage>(
                 MailDeliveryConstants.AbortJobRoutingKeyFormat,
                     jobStatus =>
                     {
@@ -152,8 +134,19 @@ namespace Fanex.MailDelivery.Server.Handlers
         }
 
         /// <summary>
-        /// Subscribes the mail.
+        /// Subscribes client notification message
         /// </summary>
+        public void SubscribeClientNotificationMessage()
+        {
+            _bus.Subscribe<UpdateActiveTimeRequest>(
+                MailDeliveryConstants.ClientNotificationTopic,
+                    clientInfoMessage =>
+                    {
+                        _mailService.UpdateClientActiveTime(clientInfoMessage);
+                    },
+                    config => config.WithTopic(MailDeliveryConstants.ClientNotificationTopic));
+        }
+
         public void SubscribeMail()
         {
             _bus.Subscribe<Mail>(
@@ -165,12 +158,9 @@ namespace Fanex.MailDelivery.Server.Handlers
                     config => config.WithTopic(MailDeliveryConstants.SendMailRoutingKey));
         }
 
-        /// <summary>
-        /// Subscribes the job result.
-        /// </summary>
         public void SubscribeJobResult()
         {
-            _bus.Subscribe<Job>(
+            _bus.Subscribe<JobMessage>(
                 MailDeliveryConstants.JobResultRoutingKey,
                     jobStatus =>
                     {
@@ -179,29 +169,13 @@ namespace Fanex.MailDelivery.Server.Handlers
                     config => config.WithTopic(MailDeliveryConstants.JobResultRoutingKey));
         }
 
-        /// <summary>
-        /// Subscribes the job result.
-        /// </summary>
-        public void SubscribeClientNotificationMessage()
-        {
-            _bus.Subscribe<ClientInfomationMessage>(
-                MailDeliveryConstants.ClientNotificationTopic,
-                    clientInfoMessage =>
-                    {
-                        _mailService.UpdateClientActiveTime(clientInfoMessage);
-                    },
-                    config => config.WithTopic(MailDeliveryConstants.ClientNotificationTopic));
-        }
-
-
-
         public void RespondAddMailTaskForRunningJob()
         {
-            _bus.Respond<Job, Job>(
-                jobResult =>
+            _bus.Respond<JobMessage, JobMessage>(
+                jobMessage =>
                 {
-                    _mailService.AddMailTaskForRunningJob(jobResult);
-                    return jobResult;
+                    _mailService.AddMailTaskForRunningJob(jobMessage);
+                    return jobMessage;
                 });
         }
 

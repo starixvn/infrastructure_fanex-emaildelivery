@@ -1,23 +1,22 @@
 ﻿using System;
-using Fanex.MailDelivery.Core.Messaging;
 
 namespace Fanex.MailDelivery.Core.Models
 {
     /// <summary>
-    /// Job Status Message.
+    /// JobRequest Status Message.
     /// </summary>
-    public class JobRequest
-    {
-        public Schedule Schedule { get; set; }
+    //public class JobRequest
+    //{
+    //    public Schedule Schedule { get; set; }
 
-        public Mail Mail { get; set; }
+    //    public Mail Mail { get; set; }
 
-        public JobStatus JobStatus { get; set; }
+    //    public JobStatus JobStatus { get; set; }
 
-        public TaskLog TaskLog { get; set; }
+    //    public TaskLog TaskLog { get; set; }
 
-        public DateTime ScheduledTime { get; set; }
+    //    public DateTime ScheduledTime { get; set; }
 
-        public DateTime RunningTime { get; set; }
-    }
+    //    public DateTime RunningTime { get; set; }
+    //}
 }

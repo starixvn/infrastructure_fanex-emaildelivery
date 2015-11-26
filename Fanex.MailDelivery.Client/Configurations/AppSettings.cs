@@ -38,7 +38,7 @@
         /// Gets the type of the job.
         /// </summary>
         /// <param name="scheduleId">The schedule identifier.</param>
-        /// <returns>Job Type return.</returns>
+        /// <returns>JobRequest Type return.</returns>
         public static Type GetJobType(int scheduleId)
         {
             var schedules = MailCientConfig.Schedules;

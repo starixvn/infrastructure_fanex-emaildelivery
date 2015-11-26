@@ -47,7 +47,6 @@
     <Compile Include="Configurations\MailAdminSection.cs" />
     <Compile Include="Logging\MailAdminLogger.cs" />
     <Compile Include="MailDeliveryConstants.cs" />
-    <Compile Include="Mapping\ScheduleDtoMapper.cs" />
     <Compile Include="Messaging\Job\AbortJobRequest.cs" />
     <Compile Include="Messaging\Job\GetScheduleByMailIdResponse.cs" />
     <Compile Include="Messaging\Job\GetScheduleByMailIdRequest.cs" />

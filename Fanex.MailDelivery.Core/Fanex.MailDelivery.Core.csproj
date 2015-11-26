@@ -42,18 +42,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Messaging\JobOperation\RunNowRequest.cs" />
+    <Compile Include="Mapping\ScheduleDtoMapper.cs" />
     <Compile Include="Messaging\Schedule\GetScheduleListRequest.cs" />
     <Compile Include="Messaging\Schedule\GetScheduleListResponse.cs" />
     <Compile Include="Messaging\Schedule\ScheduleDto.cs" />
     <Compile Include="Models\FileExtension.cs" />
     <Compile Include="Models\MailType.cs" />
     <Compile Include="MailDeliveryConstants.cs" />
-    <Compile Include="Messaging\ClientInfomationMessage.cs" />
-    <Compile Include="Messaging\MailingListRequest.cs" />
-    <Compile Include="Messaging\TaskLog.cs" />
+    <Compile Include="Messaging\Schedule\UpdateActiveTimeRequest.cs" />
+    <Compile Include="Models\TaskLog.cs" />
     <Compile Include="Models\ClientStatusModel.cs" />
-    <Compile Include="Models\Job.cs" />
+    <Compile Include="Models\JobMessage.cs" />
     <Compile Include="Models\JobRequest.cs" />
     <Compile Include="Models\JobStatus.cs" />
     <Compile Include="Models\Mail.cs" />

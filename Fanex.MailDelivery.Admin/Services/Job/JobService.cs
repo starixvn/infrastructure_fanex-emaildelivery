@@ -8,8 +8,8 @@ namespace Fanex.MailDelivery.Admin.Services.Job
     {
         public void AbortJob(AbortJobRequest request)
         {
-            Core.Models.Job job = new Core.Models.Job() { JobStatus = JobStatus.Abort, Schedule = new Schedule() { TaskId = request.TaskId } };
-            Bus.Publish<Core.Models.Job>(job, MailDeliveryConstants.AbortJobRoutingKeyFormat);
+            Core.Models.JobMessage jobMessage = new Core.Models.JobMessage() { JobStatus = JobStatus.Abort, Schedule = new Schedule() { TaskId = request.TaskId } };
+            Bus.Publish<Core.Models.JobMessage>(jobMessage, MailDeliveryConstants.AbortJobRoutingKeyFormat);
         }
 
         public void RetryJobMessage(ScheduleRequest schedule)

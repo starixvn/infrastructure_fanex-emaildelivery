@@ -5,7 +5,7 @@ using Quartz.Impl;
 namespace Fanex.MailDelivery.Server.Handlers
 {
     /// <summary>
-    /// Job Handler.
+    /// JobRequest Handler.
     /// </summary>
     public class JobHandler
     {

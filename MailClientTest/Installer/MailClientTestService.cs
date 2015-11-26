@@ -1,4 +1,5 @@
-﻿using Fanex.MailDelivery.Core.Models;
+﻿using Fanex.MailDelivery.Client;
+using Fanex.MailDelivery.Core.Models;
 
 namespace MailClientTest.Installer
 {

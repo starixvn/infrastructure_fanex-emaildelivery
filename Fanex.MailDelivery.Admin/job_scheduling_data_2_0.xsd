@@ -1,8 +1,8 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-           xmlns="http://quartznet.sourceforge.net/JobSchedulingData"
-           targetNamespace="http://quartznet.sourceforge.net/JobSchedulingData"
+           xmlns="http://quartznet.sourceforge.net/JobRequestSchedulingData"
+           targetNamespace="http://quartznet.sourceforge.net/JobRequestSchedulingData"
            elementFormDefault="qualified"
            version="2.0">
 
@@ -98,7 +98,7 @@
 
   <xs:complexType name="job-detailType">
     <xs:annotation>
-      <xs:documentation>Define a JobDetail</xs:documentation>
+      <xs:documentation>Define a JobRequestDetail</xs:documentation>
     </xs:annotation>
     <xs:sequence>
       <xs:element name="name" type="xs:string" />
@@ -115,7 +115,7 @@
 
   <xs:complexType name="job-data-mapType">
     <xs:annotation>
-      <xs:documentation>Define a JobDataMap</xs:documentation>
+      <xs:documentation>Define a JobRequestDataMap</xs:documentation>
     </xs:annotation>
     <xs:sequence minOccurs="0" maxOccurs="unbounded">
       <xs:element name="entry" type="entryType" />
@@ -124,7 +124,7 @@
 
   <xs:complexType name="entryType">
     <xs:annotation>
-      <xs:documentation>Define a JobDataMap entry</xs:documentation>
+      <xs:documentation>Define a JobRequestDataMap entry</xs:documentation>
     </xs:annotation>
     <xs:sequence>
       <xs:element name="key" type="xs:string" />

@@ -3,7 +3,7 @@
     using System.Configuration;
 
     /// <summary>
-    /// Job Input Data Element Collection.
+    /// JobRequest Input Data Element Collection.
     /// </summary>
     [ConfigurationCollection(typeof(JobInputDataElement))]
     public class JobInputDataElementCollection : ConfigurationElementCollection

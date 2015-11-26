@@ -8,14 +8,14 @@ namespace MailClientTest.Jobs
     using Quartz;
 
     /// <summary>
-    /// Hello Job.
+    /// Hello JobRequest.
     /// </summary>
     public class SuccessWithoutSendMailJob : JobBase
     {
-        protected override JobRequest Run(Schedule schedule, IJobExecutionContext jobContext)
+        protected override JobMessage Run(Schedule schedule, IJobExecutionContext jobContext)
         {
             var jobLog = string.Format(
-                "Run Success Without Send Mail Job: \n\tSite Id: {0}, Schedule: {1}. \n\tSent at {2}",
+                "Run Success Without Send Mail JobRequest: \n\tSite Id: {0}, Schedule: {1}. \n\tSent at {2}",
                 schedule.SiteId,
                 schedule.Id,
                 DateTime.Now);
@@ -25,12 +25,12 @@ namespace MailClientTest.Jobs
 
             //// Compose mail here.
             var mail = new Mail();
-            mail.Subject = "Mail Station Test (Success Without Send Mail Job).";
-            mail.Title = "Mail Station Test (Success Without Send Mail Job).";
+            mail.Subject = "Mail Station Test (Success Without Send Mail JobRequest).";
+            mail.Title = "Mail Station Test (Success Without Send Mail JobRequest).";
             mail.Body = "Email Body";
             Thread.Sleep(5000);
 
-            return new JobRequest
+            return new JobMessage
             {
                 Mail = mail,
                 Schedule = schedule,

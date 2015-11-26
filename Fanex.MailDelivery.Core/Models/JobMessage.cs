@@ -1,12 +1,11 @@
 ﻿using System;
-using Fanex.MailDelivery.Core.Messaging;
 
 namespace Fanex.MailDelivery.Core.Models
 {
     /// <summary>
-    /// Job Status Message.
+    /// JobRequest Status Message.
     /// </summary>
-    public class Job
+    public class JobMessage
     {
         public Schedule Schedule { get; set; }
 

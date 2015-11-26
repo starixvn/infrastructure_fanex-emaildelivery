@@ -1,4 +1,4 @@
-﻿using Fanex.MailDelivery.Core.Models;
+﻿using Fanex.MailDelivery.Core.Enumerations;
 
 namespace Fanex.MailDelivery.Core.Messaging
 {
