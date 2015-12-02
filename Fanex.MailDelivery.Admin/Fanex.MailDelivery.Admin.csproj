@@ -96,6 +96,8 @@
     <Compile Include="Services\Recipient\IRecipientService.cs" />
     <Compile Include="Services\Report\IReportService.cs" />
     <Compile Include="Services\Report\ReportService.cs" />
+    <Compile Include="Utils\CronExpresionBuilder.cs" />
+    <Compile Include="Utils\DateRangeValidator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="job_scheduling_data_2_0.xsd">
@@ -105,7 +107,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Fanex.MailDelivery.Core\Fanex.MailDelivery.Core.csproj">
-      <Project>{C7ED0DE9-6A20-4223-B251-6EF530B74139}</Project>
+      <Project>{c7ed0de9-6a20-4223-b251-6ef530b74139}</Project>
       <Name>Fanex.MailDelivery.Core</Name>
     </ProjectReference>
   </ItemGroup>
