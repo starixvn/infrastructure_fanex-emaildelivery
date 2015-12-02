@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Fanex.Data;
 using Fanex.MailDelivery.Core.Models;
+using Fanex.MailDelivery.Core.Models.Mails;
 using Fanex.MailDelivery.Services.Criteria.Group;
 using Fanex.MailDelivery.Services.Criteria.Job;
 using Fanex.MailDelivery.Services.Criteria.Mail;

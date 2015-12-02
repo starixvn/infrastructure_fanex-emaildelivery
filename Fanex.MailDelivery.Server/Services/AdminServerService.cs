@@ -9,6 +9,7 @@ using Fanex.MailDelivery.Admin.Messaging.ManageRecipient;
 using Fanex.MailDelivery.Admin.Messaging.ManageReport;
 using Fanex.MailDelivery.Core.Messaging.Schedule;
 using Fanex.MailDelivery.Core.Models;
+using Fanex.MailDelivery.Core.Models.Mails;
 using Fanex.MailDelivery.Server.Mapping;
 using Fanex.MailDelivery.Services.Criteria.Group;
 using Fanex.MailDelivery.Services.Criteria.Job;
@@ -41,11 +42,11 @@ namespace Fanex.MailDelivery.Server.Services
                 TriggerType = request.TriggerType
             });
 
-            List<MailDto> getMailListResponseDtos = mailModels.Select(n => n.ToMailDto()).ToList();
+            //List<MailModel> getMailListResponseDtos = mailModels.Select(n => n.ToMailDto()).ToList();
 
             GetMailListResponse getMailListResponse = new GetMailListResponse
             {
-                GetMailListResponseDtos = getMailListResponseDtos
+                MailModels = mailModels
             };
 
             return getMailListResponse;
@@ -58,7 +59,7 @@ namespace Fanex.MailDelivery.Server.Services
                 MailId = request.Id
             });
 
-            return new GetMailByIdResponse { MailDto = mailModel == null ? null : mailModel.ToMailDto() };
+            return new GetMailByIdResponse { MailModel = mailModel == null ? null : mailModel };
         }
 
         public ResultResponse CreateFunctionMail(CreateFunctionMailRequest request)

@@ -14,6 +14,7 @@ using Fanex.MailDelivery.Admin.Services.Job;
 using Fanex.MailDelivery.Admin.Services.JobOperation;
 using Fanex.MailDelivery.Admin.Services.Mail;
 using Fanex.MailDelivery.Core.Mapping;
+using Fanex.MailDelivery.Core.Models.Mails;
 using Fanex.MailDelivery.MailStation.Services;
 using Fanex.NAP.Framework.Command;
 
@@ -78,7 +79,7 @@ namespace Fanex.MailDelivery.MailStation.Controllers
             ViewBag.ListSite = _mailManageService.Sites(false);
             ViewBag.ListTriggerType = _mailManageService.Trigger(false);
 
-            MailDto mailDto = _mailManageService.MailById(criteria);
+            MailModel mailDto = _mailManageService.MailById(criteria);
 
             if (mailDto != null)
             {
@@ -112,7 +113,7 @@ namespace Fanex.MailDelivery.MailStation.Controllers
 
         public ActionResult MailList(GetMailListCriteria criteria)
         {
-            List<MailDto> result = _mailManageService.MailList(criteria);
+            IList<MailModel> result = _mailManageService.MailList(criteria);
             return Json(result);
         }
 
@@ -128,9 +129,9 @@ namespace Fanex.MailDelivery.MailStation.Controllers
             ViewBag.ListSite = _mailManageService.Sites(false);
             ViewBag.ListTriggerType = _mailManageService.Trigger(false);
 
-            MailDto mailDto = _mailManageService.MailById(criteria);
+            MailModel mailModel = _mailManageService.MailById(criteria);
 
-            UpdateMailCriteria model = new UpdateMailCriteria(mailDto);
+            UpdateMailCriteria model = new UpdateMailCriteria(mailModel);
             ViewBag.TimeZoneString = TimeZoneExtension.GetTimeZoneString();
             return View("~/Areas/MailStation/ManageMail/UpdateMail/Index.cshtml", model);
         }

@@ -5,6 +5,7 @@
 // --------------------------------------------------------------------------
 
 using Fanex.MailDelivery.Admin.Messaging.ManageMail;
+using Fanex.MailDelivery.Core.Models.Mails;
 
 namespace Fanex.MailDelivery.MailStation.Criteria.MailManage
 {
@@ -20,7 +21,7 @@ namespace Fanex.MailDelivery.MailStation.Criteria.MailManage
         {
         }
 
-        public UpdateMailCriteria(MailDto model)
+        public UpdateMailCriteria(MailModel model)
             : base(model)
         {
             if (model != null)

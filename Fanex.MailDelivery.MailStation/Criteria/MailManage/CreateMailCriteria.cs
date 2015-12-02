@@ -5,6 +5,7 @@
 // --------------------------------------------------------------------------
 
 using Fanex.MailDelivery.Admin.Messaging.ManageMail;
+using Fanex.MailDelivery.Core.Models.Mails;
 
 namespace Fanex.MailDelivery.MailStation.Criteria.MailManage
 {
@@ -23,7 +24,7 @@ namespace Fanex.MailDelivery.MailStation.Criteria.MailManage
             this.IsActive = true;
         }
 
-        public CreateMailCriteria(MailDto model)
+        public CreateMailCriteria(MailModel model)
             : this()
         {
             if (model != null)

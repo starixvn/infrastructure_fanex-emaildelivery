@@ -5,6 +5,7 @@ using Fanex.MailDelivery.Admin.Messaging.Job;
 using Fanex.MailDelivery.Admin.Messaging.ManageMail;
 using Fanex.MailDelivery.Admin.Services.Job;
 using Fanex.MailDelivery.Admin.Services.Mail;
+using Fanex.MailDelivery.Core.Models.Mails;
 using Fanex.MailDelivery.MailStation.Criteria.MailGroup;
 using Fanex.MailDelivery.MailStation.Criteria.MailManage;
 using Fanex.NAP.Framework.Command;
@@ -26,7 +27,7 @@ namespace Fanex.MailDelivery.MailStation.Services
             _jobService = jobService;
         }
 
-        public List<MailDto> MailList(GetMailListCriteria criteria)
+        public IList<MailModel> MailList(GetMailListCriteria criteria)
         {
             GetMailListRequest request = new GetMailListRequest
             {
@@ -40,10 +41,10 @@ namespace Fanex.MailDelivery.MailStation.Services
 
             GetMailListResponse response = _mailService.GetMailList(request);
 
-            return response.GetMailListResponseDtos;
+            return response.MailModels;
         }
 
-        public MailDto MailById(GetMailByIdCriteria criteria)
+        public MailModel MailById(GetMailByIdCriteria criteria)
         {
             GetMailByIdRequest request = new GetMailByIdRequest
             {
@@ -52,7 +53,7 @@ namespace Fanex.MailDelivery.MailStation.Services
 
             GetMailByIdResponse response = _mailService.GetMailById(request);
 
-            return response.MailDto;
+            return response.MailModel;
         }
 
         public CommandResult CreateMail(CreateMailCriteria criteria)

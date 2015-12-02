@@ -50,6 +50,7 @@
     <Compile Include="Models\MailType.cs" />
     <Compile Include="MailDeliveryConstants.cs" />
     <Compile Include="Messaging\Schedule\UpdateActiveTimeRequest.cs" />
+    <Compile Include="Models\Mails\MailModel.cs" />
     <Compile Include="Models\TaskLog.cs" />
     <Compile Include="Models\ClientStatusModel.cs" />
     <Compile Include="Models\JobMessage.cs" />

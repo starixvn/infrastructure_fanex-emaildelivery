@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using Fanex.MailDelivery.Core.Models.Mails;
 
 namespace Fanex.MailDelivery.Admin.Messaging.ManageMail
 {
     public class GetMailListResponse
     {
-        public List<MailDto> GetMailListResponseDtos { get; set; }
+        public IList<MailModel> MailModels { get; set; }
     }
 }

@@ -1,7 +1,9 @@
-﻿namespace Fanex.MailDelivery.Admin.Messaging.ManageMail
+﻿using Fanex.MailDelivery.Core.Models.Mails;
+
+namespace Fanex.MailDelivery.Admin.Messaging.ManageMail
 {
     public class GetMailByIdResponse
     {
-        public MailDto MailDto { get; set; }
+        public MailModel MailModel { get; set; }
     }
 }
