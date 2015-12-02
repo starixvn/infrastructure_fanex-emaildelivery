@@ -62,23 +62,23 @@ var MailManageController = function () {
         for (var i = 0; i < mailListLength; i++) {
             var mail = result[i];
             var rowColumns = [];
-            var mailGroupIndex = ' groupid="' + mail.Id + '"';
-            rowColumns.push({ Name: "ID", Value: mail.Id });
+            var mailGroupIndex = ' groupid="' + mail.MailGroupId + '"';
+            rowColumns.push({ Name: "ID", Value: mail.MailGroupId });
             rowColumns.push({
                 Name: "Group",
-                Value: parseInt(mail.Id) === 1 ? mail.Name : '<a title="' + mail.Name + '" class="link group-mail-name" href="javascript:;"' + mailGroupIndex + '>' +
-                                mail.Name +
+                Value: parseInt(mail.MailGroupId) === 1 ? mail.MailGroupName : '<a title="' + mail.MailGroupName + '" class="link group-mail-name" href="javascript:;"' + mailGroupIndex + '>' +
+                                mail.MailGroupName +
                             '</a>'
             });
             rowColumns.push({ Name: "Description", Value: mail.Description });
-            rowColumns.push({ Name: "NoRelevantMail", Value: '<div class="ico-relevant-mail"' + mailGroupIndex + '>' + mail.RelevantMailCount + '</div>' });
+            rowColumns.push({ Name: "NoRelevantMail", Value: '<div class="ico-relevant-mail"' + mailGroupIndex + '>' + mail.MailRelevantCount + '</div>' });
             var actionElement = '<div class="action-wrp">\
                                     <span class="btn-action"' + mailGroupIndex + '>Action</span>\
                                     <div class="relative"></div>\
                                 </div>';
             rowColumns.push({
                 Name: "Action",
-                Value: mail.Id !== 1 ? actionElement : ''
+                Value: mail.MailGroupId !== 1 ? actionElement : ''
             });
 
             bodyData.push({

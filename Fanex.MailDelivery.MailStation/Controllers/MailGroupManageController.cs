@@ -80,7 +80,7 @@ namespace Fanex.MailDelivery.MailStation.Controllers
 
             GetGroupListResponse response = _groupService.GetGroupList(request);
 
-            return Json(response.GroupDtos);
+            return Json(response.GroupModels);
         }
 
         public ActionResult DeleteMailGroup(DeleteMailGroupCriteria criteria)
@@ -118,9 +118,9 @@ namespace Fanex.MailDelivery.MailStation.Controllers
             var model = new UpdateMailGroupCriteria();
             if (response != null)
             {
-                model.MailGroupId = response.GroupDto.Id;
-                model.MailGroupName = response.GroupDto.Name;
-                model.Description = response.GroupDto.Description;
+                model.MailGroupId = response.GroupModel.MailGroupId;
+                model.MailGroupName = response.GroupModel.MailGroupName;
+                model.Description = response.GroupModel.Description;
             }
 
             ViewBag.TimeZoneString = TimeZoneExtension.GetTimeZoneString();

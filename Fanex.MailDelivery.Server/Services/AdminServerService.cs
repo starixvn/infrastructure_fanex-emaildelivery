@@ -250,9 +250,7 @@ namespace Fanex.MailDelivery.Server.Services
                 MailGroupName = request.Name
             });
 
-            IList<GroupDto> groupDtos = groupModels.Select(n => n.ToGroupDto()).ToList();
-
-            return new GetGroupListResponse { GroupDtos = groupDtos };
+            return new GetGroupListResponse { GroupModels = groupModels };
         }
 
         public GetMailGroupByIdResponse GetGroupById(GetMailGroupByIdRequest request)
@@ -262,7 +260,7 @@ namespace Fanex.MailDelivery.Server.Services
                 MailGroupId = request.Id
             });
 
-            return new GetMailGroupByIdResponse { GroupDto = groupModel.ToGroupDto() };
+            return new GetMailGroupByIdResponse { GroupModel = groupModel };
         }
 
         public ResultResponse CreateGroup(CreateGroupRequest request)

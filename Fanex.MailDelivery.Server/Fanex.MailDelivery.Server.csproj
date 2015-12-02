@@ -166,7 +166,6 @@
     <Compile Include="MailService\MailService.cs" />
     <Compile Include="MailService\ServiceBase.cs" />
     <Compile Include="Mapping\ScheduleModelMapper.cs" />
-    <Compile Include="Mapping\GroupModelMapper.cs" />
     <Compile Include="Mapping\MailTaskModelMapper.cs" />
     <Compile Include="Mapping\RecipientModelMapper.cs" />
     <Compile Include="Mapping\ResultModelMapper.cs" />

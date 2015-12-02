@@ -1,7 +1,9 @@
-﻿namespace Fanex.MailDelivery.Admin.Messaging.ManageGroup
+﻿using Fanex.MailDelivery.Core.Models.Group;
+
+namespace Fanex.MailDelivery.Admin.Messaging.ManageGroup
 {
     public class GetMailGroupByIdResponse
     {
-        public GroupDto GroupDto { get; set; }
+        public GroupModel GroupModel { get; set; }
     }
 }
