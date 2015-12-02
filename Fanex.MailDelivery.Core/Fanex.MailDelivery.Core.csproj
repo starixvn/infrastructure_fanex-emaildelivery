@@ -53,6 +53,7 @@
     <Compile Include="Messaging\Schedule\UpdateActiveTimeRequest.cs" />
     <Compile Include="Models\Mails\MailModel.cs" />
     <Compile Include="Models\Recipient\RecipientModel.cs" />
+    <Compile Include="Models\Report\MailTaskModel.cs" />
     <Compile Include="Models\TaskLog.cs" />
     <Compile Include="Models\ClientStatusModel.cs" />
     <Compile Include="Models\JobMessage.cs" />

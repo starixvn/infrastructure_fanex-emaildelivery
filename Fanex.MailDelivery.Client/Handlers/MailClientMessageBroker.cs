@@ -7,7 +7,6 @@ using EasyNetQ;
 using Fanex.MailDelivery.Client.Configurations;
 using Fanex.MailDelivery.Client.Logging;
 using Fanex.MailDelivery.Core;
-using Fanex.MailDelivery.Core.Mapping;
 using Fanex.MailDelivery.Core.Messaging;
 using Fanex.MailDelivery.Core.Messaging.Schedule;
 using Fanex.MailDelivery.Core.Models;
@@ -115,7 +114,7 @@ namespace Fanex.MailDelivery.Client.Handlers
 
             GetScheduleListResponse response = _bus.Request<GetScheduleListRequest, GetScheduleListResponse>(request);
             IList<Schedule> schedules = new List<Schedule>();
-            response.ScheduleDtos.ToList().ForEach(n => schedules.Add(n.ToScheduleModel()));
+            response.Schedules.ToList().ForEach(n => schedules.Add(n));
 
             return schedules;
         }

@@ -58,7 +58,7 @@ namespace Fanex.MailDelivery.MailStation.Controllers
 
             //MailAdminService.Stop();
 
-            //return Json(response.MailTaskDtos);
+            //return Json(response.MailTaskModels);
             
             return Json(_mailReportService.MailReport(criteria));
         }

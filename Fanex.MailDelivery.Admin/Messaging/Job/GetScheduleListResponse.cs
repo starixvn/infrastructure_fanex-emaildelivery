@@ -9,7 +9,7 @@ namespace Fanex.MailDelivery.Admin.Messaging.Job
     //    public string MailName { get; set; }
     //}
 
-    //public class ScheduleDto
+    //public class Schedule
     //{
     //    public  int SiteId { get; set; }
 

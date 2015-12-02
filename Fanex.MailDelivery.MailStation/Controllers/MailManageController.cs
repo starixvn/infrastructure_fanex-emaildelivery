@@ -13,7 +13,6 @@ using Fanex.MailDelivery.Admin.Messaging.ManageMail;
 using Fanex.MailDelivery.Admin.Services.Job;
 using Fanex.MailDelivery.Admin.Services.JobOperation;
 using Fanex.MailDelivery.Admin.Services.Mail;
-using Fanex.MailDelivery.Core.Mapping;
 using Fanex.MailDelivery.Core.Models.Mails;
 using Fanex.MailDelivery.MailStation.Services;
 using Fanex.NAP.Framework.Command;
@@ -158,7 +157,7 @@ namespace Fanex.MailDelivery.MailStation.Controllers
 
             GetScheduleByMailIdResponse response = jobService.GetScheduleByIdsRequest(request);
 
-            _jobOperationService.RunNow(response.ScheduleDto.ToScheduleModel());
+            _jobOperationService.RunNow(response.Schedule);
         }
     }
 }

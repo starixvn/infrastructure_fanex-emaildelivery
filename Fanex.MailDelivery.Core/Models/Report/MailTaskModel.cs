@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Fanex.MailDelivery.Services.Models
+namespace Fanex.MailDelivery.Core.Models.Report
 {
     /// <summary>
     /// Mail Task Model.

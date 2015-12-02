@@ -12,6 +12,7 @@ using Fanex.MailDelivery.Core.Models;
 using Fanex.MailDelivery.Core.Models.Group;
 using Fanex.MailDelivery.Core.Models.Mails;
 using Fanex.MailDelivery.Core.Models.Recipient;
+using Fanex.MailDelivery.Core.Models.Report;
 using Fanex.MailDelivery.Server.Mapping;
 using Fanex.MailDelivery.Services.Criteria.Group;
 using Fanex.MailDelivery.Services.Criteria.Job;
@@ -301,9 +302,7 @@ namespace Fanex.MailDelivery.Server.Services
                 Status = request.Status
             });
 
-            IList<MailTaskDto> mailTaskDtos = mailTaskModels.Select(n => n.ToMailTaskDto()).ToList();
-
-            return new GetReportListResponse { MailTaskDtos = mailTaskDtos };
+            return new GetReportListResponse { MailTaskModels = mailTaskModels };
         }
 
         public GetScheduleByMailIdResponse GetScheduleByMailId(GetScheduleByMailIdRequest request)
@@ -313,12 +312,12 @@ namespace Fanex.MailDelivery.Server.Services
                 MailId = request.MailId
             });
 
-            return new GetScheduleByMailIdResponse { ScheduleDto = schedule.ToScheduleDto() };
+            return new GetScheduleByMailIdResponse { Schedule = schedule };
         }
 
         public GetScheduleListResponse GetScheduleList(GetScheduleListRequest request)
         {
-            IList<ScheduleDto> scheduleDtos = new List<ScheduleDto>();
+            IList<Schedule> scheduleDtos = new List<Schedule>();
 
             foreach (int mail in request.MailIds)
             {
@@ -327,10 +326,10 @@ namespace Fanex.MailDelivery.Server.Services
                     MailId = mail
                 });
 
-                scheduleDtos.Add(schedule.ToScheduleDto());
+                scheduleDtos.Add(schedule);
             }
 
-            return new GetScheduleListResponse { ScheduleDtos = scheduleDtos };
+            return new GetScheduleListResponse { Schedules = scheduleDtos };
         }
     }
 }

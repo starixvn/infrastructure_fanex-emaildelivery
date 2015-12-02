@@ -165,9 +165,6 @@
     <Compile Include="MailService\IMailService.cs" />
     <Compile Include="MailService\MailService.cs" />
     <Compile Include="MailService\ServiceBase.cs" />
-    <Compile Include="Mapping\ScheduleModelMapper.cs" />
-    <Compile Include="Mapping\MailTaskModelMapper.cs" />
-    <Compile Include="Mapping\RecipientModelMapper.cs" />
     <Compile Include="Mapping\ResultModelMapper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
