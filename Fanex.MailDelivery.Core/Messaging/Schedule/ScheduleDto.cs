@@ -6,7 +6,7 @@ namespace Fanex.MailDelivery.Core.Messaging.Schedule
     {
         public int MailId { get; set; }
 
-        public int ScheduleId { get; set; }
+        public int Id { get; set; }
 
         public int SiteId { get; set; }
 

@@ -18,7 +18,7 @@ namespace Fanex.MailDelivery.Admin.Messaging.Job
     //    public string MailName { get; set; }
 
 
-    //    public int ScheduleId { get; set; }
+    //    public int Id { get; set; }
 
     //    public int RepeatType { get; set; }
 

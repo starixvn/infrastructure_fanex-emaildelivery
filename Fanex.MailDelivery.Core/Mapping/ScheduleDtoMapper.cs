@@ -9,7 +9,7 @@ namespace Fanex.MailDelivery.Core.Mapping
         {
             return new Schedule
             {
-                Id = scheduleDto.ScheduleId,
+                Id = scheduleDto.Id,
                 SiteId = scheduleDto.SiteId,
                 Name = scheduleDto.MailName,
 
