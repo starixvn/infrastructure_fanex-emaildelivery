@@ -61,7 +61,7 @@ namespace Fanex.MailDelivery.MailStation.Controllers
 
             GetRecipientListResponse response = _recipientService.GetRecipientList(request);
 
-            return Json(response.RecipientDtos);
+            return Json(response.RecipientModels);
         }
 
         public ActionResult UpdateRecipientView(RecipientByIdCriteria criteria)
@@ -75,22 +75,22 @@ namespace Fanex.MailDelivery.MailStation.Controllers
 
             RecipientModel recipientModel = new RecipientModel
             {
-                RecipientId = response.RecipientDto.RecipientId,
-                RecipientName = response.RecipientDto.RecipientName,
+                RecipientId = response.RecipientModel.RecipientId,
+                RecipientName = response.RecipientModel.RecipientName,
 
-                EmailId1 = response.RecipientDto.EmailId1,
-                EmailId2 = response.RecipientDto.EmailId2,
-                EmailId3 = response.RecipientDto.EmailId3,
-                Email1 = response.RecipientDto.Email1,
-                Email2 = response.RecipientDto.Email2,
-                Email3 = response.RecipientDto.Email3,
+                EmailId1 = response.RecipientModel.EmailId1,
+                EmailId2 = response.RecipientModel.EmailId2,
+                EmailId3 = response.RecipientModel.EmailId3,
+                Email1 = response.RecipientModel.Email1,
+                Email2 = response.RecipientModel.Email2,
+                Email3 = response.RecipientModel.Email3,
 
-                IsNapUser = response.RecipientDto.IsNapUser,
-                NapUserId = response.RecipientDto.NapUserId,
+                IsNapUser = response.RecipientModel.IsNapUser,
+                NapUserId = response.RecipientModel.NapUserId,
 
-                IsActive = response.RecipientDto.IsActive,
-                MailRelevant = response.RecipientDto.MailRelevant,
-                Note = response.RecipientDto.Note
+                IsActive = response.RecipientModel.IsActive,
+                MailRelevant = response.RecipientModel.MailRelevant,
+                Note = response.RecipientModel.Note
             };
 
             ViewBag.TimeZoneString = TimeZoneExtension.GetTimeZoneString();

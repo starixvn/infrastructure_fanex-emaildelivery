@@ -1,7 +1,9 @@
-﻿namespace Fanex.MailDelivery.Admin.Messaging.ManageRecipient
+﻿using Fanex.MailDelivery.Core.Models.Recipient;
+
+namespace Fanex.MailDelivery.Admin.Messaging.ManageRecipient
 {
     public class GetRecipientByIdResponse
     {
-       public RecipientDto RecipientDto { get; set; }
+       public RecipientModel RecipientModel { get; set; }
     }
 }

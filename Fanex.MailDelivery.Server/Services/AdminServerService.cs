@@ -10,6 +10,7 @@ using Fanex.MailDelivery.Admin.Messaging.ManageReport;
 using Fanex.MailDelivery.Core.Messaging.Schedule;
 using Fanex.MailDelivery.Core.Models;
 using Fanex.MailDelivery.Core.Models.Mails;
+using Fanex.MailDelivery.Core.Models.Recipient;
 using Fanex.MailDelivery.Server.Mapping;
 using Fanex.MailDelivery.Services.Criteria.Group;
 using Fanex.MailDelivery.Services.Criteria.Job;
@@ -181,11 +182,9 @@ namespace Fanex.MailDelivery.Server.Services
                 UserName = request.UserName
             });
 
-            IList<RecipientDto> recipientDtos = recipientModels.Select(n => n.ToRecipientDto()).ToList();
-
             GetRecipientListResponse getMailListResponse = new GetRecipientListResponse
             {
-                RecipientDtos = recipientDtos
+                RecipientModels = recipientModels
             };
 
             return getMailListResponse;
@@ -198,7 +197,7 @@ namespace Fanex.MailDelivery.Server.Services
                 RecipientId = request.Id
             });
 
-            return new GetRecipientByIdResponse { RecipientDto = recipientModel.ToRecipientDto() };
+            return new GetRecipientByIdResponse { RecipientModel = recipientModel };
         }
 
         public ResultResponse CreateRecipient(CreateRecipientRequest request)
