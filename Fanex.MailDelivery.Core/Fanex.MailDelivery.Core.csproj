@@ -47,6 +47,7 @@
     <Compile Include="Messaging\Schedule\GetScheduleListResponse.cs" />
     <Compile Include="Messaging\Schedule\ScheduleDto.cs" />
     <Compile Include="Models\FileExtension.cs" />
+    <Compile Include="Models\Group\GroupModel.cs" />
     <Compile Include="Models\MailType.cs" />
     <Compile Include="MailDeliveryConstants.cs" />
     <Compile Include="Messaging\Schedule\UpdateActiveTimeRequest.cs" />

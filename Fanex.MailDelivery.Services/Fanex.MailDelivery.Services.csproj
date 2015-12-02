@@ -84,7 +84,6 @@
     <Compile Include="Criteria\Recipient\UpdateRecipientCriteria.cs" />
     <Compile Include="Criteria\Report\GetAllScheduleCriteria.cs" />
     <Compile Include="Criteria\Report\GetReportListCriteria.cs" />
-    <Compile Include="Models\MailGroupModel.cs" />
     <Compile Include="Models\MailTask.cs" />
     <Compile Include="Models\MailTaskDetailModel.cs" />
     <Compile Include="Models\MailTaskModel.cs" />

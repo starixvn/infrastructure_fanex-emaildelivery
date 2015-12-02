@@ -9,6 +9,7 @@ using Fanex.MailDelivery.Admin.Messaging.ManageRecipient;
 using Fanex.MailDelivery.Admin.Messaging.ManageReport;
 using Fanex.MailDelivery.Core.Messaging.Schedule;
 using Fanex.MailDelivery.Core.Models;
+using Fanex.MailDelivery.Core.Models.Group;
 using Fanex.MailDelivery.Core.Models.Mails;
 using Fanex.MailDelivery.Core.Models.Recipient;
 using Fanex.MailDelivery.Server.Mapping;

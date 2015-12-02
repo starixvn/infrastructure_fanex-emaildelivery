@@ -1,4 +1,5 @@
 ﻿using Fanex.MailDelivery.Admin.Messaging.ManageGroup;
+using Fanex.MailDelivery.Core.Models.Group;
 using Fanex.MailDelivery.Services.Models;
 
 namespace Fanex.MailDelivery.Server.Mapping

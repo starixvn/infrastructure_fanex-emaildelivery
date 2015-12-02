@@ -7,7 +7,7 @@
 //   <change who="Louis.Nguyen" date="2014.10.03">Created</change>
 // </history>
 
-namespace Fanex.MailDelivery.Services.Models
+namespace Fanex.MailDelivery.Core.Models.Group
 {
     /// <summary>
     /// Mail Log Model.
