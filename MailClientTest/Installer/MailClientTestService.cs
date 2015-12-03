@@ -46,7 +46,7 @@ namespace MailClientTest.Installer
                     foreach (var schedule in listschedule)
                     {
                         Console.WriteLine("Schedule: {0}; Cron: {1}", schedule.Id, schedule.RepeatExpression);
-                        schedule.ConvertToServerTime();
+                        schedule.ConvertToServerTime(MailClientSection.GetConfig().IsLocalEnvironment());
                     }
                 }
             }
@@ -81,8 +81,8 @@ namespace MailClientTest.Installer
                 Body = "Email Body.",
             };
 
-          //  mail.AlternativeViews = new System.Collections.Generic.List<MailLinkedResource>();
-           // mail.AlternativeViews.Add(new MailLinkedResource("D:\\image1.jpg", Fanex.MailDelivery.Client.Enumerations.FileExtension.IMG_JPG, "contentId1"));
+            //  mail.AlternativeViews = new System.Collections.Generic.List<MailLinkedResource>();
+            // mail.AlternativeViews.Add(new MailLinkedResource("D:\\image1.jpg", Fanex.MailDelivery.Client.Enumerations.FileExtension.IMG_JPG, "contentId1"));
             mail.MailingListId = AppSettings.GetFunctionId("FuntionA");
             MailClientHandler.SendMail(mail);
         }
