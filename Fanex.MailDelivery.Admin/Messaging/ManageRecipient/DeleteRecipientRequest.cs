@@ -2,6 +2,6 @@
 {
     public class DeleteRecipientRequest
     {
-       public int RecipientId { get; set; }
+        public int RecipientId { get; set; }
     }
 }

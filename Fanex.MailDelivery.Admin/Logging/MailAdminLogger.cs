@@ -1,10 +1,14 @@
-﻿using System;
+﻿#region
+
+using System;
 using EasyNetQ;
+
+#endregion
 
 namespace Fanex.MailDelivery.Admin.Logging
 {
     /// <summary>
-    /// Mail Admin Logger.
+    ///     Mail Admin Logger.
     /// </summary>
     public class MailAdminLogger : IEasyNetQLogger
     {

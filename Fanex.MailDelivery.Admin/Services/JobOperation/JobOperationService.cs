@@ -1,5 +1,10 @@
+#region
+
+using System;
 using Fanex.MailDelivery.Core;
 using Fanex.MailDelivery.Core.Models;
+
+#endregion
 
 namespace Fanex.MailDelivery.Admin.Services.JobOperation
 {
@@ -7,19 +12,19 @@ namespace Fanex.MailDelivery.Admin.Services.JobOperation
     {
         public void RunNow(Schedule schedule)
         {
-            string runnowJobPublishId = string.Format(MailDeliveryConstants.RunNowJobRoutingKeyFormat, schedule.SiteId);
-            Bus.Publish<Schedule>(schedule, runnowJobPublishId);
+            var runnowJobPublishId = string.Format(MailDeliveryConstants.RunNowJobRoutingKeyFormat, schedule.SiteId);
+            Bus.Publish(schedule, runnowJobPublishId);
         }
 
         public void Retry(Schedule schedule)
         {
-            string retryJobPublishId = string.Format(MailDeliveryConstants.RetryJobRoutingKeyFormat, schedule.SiteId);
-            Bus.Publish<Schedule>(schedule, retryJobPublishId);
+            var retryJobPublishId = string.Format(MailDeliveryConstants.RetryJobRoutingKeyFormat, schedule.SiteId);
+            Bus.Publish(schedule, retryJobPublishId);
         }
 
         public void Abort()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }

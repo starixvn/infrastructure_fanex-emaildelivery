@@ -1,4 +1,8 @@
-﻿using System;
+﻿#region
+
+using System;
+
+#endregion
 
 namespace Fanex.MailDelivery.Admin.Messaging.Job
 {
@@ -17,8 +21,8 @@ namespace Fanex.MailDelivery.Admin.Messaging.Job
         public string RepeatExpression { get; set; }
 
         /// <summary>
-        /// It's not current fire time of system but the time admin want it to be.
-        /// It's mean the task is run for schedule on the pass (Missing jobs).
+        ///     It's not current fire time of system but the time admin want it to be.
+        ///     It's mean the task is run for schedule on the pass (Missing jobs).
         /// </summary>
         public DateTime? CurrentFireTime { get; set; }
 

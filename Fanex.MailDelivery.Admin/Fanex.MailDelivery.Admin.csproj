@@ -46,12 +46,9 @@
     <Compile Include="Configurations\AppSettings.cs" />
     <Compile Include="Configurations\MailAdminSection.cs" />
     <Compile Include="Logging\MailAdminLogger.cs" />
-    <Compile Include="MailDeliveryConstants.cs" />
     <Compile Include="Messaging\Job\AbortJobRequest.cs" />
     <Compile Include="Messaging\Job\GetScheduleByMailIdResponse.cs" />
     <Compile Include="Messaging\Job\GetScheduleByMailIdRequest.cs" />
-    <Compile Include="Messaging\Job\GetScheduleListResponse.cs" />
-    <Compile Include="Messaging\Job\GetScheduleListRequest.cs" />
     <Compile Include="Messaging\ManageGroup\GetMailGroupByIdRequest.cs" />
     <Compile Include="Messaging\ManageGroup\GetMailGroupByIdResponse.cs" />
     <Compile Include="Messaging\ManageGroup\UpdateGroupRequest.cs" />
@@ -81,7 +78,6 @@
     <Compile Include="Messaging\ManageReport\GetReportListRequest.cs" />
     <Compile Include="Messaging\ResultResponse.cs" />
     <Compile Include="Messaging\Job\ScheduleRequest.cs" />
-    <Compile Include="Messaging\Job\ScheduleResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AdminService.cs" />
     <Compile Include="Services\Group\GroupService.cs" />

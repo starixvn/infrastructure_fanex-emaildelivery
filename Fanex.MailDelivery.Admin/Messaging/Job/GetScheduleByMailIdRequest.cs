@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Fanex.MailDelivery.Admin.Messaging.Job
+﻿namespace Fanex.MailDelivery.Admin.Messaging.Job
 {
     public class GetScheduleByMailIdRequest
     {

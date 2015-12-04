@@ -1,7 +1,8 @@
-using System;
-using System.Collections.Generic;
-using Fanex.MailDelivery.Core.Messaging.Schedule;
+#region
+
 using Fanex.MailDelivery.Core.Models;
+
+#endregion
 
 namespace Fanex.MailDelivery.Admin.Messaging.Job
 {

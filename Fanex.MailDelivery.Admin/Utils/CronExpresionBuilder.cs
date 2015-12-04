@@ -1,5 +1,9 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Linq;
+
+#endregion
 
 namespace Fanex.MailDelivery.Admin.Utils
 {
@@ -11,9 +15,9 @@ namespace Fanex.MailDelivery.Admin.Utils
             DateRangeValidator.ValidateMinute(minute);
             DateRangeValidator.ValidateDayOfMonth(repeatEvery);
 
-            string cronExpressionFormat = "0 {0} {1} {2} * ?";
+            var cronExpressionFormat = "0 {0} {1} {2} * ?";
 
-            string cronExpression = repeatEvery == 1
+            var cronExpression = repeatEvery == 1
                 ? string.Format(cronExpressionFormat, minute, hour, "*")
                 : string.Format(cronExpressionFormat, minute, hour, "1/" + repeatEvery);
 
@@ -30,14 +34,15 @@ namespace Fanex.MailDelivery.Admin.Utils
             DateRangeValidator.ValidateHour(hour);
             DateRangeValidator.ValidateMinute(minute);
 
-            string dayOfWeekStr = "";
-            for (int i = 1; i < daysOfWeek.Length; i++)
+            var dayOfWeekStr = string.Empty;
+            for (var i = 1; i < daysOfWeek.Length; i++)
             {
                 dayOfWeekStr += (int)daysOfWeek[i] + 1 + ",";
             }
+
             dayOfWeekStr = dayOfWeekStr.Trim(',');
 
-            string cronExpression = string.Format("0 {0} {1} ? * {2}", minute, hour, dayOfWeekStr);
+            var cronExpression = string.Format("0 {0} {1} ? * {2}", minute, hour, dayOfWeekStr);
 
             return cronExpression;
         }
@@ -50,10 +55,10 @@ namespace Fanex.MailDelivery.Admin.Utils
 
             daysOfMonth.ToList().ForEach(DateRangeValidator.ValidateMinDayOfMonth);
 
-            string monthlyRepeatExpression = repeatEvery == 1 ? "*" : "1/" + repeatEvery;
-            string specificDaysExpression = string.Join(",", daysOfMonth);
+            var monthlyRepeatExpression = repeatEvery == 1 ? "*" : "1/" + repeatEvery;
+            var specificDaysExpression = string.Join(",", daysOfMonth);
 
-            string cronExpression = string.Format("0 {0} {1} {2} {3} ?", minute, hour, specificDaysExpression, monthlyRepeatExpression);
+            var cronExpression = string.Format("0 {0} {1} {2} {3} ?", minute, hour, specificDaysExpression, monthlyRepeatExpression);
 
             return cronExpression;
         }

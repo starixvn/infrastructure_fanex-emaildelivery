@@ -1,12 +1,14 @@
-﻿
+﻿#region
+
+using System.Configuration;
 using Fanex.MailDelivery.Core;
+
+#endregion
 
 namespace Fanex.MailDelivery.Admin.Configurations
 {
-    using System.Configuration;
-
     /// <summary>
-    /// Mail Admin Section.
+    ///     Mail Admin Section.
     /// </summary>
     public class MailAdminSection : ConfigurationSection
     {

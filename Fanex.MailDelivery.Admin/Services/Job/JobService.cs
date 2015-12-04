@@ -1,6 +1,10 @@
-﻿using Fanex.MailDelivery.Admin.Messaging.Job;
+﻿#region
+
+using Fanex.MailDelivery.Admin.Messaging.Job;
 using Fanex.MailDelivery.Core;
 using Fanex.MailDelivery.Core.Models;
+
+#endregion
 
 namespace Fanex.MailDelivery.Admin.Services.Job
 {
@@ -8,20 +12,24 @@ namespace Fanex.MailDelivery.Admin.Services.Job
     {
         public void AbortJob(AbortJobRequest request)
         {
-            Core.Models.JobMessage jobMessage = new Core.Models.JobMessage() { JobStatus = JobStatus.Abort, Schedule = new Schedule() { TaskId = request.TaskId } };
-            Bus.Publish<Core.Models.JobMessage>(jobMessage, MailDeliveryConstants.AbortJobRoutingKeyFormat);
+            var jobMessage = new JobMessage
+            {
+                JobStatus = JobStatus.Abort,
+                Schedule = new Schedule { TaskId = request.TaskId }
+            };
+            Bus.Publish(jobMessage, MailDeliveryConstants.AbortJobRoutingKeyFormat);
         }
 
         public void RetryJobMessage(ScheduleRequest schedule)
         {
-            string retryJobPublishId = string.Format(MailDeliveryConstants.RetryJobRoutingKeyFormat, schedule.SiteId);
-            Bus.Publish<ScheduleRequest>(schedule, retryJobPublishId);
+            var retryJobPublishId = string.Format(MailDeliveryConstants.RetryJobRoutingKeyFormat, schedule.SiteId);
+            Bus.Publish(schedule, retryJobPublishId);
         }
 
         public void PublishScheduleChangeMessage(ScheduleRequest schedule)
         {
-            string updateSchedulePublishId = string.Format(MailDeliveryConstants.UpdateScheduleRoutingKeyFormat, schedule.SiteId);
-            Bus.Publish<ScheduleRequest>(schedule, updateSchedulePublishId);
+            var updateSchedulePublishId = string.Format(MailDeliveryConstants.UpdateScheduleRoutingKeyFormat, schedule.SiteId);
+            Bus.Publish(schedule, updateSchedulePublishId);
         }
 
         public GetScheduleByMailIdResponse GetScheduleByIdsRequest(GetScheduleByMailIdRequest request)

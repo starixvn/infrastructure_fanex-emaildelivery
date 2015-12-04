@@ -1,6 +1,10 @@
-﻿using System;
+﻿#region
+
+using System;
 using Fanex.MailDelivery.Admin.Messaging;
 using Fanex.MailDelivery.Admin.Messaging.ManageRecipient;
+
+#endregion
 
 namespace Fanex.MailDelivery.Admin.Services.Recipient
 {

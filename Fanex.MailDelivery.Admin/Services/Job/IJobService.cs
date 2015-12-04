@@ -1,9 +1,13 @@
-﻿using System;
+﻿#region
+
+using System;
 using Fanex.MailDelivery.Admin.Messaging.Job;
+
+#endregion
 
 namespace Fanex.MailDelivery.Admin.Services.Job
 {
-    public interface IJobService: IDisposable
+    public interface IJobService : IDisposable
     {
         void AbortJob(AbortJobRequest request);
 

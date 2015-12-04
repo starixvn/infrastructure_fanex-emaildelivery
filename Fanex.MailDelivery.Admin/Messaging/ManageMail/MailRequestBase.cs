@@ -8,7 +8,6 @@
 
         public int SiteId { get; set; }
 
-
         public string MailFrom { get; set; }
 
         public string MailTo { get; set; }
@@ -16,7 +15,6 @@
         public string MailCc { get; set; }
 
         public string MailBcc { get; set; }
-
 
         public bool IsActive { get; set; }
 

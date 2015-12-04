@@ -1,4 +1,8 @@
-﻿using Fanex.MailDelivery.Core.Models.Mails;
+﻿#region
+
+using Fanex.MailDelivery.Core.Models.Mails;
+
+#endregion
 
 namespace Fanex.MailDelivery.Admin.Messaging.ManageMail
 {

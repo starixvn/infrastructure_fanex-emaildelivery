@@ -1,7 +1,7 @@
 ﻿namespace Fanex.MailDelivery.Admin.Messaging
 {
     /// <summary>
-    /// Result Response.
+    ///     Result Response.
     /// </summary>
     public class ResultResponse
     {

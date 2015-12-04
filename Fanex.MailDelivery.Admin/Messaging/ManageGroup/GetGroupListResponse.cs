@@ -1,5 +1,9 @@
-﻿using System.Collections.Generic;
+﻿#region
+
+using System.Collections.Generic;
 using Fanex.MailDelivery.Core.Models.Group;
+
+#endregion
 
 namespace Fanex.MailDelivery.Admin.Messaging.ManageGroup
 {

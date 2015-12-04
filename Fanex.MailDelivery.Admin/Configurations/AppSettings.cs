@@ -1,7 +1,7 @@
 ﻿namespace Fanex.MailDelivery.Admin.Configurations
 {
     /// <summary>
-    /// Application Settings.
+    ///     Application Settings.
     /// </summary>
     public class AppSettings
     {

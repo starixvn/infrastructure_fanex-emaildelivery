@@ -1,0 +1,7 @@
+<StyleCopSettings Version="105">
+  <GlobalSettings>
+    <StringProperty Name="LinkedSettingsFile">..\..\..\CodingRules\stylecop-override\StyleCop.NexcelRules\Stylecop.4.7.49.0\Settings.StyleCop</StringProperty>
+    <StringProperty Name="MergeSettingsFiles">Linked</StringProperty>
+    <IntegerProperty Name="DaysToCheckForUpdates">30</IntegerProperty>
+  </GlobalSettings>
+</StyleCopSettings>

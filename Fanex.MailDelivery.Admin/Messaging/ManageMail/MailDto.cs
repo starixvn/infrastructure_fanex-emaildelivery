@@ -1,4 +1,8 @@
-﻿using System;
+﻿#region
+
+using System;
+
+#endregion
 
 namespace Fanex.MailDelivery.Admin.Messaging.ManageMail
 {
@@ -8,19 +12,15 @@ namespace Fanex.MailDelivery.Admin.Messaging.ManageMail
 
         public string MailName { get; set; }
 
-
         public int MailGroupId { get; set; }
 
         public string MailGroupName { get; set; }
-
 
         public int SiteId { get; set; }
 
         public string SiteName { get; set; }
 
-
         public int TriggerType { get; set; }
-
 
         public string MailTo { get; set; }
 
@@ -28,11 +28,9 @@ namespace Fanex.MailDelivery.Admin.Messaging.ManageMail
 
         public string MailBcc { get; set; }
 
-
         public DateTime? LastSent { get; set; }
 
         public bool IsActive { get; set; }
-
 
         // Auto Mail
         public int RepeatType { get; set; }

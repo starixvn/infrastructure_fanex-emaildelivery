@@ -1,7 +1,11 @@
-﻿using System;
+﻿#region
+
+using System;
 using EasyNetQ;
 using Fanex.MailDelivery.Admin.Configurations;
 using Fanex.MailDelivery.Admin.Logging;
+
+#endregion
 
 namespace Fanex.MailDelivery.Admin.Services
 {
@@ -11,10 +15,9 @@ namespace Fanex.MailDelivery.Admin.Services
 
         public AdminService()
         {
-            Bus = RabbitHutch.CreateBus(AppSettings.MailAdminConfig.RabbitMQConnectionString, serviceRegister =>
-            {
-                serviceRegister.Register<IEasyNetQLogger>(_ => new MailAdminLogger());
-            });
+            Bus = RabbitHutch.CreateBus(
+                AppSettings.MailAdminConfig.RabbitMQConnectionString,
+                serviceRegister => { serviceRegister.Register<IEasyNetQLogger>(_ => new MailAdminLogger()); });
         }
 
         public void Dispose()
