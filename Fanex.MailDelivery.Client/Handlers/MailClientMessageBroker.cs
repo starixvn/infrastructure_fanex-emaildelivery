@@ -49,7 +49,6 @@ namespace Fanex.MailDelivery.Client.Handlers
             _bus.Dispose();
         }
 
-
         public void SubscribeRunNowJob()
         {
             _bus.Subscribe<Schedule>(
@@ -82,8 +81,6 @@ namespace Fanex.MailDelivery.Client.Handlers
                     },
                     config => config.WithTopic(_retryJobSubscriptionId));
         }
-
-
 
         public void Publish(Mail mail)
         {

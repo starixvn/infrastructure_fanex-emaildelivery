@@ -57,8 +57,7 @@ namespace Fanex.MailDelivery.Client.Handlers
 
                     if (schedule.SiteId != AppSettings.MailCientConfig.SiteId)
                     {
-                        LogInfo(string.Format("Current site id is {0}, but schedule site id is {1}",
-                            AppSettings.MailCientConfig.SiteId, schedule.SiteId));
+                        LogInfo(string.Format("Current site id is {0}, but schedule site id is {1}", AppSettings.MailCientConfig.SiteId, schedule.SiteId));
                     }
                 }
             }
