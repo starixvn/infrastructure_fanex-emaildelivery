@@ -42,10 +42,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Mapping\ScheduleDtoMapper.cs" />
     <Compile Include="Messaging\Schedule\GetScheduleListRequest.cs" />
     <Compile Include="Messaging\Schedule\GetScheduleListResponse.cs" />
-    <Compile Include="Messaging\Schedule\ScheduleDto.cs" />
     <Compile Include="Models\FileExtension.cs" />
     <Compile Include="Models\Group\GroupModel.cs" />
     <Compile Include="Models\MailType.cs" />
@@ -57,7 +55,6 @@
     <Compile Include="Models\TaskLog.cs" />
     <Compile Include="Models\ClientStatusModel.cs" />
     <Compile Include="Models\JobMessage.cs" />
-    <Compile Include="Models\JobRequest.cs" />
     <Compile Include="Models\JobStatus.cs" />
     <Compile Include="Models\Mail.cs" />
     <Compile Include="Models\MailAttachment.cs" />

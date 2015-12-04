@@ -121,14 +121,12 @@ namespace Fanex.MailDelivery.Core.Models
             }
             catch (Exception ex)
             {
-                //Logging.Logger.Log.Error(ex.Message);
+                // Logger.Log.Error(ex.Message);
             }
         }
 
         private int CalculateHoursDifferentBeetweenLocalAndServer(bool isLocalEnvironment)
         {
-            //string environment = MailClientSection.GetConfig().Environment ?? string.Empty;
-            //bool isLocal = environment.Length == 0 || environment.Trim().Equals("local");
             string timezoneName = isLocalEnvironment ? MailDeliveryConstants.LocalServerTimeZone : MailDeliveryConstants.LiveServerTimeZone;
             DateTime nowDate = DateTime.Now;
             return -(TimeZoneInfo.ConvertTime(nowDate, TimeZoneInfo.FindSystemTimeZoneById(timezoneName)) - nowDate).Hours;

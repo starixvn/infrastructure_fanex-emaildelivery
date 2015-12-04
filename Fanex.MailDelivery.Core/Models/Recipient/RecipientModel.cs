@@ -6,7 +6,6 @@
 
         public string RecipientName { get; set; }
 
-
         public int EmailId1 { get; set; }
 
         public int EmailId2 { get; set; }
@@ -18,7 +17,6 @@
         public string Email2 { get; set; }
 
         public string Email3 { get; set; }
-
 
         public bool IsNapUser { get; set; }
 
