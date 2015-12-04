@@ -31,7 +31,7 @@ namespace Fanex.MailDelivery.MailStation.Services
     /// <summary>
     /// Mail Report Service.
     /// </summary>
-    public class MailReportService : MailStationBaseService
+    public class MailReportService : MailStationBaseService, IDisposable
     {
         private IMailService _mailServer;
 
@@ -243,6 +243,22 @@ namespace Fanex.MailDelivery.MailStation.Services
             {
                 return date1;
             }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                // free managed resources
+            }
+            // free native resources if there are any.
+            _jobService.Dispose();
         }
     }
 }

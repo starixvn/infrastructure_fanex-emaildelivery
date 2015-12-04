@@ -9,7 +9,7 @@ using Fanex.MailDelivery.Admin.Logging;
 
 namespace Fanex.MailDelivery.Admin.Services
 {
-    public class AdminService : IDisposable
+    public class AdminService
     {
         protected readonly IBus Bus;
 
@@ -22,6 +22,18 @@ namespace Fanex.MailDelivery.Admin.Services
 
         public void Dispose()
         {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                // Free managed resources
+            }
+
+            // Free native resources if there are any.
             Bus.Dispose();
         }
     }

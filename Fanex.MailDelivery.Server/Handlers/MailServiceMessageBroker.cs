@@ -181,8 +181,19 @@ namespace Fanex.MailDelivery.Server.Handlers
 
         public void Dispose()
         {
-            _bus.Dispose();
+            Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                // Free managed resources
+            }
+
+            // Free native resources if there are any.
+            _bus.Dispose();
         }
     }
 }
