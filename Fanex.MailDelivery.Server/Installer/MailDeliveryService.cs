@@ -2,10 +2,10 @@
 
 namespace Fanex.MailDelivery.Server.Installer
 {
+    using System;
     using System.Diagnostics.CodeAnalysis;
     using System.ServiceProcess;
     using Data.Configuration;
-    using System;
 
     /// <summary>
     /// Mail Centralized Service.

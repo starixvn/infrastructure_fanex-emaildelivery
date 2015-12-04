@@ -15,10 +15,10 @@ namespace Fanex.MailDelivery.Server.Handlers
     {
         void Start();
 
-        //void SubscribeMail();
-
-        //void SubscribeJobResult();
-
-        //void SubscribeScheduleRequest();
+        // void SubscribeMail();
+           
+        // void SubscribeJobResult();
+           
+        // void SubscribeScheduleRequest();
     }
 }
