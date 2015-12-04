@@ -43,23 +43,19 @@ namespace Fanex.MailDelivery.MailStation.Controllers
 
         public ActionResult MailReport(MailReportCriteria criteria)
         {
-            //MailAdminService.Start();
-
-            //GetReportListRequest request = new GetReportListRequest
-            //{
-            //    MailName = criteria.MailName,
-            //    SiteId = criteria.SiteId,
-            //    FromDate = criteria.FromDate,
-            //    ToDate = criteria.ToDate,
-            //    Status = criteria.Status
-            //};
-
-            //GetReportListResponse response = MailAdminService.GetReportList(request);
-
-            //MailAdminService.Stop();
-
-            //return Json(response.MailTaskModels);
-            
+            // MailAdminService.Start();
+            // GetReportListRequest request = new GetReportListRequest
+            // {
+            //     MailName = criteria.MailName,
+            //     SiteId = criteria.SiteId,
+            //     FromDate = criteria.FromDate,
+            //     ToDate = criteria.ToDate,
+            //     Status = criteria.Status
+            // };
+               
+            // GetReportListResponse response = MailAdminService.GetReportList(request);
+               
+            // MailAdminService.Stop();
             return Json(_mailReportService.MailReport(criteria));
         }
 

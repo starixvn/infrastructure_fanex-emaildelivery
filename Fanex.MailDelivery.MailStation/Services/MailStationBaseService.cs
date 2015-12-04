@@ -143,15 +143,14 @@ namespace Fanex.MailDelivery.MailStation.Services
             }
         }
 
-        //public Schedule GetScheduleByMailId(GetScheduleByIdCriteria criteria)
-        //{
-        //    using (ObjectDb db = new ObjectDb(criteria.GetSettingKey()))
-        //    {
-        //        db.AssignParamValues(criteria.GetSpParams());
-        //        return db.Query<Schedule>().FirstOrDefault();
-        //    }
-        //}
-
+        // public Schedule GetScheduleByMailId(GetScheduleByIdCriteria criteria)
+        // {
+        //     using (ObjectDb db = new ObjectDb(criteria.GetSettingKey()))
+        //     {
+        //         db.AssignParamValues(criteria.GetSpParams());
+        //         return db.Query<Schedule>().FirstOrDefault();
+        //     }
+        // }
         public string GetTimeZone()
         {
             return string.Empty;

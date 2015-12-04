@@ -17,9 +17,9 @@ namespace Fanex.MailDelivery.MailStation.Services
     /// </summary>
     public class MailManageService : MailStationBaseService
     {
-        readonly IMailService _mailService;
+        private readonly IMailService _mailService;
 
-        readonly IJobService _jobService;
+        private readonly IJobService _jobService;
 
         public MailManageService(IMailService mailService, IJobService jobService)
         {
@@ -167,6 +167,7 @@ namespace Fanex.MailDelivery.MailStation.Services
                 MailTo = criteria.MailTo,
                 MailCc = criteria.MailCc,
                 MailBcc = criteria.MailBcc,
+                
                 // TODO: remove?
                 MailFrom = criteria.MailFrom,
                 Description = criteria.Description,
@@ -195,6 +196,7 @@ namespace Fanex.MailDelivery.MailStation.Services
                 MailTo = criteria.MailTo,
                 MailCc = criteria.MailCc,
                 MailBcc = criteria.MailBcc,
+                
                 // TODO: remove?
                 MailFrom = criteria.MailFrom,
                 Description = criteria.Description,
@@ -237,8 +239,6 @@ namespace Fanex.MailDelivery.MailStation.Services
             return commandResult;
         }
 
-
-
         public CommandResult CreateMailGroup(CreateMailGroupCriteria criteria)
         {
             return ExecuteNonQuery(criteria);
@@ -246,9 +246,9 @@ namespace Fanex.MailDelivery.MailStation.Services
 
         public void RunJobImmediately(int mailId)
         {
-            //TODO: Will be changed
-            //Schedule schedule = GetScheduleByMailId(new GetScheduleByIdCriteria { MailId = mailId });
-            //MailAdminService.PublishRetryJobMessage(schedule);
+            // TODO: Will be changed
+            // Schedule schedule = GetScheduleByMailId(new GetScheduleByIdCriteria { MailId = mailId });
+            // MailAdminService.PublishRetryJobMessage(schedule);
         }
 
         public void Dispose()

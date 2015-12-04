@@ -149,8 +149,6 @@ namespace Fanex.MailDelivery.MailStation.Controllers
 
         public void RunNow(int mailId)
         {
-            //_mailManageService.RunJobImmediately(mailId);
-
             IJobService jobService = new JobService();
 
             GetScheduleByMailIdRequest request = new GetScheduleByMailIdRequest { MailId = mailId };

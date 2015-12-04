@@ -37,7 +37,6 @@ namespace Fanex.MailDelivery.MailStation.Services
 
         private IJobService _jobService;
 
-
         public MailReportService()
         {
             _mailServer = _mailServer ?? MailService.Create();
@@ -164,15 +163,14 @@ namespace Fanex.MailDelivery.MailStation.Services
         /// <param name="criteria">The criteria.</param>
         public void RetrySendMail(RetrySendMailCriteria criteria)
         {
-            //MailAdminService.Start();
-            //MailTaskModel mailTask = this.GetMailTaskByID(new GetMailTaskByIdCriteria() { MailTaskId = criteria.TaskId });
-
-            //TODO: Will be changed
-
-            //Schedule schedule = this.GetScheduleByMailId(new GetScheduleByIdCriteria() { MailId = mailTask.MailId });
-            //schedule.TaskId = mailTask.MailTaskId;
-            //MailAdminService.PublishRetryJobMessage(schedule);
-            //MailAdminService.Stop();
+            // MailAdminService.Start();
+            // MailTaskModel mailTask = this.GetMailTaskByID(new GetMailTaskByIdCriteria() { MailTaskId = criteria.TaskId });
+               
+            // TODO: Will be changed
+            // Schedule schedule = this.GetScheduleByMailId(new GetScheduleByIdCriteria() { MailId = mailTask.MailId });
+            // schedule.TaskId = mailTask.MailTaskId;
+            // MailAdminService.PublishRetryJobMessage(schedule);
+            // MailAdminService.Stop();
         }
 
         public void AbortJob(int taskId)
@@ -184,7 +182,6 @@ namespace Fanex.MailDelivery.MailStation.Services
 
             _jobService.AbortJob(request);
         }
-
 
         public void RetryMissingJob(RetryMissingTaskCriteria criteria)
         {
@@ -198,17 +195,16 @@ namespace Fanex.MailDelivery.MailStation.Services
                 mailTaskID = Converter.ToInt(db.GetParameterValue("MailTaskID"));
             }
 
-            //MailAdminService.Start();
+            // MailAdminService.Start();
             MailTaskModel mailTask = this.GetMailTaskByID(new GetMailTaskByIdCriteria() { MailTaskId = mailTaskID });
 
-            //TODO: Will be changed 
-            //Schedule schedule = this.GetScheduleByMailId(new GetScheduleByIdCriteria() { MailId = mailTask.MailId });
-            //schedule.CurrentFireTime = criteria.ScheduledTime;
-            //schedule.TaskId = mailTaskID;
-            //MailAdminService.PublishRetryJobMessage(schedule);
+            // TODO: Will be changed 
+            // Schedule schedule = this.GetScheduleByMailId(new GetScheduleByIdCriteria() { MailId = mailTask.MailId });
+            // schedule.CurrentFireTime = criteria.ScheduledTime;
+            // schedule.TaskId = mailTaskID;
+            // MailAdminService.PublishRetryJobMessage(schedule);
 
-
-            //MailAdminService.Stop();
+            // MailAdminService.Stop();
         }
 
         /// <summary>

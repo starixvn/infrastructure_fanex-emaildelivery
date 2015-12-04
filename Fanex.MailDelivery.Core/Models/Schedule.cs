@@ -119,7 +119,7 @@ namespace Fanex.MailDelivery.Core.Models
                 cron[2] = hour.ToString();
                 this.RepeatExpression = string.Join(" ", cron);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Logger.Log.Error(ex.Message);
             }
