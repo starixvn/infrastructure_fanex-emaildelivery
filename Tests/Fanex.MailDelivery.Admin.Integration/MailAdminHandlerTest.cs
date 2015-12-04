@@ -55,114 +55,115 @@ namespace Fanex.MailDelivery.Admin.UserTest
             };
         }
 
-        //[Test]
-        //public void CreateFunctionMailTest()
-        //{
-        //    // MailGroupId: Mail_Group_GetMailGroup
-        //    // SiteId
-        //    // MailTo: Mail_MailManagement_GetSuggesionEmailList
-        //    CreateFunctionMailRequest request = new CreateFunctionMailRequest
-        //    {
-        //        MailGroupId = 1,
-        //        MailName = "CreateFunctionMailTest",
-        //        SiteId = 12,
+        /*
+        [Test]
+        public void CreateFunctionMailTest()
+        {
+            // MailGroupId: Mail_Group_GetMailGroup
+            // SiteId
+            // MailTo: Mail_MailManagement_GetSuggesionEmailList
+            CreateFunctionMailRequest request = new CreateFunctionMailRequest
+            {
+                MailGroupId = 1,
+                MailName = "CreateFunctionMailTest",
+                SiteId = 12,
 
-        //        MailFrom = "ddfgdg",
-        //        MailTo = "17",
+                MailFrom = "ddfgdg",
+                MailTo = "17",
 
-        //        IsActive = true,
+                IsActive = true,
 
-        //        Description = "CreateFunctionMailTest Description"
-        //    };
+                Description = "CreateFunctionMailTest Description"
+            };
 
-        //    ResultResponse response = MailAdminService.CreateFunctionMail(request);
+            ResultResponse response = MailAdminService.CreateFunctionMail(request);
 
-        //}
+        }
 
-        //[Test]
-        //public void CreateAutoMailTest()
-        //{
-        //    // MailGroupId: Mail_Group_GetMailGroup
-        //    // SiteId
-        //    // MailTo: Mail_MailManagement_GetSuggesionEmailList
-        //    CreateAutoMailRequest request = new CreateAutoMailRequest
-        //    {
-        //        MailGroupId = 1,
-        //        MailName = "CreateAutoMailTest",
-        //        SiteId = 12,
+        [Test]
+        public void CreateAutoMailTest()
+        {
+            // MailGroupId: Mail_Group_GetMailGroup
+            // SiteId
+            // MailTo: Mail_MailManagement_GetSuggesionEmailList
+            CreateAutoMailRequest request = new CreateAutoMailRequest
+            {
+                MailGroupId = 1,
+                MailName = "CreateAutoMailTest",
+                SiteId = 12,
 
-        //        MailFrom = "ddfgdg",
-        //        MailTo = "17",
+                MailFrom = "ddfgdg",
+                MailTo = "17",
 
-        //        IsActive = true,
+                IsActive = true,
 
-        //        Description = "CreateFunctionMailTest Description",
+                Description = "CreateFunctionMailTest Description",
 
-        //        //RepeatType =  ,
-        //        CronExpression = "0 46 5 12 * ?"
-        //        //StartOn =  ,
-        //        //EndOn =  ,
-        //        //Attempt =  ,
-        //        //Interval =  ,
-        //    };
+                //RepeatType =  ,
+                CronExpression = "0 46 5 12 * ?"
+                //StartOn =  ,
+                //EndOn =  ,
+                //Attempt =  ,
+                //Interval =  ,
+            };
 
-        //    ResultResponse response = MailAdminService.CreateAutoMail(request);
-        //}
+            ResultResponse response = MailAdminService.CreateAutoMail(request);
+        }
 
-        //[Test]
-        //public void UpdateFunctionMailTest()
-        //{
-        //    UpdateFunctionMailRequest request = new UpdateFunctionMailRequest
-        //    {
-        //        MailId = 122,
+        [Test]
+        public void UpdateFunctionMailTest()
+        {
+            UpdateFunctionMailRequest request = new UpdateFunctionMailRequest
+            {
+                MailId = 122,
 
-        //        MailGroupId = 1,
-        //        MailName = "CreateFunctionMailTest_Update1",
-        //        SiteId = 12,
+                MailGroupId = 1,
+                MailName = "CreateFunctionMailTest_Update1",
+                SiteId = 12,
 
-        //        MailFrom = "ddfgdg",
-        //        MailTo = "17",
+                MailFrom = "ddfgdg",
+                MailTo = "17",
 
-        //        IsActive = true,
+                IsActive = true,
 
-        //        Description = "CreateFunctionMailTest Description",
-        //    };
+                Description = "CreateFunctionMailTest Description",
+            };
 
-        //    ResultResponse response = MailAdminService.UpdateFunctionMail(request);
-        //}
+            ResultResponse response = MailAdminService.UpdateFunctionMail(request);
+        }
 
-        //[Test]
-        //public void UpdateAutoMailTest()
-        //{
-        //    UpdateAutoMailRequest request = new UpdateAutoMailRequest
-        //    {
-        //        MailId = 123,
+        [Test]
+        public void UpdateAutoMailTest()
+        {
+            UpdateAutoMailRequest request = new UpdateAutoMailRequest
+            {
+                MailId = 123,
 
-        //        MailGroupId = 1,
-        //        MailName = "CreateAutoMailTest_Update2",
-        //        SiteId = 12,
+                MailGroupId = 1,
+                MailName = "CreateAutoMailTest_Update2",
+                SiteId = 12,
 
-        //        MailFrom = "ddfgdg",
-        //        MailTo = "17",
+                MailFrom = "ddfgdg",
+                MailTo = "17",
 
-        //        IsActive = true,
+                IsActive = true,
 
-        //        Description = "CreateFunctionMailTest Description",
-        //    };
+                Description = "CreateFunctionMailTest Description",
+            };
 
-        //    ResultResponse response = MailAdminService.UpdateAutoMail(request);
-        //}
+            ResultResponse response = MailAdminService.UpdateAutoMail(request);
+        }
 
-        //[Test]
-        //public void DeleteMailTest()
-        //{
-        //    DeleteMailRequest request = new DeleteMailRequest
-        //    {
-        //        MailId = 123
-        //    };
+        [Test]
+        public void DeleteMailTest()
+        {
+            DeleteMailRequest request = new DeleteMailRequest
+            {
+                MailId = 123
+            };
 
-        //    ResultResponse response = MailAdminService.DeleteMail(request);
-        //}
+            ResultResponse response = MailAdminService.DeleteMail(request);
+        }
 
 
         [Test]
@@ -182,59 +183,60 @@ namespace Fanex.MailDelivery.Admin.UserTest
             }
         }
 
-        //[Test]
-        //public void CreateRecipienttTest()
-        //{
-        //    CreateRecipientRequest request = new CreateRecipientRequest
-        //    {
-        //        UserName = "GeorgeTest",
-        //        Email1 = "GeorgeTest@yahoo.com",
-        //        Status = true,
-        //        Note = "Note"
-        //    };
+        [Test]
+        public void CreateRecipienttTest()
+        {
+            CreateRecipientRequest request = new CreateRecipientRequest
+            {
+                UserName = "GeorgeTest",
+                Email1 = "GeorgeTest@yahoo.com",
+                Status = true,
+                Note = "Note"
+            };
 
-        //    ResultResponse response = MailAdminService.CreateRecipient(request);
-        //}
+            ResultResponse response = MailAdminService.CreateRecipient(request);
+        }
 
-        //[Test]
-        //public void UpdateRecipienttTest()
-        //{
-        //    //UpdateRecipientRequest request = new UpdateRecipientRequest
-        //    //{
-        //    //    RecipientId = 59
-        //    //};
+        [Test]
+        public void UpdateRecipienttTest()
+        {
+            //UpdateRecipientRequest request = new UpdateRecipientRequest
+            //{
+            //    RecipientId = 59
+            //};
 
-        //    //ResultResponse response = MailAdminService.DeleteRecipient(request);
-        //}
+            //ResultResponse response = MailAdminService.DeleteRecipient(request);
+        }
 
-        //[Test]
-        //public void DeleteRecipienttTest()
-        //{
-        //    DeleteRecipientRequest request = new DeleteRecipientRequest
-        //    {
-        //        RecipientId = 59
-        //    };
+        [Test]
+        public void DeleteRecipienttTest()
+        {
+            DeleteRecipientRequest request = new DeleteRecipientRequest
+            {
+                RecipientId = 59
+            };
 
-        //    ResultResponse response = MailAdminService.DeleteRecipient(request);
-        //}
+            ResultResponse response = MailAdminService.DeleteRecipient(request);
+        }
 
-        //#region Group
+        #region Group
 
-        //[Test]
-        //public void GetGroupListTest()
-        //{
-        //    GetGroupListRequest request = new GetGroupListRequest
-        //    {
-        //    };
+        [Test]
+        public void GetGroupListTest()
+        {
+            GetGroupListRequest request = new GetGroupListRequest
+            {
+            };
 
-        //    GetGroupListResponse response;
+            GetGroupListResponse response;
 
-        //    using (IGroupService groupService = new GroupService())
-        //    {
-        //        response = groupService.GetGroupList(request);
-        //    }
-        //}
+            using (IGroupService groupService = new GroupService())
+            {
+                response = groupService.GetGroupList(request);
+            }
+        }
 
-        //#endregion
+        #endregion
+        */
     }
 }
