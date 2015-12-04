@@ -24,6 +24,5 @@ namespace Fanex.MailDelivery.Services.Repositories
         MailTask GetMailTask(GetMailTaskByIdCriteria criteria);
 
         void UpdateClientActiveTime(UpdateClientActiveTimeCriteria criteria);
-
     }
 }

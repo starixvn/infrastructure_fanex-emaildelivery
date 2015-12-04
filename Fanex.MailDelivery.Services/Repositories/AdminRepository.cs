@@ -40,7 +40,7 @@ namespace Fanex.MailDelivery.Services.Repositories
             {
                 db.AssignParamValues(criteria.GetSpParams());
                 return db.Query<MailModel>().FirstOrDefault();
-            };
+            }
         }
 
         public ResultModel CreateMail(CreateMailCriteria criteria)
@@ -54,7 +54,7 @@ namespace Fanex.MailDelivery.Services.Repositories
 
             return GetCommandResult(hash);
         }
- 
+
         public ResultModel UpdateMail(UpdateMailCriteria criteria)
         {
             Hashtable hash = criteria.GetSpParams();
@@ -162,7 +162,7 @@ namespace Fanex.MailDelivery.Services.Repositories
             {
                 db.AssignParamValues(criteria.GetSpParams());
                 return db.Query<GroupModel>().FirstOrDefault();
-            };
+            }
         }
 
         public ResultModel CreateGroup(CreateGroupCriteria criteria)

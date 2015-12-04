@@ -2,7 +2,7 @@
 
 namespace Fanex.MailDelivery.Services.Criteria.Group
 {
-    public class GetGroupByIdCriteria: CriteriaBase
+    public class GetGroupByIdCriteria : CriteriaBase
     {
         public int MailGroupId { get; set; }
 
