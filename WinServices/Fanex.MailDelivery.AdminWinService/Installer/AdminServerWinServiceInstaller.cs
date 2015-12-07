@@ -3,18 +3,18 @@ using System.ComponentModel;
 using System.Linq;
 using System.ServiceProcess;
 
-namespace Fanex.MailDelivery.ClientWinService.Installer
+namespace Fanex.MailDelivery.AdminWinService.Installer
 {
     /// <summary>
     /// Service Installer.
     /// </summary>
     [RunInstaller(true)]
-    public partial class ClientServiceInstaller : System.Configuration.Install.Installer
+    public partial class AdminServerWinServiceInstaller : System.Configuration.Install.Installer
     {
         private ServiceProcessInstaller _process;
         private System.ServiceProcess.ServiceInstaller _service;
 
-        public ClientServiceInstaller()
+        public AdminServerWinServiceInstaller()
         {
             InitializeComponent();
 

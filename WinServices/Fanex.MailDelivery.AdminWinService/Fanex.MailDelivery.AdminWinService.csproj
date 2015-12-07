@@ -120,11 +120,11 @@
     <Compile Include="Installer\AdminServerWinService.Designer.cs">
       <DependentUpon>AdminServerWinService.cs</DependentUpon>
     </Compile>
-    <Compile Include="Installer\AdminServiceInstaller.cs">
+    <Compile Include="Installer\AdminServerWinServiceInstaller.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Installer\AdminServiceInstaller.Designer.cs">
-      <DependentUpon>AdminServiceInstaller.cs</DependentUpon>
+    <Compile Include="Installer\AdminServerWinServiceInstaller.Designer.cs">
+      <DependentUpon>AdminServerWinServiceInstaller.cs</DependentUpon>
     </Compile>
     <Compile Include="Logging\RabbitMQLogger.cs" />
     <Compile Include="MailService\IMailService.cs" />

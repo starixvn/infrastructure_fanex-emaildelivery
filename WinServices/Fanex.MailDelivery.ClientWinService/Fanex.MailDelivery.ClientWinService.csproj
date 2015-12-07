@@ -84,11 +84,11 @@
     <Compile Include="Installer\ClientServerWinService.Designer.cs">
       <DependentUpon>ClientServerWinService.cs</DependentUpon>
     </Compile>
-    <Compile Include="Installer\ClientServiceInstaller.cs">
+    <Compile Include="Installer\ClientServerWinServiceInstaller.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Installer\ClientServiceInstaller.Designer.cs">
-      <DependentUpon>ClientServiceInstaller.cs</DependentUpon>
+    <Compile Include="Installer\ClientServerWinServiceInstaller.Designer.cs">
+      <DependentUpon>ClientServerWinServiceInstaller.cs</DependentUpon>
     </Compile>
     <Compile Include="Logging\ServerClientLogger.cs" />
     <Compile Include="Program.cs" />

@@ -1,12 +1,12 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace Fanex.MailDelivery.AdminWinService.Installer
+namespace Fanex.MailDelivery.ClientWinService.Installer
 {
     /// <summary>
     /// Service Installer.
     /// </summary>
     [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1400:AccessModifierMustBeDeclared", Justification = "Reviewed.")]
-    partial class AdminServiceInstaller
+    partial class ClientServerWinServiceInstaller
     {
         /// <summary>
         /// Required designer variable.
