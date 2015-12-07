@@ -17,11 +17,11 @@ namespace Fanex.MailDelivery.Services.Services
     /// <summary>
     /// Admin Service.
     /// </summary>
-    public class AdminService : IAdminService
+    public class MailStationService : IMailStationService
     {
         private readonly IAdminRepository _adminRepository;
 
-        public AdminService()
+        public MailStationService()
         {
             _adminRepository = _adminRepository ?? new AdminRepository();
         }

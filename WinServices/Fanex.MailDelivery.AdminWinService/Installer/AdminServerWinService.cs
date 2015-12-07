@@ -10,22 +10,22 @@ namespace Fanex.MailDelivery.AdminWinService.Installer
     /// Mail Centralized Service.
     /// </summary>
     [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1400:AccessModifierMustBeDeclared", Justification = "Reviewed.")]
-    partial class MailDeliveryService : ServiceBase
+    partial class AdminServerWinService : ServiceBase
     {
-        private IMessageBroker _messageBroker;
+        private IAdminServerMessageBroker _messageBroker;
         private JobHandler _jobHandler;
 
         private string serviceInfo = "Service {0} {1} at {2}.";
 
-        public MailDeliveryService()
+        public AdminServerWinService()
             : this(null)
         {
         }
 
-        public MailDeliveryService(IMessageBroker messageBroker)
+        public AdminServerWinService(IAdminServerMessageBroker messageBroker)
         {
             InitializeComponent();
-            _messageBroker = messageBroker ?? new MailServiceMessageBroker();
+            _messageBroker = messageBroker ?? new AdminServerMessageBroker();
             _jobHandler = new JobHandler();
             DbSettingProviderManager.Current.Start();
         }

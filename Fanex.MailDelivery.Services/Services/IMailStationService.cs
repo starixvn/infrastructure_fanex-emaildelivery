@@ -16,8 +16,10 @@ namespace Fanex.MailDelivery.Services.Services
     /// <summary>
     /// Mail Service interface.
     /// </summary>
-    public interface IAdminService
+    public interface IMailStationService
     {
+        #region Admin
+
         IList<MailModel> GetListMail(GetMailListCriteria criteria);
 
         MailModel GetMailById(GetMailByIdCriteria criteria);
@@ -50,6 +52,12 @@ namespace Fanex.MailDelivery.Services.Services
 
         IList<MailTaskModel> GetReportList(GetReportListCriteria criteria);
 
+        #endregion
+
+        #region Client
+
         Schedule GetScheduleByMailId(GetScheduleByMailIdCriteria criteria);
+
+        #endregion
     }
 }

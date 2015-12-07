@@ -5,11 +5,11 @@ using Fanex.MailDelivery.ClientWinService.Logging;
 
 namespace Fanex.MailDelivery.ClientWinService.Handlers
 {
-    public class ServerMessageBroker
+    public class ClientServerMessageBroker : IClientServerMessageBroker
     {
         private IBus _bus;
 
-        public ServerMessageBroker()
+        public ClientServerMessageBroker()
         {
         }
 

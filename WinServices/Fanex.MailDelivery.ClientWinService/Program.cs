@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using System.ServiceProcess;
+using Fanex.MailDelivery.ClientWinService.Installer;
 
 namespace Fanex.MailDelivery.ClientWinService
 {
@@ -14,7 +15,7 @@ namespace Fanex.MailDelivery.ClientWinService
         {
             ServiceBase[] servicesToRun = new ServiceBase[]
             {
-               // new MailDeliveryService()
+                new ClientServerWinService()
             };
 
             if (Environment.UserInteractive)

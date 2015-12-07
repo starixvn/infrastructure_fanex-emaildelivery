@@ -6,7 +6,7 @@ namespace Fanex.MailDelivery.AdminWinService.Installer
     /// Service Installer.
     /// </summary>
     [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1400:AccessModifierMustBeDeclared", Justification = "Reviewed.")]
-    partial class ServiceInstaller
+    partial class AdminServiceInstaller
     {
         /// <summary>
         /// Required designer variable.

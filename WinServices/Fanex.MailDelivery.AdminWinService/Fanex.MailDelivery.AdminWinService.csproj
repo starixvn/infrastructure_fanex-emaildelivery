@@ -111,20 +111,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Handlers\CheckClientOnlineStatusJob.cs" />
-    <Compile Include="Handlers\IMessageBroker.cs" />
+    <Compile Include="Handlers\IAdminServerMessageBroker.cs" />
     <Compile Include="Handlers\JobHandler.cs" />
-    <Compile Include="Handlers\MailServiceMessageBroker.cs" />
-    <Compile Include="Installer\MailDeliveryService.cs">
+    <Compile Include="Handlers\AdminServerMessageBroker.cs" />
+    <Compile Include="Installer\AdminServerWinService.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Installer\MailDeliveryService.Designer.cs">
-      <DependentUpon>MailDeliveryService.cs</DependentUpon>
+    <Compile Include="Installer\AdminServerWinService.Designer.cs">
+      <DependentUpon>AdminServerWinService.cs</DependentUpon>
     </Compile>
-    <Compile Include="Installer\ServiceInstaller.cs">
+    <Compile Include="Installer\AdminServiceInstaller.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Installer\ServiceInstaller.Designer.cs">
-      <DependentUpon>ServiceInstaller.cs</DependentUpon>
+    <Compile Include="Installer\AdminServiceInstaller.Designer.cs">
+      <DependentUpon>AdminServiceInstaller.cs</DependentUpon>
     </Compile>
     <Compile Include="Logging\RabbitMQLogger.cs" />
     <Compile Include="MailService\IMailService.cs" />
@@ -151,9 +151,6 @@
     </Content>
     <None Include="Installer\InstallMailService.bat" />
     <None Include="Installer\UnInstallMailService.bat" />
-    <None Include="job_scheduling_data_2_0.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>

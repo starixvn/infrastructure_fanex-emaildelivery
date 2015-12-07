@@ -18,7 +18,7 @@ namespace Fanex.MailDelivery.AdminWinService
         {
             ServiceBase[] servicesToRun = new ServiceBase[]
             {
-                new MailDeliveryService()
+                new AdminServerWinService()
             };
 
             if (Environment.UserInteractive)

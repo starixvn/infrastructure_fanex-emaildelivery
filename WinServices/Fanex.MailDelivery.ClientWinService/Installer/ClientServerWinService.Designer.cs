@@ -6,7 +6,7 @@ namespace Fanex.MailDelivery.ClientWinService.Installer
     /// Mail Centralized Service.
     /// </summary>
     [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1400:AccessModifierMustBeDeclared", Justification = "Reviewed.")]
-    partial class MailDeliveryService
+    partial class ClientServerWinService
     {
         /// <summary> 
         /// Required designer variable.
@@ -17,13 +17,14 @@ namespace Fanex.MailDelivery.ClientWinService.Installer
         /// Clean up any resources being used.
         /// </summary>
         /// <param name="disposing">True if managed resources should be disposed; otherwise, false.</param>
-        protected void Dispose(bool disposing)
+        protected override void Dispose(bool disposing)
         {
             if (disposing && (_components != null))
             {
                 _components.Dispose();
             }
 
+            base.Dispose(disposing);
         }
 
         #region Component Designer generated code
@@ -35,6 +36,7 @@ namespace Fanex.MailDelivery.ClientWinService.Installer
         private void InitializeComponent()
         {
             _components = new System.ComponentModel.Container();
+            this.ServiceName = "Fanex.MailStation.Service";
         }
 
         #endregion

@@ -9,12 +9,12 @@ namespace Fanex.MailDelivery.AdminWinService.Installer
     /// Service Installer.
     /// </summary>
     [RunInstaller(true)]
-    public partial class ServiceInstaller : System.Configuration.Install.Installer
+    public partial class AdminServiceInstaller : System.Configuration.Install.Installer
     {
         private ServiceProcessInstaller _process;
         private System.ServiceProcess.ServiceInstaller _service;
 
-        public ServiceInstaller()
+        public AdminServiceInstaller()
         {
             InitializeComponent();
 

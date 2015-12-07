@@ -94,8 +94,8 @@
     <Compile Include="Repositories\IAdminRepository.cs" />
     <Compile Include="Repositories\IMailRepository.cs" />
     <Compile Include="Repositories\MailRepository.cs" />
-    <Compile Include="Services\AdminService.cs" />
-    <Compile Include="Services\IAdminService.cs" />
+    <Compile Include="Services\MailStationService.cs" />
+    <Compile Include="Services\IMailStationService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Fanex.MailDelivery.Core\Fanex.MailDelivery.Core.csproj">

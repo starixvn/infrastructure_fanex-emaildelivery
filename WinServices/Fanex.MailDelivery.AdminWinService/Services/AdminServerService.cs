@@ -23,16 +23,16 @@ namespace Fanex.MailDelivery.AdminWinService.Services
 {
     public class AdminServerService : IAdminServerService
     {
-        private readonly IAdminService _adminService;
+        private readonly IMailStationService _mailStationService;
 
-        public AdminServerService(IAdminService adminService)
+        public AdminServerService(IMailStationService mailStationService)
         {
-            _adminService = adminService;
+            _mailStationService = mailStationService;
         }
 
         public GetMailListResponse GetMailList(GetMailListRequest request)
         {
-            IList<MailModel> mailModels = _adminService.GetListMail(new GetMailListCriteria
+            IList<MailModel> mailModels = _mailStationService.GetListMail(new GetMailListCriteria
             {
                 Emails = request.Emails,
                 IsActive = request.IsActive,
@@ -53,7 +53,7 @@ namespace Fanex.MailDelivery.AdminWinService.Services
 
         public GetMailByIdResponse GetMailById(GetMailByIdRequest request)
         {
-            MailModel mailModel = _adminService.GetMailById(new GetMailByIdCriteria
+            MailModel mailModel = _mailStationService.GetMailById(new GetMailByIdCriteria
             {
                 MailId = request.Id
             });
@@ -63,7 +63,7 @@ namespace Fanex.MailDelivery.AdminWinService.Services
 
         public ResultResponse CreateFunctionMail(CreateFunctionMailRequest request)
         {
-            return _adminService.CreateMail(new CreateMailCriteria()
+            return _mailStationService.CreateMail(new CreateMailCriteria()
             {
                 MailGroupId = request.MailGroupId,
                 MailName = request.MailName,
@@ -83,7 +83,7 @@ namespace Fanex.MailDelivery.AdminWinService.Services
 
         public ResultResponse CreateAutoMail(CreateAutoMailRequest request)
         {
-            return _adminService.CreateMail(new CreateMailCriteria()
+            return _mailStationService.CreateMail(new CreateMailCriteria()
             {
                 MailGroupId = request.MailGroupId,
                 MailName = request.MailName,
@@ -112,7 +112,7 @@ namespace Fanex.MailDelivery.AdminWinService.Services
 
         public ResultResponse UpdateFunctionMail(UpdateFunctionMailRequest request)
         {
-            return _adminService.UpdateMail(new UpdateMailCriteria()
+            return _mailStationService.UpdateMail(new UpdateMailCriteria()
             {
                 MailId = request.MailId,
 
@@ -134,7 +134,7 @@ namespace Fanex.MailDelivery.AdminWinService.Services
 
         public ResultResponse UpdateAutoMail(UpdateAutoMailRequest request)
         {
-            return _adminService.UpdateMail(new UpdateMailCriteria()
+            return _mailStationService.UpdateMail(new UpdateMailCriteria()
             {
                 MailId = request.MailId,
 
@@ -165,7 +165,7 @@ namespace Fanex.MailDelivery.AdminWinService.Services
 
         public ResultResponse DeleteMail(DeleteMailRequest request)
         {
-            return _adminService.DeleteMail(new DeleteMailCriteria
+            return _mailStationService.DeleteMail(new DeleteMailCriteria
             {
                 MailId = request.MailId
             }).ToResultResponse();
@@ -173,7 +173,7 @@ namespace Fanex.MailDelivery.AdminWinService.Services
 
         public GetRecipientListResponse GetRecipientList(GetRecipientListRequest request)
         {
-            IList<RecipientModel> recipientModels = _adminService.GetListRecipient(new GetRecipientListCriteria
+            IList<RecipientModel> recipientModels = _mailStationService.GetListRecipient(new GetRecipientListCriteria
             {
                 Emails = request.Emails,
                 Status = request.Status,
@@ -190,7 +190,7 @@ namespace Fanex.MailDelivery.AdminWinService.Services
 
         public GetRecipientByIdResponse GetRecipientById(GetRecipientByIdRequest request)
         {
-            RecipientModel recipientModel = _adminService.GetRecipientById(new GetRecipientByIdCriteria
+            RecipientModel recipientModel = _mailStationService.GetRecipientById(new GetRecipientByIdCriteria
             {
                 RecipientId = request.Id
             });
@@ -200,7 +200,7 @@ namespace Fanex.MailDelivery.AdminWinService.Services
 
         public ResultResponse CreateRecipient(CreateRecipientRequest request)
         {
-            return _adminService.CreateRecipient(new CreateRecipientCriteria()
+            return _mailStationService.CreateRecipient(new CreateRecipientCriteria()
             {
                 Email1 = request.Email1,
                 Email2 = request.Email2,
@@ -215,7 +215,7 @@ namespace Fanex.MailDelivery.AdminWinService.Services
 
         public ResultResponse UpdateRecipient(UpdateRecipientRequest request)
         {
-            return _adminService.UpdateRecipient(new UpdateRecipientCriteria()
+            return _mailStationService.UpdateRecipient(new UpdateRecipientCriteria()
             {
                 RecipientId = request.RecipientId,
                 Username = request.UserName,
@@ -234,7 +234,7 @@ namespace Fanex.MailDelivery.AdminWinService.Services
 
         public ResultResponse DeleteRecipient(DeleteRecipientRequest request)
         {
-            return _adminService.DeleteRecipient(new DeleteRecipientCriteria
+            return _mailStationService.DeleteRecipient(new DeleteRecipientCriteria
             {
                 RecipientId = request.RecipientId
             }).ToResultResponse();
@@ -242,7 +242,7 @@ namespace Fanex.MailDelivery.AdminWinService.Services
 
         public GetGroupListResponse GetGroupList(GetGroupListRequest request)
         {
-            IList<GroupModel> groupModels = _adminService.GetGroupList(new GetGroupListCriteria
+            IList<GroupModel> groupModels = _mailStationService.GetGroupList(new GetGroupListCriteria
             {
                 MailGroupName = request.Name
             });
@@ -252,7 +252,7 @@ namespace Fanex.MailDelivery.AdminWinService.Services
 
         public GetMailGroupByIdResponse GetGroupById(GetMailGroupByIdRequest request)
         {
-            GroupModel groupModel = _adminService.GetGroupById(new GetGroupByIdCriteria
+            GroupModel groupModel = _mailStationService.GetGroupById(new GetGroupByIdCriteria
             {
                 MailGroupId = request.Id
             });
@@ -262,7 +262,7 @@ namespace Fanex.MailDelivery.AdminWinService.Services
 
         public ResultResponse CreateGroup(CreateGroupRequest request)
         {
-            return _adminService.CreateGroup(new CreateGroupCriteria
+            return _mailStationService.CreateGroup(new CreateGroupCriteria
             {
                 MailGroupName = request.Name,
                 Description = request.Description
@@ -271,7 +271,7 @@ namespace Fanex.MailDelivery.AdminWinService.Services
 
         public ResultResponse UpdateGroup(UpdateGroupRequest request)
         {
-            return _adminService.UpdateGroup(new UpdateGroupCriteria
+            return _mailStationService.UpdateGroup(new UpdateGroupCriteria
             {
                 MailGroupId = request.Id,
                 MailGroupName = request.Name,
@@ -281,7 +281,7 @@ namespace Fanex.MailDelivery.AdminWinService.Services
 
         public ResultResponse DeleteGroup(DeleteGroupRequest request)
         {
-            return _adminService.DeleteGroup(new DeleteGroupCriteria
+            return _mailStationService.DeleteGroup(new DeleteGroupCriteria
             {
                 MailGroupId = request.Id
             }).ToResultResponse();
@@ -289,7 +289,7 @@ namespace Fanex.MailDelivery.AdminWinService.Services
 
         public GetReportListResponse GetReportList(GetReportListRequest request)
         {
-            IList<MailTaskModel> mailTaskModels = _adminService.GetReportList(new GetReportListCriteria
+            IList<MailTaskModel> mailTaskModels = _mailStationService.GetReportList(new GetReportListCriteria
             {
                 MailName = request.MailName,
                 SiteId = request.SiteId,
@@ -303,7 +303,7 @@ namespace Fanex.MailDelivery.AdminWinService.Services
 
         public GetScheduleByMailIdResponse GetScheduleByMailId(GetScheduleByMailIdRequest request)
         {
-            Schedule schedule = _adminService.GetScheduleByMailId(new GetScheduleByMailIdCriteria
+            Schedule schedule = _mailStationService.GetScheduleByMailId(new GetScheduleByMailIdCriteria
             {
                 MailId = request.MailId
             });
@@ -317,7 +317,7 @@ namespace Fanex.MailDelivery.AdminWinService.Services
 
             foreach (int mail in request.MailIds)
             {
-                Schedule schedule = _adminService.GetScheduleByMailId(new GetScheduleByMailIdCriteria
+                Schedule schedule = _mailStationService.GetScheduleByMailId(new GetScheduleByMailIdCriteria
                 {
                     MailId = mail
                 });

@@ -20,23 +20,23 @@ namespace Fanex.MailDelivery.AdminWinService.Handlers
     /// <summary>
     /// Mail Service Message Broker.
     /// </summary>
-    public class MailServiceMessageBroker : IMessageBroker
+    public class AdminServerMessageBroker : IAdminServerMessageBroker
     {
         private IBus _bus;
         private IMailService _mailService;
 
         private IAdminServerService _adminServerService;
 
-        public MailServiceMessageBroker()
+        public AdminServerMessageBroker()
             : this(null)
         {
         }
 
-        public MailServiceMessageBroker(IMailService mailService)
+        public AdminServerMessageBroker(IMailService mailService)
         {
             _mailService = mailService ?? new MailService.MailService();
 
-            _adminServerService = new AdminServerService(new AdminService());
+            _adminServerService = new AdminServerService(new MailStationService());
         }
 
         /// <summary>

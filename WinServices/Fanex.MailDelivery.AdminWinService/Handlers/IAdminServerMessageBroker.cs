@@ -11,7 +11,7 @@ namespace Fanex.MailDelivery.AdminWinService.Handlers
     /// <summary>
     /// TODO: Update summary.
     /// </summary>
-    public interface IMessageBroker : IDisposable
+    public interface IAdminServerMessageBroker : IDisposable
     {
         void Start();
 

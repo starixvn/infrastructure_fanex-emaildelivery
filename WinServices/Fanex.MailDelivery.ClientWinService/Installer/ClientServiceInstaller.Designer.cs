@@ -1,19 +1,19 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace Fanex.MailDelivery.AdminWinService.Installer
+namespace Fanex.MailDelivery.ClientWinService.Installer
 {
     /// <summary>
-    /// Mail Centralized Service.
+    /// Service Installer.
     /// </summary>
     [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1400:AccessModifierMustBeDeclared", Justification = "Reviewed.")]
-    partial class MailDeliveryService
+    partial class ClientServiceInstaller
     {
-        /// <summary> 
+        /// <summary>
         /// Required designer variable.
         /// </summary>
         private System.ComponentModel.IContainer _components = null;
 
-        /// <summary>
+        /// <summary> 
         /// Clean up any resources being used.
         /// </summary>
         /// <param name="disposing">True if managed resources should be disposed; otherwise, false.</param>
@@ -29,14 +29,13 @@ namespace Fanex.MailDelivery.AdminWinService.Installer
 
         #region Component Designer generated code
 
-        /// <summary> 
-        /// Required method for Designer support - do not modify 
+        /// <summary>
+        /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent()
         {
             _components = new System.ComponentModel.Container();
-            this.ServiceName = "Fanex.MailStation.Service";
         }
 
         #endregion
