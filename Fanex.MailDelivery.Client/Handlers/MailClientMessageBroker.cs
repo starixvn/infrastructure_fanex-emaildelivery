@@ -60,17 +60,6 @@ namespace Fanex.MailDelivery.Client.Handlers
                     config => config.WithTopic(_runNowJobSubscriptionId));
         }
 
-        public void SubscribeScheduleChange()
-        {
-            _bus.Subscribe<Schedule>(
-                this.GetSubscriptionIdKey(_updateScheduleSubscriptionId),
-                    schedule =>
-                    {
-                        _jobHandler.UpdateSchedule(schedule);
-                    },
-                    config => config.WithTopic(_updateScheduleSubscriptionId));
-        }
-
         public void SubscribeRetryJob()
         {
             _bus.Subscribe<Schedule>(
@@ -80,6 +69,17 @@ namespace Fanex.MailDelivery.Client.Handlers
                         _jobHandler.RetryAllProcess(schedule);
                     },
                     config => config.WithTopic(_retryJobSubscriptionId));
+        }
+
+        public void SubscribeScheduleChange()
+        {
+            _bus.Subscribe<Schedule>(
+                this.GetSubscriptionIdKey(_updateScheduleSubscriptionId),
+                    schedule =>
+                    {
+                        _jobHandler.UpdateSchedule(schedule);
+                    },
+                    config => config.WithTopic(_updateScheduleSubscriptionId));
         }
 
         public void Publish(Mail mail)
