@@ -13,7 +13,6 @@ namespace Fanex.MailDelivery.ClientWinService.Installer
     partial class ClientServerWinService : ServiceBase
     {
         private IClientServerMessageBroker _clientServerMessageBroker;
-        private JobHandler _jobHandler;
 
         private string serviceInfo = "Service {0} {1} at {2}.";
 
@@ -26,7 +25,6 @@ namespace Fanex.MailDelivery.ClientWinService.Installer
         {
             InitializeComponent();
             _clientServerMessageBroker = messageBroker ?? new ClientServerMessageBroker();
-            _jobHandler = new JobHandler();
             DbSettingProviderManager.Current.Start();
         }
 
@@ -34,14 +32,12 @@ namespace Fanex.MailDelivery.ClientWinService.Installer
         {
            // MailService.ServiceBase.LogInfo(string.Format(serviceInfo, ServiceName, "starts", DateTime.Now.ToString()));
             _clientServerMessageBroker.Start();
-            _jobHandler.Start();
         }
 
         protected override void OnStop()
         {
           //  MailService.ServiceBase.LogInfo(string.Format(serviceInfo, this.ServiceName, "stops", DateTime.Now.ToString()));
             _clientServerMessageBroker.Dispose();
-            _jobHandler.Stop();
         }
     }
 }

@@ -28,7 +28,7 @@ namespace Fanex.MailDelivery.ClientWinService
                     method.Invoke(service, new object[] { args });
                 }
 
-                Console.WriteLine("Mail service has been started.");
+                Console.WriteLine("Client Server Service has been started.");
                 Console.WriteLine("Press any key to exit!");
                 Console.ReadLine();
 
