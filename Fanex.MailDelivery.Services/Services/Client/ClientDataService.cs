@@ -2,7 +2,6 @@
 using Fanex.MailDelivery.Core.Models;
 using Fanex.MailDelivery.Services.Criteria.Criteria;
 using Fanex.MailDelivery.Services.Criteria.Job;
-using Fanex.MailDelivery.Services.Repositories;
 using Fanex.MailDelivery.Services.Repositories.Client;
 
 namespace Fanex.MailDelivery.Services.Services.Client

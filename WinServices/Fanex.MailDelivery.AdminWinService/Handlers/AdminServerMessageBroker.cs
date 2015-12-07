@@ -10,10 +10,8 @@ using Fanex.MailDelivery.AdminWinService.Logging;
 using Fanex.MailDelivery.AdminWinService.MailService;
 using Fanex.MailDelivery.AdminWinService.Services;
 using Fanex.MailDelivery.Core;
-using Fanex.MailDelivery.Core.Messaging.Schedule;
 using Fanex.MailDelivery.Core.Models;
 using Fanex.MailDelivery.Services.Configurations;
-using Fanex.MailDelivery.Services.Services;
 using Fanex.MailDelivery.Services.Services.Admin;
 
 namespace Fanex.MailDelivery.AdminWinService.Handlers
@@ -67,8 +65,6 @@ namespace Fanex.MailDelivery.AdminWinService.Handlers
             SubscribeAbortJob();
 
             RespondAddMailTaskForRunningJob();
-
-            SubscribeClientNotificationMessage();
         }
 
         private void ResponseRecipientFunctions()
@@ -124,20 +120,6 @@ namespace Fanex.MailDelivery.AdminWinService.Handlers
                         _mailService.UpdateJobStatus(jobStatus);
                     },
                     config => config.WithTopic(MailDeliveryConstants.AbortJobRoutingKeyFormat));
-        }
-
-        /// <summary>
-        /// Subscribes client notification message
-        /// </summary>
-        public void SubscribeClientNotificationMessage()
-        {
-            _bus.Subscribe<UpdateActiveTimeRequest>(
-                MailDeliveryConstants.ClientNotificationTopic,
-                    clientInfoMessage =>
-                    {
-                        _mailService.UpdateClientActiveTime(clientInfoMessage);
-                    },
-                    config => config.WithTopic(MailDeliveryConstants.ClientNotificationTopic));
         }
 
         public void SubscribeMail()
