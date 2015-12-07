@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using Fanex.MailDeliver.Business;
 using Fanex.MailDeliver.Business.Implement;
 using Fanex.MailDeliver.Business.Interface;
 using Fanex.MailDeliver.Core.Infrastructure.Logging;
 using Fanex.MailDeliver.Model;
-using Fanex.MailDelivery.Core.Messaging;
 using Fanex.MailDelivery.Core.Messaging.Schedule;
 using Fanex.MailDelivery.Core.Models;
 using Fanex.MailDelivery.Services.Criteria.Criteria;
@@ -13,7 +11,7 @@ using Fanex.MailDelivery.Services.Criteria.Job;
 using Fanex.MailDelivery.Services.Repositories;
 using Fanex.NAP.Framework.Command;
 
-namespace Fanex.MailDelivery.Server.MailService
+namespace Fanex.MailDelivery.AdminWinService.MailService
 {
     /// <summary>
     /// Mail Service.

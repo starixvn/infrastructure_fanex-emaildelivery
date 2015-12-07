@@ -2,7 +2,7 @@
 using Fanex.MailDelivery.Core.Models;
 using Quartz;
 
-namespace Fanex.MailDelivery.Server.Handlers
+namespace Fanex.MailDelivery.AdminWinService.Handlers
 {
     /// <summary>
     /// For every 5 mins, load all schedules into cache and identify online status. 

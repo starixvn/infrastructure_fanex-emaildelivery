@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using EasyNetQ;
 using Fanex.MailDelivery.Admin.Messaging;
 using Fanex.MailDelivery.Admin.Messaging.Job;
@@ -7,16 +6,16 @@ using Fanex.MailDelivery.Admin.Messaging.ManageGroup;
 using Fanex.MailDelivery.Admin.Messaging.ManageMail;
 using Fanex.MailDelivery.Admin.Messaging.ManageRecipient;
 using Fanex.MailDelivery.Admin.Messaging.ManageReport;
+using Fanex.MailDelivery.AdminWinService.Logging;
+using Fanex.MailDelivery.AdminWinService.MailService;
+using Fanex.MailDelivery.AdminWinService.Services;
 using Fanex.MailDelivery.Core;
 using Fanex.MailDelivery.Core.Messaging.Schedule;
 using Fanex.MailDelivery.Core.Models;
-using Fanex.MailDelivery.Server.Logging;
-using Fanex.MailDelivery.Server.MailService;
-using Fanex.MailDelivery.Server.Services;
 using Fanex.MailDelivery.Services.Configurations;
 using Fanex.MailDelivery.Services.Services;
 
-namespace Fanex.MailDelivery.Server.Handlers
+namespace Fanex.MailDelivery.AdminWinService.Handlers
 {
     /// <summary>
     /// Mail Service Message Broker.

@@ -7,8 +7,8 @@
     <ProjectGuid>{B7144728-6615-4A45-9810-34D141410569}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Fanex.MailDelivery.ClientServices</RootNamespace>
-    <AssemblyName>Fanex.MailDelivery.ClientServices</AssemblyName>
+    <RootNamespace>Fanex.MailDelivery.ClientWinService</RootNamespace>
+    <AssemblyName>Fanex.MailDelivery.ClientWinService</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -32,7 +32,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EasyNetQ, Version=0.50.1.392, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EasyNetQ.0.50.1.392\lib\net40\EasyNetQ.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="RabbitMQ.Client, Version=3.5.4.0, Culture=neutral, PublicKeyToken=89e7d7c5feba84ce, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\RabbitMQ.Client.3.5.4\lib\net40\RabbitMQ.Client.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -42,14 +51,39 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Service1.cs">
+    <Compile Include="Handlers\ServerMessageBroker.cs" />
+    <Compile Include="Installer\MailDeliveryService.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Service1.Designer.cs">
-      <DependentUpon>Service1.cs</DependentUpon>
+    <Compile Include="Installer\MailDeliveryService.Designer.cs">
+      <DependentUpon>MailDeliveryService.cs</DependentUpon>
     </Compile>
+    <Compile Include="Installer\ServiceInstaller.cs" />
+    <Compile Include="Installer\ServiceInstaller.Designer.cs">
+      <DependentUpon>ServiceInstaller.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Logging\ServerClientLogger.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Installer\InstallMailService.bat" />
+    <None Include="Installer\UnInstallMailService.bat" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Fanex.MailDelivery.Client\Fanex.MailDelivery.Client.csproj">
+      <Project>{708e1fce-82c4-443b-b1e9-0e64bcabe80e}</Project>
+      <Name>Fanex.MailDelivery.Client</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Fanex.MailDelivery.Core\Fanex.MailDelivery.Core.csproj">
+      <Project>{c7ed0de9-6a20-4223-b251-6ef530b74139}</Project>
+      <Name>Fanex.MailDelivery.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="AppData\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

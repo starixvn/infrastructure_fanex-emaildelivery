@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Fanex.MailDelivery.Core.Models;
 
-namespace Fanex.MailDelivery.Server.MailService
+namespace Fanex.MailDelivery.AdminWinService.MailService
 {
     /// <summary>
     /// Base service for base logging.

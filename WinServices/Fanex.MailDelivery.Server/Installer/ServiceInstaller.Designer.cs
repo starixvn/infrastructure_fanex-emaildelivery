@@ -1,7 +1,7 @@
-﻿namespace Fanex.MailDelivery.Server.Installer
-{
-    using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 
+namespace Fanex.MailDelivery.AdminWinService.Installer
+{
     /// <summary>
     /// Service Installer.
     /// </summary>

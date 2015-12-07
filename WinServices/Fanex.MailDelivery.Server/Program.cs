@@ -1,10 +1,10 @@
-﻿namespace Fanex.MailDelivery.Server
-{
-    using System;
-    using System.Reflection;
-    using System.ServiceProcess;
-    using Fanex.MailDelivery.Server.Installer;
+﻿using System;
+using System.Reflection;
+using System.ServiceProcess;
+using Fanex.MailDelivery.AdminWinService.Installer;
 
+namespace Fanex.MailDelivery.AdminWinService
+{
     /// <summary>
     /// Program starts.
     /// </summary>

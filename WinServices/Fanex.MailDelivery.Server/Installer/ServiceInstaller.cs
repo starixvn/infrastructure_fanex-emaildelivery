@@ -1,10 +1,10 @@
-﻿namespace Fanex.MailDelivery.Server.Installer
-{
-    using System;
-    using System.ComponentModel;
-    using System.Linq;
-    using System.ServiceProcess;
+﻿using System;
+using System.ComponentModel;
+using System.Linq;
+using System.ServiceProcess;
 
+namespace Fanex.MailDelivery.AdminWinService.Installer
+{
     /// <summary>
     /// Service Installer.
     /// </summary>

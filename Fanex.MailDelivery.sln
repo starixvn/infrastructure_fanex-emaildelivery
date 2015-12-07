@@ -28,9 +28,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fanex.MailDelivery.Services
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WinServices", "WinServices", "{C6CD15F0-2D43-405F-A2BF-FF11EADCB8A1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fanex.MailDelivery.ClientServices", "WinServices\Fanex.MailDelivery.ClientServices\Fanex.MailDelivery.ClientServices.csproj", "{B7144728-6615-4A45-9810-34D141410569}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fanex.MailDelivery.ClientWinService", "WinServices\Fanex.MailDelivery.ClientServices\Fanex.MailDelivery.ClientWinService.csproj", "{B7144728-6615-4A45-9810-34D141410569}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fanex.MailDelivery.Server", "WinServices\Fanex.MailDelivery.Server\Fanex.MailDelivery.Server.csproj", "{DC29B2D8-1460-403E-873B-63B55372F45E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fanex.MailDelivery.AdminWinService", "WinServices\Fanex.MailDelivery.Server\Fanex.MailDelivery.AdminWinService.csproj", "{DC29B2D8-1460-403E-873B-63B55372F45E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

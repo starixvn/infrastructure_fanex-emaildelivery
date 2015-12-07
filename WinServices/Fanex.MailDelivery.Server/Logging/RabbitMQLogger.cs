@@ -1,7 +1,7 @@
 ﻿using System;
 using EasyNetQ;
 
-namespace Fanex.MailDelivery.Server.Logging
+namespace Fanex.MailDelivery.AdminWinService.Logging
 {
     /// <summary>
     /// Rabbit MQ Logger.

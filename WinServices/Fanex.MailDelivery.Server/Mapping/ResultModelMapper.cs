@@ -1,7 +1,7 @@
 ﻿using Fanex.MailDelivery.Admin.Messaging;
 using Fanex.MailDelivery.Services.Models;
 
-namespace Fanex.MailDelivery.Server.Mapping
+namespace Fanex.MailDelivery.AdminWinService.Mapping
 {
     public static class ResultModelMapper
     {

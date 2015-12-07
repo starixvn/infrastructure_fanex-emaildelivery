@@ -1,12 +1,11 @@
-﻿using Fanex.MailDelivery.Server.Handlers;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
+using System.ServiceProcess;
+using Fanex.Data.Configuration;
+using Fanex.MailDelivery.AdminWinService.Handlers;
 
-namespace Fanex.MailDelivery.Server.Installer
+namespace Fanex.MailDelivery.AdminWinService.Installer
 {
-    using System;
-    using System.Diagnostics.CodeAnalysis;
-    using System.ServiceProcess;
-    using Data.Configuration;
-
     /// <summary>
     /// Mail Centralized Service.
     /// </summary>

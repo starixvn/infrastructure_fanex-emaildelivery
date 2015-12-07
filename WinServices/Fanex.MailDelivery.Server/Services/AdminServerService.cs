@@ -1,28 +1,25 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using Fanex.MailDelivery.Admin.Messaging;
 using Fanex.MailDelivery.Admin.Messaging.Job;
 using Fanex.MailDelivery.Admin.Messaging.ManageGroup;
 using Fanex.MailDelivery.Admin.Messaging.ManageMail;
 using Fanex.MailDelivery.Admin.Messaging.ManageRecipient;
 using Fanex.MailDelivery.Admin.Messaging.ManageReport;
+using Fanex.MailDelivery.AdminWinService.Mapping;
 using Fanex.MailDelivery.Core.Messaging.Schedule;
 using Fanex.MailDelivery.Core.Models;
 using Fanex.MailDelivery.Core.Models.Group;
 using Fanex.MailDelivery.Core.Models.Mails;
 using Fanex.MailDelivery.Core.Models.Recipient;
 using Fanex.MailDelivery.Core.Models.Report;
-using Fanex.MailDelivery.Server.Mapping;
 using Fanex.MailDelivery.Services.Criteria.Group;
 using Fanex.MailDelivery.Services.Criteria.Job;
 using Fanex.MailDelivery.Services.Criteria.Mail;
 using Fanex.MailDelivery.Services.Criteria.Recipient;
 using Fanex.MailDelivery.Services.Criteria.Report;
-using Fanex.MailDelivery.Services.Models;
 using Fanex.MailDelivery.Services.Services;
 
-namespace Fanex.MailDelivery.Server.Services
+namespace Fanex.MailDelivery.AdminWinService.Services
 {
     public class AdminServerService : IAdminServerService
     {

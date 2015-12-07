@@ -6,7 +6,7 @@ using Fanex.MailDelivery.Admin.Messaging.ManageRecipient;
 using Fanex.MailDelivery.Admin.Messaging.ManageReport;
 using Fanex.MailDelivery.Core.Messaging.Schedule;
 
-namespace Fanex.MailDelivery.Server.Services
+namespace Fanex.MailDelivery.AdminWinService.Services
 {
     public interface IAdminServerService
     {

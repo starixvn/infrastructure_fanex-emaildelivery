@@ -8,8 +8,8 @@
     <ProjectGuid>{DC29B2D8-1460-403E-873B-63B55372F45E}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Fanex.MailDelivery.Server</RootNamespace>
-    <AssemblyName>Fanex.MailDelivery.Server</AssemblyName>
+    <RootNamespace>Fanex.MailDelivery.AdminWinService</RootNamespace>
+    <AssemblyName>Fanex.MailDelivery.AdminWinService</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <PublishUrl>publish\</PublishUrl>

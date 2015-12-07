@@ -39,9 +39,9 @@ namespace Fanex.MailDelivery.Client.Handlers
                 });
 
             SubscribeRunNowJob();
+            SubscribeRetryJob();
 
             SubscribeScheduleChange();
-            SubscribeRetryJob();
         }
 
         public void Stop()
@@ -52,7 +52,7 @@ namespace Fanex.MailDelivery.Client.Handlers
         public void SubscribeRunNowJob()
         {
             _bus.Subscribe<Schedule>(
-                this.GetSubscriptionIdKey(_runNowJobSubscriptionId),
+                GetSubscriptionIdKey(_runNowJobSubscriptionId),
                     request =>
                     {
                         _jobHandler.RetryAllProcess(request);
@@ -63,7 +63,7 @@ namespace Fanex.MailDelivery.Client.Handlers
         public void SubscribeRetryJob()
         {
             _bus.Subscribe<Schedule>(
-                this.GetSubscriptionIdKey(_retryJobSubscriptionId),
+                GetSubscriptionIdKey(_retryJobSubscriptionId),
                     schedule =>
                     {
                         _jobHandler.RetryAllProcess(schedule);
@@ -74,7 +74,7 @@ namespace Fanex.MailDelivery.Client.Handlers
         public void SubscribeScheduleChange()
         {
             _bus.Subscribe<Schedule>(
-                this.GetSubscriptionIdKey(_updateScheduleSubscriptionId),
+                GetSubscriptionIdKey(_updateScheduleSubscriptionId),
                     schedule =>
                     {
                         _jobHandler.UpdateSchedule(schedule);
@@ -149,6 +149,7 @@ namespace Fanex.MailDelivery.Client.Handlers
             }
 
             mailIds = mailIds.Trim(',');
+
             _bus.Publish(new UpdateActiveTimeRequest() { MailIds = mailIds }, MailDeliveryConstants.ClientNotificationTopic);
         }
 
@@ -164,6 +165,7 @@ namespace Fanex.MailDelivery.Client.Handlers
                 where ips.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork
                 select ips)
                 .FirstOrDefault();
+
             return string.Format("{0}_{1}_{2}", topic, Process.GetProcessById(Process.GetCurrentProcess().Id).ProcessName, ip);
         }
     }

@@ -2,7 +2,7 @@
 using Quartz;
 using Quartz.Impl;
 
-namespace Fanex.MailDelivery.Server.Handlers
+namespace Fanex.MailDelivery.AdminWinService.Handlers
 {
     /// <summary>
     /// JobRequest Handler.

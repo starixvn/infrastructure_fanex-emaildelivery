@@ -1,24 +1,45 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Reflection;
 using System.ServiceProcess;
-using System.Text;
 
-namespace Fanex.MailDelivery.ClientServices
+namespace Fanex.MailDelivery.ClientWinService
 {
     static class Program
     {
         /// <summary>
-        /// The main entry point for the application.
+        /// Mains the specified arguments.
         /// </summary>
-        static void Main()
+        /// <param name="args">The arguments.</param>
+        public static void Main(string[] args)
         {
-            ServiceBase[] ServicesToRun;
-            ServicesToRun = new ServiceBase[]
+            ServiceBase[] servicesToRun = new ServiceBase[]
             {
-                new Service1()
+               // new MailDeliveryService()
             };
-            ServiceBase.Run(ServicesToRun);
+
+            if (Environment.UserInteractive)
+            {
+                Type type = typeof(ServiceBase);
+                BindingFlags flags = BindingFlags.Instance | BindingFlags.NonPublic;
+                MethodInfo method = type.GetMethod("OnStart", flags);
+                foreach (ServiceBase service in servicesToRun)
+                {
+                    method.Invoke(service, new object[] { args });
+                }
+
+                Console.WriteLine("Mail service has been started.");
+                Console.WriteLine("Press any key to exit!");
+                Console.ReadLine();
+
+                foreach (ServiceBase service in servicesToRun)
+                {
+                    service.Stop();
+                }
+            }
+            else
+            {
+                ServiceBase.Run(servicesToRun);
+            }
         }
     }
 }
