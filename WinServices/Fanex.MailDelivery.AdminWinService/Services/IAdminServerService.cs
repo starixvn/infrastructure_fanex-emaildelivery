@@ -47,7 +47,5 @@ namespace Fanex.MailDelivery.AdminWinService.Services
         GetReportListResponse GetReportList(GetReportListRequest request);
 
         GetScheduleByMailIdResponse GetScheduleByMailId(GetScheduleByMailIdRequest request);
-
-        GetScheduleListResponse GetScheduleList(GetScheduleListRequest request);
     }
 }

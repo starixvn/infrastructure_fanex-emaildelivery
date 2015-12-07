@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
+using Fanex.MailDelivery.Core.Messaging.Schedule;
 using Fanex.MailDelivery.Core.Models;
 using Fanex.MailDelivery.Core.Models.Group;
 using Fanex.MailDelivery.Core.Models.Mails;
 using Fanex.MailDelivery.Core.Models.Recipient;
 using Fanex.MailDelivery.Core.Models.Report;
-using Fanex.MailDelivery.Services.Criteria.Criteria;
 using Fanex.MailDelivery.Services.Criteria.Group;
 using Fanex.MailDelivery.Services.Criteria.Job;
 using Fanex.MailDelivery.Services.Criteria.Mail;
@@ -12,11 +12,14 @@ using Fanex.MailDelivery.Services.Criteria.Recipient;
 using Fanex.MailDelivery.Services.Criteria.Report;
 using Fanex.MailDelivery.Services.Models;
 
-namespace Fanex.MailDelivery.Services.Repositories
+namespace Fanex.MailDelivery.Services.Services.Admin
 {
-    public interface IAdminRepository
+    /// <summary>
+    /// Mail Service interface.
+    /// </summary>
+    public interface IAdminDataService
     {
-        List<MailModel> GetMailList(GetMailListCriteria criteria);
+        IList<MailModel> GetListMail(GetMailListCriteria criteria);
 
         MailModel GetMailById(GetMailByIdCriteria criteria);
 
@@ -26,7 +29,7 @@ namespace Fanex.MailDelivery.Services.Repositories
 
         ResultModel DeleteMail(DeleteMailCriteria criteria);
 
-        List<RecipientModel> GetRecipientList(GetRecipientListCriteria criteria);
+        List<RecipientModel> GetListRecipient(GetRecipientListCriteria criteria);
 
         RecipientModel GetRecipientById(GetRecipientByIdCriteria criteria);
 

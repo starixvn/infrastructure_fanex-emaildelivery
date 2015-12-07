@@ -2,17 +2,17 @@
 using Fanex.MailDelivery.Core.Messaging.Schedule;
 using Fanex.MailDelivery.Core.Models;
 using Fanex.MailDelivery.Services.Criteria.Job;
-using Fanex.MailDelivery.Services.Services;
+using Fanex.MailDelivery.Services.Services.Client;
 
 namespace Fanex.MailDelivery.ClientWinService.Services
 {
     public class ClientServerService : IClientServerService
     {
-        private readonly IMailStationService _mailStationService;
+        private readonly IClientDataService _clientDataService;
 
-        public ClientServerService(IMailStationService mailStationService)
+        public ClientServerService(IClientDataService clientDataService)
         {
-            _mailStationService = mailStationService;
+            _clientDataService = clientDataService;
         }
 
         public GetScheduleListResponse GetScheduleList(GetScheduleListRequest request)
@@ -21,7 +21,7 @@ namespace Fanex.MailDelivery.ClientWinService.Services
 
             foreach (int mail in request.MailIds)
             {
-                Schedule schedule = _mailStationService.GetScheduleByMailId(new GetScheduleByMailIdCriteria
+                Schedule schedule = _clientDataService.GetScheduleByMailId(new GetScheduleByMailIdCriteria
                 {
                     MailId = mail
                 });
@@ -30,6 +30,11 @@ namespace Fanex.MailDelivery.ClientWinService.Services
             }
 
             return new GetScheduleListResponse { Schedules = schedules };
+        }
+
+        public void UpdateClientActiveTime(UpdateActiveTimeRequest updateActiveTimeRequest)
+        {
+            _clientDataService.UpdateClientActiveTime(updateActiveTimeRequest);
         }
     }
 }

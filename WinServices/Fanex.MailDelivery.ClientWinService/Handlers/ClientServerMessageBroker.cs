@@ -2,6 +2,12 @@
 using EasyNetQ;
 using Fanex.MailDelivery.Client.Configurations;
 using Fanex.MailDelivery.ClientWinService.Logging;
+using Fanex.MailDelivery.ClientWinService.Services;
+using Fanex.MailDelivery.Core;
+using Fanex.MailDelivery.Core.Messaging.Schedule;
+using Fanex.MailDelivery.Services.Services;
+using Fanex.MailDelivery.Services.Services.Admin;
+using Fanex.MailDelivery.Services.Services.Client;
 
 namespace Fanex.MailDelivery.ClientWinService.Handlers
 {
@@ -9,8 +15,16 @@ namespace Fanex.MailDelivery.ClientWinService.Handlers
     {
         private IBus _bus;
 
+        private IClientServerService _adminServerService;
+
         public ClientServerMessageBroker()
+            : this(null)
         {
+        }
+
+        public ClientServerMessageBroker(IClientServerService adminServerService)
+        {
+            _adminServerService = _adminServerService ?? new ClientServerService(new ClientDataService());
         }
 
         public void Start()
@@ -39,7 +53,21 @@ namespace Fanex.MailDelivery.ClientWinService.Handlers
 
         private void ResponseGetScheduleList()
         {
-            //_bus.Respond<GetScheduleListRequest, GetScheduleListResponse>(request => _adminServerService.GetScheduleList(request));
+            _bus.Respond<GetScheduleListRequest, GetScheduleListResponse>(request => _adminServerService.GetScheduleList(request));
+        }
+
+        /// <summary>
+        /// Subscribes client notification message
+        /// </summary>
+        public void SubscribeClientNotificationMessage()
+        {
+            _bus.Subscribe<UpdateActiveTimeRequest>(
+                MailDeliveryConstants.ClientNotificationTopic,
+                    clientInfoMessage =>
+                    {
+                        _adminServerService.UpdateClientActiveTime(clientInfoMessage);
+                    },
+                    config => config.WithTopic(MailDeliveryConstants.ClientNotificationTopic));
         }
 
         public void SubscribeAbortJob()
@@ -53,19 +81,7 @@ namespace Fanex.MailDelivery.ClientWinService.Handlers
             //        config => config.WithTopic(MailDeliveryConstants.AbortJobRoutingKeyFormat));
         }
 
-        /// <summary>
-        /// Subscribes client notification message
-        /// </summary>
-        public void SubscribeClientNotificationMessage()
-        {
-            //_bus.Subscribe<UpdateActiveTimeRequest>(
-            //    MailDeliveryConstants.ClientNotificationTopic,
-            //        clientInfoMessage =>
-            //        {
-            //            _mailService.UpdateClientActiveTime(clientInfoMessage);
-            //        },
-            //        config => config.WithTopic(MailDeliveryConstants.ClientNotificationTopic));
-        }
+
 
         public void SubscribeMail()
         {

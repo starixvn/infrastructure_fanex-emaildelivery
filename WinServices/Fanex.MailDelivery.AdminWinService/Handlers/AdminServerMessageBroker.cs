@@ -14,6 +14,7 @@ using Fanex.MailDelivery.Core.Messaging.Schedule;
 using Fanex.MailDelivery.Core.Models;
 using Fanex.MailDelivery.Services.Configurations;
 using Fanex.MailDelivery.Services.Services;
+using Fanex.MailDelivery.Services.Services.Admin;
 
 namespace Fanex.MailDelivery.AdminWinService.Handlers
 {
@@ -36,7 +37,7 @@ namespace Fanex.MailDelivery.AdminWinService.Handlers
         {
             _mailService = mailService ?? new MailService.MailService();
 
-            _adminServerService = new AdminServerService(new MailStationService());
+            _adminServerService = new AdminServerService(new AdminDataService());
         }
 
         /// <summary>
@@ -60,8 +61,6 @@ namespace Fanex.MailDelivery.AdminWinService.Handlers
             ResponseGroupFunctions();
             ResponseReportFunctions();
             ResponseJobFunctions();
-
-            ResponseGetScheduleList();
 
             SubscribeMail();
             SubscribeJobResult();
@@ -114,11 +113,6 @@ namespace Fanex.MailDelivery.AdminWinService.Handlers
         private void ResponseJobFunctions()
         {
             _bus.Respond<GetScheduleByMailIdRequest, GetScheduleByMailIdResponse>(request => _adminServerService.GetScheduleByMailId(request));
-        }
-
-        private void ResponseGetScheduleList()
-        {
-            _bus.Respond<GetScheduleListRequest, GetScheduleListResponse>(request => _adminServerService.GetScheduleList(request));
         }
 
         public void SubscribeAbortJob()

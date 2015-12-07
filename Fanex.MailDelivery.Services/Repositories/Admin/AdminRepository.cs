@@ -8,6 +8,7 @@ using Fanex.MailDelivery.Core.Models.Group;
 using Fanex.MailDelivery.Core.Models.Mails;
 using Fanex.MailDelivery.Core.Models.Recipient;
 using Fanex.MailDelivery.Core.Models.Report;
+using Fanex.MailDelivery.Services.Criteria.Criteria;
 using Fanex.MailDelivery.Services.Criteria.Group;
 using Fanex.MailDelivery.Services.Criteria.Job;
 using Fanex.MailDelivery.Services.Criteria.Mail;
@@ -15,11 +16,10 @@ using Fanex.MailDelivery.Services.Criteria.Recipient;
 using Fanex.MailDelivery.Services.Criteria.Report;
 using Fanex.MailDelivery.Services.Models;
 using Fanex.Maintenance.Repository.Criteria.Misc;
-using Fanex.NAP.Framework.Command;
 using Quartz;
 using Quartz.Spi;
 
-namespace Fanex.MailDelivery.Services.Repositories
+namespace Fanex.MailDelivery.Services.Repositories.Admin
 {
     public class AdminRepository : IAdminRepository
     {
@@ -271,15 +271,6 @@ namespace Fanex.MailDelivery.Services.Repositories
             }
 
             return result.OrderBy(m => m.MailName).ThenByDescending(m => m.ScheduledTime).ThenByDescending(m => m.LastSent).ToList();
-        }
-
-        public Schedule GetScheduleByMailId(GetScheduleByMailIdCriteria criteria)
-        {
-            using (var db = new ObjectDb(criteria.GetSettingKey()))
-            {
-                db.AssignParamValues(criteria.GetSpParams());
-                return db.Query<Schedule>().FirstOrDefault();
-            }
         }
 
         /// <summary>

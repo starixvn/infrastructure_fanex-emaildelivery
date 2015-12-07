@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.ServiceProcess;
 using Fanex.Data.Configuration;
-using Fanex.MailDelivery.Client.Handlers;
 using Fanex.MailDelivery.ClientWinService.Handlers;
 
 namespace Fanex.MailDelivery.ClientWinService.Installer

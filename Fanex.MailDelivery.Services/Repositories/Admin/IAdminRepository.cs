@@ -4,6 +4,7 @@ using Fanex.MailDelivery.Core.Models.Group;
 using Fanex.MailDelivery.Core.Models.Mails;
 using Fanex.MailDelivery.Core.Models.Recipient;
 using Fanex.MailDelivery.Core.Models.Report;
+using Fanex.MailDelivery.Services.Criteria.Criteria;
 using Fanex.MailDelivery.Services.Criteria.Group;
 using Fanex.MailDelivery.Services.Criteria.Job;
 using Fanex.MailDelivery.Services.Criteria.Mail;
@@ -11,16 +12,11 @@ using Fanex.MailDelivery.Services.Criteria.Recipient;
 using Fanex.MailDelivery.Services.Criteria.Report;
 using Fanex.MailDelivery.Services.Models;
 
-namespace Fanex.MailDelivery.Services.Services
+namespace Fanex.MailDelivery.Services.Repositories.Admin
 {
-    /// <summary>
-    /// Mail Service interface.
-    /// </summary>
-    public interface IMailStationService
+    public interface IAdminRepository
     {
-        #region Admin
-
-        IList<MailModel> GetListMail(GetMailListCriteria criteria);
+        List<MailModel> GetMailList(GetMailListCriteria criteria);
 
         MailModel GetMailById(GetMailByIdCriteria criteria);
 
@@ -30,7 +26,7 @@ namespace Fanex.MailDelivery.Services.Services
 
         ResultModel DeleteMail(DeleteMailCriteria criteria);
 
-        List<RecipientModel> GetListRecipient(GetRecipientListCriteria criteria);
+        List<RecipientModel> GetRecipientList(GetRecipientListCriteria criteria);
 
         RecipientModel GetRecipientById(GetRecipientByIdCriteria criteria);
 
@@ -51,13 +47,5 @@ namespace Fanex.MailDelivery.Services.Services
         ResultModel DeleteGroup(DeleteGroupCriteria criteria);
 
         IList<MailTaskModel> GetReportList(GetReportListCriteria criteria);
-
-        #endregion
-
-        #region Client
-
-        Schedule GetScheduleByMailId(GetScheduleByMailIdCriteria criteria);
-
-        #endregion
     }
 }

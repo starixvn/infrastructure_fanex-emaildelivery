@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
+using Fanex.MailDelivery.Core.Messaging.Schedule;
 using Fanex.MailDelivery.Core.Models;
 using Fanex.MailDelivery.Core.Models.Group;
 using Fanex.MailDelivery.Core.Models.Mails;
 using Fanex.MailDelivery.Core.Models.Recipient;
 using Fanex.MailDelivery.Core.Models.Report;
+using Fanex.MailDelivery.Services.Criteria.Criteria;
 using Fanex.MailDelivery.Services.Criteria.Group;
 using Fanex.MailDelivery.Services.Criteria.Job;
 using Fanex.MailDelivery.Services.Criteria.Mail;
@@ -11,17 +13,18 @@ using Fanex.MailDelivery.Services.Criteria.Recipient;
 using Fanex.MailDelivery.Services.Criteria.Report;
 using Fanex.MailDelivery.Services.Models;
 using Fanex.MailDelivery.Services.Repositories;
+using Fanex.MailDelivery.Services.Repositories.Admin;
 
-namespace Fanex.MailDelivery.Services.Services
+namespace Fanex.MailDelivery.Services.Services.Admin
 {
     /// <summary>
     /// Admin Service.
     /// </summary>
-    public class MailStationService : IMailStationService
+    public class AdminDataService : IAdminDataService
     {
         private readonly IAdminRepository _adminRepository;
 
-        public MailStationService()
+        public AdminDataService()
         {
             _adminRepository = _adminRepository ?? new AdminRepository();
         }
@@ -108,7 +111,7 @@ namespace Fanex.MailDelivery.Services.Services
 
         public Schedule GetScheduleByMailId(GetScheduleByMailIdCriteria criteria)
         {
-            return _adminRepository.GetScheduleByMailId(criteria);
+            throw new System.NotImplementedException();
         }
     }
 }
