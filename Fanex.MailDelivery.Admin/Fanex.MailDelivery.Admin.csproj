@@ -82,12 +82,12 @@
     <Compile Include="Services\AdminService.cs" />
     <Compile Include="Services\Group\GroupService.cs" />
     <Compile Include="Services\Group\IGroupService.cs" />
+    <Compile Include="Services\JobOperation\IJobOperationService.cs" />
     <Compile Include="Services\JobOperation\JobOperationService.cs" />
     <Compile Include="Services\Job\IJobService.cs" />
     <Compile Include="Services\Job\JobService.cs" />
     <Compile Include="Services\Mail\IMailService.cs" />
     <Compile Include="Services\Mail\MailService.cs" />
-    <Compile Include="Services\JobOperation\IJobOperationService.cs" />
     <Compile Include="Services\Recipient\RecipientService.cs" />
     <Compile Include="Services\Recipient\IRecipientService.cs" />
     <Compile Include="Services\Report\IReportService.cs" />

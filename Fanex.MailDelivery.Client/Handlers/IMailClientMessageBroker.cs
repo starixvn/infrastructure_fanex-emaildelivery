@@ -13,18 +13,18 @@ namespace Fanex.MailDelivery.Client.Handlers
 
         void Stop();
 
-        void SubscribeScheduleChange();
-
         void Publish(Mail mail);
 
-        void Publish(JobMessage jobStatus);
-
         IList<Schedule> GetSchedules();
+
+        void PublishClientNotifyMessage();
+
+        void SubscribeScheduleChange();
+
+        void Publish(JobMessage jobStatus);
 
         JobMessage RequestAddMailTaskForRunningJob(JobMessage jobResult);
 
         void SubscribeRetryJob();
-
-        void PublishClientNotifyMessage();
     }
 }

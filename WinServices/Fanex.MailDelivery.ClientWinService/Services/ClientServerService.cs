@@ -4,6 +4,7 @@ using Fanex.MailDelivery.Core.Models;
 using Fanex.MailDelivery.Services.Criteria.Job;
 using Fanex.MailDelivery.Services.Services.Client;
 using Fanex.MailDelivery.Services.Services.MailService;
+using Fanex.NAP.Framework.Command;
 
 namespace Fanex.MailDelivery.ClientWinService.Services
 {
@@ -11,7 +12,6 @@ namespace Fanex.MailDelivery.ClientWinService.Services
     {
         private readonly IClientDataService _clientDataService;
         private readonly IMailService _mailService;
-
 
         public ClientServerService(IClientDataService clientDataService, IMailService mailService)
         {
@@ -46,7 +46,14 @@ namespace Fanex.MailDelivery.ClientWinService.Services
             _clientDataService.UpdateClientActiveTime(updateActiveTimeRequest);
         }
 
+        public void AddMailTaskForRunningJob(JobMessage jobMessage)
+        {
+            _mailService.AddMailTaskForRunningJob(jobMessage);
+        }
 
-
+        public CommandResult UpdateJobStatus(JobMessage jobMessage)
+        {
+            return _mailService.UpdateJobStatus(jobMessage);
+        }
     }
 }

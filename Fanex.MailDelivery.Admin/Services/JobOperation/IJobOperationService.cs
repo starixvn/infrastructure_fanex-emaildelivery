@@ -1,8 +1,4 @@
-﻿#region
-
-using Fanex.MailDelivery.Core.Models;
-
-#endregion
+﻿using Fanex.MailDelivery.Core.Models;
 
 namespace Fanex.MailDelivery.Admin.Services.JobOperation
 {
@@ -12,6 +8,6 @@ namespace Fanex.MailDelivery.Admin.Services.JobOperation
 
         void Retry(Schedule schedule);
 
-        void Abort();
+        void Abort(JobMessage jobMessage);
     }
 }

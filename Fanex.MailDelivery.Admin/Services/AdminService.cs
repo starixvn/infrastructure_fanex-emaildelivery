@@ -1,11 +1,7 @@
-﻿#region
-
-using System;
+﻿using System;
 using EasyNetQ;
 using Fanex.MailDelivery.Admin.Configurations;
 using Fanex.MailDelivery.Admin.Logging;
-
-#endregion
 
 namespace Fanex.MailDelivery.Admin.Services
 {

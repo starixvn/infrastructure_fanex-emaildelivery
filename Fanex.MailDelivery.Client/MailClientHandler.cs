@@ -4,17 +4,12 @@ using Fanex.MailDelivery.Core.Models;
 
 namespace Fanex.MailDelivery.Client
 {
-    /// <summary>
-    /// Mail Client Handler.
-    /// </summary>
     public static class MailClientHandler
     {
         private static IJobHandler _jobHandler;
         private static IMailClientMessageBroker _messageBroker;
 
-        public static void Start(
-            IJobHandler jobHandler = null,
-            IMailClientMessageBroker messageBroker = null)
+        public static void Start(IJobHandler jobHandler = null, IMailClientMessageBroker messageBroker = null)
         {
             _jobHandler = jobHandler ?? new JobHandler();
             _messageBroker = messageBroker ?? new MailClientMessageBroker();
@@ -33,14 +28,14 @@ namespace Fanex.MailDelivery.Client
             _messageBroker.Publish(mail);
         }
 
-        public static void ReportJob(JobMessage jobResult)
-        {
-            _messageBroker.Publish(jobResult);
-        }
-
         public static IList<Schedule> GetSchedules()
         {
             return _messageBroker.GetSchedules();
+        }
+
+        public static void PublishClientNotifyMessage()
+        {
+            _messageBroker.PublishClientNotifyMessage();
         }
 
         public static JobMessage RequestAddMailTaskForRunningJob(JobMessage jobResult)
@@ -48,14 +43,15 @@ namespace Fanex.MailDelivery.Client
             return _messageBroker.RequestAddMailTaskForRunningJob(jobResult);
         }
 
+
+        public static void ReportJob(JobMessage jobResult)
+        {
+            _messageBroker.Publish(jobResult);
+        }
+
         public static void RetryJob(Schedule schedule)
         {
             _jobHandler.RetryJob(schedule);
-        }
-
-        public static void PublishClientNotifyMessage()
-        {
-            _messageBroker.PublishClientNotifyMessage();
         }
     }
 }

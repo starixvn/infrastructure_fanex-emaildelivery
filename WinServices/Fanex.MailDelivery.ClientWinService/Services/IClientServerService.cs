@@ -1,5 +1,6 @@
 ﻿using Fanex.MailDelivery.Core.Messaging.Schedule;
 using Fanex.MailDelivery.Core.Models;
+using Fanex.NAP.Framework.Command;
 
 namespace Fanex.MailDelivery.ClientWinService.Services
 {
@@ -10,5 +11,9 @@ namespace Fanex.MailDelivery.ClientWinService.Services
         GetScheduleListResponse GetScheduleList(GetScheduleListRequest request);
 
         void UpdateClientActiveTime(UpdateActiveTimeRequest updateActiveTimeRequest);
+
+        void AddMailTaskForRunningJob(JobMessage jobMessage);
+
+        CommandResult UpdateJobStatus(JobMessage jobMessage);
     }
 }

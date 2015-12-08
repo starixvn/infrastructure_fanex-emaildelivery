@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
@@ -7,15 +6,11 @@ using EasyNetQ;
 using Fanex.MailDelivery.Client.Configurations;
 using Fanex.MailDelivery.Client.Logging;
 using Fanex.MailDelivery.Core;
-using Fanex.MailDelivery.Core.Messaging;
 using Fanex.MailDelivery.Core.Messaging.Schedule;
 using Fanex.MailDelivery.Core.Models;
 
 namespace Fanex.MailDelivery.Client.Handlers
 {
-    /// <summary>
-    /// Rabbit MQ Broker for PUB/SUB message.
-    /// </summary>
     public class MailClientMessageBroker : IMailClientMessageBroker
     {
         private string _updateScheduleSubscriptionId = string.Format(MailDeliveryConstants.UpdateScheduleRoutingKeyFormat, AppSettings.MailCientConfig.SiteId);
@@ -49,6 +44,80 @@ namespace Fanex.MailDelivery.Client.Handlers
             _bus.Dispose();
         }
 
+        public void Publish(Mail mail)
+        {
+            if (mail.ApplicationSendMailId == 0)
+            {
+                mail.ApplicationSendMailId = AppSettings.MailCientConfig.ApplicationSendMailId;
+            }
+
+            mail.SiteId = AppSettings.MailCientConfig.SiteId;
+
+            _bus.Publish(mail, MailDeliveryConstants.SendMailRoutingKey);
+        }
+
+        public IList<Schedule> GetSchedules()
+        {
+            ScheduleElementCollection scheduleEles = AppSettings.MailCientConfig.Schedules;
+
+            GetScheduleListRequest request = new GetScheduleListRequest();
+
+            foreach (ScheduleElement scheduleConfig in scheduleEles)
+            {
+                request.MailIds.Add(scheduleConfig.Id);
+            }
+
+            GetScheduleListResponse response = _bus.Request<GetScheduleListRequest, GetScheduleListResponse>(request);
+            IList<Schedule> schedules = new List<Schedule>();
+            response.Schedules.ToList().ForEach(n => schedules.Add(n));
+
+            return schedules;
+        }
+
+        public void PublishClientNotifyMessage()
+        {
+            string mailIds = string.Empty;
+            ScheduleElementCollection schedules = AppSettings.MailCientConfig.Schedules;
+            foreach (ScheduleElement schedule in schedules)
+            {
+                mailIds += schedule.Id + ",";
+            }
+
+            mailIds = mailIds.Trim(',');
+
+            _bus.Publish(new UpdateActiveTimeRequest() { MailIds = mailIds }, MailDeliveryConstants.ClientNotificationTopic);
+        }
+
+        /// <summary>
+        /// For the first time JobRequest is running, we need to get back the TaskId of the current running JobRequest.
+        /// By insert new record at DB, it get back itself with additional TaskId's value.
+        /// </summary>
+        public JobMessage RequestAddMailTaskForRunningJob(JobMessage jobResult)
+        {
+            return _bus.Request<JobMessage, JobMessage>(jobResult);
+        }
+
+        public void SubscribeScheduleChange()
+        {
+            _bus.Subscribe<Schedule>(
+                GetSubscriptionIdKey(_updateScheduleSubscriptionId),
+                    schedule =>
+                    {
+                        _jobHandler.UpdateSchedule(schedule);
+                    },
+                    config => config.WithTopic(_updateScheduleSubscriptionId));
+        }
+
+        public void Publish(JobMessage jobStatus)
+        {
+            if (jobStatus.Mail != null && jobStatus.Mail.ApplicationSendMailId == 0)
+            {
+                jobStatus.Mail.ApplicationSendMailId = AppSettings.MailCientConfig.ApplicationSendMailId;
+            }
+
+            _bus.Publish(jobStatus, MailDeliveryConstants.JobResultRoutingKey);
+        }
+
         public void SubscribeRunNowJob()
         {
             _bus.Subscribe<Schedule>(
@@ -69,85 +138,6 @@ namespace Fanex.MailDelivery.Client.Handlers
                         _jobHandler.RetryAllProcess(schedule);
                     },
                     config => config.WithTopic(_retryJobSubscriptionId));
-        }
-
-        public void SubscribeScheduleChange()
-        {
-            _bus.Subscribe<Schedule>(
-                GetSubscriptionIdKey(_updateScheduleSubscriptionId),
-                    schedule =>
-                    {
-                        _jobHandler.UpdateSchedule(schedule);
-                    },
-                    config => config.WithTopic(_updateScheduleSubscriptionId));
-        }
-
-        public void Publish(Mail mail)
-        {
-            if (mail.ApplicationSendMailId == 0)
-            {
-                mail.ApplicationSendMailId = AppSettings.MailCientConfig.ApplicationSendMailId;
-            }
-
-            mail.SiteId = AppSettings.MailCientConfig.SiteId;
-
-            _bus.Publish(mail, MailDeliveryConstants.SendMailRoutingKey);
-        }
-
-        public IList<Schedule> GetSchedules()
-        {
-            Schedule scheduleRequest = new Schedule();
-            ScheduleElementCollection scheduleEles = AppSettings.MailCientConfig.Schedules;
-
-            GetScheduleListRequest request = new GetScheduleListRequest();
-
-            foreach (ScheduleElement scheduleConfig in scheduleEles)
-            {
-                request.MailIds.Add(scheduleConfig.Id);
-            }
-
-            GetScheduleListResponse response = _bus.Request<GetScheduleListRequest, GetScheduleListResponse>(request);
-            IList<Schedule> schedules = new List<Schedule>();
-            response.Schedules.ToList().ForEach(n => schedules.Add(n));
-
-            return schedules;
-        }
-
-        /// <summary>
-        /// For the first time JobRequest is running, we need to get back the TaskId of the current running JobRequest.
-        /// By insert new record at DB, it get back itself with additional TaskId's value.
-        /// </summary>
-        /// <param name="jobResult">JobRequest Result.</param>
-        /// <returns>
-        /// JobRequest Result Message.
-        /// </returns>
-        public JobMessage RequestAddMailTaskForRunningJob(JobMessage jobResult)
-        {
-            return _bus.Request<JobMessage, JobMessage>(jobResult);
-        }
-
-        public void Publish(JobMessage jobStatus)
-        {
-            if (jobStatus.Mail != null && jobStatus.Mail.ApplicationSendMailId == 0)
-            {
-                jobStatus.Mail.ApplicationSendMailId = AppSettings.MailCientConfig.ApplicationSendMailId;
-            }
-
-            _bus.Publish(jobStatus, MailDeliveryConstants.JobResultRoutingKey);
-        }
-
-        public void PublishClientNotifyMessage()
-        {
-            string mailIds = string.Empty;
-            ScheduleElementCollection schedules = AppSettings.MailCientConfig.Schedules;
-            foreach (ScheduleElement schedule in schedules)
-            {
-                mailIds += schedule.Id + ",";
-            }
-
-            mailIds = mailIds.Trim(',');
-
-            _bus.Publish(new UpdateActiveTimeRequest() { MailIds = mailIds }, MailDeliveryConstants.ClientNotificationTopic);
         }
 
         /// <summary>

@@ -5,7 +5,6 @@
         void Dispose();
         void RespondAddMailTaskForRunningJob();
         void Start();
-        void SubscribeAbortJob();
         void SubscribeClientNotificationMessage();
         void SubscribeJobResult();
         void SubscribeMail();

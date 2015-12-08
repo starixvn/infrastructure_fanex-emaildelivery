@@ -1,14 +1,11 @@
-#region
-
 using System;
+using EasyNetQ;
 using Fanex.MailDelivery.Core;
 using Fanex.MailDelivery.Core.Models;
 
-#endregion
-
 namespace Fanex.MailDelivery.Admin.Services.JobOperation
 {
-    public class JobOperationService : AdminService, IJobOperationService
+    public class JobOperationService : AdminService, IJobOperationService, IDisposable
     {
         public void RunNow(Schedule schedule)
         {
@@ -22,7 +19,7 @@ namespace Fanex.MailDelivery.Admin.Services.JobOperation
             Bus.Publish(schedule, retryJobPublishId);
         }
 
-        public void Abort()
+        public void Abort(JobMessage jobMessage)
         {
             throw new NotImplementedException();
         }

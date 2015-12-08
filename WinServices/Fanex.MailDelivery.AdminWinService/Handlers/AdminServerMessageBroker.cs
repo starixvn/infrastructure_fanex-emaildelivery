@@ -60,11 +60,7 @@ namespace Fanex.MailDelivery.AdminWinService.Handlers
             ResponseReportFunctions();
             ResponseJobFunctions();
 
-            SubscribeMail();
-            SubscribeJobResult();
             SubscribeAbortJob();
-
-            RespondAddMailTaskForRunningJob();
         }
 
         private void ResponseRecipientFunctions()
@@ -120,38 +116,6 @@ namespace Fanex.MailDelivery.AdminWinService.Handlers
                         _mailService.UpdateJobStatus(jobStatus);
                     },
                     config => config.WithTopic(MailDeliveryConstants.AbortJobRoutingKeyFormat));
-        }
-
-        public void SubscribeMail()
-        {
-            _bus.Subscribe<Mail>(
-                MailDeliveryConstants.SendMailRoutingKey,
-                    mail =>
-                    {
-                        _mailService.SendMail(mail);
-                    },
-                    config => config.WithTopic(MailDeliveryConstants.SendMailRoutingKey));
-        }
-
-        public void SubscribeJobResult()
-        {
-            _bus.Subscribe<JobMessage>(
-                MailDeliveryConstants.JobResultRoutingKey,
-                    jobStatus =>
-                    {
-                        _mailService.UpdateJobStatus(jobStatus);
-                    },
-                    config => config.WithTopic(MailDeliveryConstants.JobResultRoutingKey));
-        }
-
-        public void RespondAddMailTaskForRunningJob()
-        {
-            _bus.Respond<JobMessage, JobMessage>(
-                jobMessage =>
-                {
-                    _mailService.AddMailTaskForRunningJob(jobMessage);
-                    return jobMessage;
-                });
         }
 
         public void Dispose()

@@ -44,11 +44,21 @@ namespace Fanex.MailDelivery.ClientWinService.Handlers
 
             SubscribeMail();
             SubscribeJobResult();
-            SubscribeAbortJob();
 
             RespondAddMailTaskForRunningJob();
 
             SubscribeClientNotificationMessage();
+        }
+
+        public void SubscribeMail()
+        {
+            _bus.Subscribe<Mail>(
+                MailDeliveryConstants.SendMailRoutingKey,
+                    mail =>
+                    {
+                        _clientServerService.SendMail(mail);
+                    },
+                    config => config.WithTopic(MailDeliveryConstants.SendMailRoutingKey));
         }
 
         private void ResponseGetScheduleList()
@@ -67,47 +77,25 @@ namespace Fanex.MailDelivery.ClientWinService.Handlers
                     config => config.WithTopic(MailDeliveryConstants.ClientNotificationTopic));
         }
 
-        public void SubscribeMail()
+        public void RespondAddMailTaskForRunningJob()
         {
-            _bus.Subscribe<Mail>(
-                MailDeliveryConstants.SendMailRoutingKey,
-                    mail =>
-                    {
-                        _clientServerService.SendMail(mail);
-                    },
-                    config => config.WithTopic(MailDeliveryConstants.SendMailRoutingKey));
-        }
-
-        public void SubscribeAbortJob()
-        {
-            //_bus.Subscribe<JobMessage>(
-            //    MailDeliveryConstants.AbortJobRoutingKeyFormat,
-            //        jobStatus =>
-            //        {
-            //            _mailService.UpdateJobStatus(jobStatus);
-            //        },
-            //        config => config.WithTopic(MailDeliveryConstants.AbortJobRoutingKeyFormat));
+            _bus.Respond<JobMessage, JobMessage>(
+                jobMessage =>
+                {
+                    _clientServerService.AddMailTaskForRunningJob(jobMessage);
+                    return jobMessage;
+                });
         }
 
         public void SubscribeJobResult()
         {
-            //_bus.Subscribe<JobMessage>(
-            //    MailDeliveryConstants.JobResultRoutingKey,
-            //        jobStatus =>
-            //        {
-            //            _mailService.UpdateJobStatus(jobStatus);
-            //        },
-            //        config => config.WithTopic(MailDeliveryConstants.JobResultRoutingKey));
-        }
-
-        public void RespondAddMailTaskForRunningJob()
-        {
-            //_bus.Respond<JobMessage, JobMessage>(
-            //    jobMessage =>
-            //    {
-            //        _mailService.AddMailTaskForRunningJob(jobMessage);
-            //        return jobMessage;
-            //    });
+            _bus.Subscribe<JobMessage>(
+                MailDeliveryConstants.JobResultRoutingKey,
+                    jobStatus =>
+                    {
+                        _clientServerService.UpdateJobStatus(jobStatus);
+                    },
+                    config => config.WithTopic(MailDeliveryConstants.JobResultRoutingKey));
         }
 
         public void Dispose()
