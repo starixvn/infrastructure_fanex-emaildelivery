@@ -36,6 +36,10 @@
     <Reference Include="Fanex.Data">
       <HintPath>..\packages\Fanex.Data.0.5.404.63\lib\net40\Fanex.Data.dll</HintPath>
     </Reference>
+    <Reference Include="Fanex.MailDeliver.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="Fanex.MailDeliver.MailClient">
+      <HintPath>..\_Dependencies\MailService\Fanex.MailDeliver.MailClient.dll</HintPath>
+    </Reference>
     <Reference Include="Fanex.Maintenance.Repository">
       <HintPath>..\_Dependencies\mSite\Fanex.Maintenance.Repository.dll</HintPath>
     </Reference>
@@ -100,6 +104,9 @@
     <Compile Include="Services\Admin\AdminDataService.cs" />
     <Compile Include="Services\Client\IClientDataService.cs" />
     <Compile Include="Services\Admin\IAdminDataService.cs" />
+    <Compile Include="Services\MailService\IMailService.cs" />
+    <Compile Include="Services\MailService\MailService.cs" />
+    <Compile Include="Services\MailService\ServiceBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Fanex.MailDelivery.Core\Fanex.MailDelivery.Core.csproj">

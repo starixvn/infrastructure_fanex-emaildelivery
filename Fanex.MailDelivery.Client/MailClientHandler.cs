@@ -28,7 +28,7 @@ namespace Fanex.MailDelivery.Client
             _jobHandler.Stop();
         }
 
-        public static void SendMail(Mail mail)
+        public static void SendFunctionMail(Mail mail)
         {
             _messageBroker.Publish(mail);
         }

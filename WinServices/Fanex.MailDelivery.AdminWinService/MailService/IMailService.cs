@@ -1,5 +1,4 @@
-﻿using Fanex.MailDelivery.Core.Messaging.Schedule;
-using Fanex.MailDelivery.Core.Models;
+﻿using Fanex.MailDelivery.Core.Models;
 using Fanex.NAP.Framework.Command;
 
 namespace Fanex.MailDelivery.AdminWinService.MailService
@@ -14,7 +13,5 @@ namespace Fanex.MailDelivery.AdminWinService.MailService
         int SendMail(Mail mail);
 
         void AddMailTaskForRunningJob(JobMessage jobMessage);
-
-        void UpdateClientActiveTime(UpdateActiveTimeRequest clientInfoMessage);
     }
 }

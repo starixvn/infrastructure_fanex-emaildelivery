@@ -163,11 +163,6 @@ namespace Fanex.MailDelivery.AdminWinService.MailService
             }
         }
 
-        public void UpdateClientActiveTime(UpdateActiveTimeRequest clientInfoMessage)
-        {
-            _mailRepository.UpdateClientActiveTime(new UpdateClientActiveTimeCriteria() { MailIds = clientInfoMessage.MailIds });
-        }
-     
         /// <summary>
         /// Updates the running JobRequest.
         /// </summary>

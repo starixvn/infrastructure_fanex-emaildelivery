@@ -3,16 +3,25 @@ using Fanex.MailDelivery.Core.Messaging.Schedule;
 using Fanex.MailDelivery.Core.Models;
 using Fanex.MailDelivery.Services.Criteria.Job;
 using Fanex.MailDelivery.Services.Services.Client;
+using Fanex.MailDelivery.Services.Services.MailService;
 
 namespace Fanex.MailDelivery.ClientWinService.Services
 {
     public class ClientServerService : IClientServerService
     {
         private readonly IClientDataService _clientDataService;
+        private readonly IMailService _mailService;
 
-        public ClientServerService(IClientDataService clientDataService)
+
+        public ClientServerService(IClientDataService clientDataService, IMailService mailService)
         {
             _clientDataService = clientDataService;
+            _mailService = mailService;
+        }
+
+        public int SendMail(Mail mail)
+        {
+            return _mailService.SendMail(mail);
         }
 
         public GetScheduleListResponse GetScheduleList(GetScheduleListRequest request)
@@ -36,5 +45,8 @@ namespace Fanex.MailDelivery.ClientWinService.Services
         {
             _clientDataService.UpdateClientActiveTime(updateActiveTimeRequest);
         }
+
+
+
     }
 }

@@ -90,13 +90,10 @@ namespace Fanex.MailDelivery.Client.Handlers
             }
 
             mail.SiteId = AppSettings.MailCientConfig.SiteId;
+
             _bus.Publish(mail, MailDeliveryConstants.SendMailRoutingKey);
         }
 
-        /// <summary>
-        /// Gets the schedules.
-        /// </summary>
-        /// <returns>Schedule list.</returns>
         public IList<Schedule> GetSchedules()
         {
             Schedule scheduleRequest = new Schedule();

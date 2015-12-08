@@ -5,9 +5,9 @@ using Fanex.MailDelivery.ClientWinService.Logging;
 using Fanex.MailDelivery.ClientWinService.Services;
 using Fanex.MailDelivery.Core;
 using Fanex.MailDelivery.Core.Messaging.Schedule;
-using Fanex.MailDelivery.Services.Services;
-using Fanex.MailDelivery.Services.Services.Admin;
+using Fanex.MailDelivery.Core.Models;
 using Fanex.MailDelivery.Services.Services.Client;
+using Fanex.MailDelivery.Services.Services.MailService;
 
 namespace Fanex.MailDelivery.ClientWinService.Handlers
 {
@@ -15,7 +15,7 @@ namespace Fanex.MailDelivery.ClientWinService.Handlers
     {
         private IBus _bus;
 
-        private IClientServerService _adminServerService;
+        private IClientServerService _clientServerService;
 
         public ClientServerMessageBroker()
             : this(null)
@@ -24,7 +24,7 @@ namespace Fanex.MailDelivery.ClientWinService.Handlers
 
         public ClientServerMessageBroker(IClientServerService adminServerService)
         {
-            _adminServerService = _adminServerService ?? new ClientServerService(new ClientDataService());
+            _clientServerService = _clientServerService ?? new ClientServerService(new ClientDataService(), new MailService());
         }
 
         public void Start()
@@ -53,21 +53,29 @@ namespace Fanex.MailDelivery.ClientWinService.Handlers
 
         private void ResponseGetScheduleList()
         {
-            _bus.Respond<GetScheduleListRequest, GetScheduleListResponse>(request => _adminServerService.GetScheduleList(request));
+            _bus.Respond<GetScheduleListRequest, GetScheduleListResponse>(request => _clientServerService.GetScheduleList(request));
         }
 
-        /// <summary>
-        /// Subscribes client notification message
-        /// </summary>
         public void SubscribeClientNotificationMessage()
         {
             _bus.Subscribe<UpdateActiveTimeRequest>(
                 MailDeliveryConstants.ClientNotificationTopic,
                     clientInfoMessage =>
                     {
-                        _adminServerService.UpdateClientActiveTime(clientInfoMessage);
+                        _clientServerService.UpdateClientActiveTime(clientInfoMessage);
                     },
                     config => config.WithTopic(MailDeliveryConstants.ClientNotificationTopic));
+        }
+
+        public void SubscribeMail()
+        {
+            _bus.Subscribe<Mail>(
+                MailDeliveryConstants.SendMailRoutingKey,
+                    mail =>
+                    {
+                        _clientServerService.SendMail(mail);
+                    },
+                    config => config.WithTopic(MailDeliveryConstants.SendMailRoutingKey));
         }
 
         public void SubscribeAbortJob()
@@ -79,19 +87,6 @@ namespace Fanex.MailDelivery.ClientWinService.Handlers
             //            _mailService.UpdateJobStatus(jobStatus);
             //        },
             //        config => config.WithTopic(MailDeliveryConstants.AbortJobRoutingKeyFormat));
-        }
-
-
-
-        public void SubscribeMail()
-        {
-            //_bus.Subscribe<Mail>(
-            //    MailDeliveryConstants.SendMailRoutingKey,
-            //        mail =>
-            //        {
-            //            _mailService.SendMail(mail);
-            //        },
-            //        config => config.WithTopic(MailDeliveryConstants.SendMailRoutingKey));
         }
 
         public void SubscribeJobResult()
