@@ -78,15 +78,15 @@ namespace Fanex.MailDelivery.MailStation.Controllers
             ViewBag.ListSite = _mailManageService.Sites(false);
             ViewBag.ListTriggerType = _mailManageService.Trigger(false);
 
-            MailModel mailDto = _mailManageService.MailById(criteria);
+            MailModel mailModel = _mailManageService.MailById(criteria);
 
-            if (mailDto != null)
+            if (mailModel != null)
             {
-                mailDto.MailName += Labels.CopyPrefix;
+                mailModel.MailName += Labels.CopyPrefix;
             }
 
             ViewBag.TimeZoneString = TimeZoneExtension.GetTimeZoneString();
-            CreateMailCriteria model = new CreateMailCriteria(null);
+            CreateMailCriteria model = new CreateMailCriteria(mailModel);
             return View("~/Areas/MailStation/ManageMail/CreateMail/Index.cshtml", model);
         }
 

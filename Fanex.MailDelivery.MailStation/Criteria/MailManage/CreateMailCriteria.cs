@@ -4,14 +4,12 @@
 // </copyright>
 // --------------------------------------------------------------------------
 
-using Fanex.MailDelivery.Admin.Messaging.ManageMail;
 using Fanex.MailDelivery.Core.Models.Mails;
 
 namespace Fanex.MailDelivery.MailStation.Criteria.MailManage
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
-    using Fanex.MailDelivery.MailStation.Models;
     using Fanex.NAP.Framework.Data;
 
     /// <summary>
