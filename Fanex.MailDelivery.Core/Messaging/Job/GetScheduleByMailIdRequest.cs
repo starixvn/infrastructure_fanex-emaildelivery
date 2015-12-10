@@ -1,4 +1,4 @@
-﻿namespace Fanex.MailDelivery.Admin.Messaging.Job
+﻿namespace Fanex.MailDelivery.Core.Messaging.Job
 {
     public class GetScheduleByMailIdRequest
     {

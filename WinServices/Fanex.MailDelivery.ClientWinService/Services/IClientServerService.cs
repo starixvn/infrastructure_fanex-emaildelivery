@@ -1,4 +1,4 @@
-﻿using Fanex.MailDelivery.Core.Messaging.Schedule;
+﻿using Fanex.MailDelivery.Core.Messaging.Job;
 using Fanex.MailDelivery.Core.Models;
 using Fanex.NAP.Framework.Command;
 

@@ -4,7 +4,7 @@ using Fanex.MailDelivery.Client.Configurations;
 using Fanex.MailDelivery.ClientWinService.Logging;
 using Fanex.MailDelivery.ClientWinService.Services;
 using Fanex.MailDelivery.Core;
-using Fanex.MailDelivery.Core.Messaging.Schedule;
+using Fanex.MailDelivery.Core.Messaging.Job;
 using Fanex.MailDelivery.Core.Models;
 using Fanex.MailDelivery.Services.Services.Client;
 using Fanex.MailDelivery.Services.Services.MailService;

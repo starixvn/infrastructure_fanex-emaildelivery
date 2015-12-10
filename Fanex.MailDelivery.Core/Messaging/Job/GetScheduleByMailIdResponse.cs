@@ -4,7 +4,7 @@ using Fanex.MailDelivery.Core.Models;
 
 #endregion
 
-namespace Fanex.MailDelivery.Admin.Messaging.Job
+namespace Fanex.MailDelivery.Core.Messaging.Job
 {
     public class GetScheduleByMailIdResponse
     {

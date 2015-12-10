@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using Fanex.MailDelivery.Admin.Messaging;
-using Fanex.MailDelivery.Admin.Messaging.Job;
 using Fanex.MailDelivery.Admin.Messaging.ManageMail;
 using Fanex.MailDelivery.Admin.Services.Job;
 using Fanex.MailDelivery.Admin.Services.Mail;
-using Fanex.MailDelivery.Core.Messaging.Schedule;
+using Fanex.MailDelivery.Core.Messaging.Job;
+using Fanex.MailDelivery.Core.Models;
 using Fanex.MailDelivery.Core.Models.Mails;
 using Fanex.MailDelivery.MailStation.Criteria.MailGroup;
 using Fanex.MailDelivery.MailStation.Criteria.MailManage;
@@ -127,17 +127,21 @@ namespace Fanex.MailDelivery.MailStation.Services
 
         public CommandResult UpdateMail(UpdateMailCriteria criteria)
         {
-            _jobService.PublishScheduleChangeMessage(new ScheduleRequest
+            // TODO: No need publish for Function Mail ?
+            _jobService.PublishScheduleChange(new ScheduleChangeRequest
             {
-                Id = criteria.MailId,
-                Active = criteria.IsActive,
-                EndTime = criteria.EndOn,
-                StartTime = criteria.StartOn ?? DateTime.Now,
-                MaxRetryTimes = criteria.Attempt,
-                Name = criteria.MailName,
-                RepeatExpression = criteria.CronExpression,
-                RetryInterval = criteria.Interval,
-                SiteId = criteria.SiteId
+                Schedule = new Schedule
+                {
+                    Id = criteria.MailId,
+                    Active = criteria.IsActive,
+                    EndTime = criteria.EndOn,
+                    StartTime = criteria.StartOn ?? DateTime.Now,
+                    MaxRetryTimes = criteria.Attempt,
+                    Name = criteria.MailName,
+                    RepeatExpression = criteria.CronExpression,
+                    RetryInterval = criteria.Interval,
+                    SiteId = criteria.SiteId
+                }
             });
 
             if (criteria.TriggerType == 0)
@@ -159,7 +163,7 @@ namespace Fanex.MailDelivery.MailStation.Services
                 MailTo = criteria.MailTo,
                 MailCc = criteria.MailCc,
                 MailBcc = criteria.MailBcc,
-                
+
                 Description = criteria.Description,
                 IsActive = criteria.IsActive
             };
@@ -186,7 +190,7 @@ namespace Fanex.MailDelivery.MailStation.Services
                 MailTo = criteria.MailTo,
                 MailCc = criteria.MailCc,
                 MailBcc = criteria.MailBcc,
-                
+
                 Description = criteria.Description,
                 IsActive = criteria.IsActive,
 

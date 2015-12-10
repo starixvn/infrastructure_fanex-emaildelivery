@@ -46,9 +46,6 @@
     <Compile Include="Configurations\AppSettings.cs" />
     <Compile Include="Configurations\MailAdminSection.cs" />
     <Compile Include="Logging\MailAdminLogger.cs" />
-    <Compile Include="Messaging\Job\AbortJobRequest.cs" />
-    <Compile Include="Messaging\Job\GetScheduleByMailIdResponse.cs" />
-    <Compile Include="Messaging\Job\GetScheduleByMailIdRequest.cs" />
     <Compile Include="Messaging\ManageGroup\GetMailGroupByIdRequest.cs" />
     <Compile Include="Messaging\ManageGroup\GetMailGroupByIdResponse.cs" />
     <Compile Include="Messaging\ManageGroup\UpdateGroupRequest.cs" />
@@ -106,6 +103,7 @@
       <Name>Fanex.MailDelivery.Core</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

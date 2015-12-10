@@ -42,14 +42,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Messaging\Schedule\GetScheduleListRequest.cs" />
-    <Compile Include="Messaging\Schedule\GetScheduleListResponse.cs" />
-    <Compile Include="Messaging\Schedule\ScheduleRequest.cs" />
+    <Compile Include="Messaging\Job\AbortJobRequest.cs" />
+    <Compile Include="Messaging\Job\GetScheduleByMailIdRequest.cs" />
+    <Compile Include="Messaging\Job\GetScheduleByMailIdResponse.cs" />
+    <Compile Include="Messaging\Job\GetScheduleListRequest.cs" />
+    <Compile Include="Messaging\Job\GetScheduleListResponse.cs" />
+    <Compile Include="Messaging\Job\ScheduleChangeRequest.cs" />
+    <Compile Include="Messaging\Job\ScheduleRequest.cs" />
     <Compile Include="Models\FileExtension.cs" />
     <Compile Include="Models\Group\GroupModel.cs" />
     <Compile Include="Models\MailType.cs" />
     <Compile Include="MailDeliveryConstants.cs" />
-    <Compile Include="Messaging\Schedule\UpdateActiveTimeRequest.cs" />
+    <Compile Include="Messaging\Job\UpdateActiveTimeRequest.cs" />
     <Compile Include="Models\Mails\MailModel.cs" />
     <Compile Include="Models\Recipient\RecipientModel.cs" />
     <Compile Include="Models\Report\MailTaskModel.cs" />

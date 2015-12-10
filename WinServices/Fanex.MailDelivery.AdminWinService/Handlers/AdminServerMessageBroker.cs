@@ -1,7 +1,6 @@
 ﻿using System;
 using EasyNetQ;
 using Fanex.MailDelivery.Admin.Messaging;
-using Fanex.MailDelivery.Admin.Messaging.Job;
 using Fanex.MailDelivery.Admin.Messaging.ManageGroup;
 using Fanex.MailDelivery.Admin.Messaging.ManageMail;
 using Fanex.MailDelivery.Admin.Messaging.ManageRecipient;
@@ -10,6 +9,7 @@ using Fanex.MailDelivery.AdminWinService.Logging;
 using Fanex.MailDelivery.AdminWinService.MailService;
 using Fanex.MailDelivery.AdminWinService.Services;
 using Fanex.MailDelivery.Core;
+using Fanex.MailDelivery.Core.Messaging.Job;
 using Fanex.MailDelivery.Core.Models;
 using Fanex.MailDelivery.Services.Configurations;
 using Fanex.MailDelivery.Services.Services.Admin;

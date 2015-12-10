@@ -1,12 +1,11 @@
 using System.Collections.Generic;
 using Fanex.MailDelivery.Admin.Messaging;
-using Fanex.MailDelivery.Admin.Messaging.Job;
 using Fanex.MailDelivery.Admin.Messaging.ManageGroup;
 using Fanex.MailDelivery.Admin.Messaging.ManageMail;
 using Fanex.MailDelivery.Admin.Messaging.ManageRecipient;
 using Fanex.MailDelivery.Admin.Messaging.ManageReport;
 using Fanex.MailDelivery.AdminWinService.Mapping;
-using Fanex.MailDelivery.Core.Messaging.Schedule;
+using Fanex.MailDelivery.Core.Messaging.Job;
 using Fanex.MailDelivery.Core.Models;
 using Fanex.MailDelivery.Core.Models.Group;
 using Fanex.MailDelivery.Core.Models.Mails;

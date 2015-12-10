@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Fanex.MailDelivery.Core.Messaging.Schedule;
 using Fanex.MailDelivery.Core.Models;
 
 namespace Fanex.MailDelivery.Client.Handlers

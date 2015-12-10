@@ -6,7 +6,7 @@ using EasyNetQ;
 using Fanex.MailDelivery.Client.Configurations;
 using Fanex.MailDelivery.Client.Logging;
 using Fanex.MailDelivery.Core;
-using Fanex.MailDelivery.Core.Messaging.Schedule;
+using Fanex.MailDelivery.Core.Messaging.Job;
 using Fanex.MailDelivery.Core.Models;
 
 namespace Fanex.MailDelivery.Client.Handlers
@@ -97,17 +97,6 @@ namespace Fanex.MailDelivery.Client.Handlers
             return _bus.Request<JobMessage, JobMessage>(jobResult);
         }
 
-        public void SubscribeScheduleChange()
-        {
-            _bus.Subscribe<Schedule>(
-                GetSubscriptionIdKey(_updateScheduleSubscriptionId),
-                    schedule =>
-                    {
-                        _jobHandler.UpdateSchedule(schedule);
-                    },
-                    config => config.WithTopic(_updateScheduleSubscriptionId));
-        }
-
         public void Publish(JobMessage jobStatus)
         {
             if (jobStatus.Mail != null && jobStatus.Mail.ApplicationSendMailId == 0)
@@ -116,6 +105,17 @@ namespace Fanex.MailDelivery.Client.Handlers
             }
 
             _bus.Publish(jobStatus, MailDeliveryConstants.JobResultRoutingKey);
+        }
+
+        public void SubscribeScheduleChange()
+        {
+            _bus.Subscribe<ScheduleChangeRequest>(
+                GetSubscriptionIdKey(_updateScheduleSubscriptionId),
+                    request =>
+                    {
+                        _jobHandler.UpdateSchedule(request.Schedule);
+                    },
+                    config => config.WithTopic(_updateScheduleSubscriptionId));
         }
 
         public void SubscribeRunNowJob()
@@ -140,11 +140,6 @@ namespace Fanex.MailDelivery.Client.Handlers
                     config => config.WithTopic(_retryJobSubscriptionId));
         }
 
-        /// <summary>
-        /// Gets the random string.
-        /// </summary>
-        /// <param name="maxSize">The maximum size.</param>
-        /// <returns>Random string.</returns>
         private string GetSubscriptionIdKey(string topic)
         {
             var ip = (
