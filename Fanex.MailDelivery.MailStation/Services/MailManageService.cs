@@ -246,6 +246,7 @@ namespace Fanex.MailDelivery.MailStation.Services
         {
             _mailService.Dispose();
             _jobService.Dispose();
+            _jobOperationService.Dispose();
         }
     }
 }

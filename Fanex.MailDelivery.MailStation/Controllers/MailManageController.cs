@@ -33,13 +33,9 @@ namespace Fanex.MailDelivery.MailStation.Controllers
     {
         private MailManageService _mailManageService;
 
-        private IJobOperationService _jobOperationService;
-
         public MailManageController()
         {
             _mailManageService = new MailManageService(new MailService(), new JobService(), new JobOperationService());
-
-            _jobOperationService = new JobOperationService();
         }
 
         public ActionResult Index(GetMailListCriteria criteria)
@@ -150,6 +146,13 @@ namespace Fanex.MailDelivery.MailStation.Controllers
         public void RunNow(int mailId)
         {
             _mailManageService.RunNow(mailId);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            _mailManageService.Dispose();
+
+            base.Dispose(disposing);
         }
     }
 }
