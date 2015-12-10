@@ -56,17 +56,7 @@ namespace Fanex.MailDelivery.MailStation.Services
             return response.MailModel;
         }
 
-        public CommandResult CreateMail(CreateMailCriteria criteria)
-        {
-            if (criteria.TriggerType == 0)
-            {
-                return CreateFunctionMail(criteria);
-            }
-
-            return CreateAutoMail(criteria);
-        }
-
-        private CommandResult CreateFunctionMail(CreateMailCriteria criteria)
+        public CommandResult CreateFunctionMail(CreateMailCriteria criteria)
         {
             CreateFunctionMailRequest request = new CreateFunctionMailRequest
             {
@@ -93,7 +83,7 @@ namespace Fanex.MailDelivery.MailStation.Services
             return commandResult;
         }
 
-        private CommandResult CreateAutoMail(CreateMailCriteria criteria)
+        public CommandResult CreateAutoMail(CreateMailCriteria criteria)
         {
             CreateAutoMailRequest request = new CreateAutoMailRequest
             {
