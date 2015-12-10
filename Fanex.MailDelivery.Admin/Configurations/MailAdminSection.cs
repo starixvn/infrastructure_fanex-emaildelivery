@@ -1,9 +1,5 @@
-﻿#region
-
-using System.Configuration;
+﻿using System.Configuration;
 using Fanex.MailDelivery.Core;
-
-#endregion
 
 namespace Fanex.MailDelivery.Admin.Configurations
 {

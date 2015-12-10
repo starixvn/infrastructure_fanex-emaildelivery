@@ -17,7 +17,6 @@ using Fanex.MailDelivery.Services.Criteria.Job;
 using Fanex.MailDelivery.Services.Criteria.Mail;
 using Fanex.MailDelivery.Services.Criteria.Recipient;
 using Fanex.MailDelivery.Services.Criteria.Report;
-using Fanex.MailDelivery.Services.Services;
 using Fanex.MailDelivery.Services.Services.Admin;
 
 namespace Fanex.MailDelivery.AdminWinService.Services

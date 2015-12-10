@@ -1,67 +1,67 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <DirectedGraph DataVirtualized="True" Layout="Sugiyama" ZoomLevel="-1" xmlns="http://schemas.microsoft.com/vs/2009/dgml">
   <Nodes>
-    <Node Id="(@7)" Category="CodeSchema_Assembly" Bounds="997.639873176086,-64.7795160671319,200.273333333334,25" CodeSchemaProperty_StrongName="Fanex.Maintenance.Site, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" DelayedChildNodesState="NotFetched" DelayedCrossGroupLinksState="Fetched" FilePath="$(d4312b0d-cc74-4aa1-979a-af26702808a1.OutputPath)" Group="Collapsed" Label="Fanex.Maintenance.Site.dll" UseManualLocation="True">
+    <Node Id="(@7)" Category="CodeSchema_Assembly" Bounds="1060.89157743396,-63.2550383301424,200.273333333334,25" CodeSchemaProperty_StrongName="Fanex.Maintenance.Site, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" DelayedChildNodesState="NotFetched" DelayedCrossGroupLinksState="Fetched" FilePath="$(d4312b0d-cc74-4aa1-979a-af26702808a1.OutputPath)" Group="Collapsed" Label="Fanex.Maintenance.Site.dll" UseManualLocation="True">
       <Category Ref="CodeMap_WebProject" />
     </Node>
-    <Node Id="@11" Category="CodeSchema_Assembly" Bounds="979.018400082548,149.220484099268,236.46,25" CodeSchemaProperty_StrongName="Fanex.MailDelivery.MailStation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" DelayedChildNodesState="NotFetched" DelayedCrossGroupLinksState="Fetched" FilePath="$(108c1d8a-cae1-46da-b951-60e1fc67ef12.OutputPath)" Group="Collapsed" Label="Fanex.MailDelivery.MailStation.dll" UseManualLocation="True" />
-    <Node Id="@13" Category="CodeSchema_Assembly" Bounds="172.587117668336,132.248643881668,218.813333333333,25" CodeSchemaProperty_StrongName="Fanex.MailDelivery.Services, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" DelayedChildNodesState="NotFetched" DelayedCrossGroupLinksState="Fetched" FilePath="$(d1f4d13c-006d-41b8-8885-69f22cafbaad.OutputPath)" Group="Collapsed" Label="Fanex.MailDelivery.Services.dll" UseManualLocation="True" />
-    <Node Id="@15" Category="CodeSchema_Assembly" Bounds="614.400550950469,336.220483958468,206.8,25" CodeSchemaProperty_StrongName="Fanex.MailDelivery.Client, Version=1.0.0.6, Culture=neutral, PublicKeyToken=null" DelayedChildNodesState="NotFetched" DelayedCrossGroupLinksState="Fetched" FilePath="$(708e1fce-82c4-443b-b1e9-0e64bcabe80e.OutputPath)" Group="Collapsed" Label="Fanex.MailDelivery.Client.dll" UseManualLocation="True" />
-    <Node Id="@2" Category="CodeSchema_Assembly" Bounds="143.695501306656,-74.7791413487819,274.646666666667,25" CodeSchemaProperty_StrongName="Fanex.MailDelivery.AdminWinService, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" DelayedChildNodesState="NotFetched" DelayedCrossGroupLinksState="Fetched" FilePath="$(dc29b2d8-1460-403e-873b-63b55372f45e.OutputPath)" Group="Collapsed" Label="Fanex.MailDelivery.AdminWinService.exe" UseManualLocation="True" />
-    <Node Id="@4" Category="CodeSchema_Assembly" Bounds="136.695501306656,318.220858600018,270.183333333333,25" CodeSchemaProperty_StrongName="Fanex.MailDelivery.ClientWinService, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" DelayedChildNodesState="NotFetched" DelayedCrossGroupLinksState="Fetched" FilePath="$(b7144728-6615-4a45-9810-34d141410569.OutputPath)" Group="Collapsed" Label="Fanex.MailDelivery.ClientWinService.exe" UseManualLocation="True" />
-    <Node Id="@6" Category="CodeSchema_Assembly" Bounds="604.654219442178,148.248643932868,201.333333333333,25" CodeSchemaProperty_StrongName="Fanex.MailDelivery.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" DelayedChildNodesState="NotFetched" DelayedCrossGroupLinksState="Fetched" FilePath="$(c7ed0de9-6a20-4223-b251-6ef530b74139.OutputPath)" Group="Collapsed" Label="Fanex.MailDelivery.Core.dll" UseManualLocation="True" />
-    <Node Id="@9" Category="CodeSchema_Assembly" Bounds="596.987552775512,-67.7530627085146,211.263333333333,25" CodeSchemaProperty_StrongName="Fanex.MailDelivery.Admin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" DelayedChildNodesState="NotFetched" DelayedCrossGroupLinksState="Fetched" FilePath="$(011c7f64-69e3-4867-9b3e-d6d1d931060b.OutputPath)" Group="Collapsed" Label="Fanex.MailDelivery.Admin.dll" UseManualLocation="True" />
+    <Node Id="@11" Category="CodeSchema_Assembly" Bounds="1050.47161560732,154.744961669858,236.46,25" CodeSchemaProperty_StrongName="Fanex.MailDelivery.MailStation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" DelayedChildNodesState="NotFetched" DelayedCrossGroupLinksState="Fetched" FilePath="$(108c1d8a-cae1-46da-b951-60e1fc67ef12.OutputPath)" Group="Collapsed" Label="Fanex.MailDelivery.MailStation.dll" UseManualLocation="True" />
+    <Node Id="@13" Category="CodeSchema_Assembly" Bounds="119.516171739356,151.20367444485,218.813333333333,25" CodeSchemaProperty_StrongName="Fanex.MailDelivery.Services, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" DelayedChildNodesState="NotFetched" DelayedCrossGroupLinksState="Fetched" FilePath="$(d1f4d13c-006d-41b8-8885-69f22cafbaad.OutputPath)" Group="Collapsed" Label="Fanex.MailDelivery.Services.dll" UseManualLocation="True" />
+    <Node Id="@15" Category="CodeSchema_Assembly" Bounds="711.726586061521,338.20377444485,206.8,25" CodeSchemaProperty_StrongName="Fanex.MailDelivery.Client, Version=1.0.0.6, Culture=neutral, PublicKeyToken=null" DelayedChildNodesState="NotFetched" DelayedCrossGroupLinksState="Fetched" FilePath="$(708e1fce-82c4-443b-b1e9-0e64bcabe80e.OutputPath)" Group="Collapsed" Label="Fanex.MailDelivery.Client.dll" UseManualLocation="True" />
+    <Node Id="@2" Category="CodeSchema_Assembly" Bounds="97.6254899409811,-56.2547716633981,274.646666666667,25" CodeSchemaProperty_StrongName="Fanex.MailDelivery.AdminWinService, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" DelayedChildNodesState="NotFetched" DelayedCrossGroupLinksState="Fetched" FilePath="$(dc29b2d8-1460-403e-873b-63b55372f45e.OutputPath)" Group="Collapsed" Label="Fanex.MailDelivery.AdminWinService.exe" UseManualLocation="True" />
+    <Node Id="@4" Category="CodeSchema_Assembly" Bounds="99.6254899409809,344.745228336602,270.183333333333,25" CodeSchemaProperty_StrongName="Fanex.MailDelivery.ClientWinService, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" DelayedChildNodesState="NotFetched" DelayedCrossGroupLinksState="Fetched" FilePath="$(b7144728-6615-4a45-9810-34d141410569.OutputPath)" Group="Collapsed" Label="Fanex.MailDelivery.ClientWinService.exe" UseManualLocation="True" />
+    <Node Id="@6" Category="CodeSchema_Assembly" Bounds="456.178012004842,157.744961669858,201.333333333333,25" CodeSchemaProperty_StrongName="Fanex.MailDelivery.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" DelayedChildNodesState="NotFetched" DelayedCrossGroupLinksState="Fetched" FilePath="$(c7ed0de9-6a20-4223-b251-6ef530b74139.OutputPath)" Group="Collapsed" Label="Fanex.MailDelivery.Core.dll" UseManualLocation="True" />
+    <Node Id="@9" Category="CodeSchema_Assembly" Bounds="685.340118394854,-56.3375125301583,211.263333333333,25" CodeSchemaProperty_StrongName="Fanex.MailDelivery.Admin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" DelayedChildNodesState="NotFetched" DelayedCrossGroupLinksState="Fetched" FilePath="$(011c7f64-69e3-4867-9b3e-d6d1d931060b.OutputPath)" Group="Collapsed" Label="Fanex.MailDelivery.Admin.dll" UseManualLocation="True" />
   </Nodes>
   <Links>
-    <Link Source="(@7)" Target="@11" Category="CodeSchema_Calls" Bounds="1097.30146078517,-39.7795160671319,0.44422977255158,180.000027574612" IsSourceVirtualized="True" IsTargetVirtualized="True" Weight="2">
+    <Link Source="(@7)" Target="@11" Category="CodeSchema_Calls" Bounds="1161.46823099895,-38.2550383301424,6.47680320749669,184.005570172548" IsSourceVirtualized="True" IsTargetVirtualized="True" Weight="2">
       <Category Ref="CodeMap_ProjectReference" />
     </Link>
-    <Link Source="@11" Target="@6" Category="References" Bounds="814.987525106816,161.020578004584,164.030874975733,0.40673794808356" IsSourceVirtualized="True" IsTargetVirtualized="True" Weight="39">
-      <Category Ref="CodeMap_ProjectReference" />
-      <Category Ref="CodeSchema_Calls" />
-      <Category Ref="CodeSchema_ReturnTypeLink" />
-    </Link>
-    <Link Source="@11" Target="@9" Category="References" Bounds="733.240641512447,-38.416906436181,341.272891437314,187.637390535449" IsSourceVirtualized="True" IsTargetVirtualized="True" Weight="199">
-      <Category Ref="CodeMap_ProjectReference" />
-      <Category Ref="CodeSchema_Calls" />
-    </Link>
-    <Link Source="@13" Target="@6" Category="References" Bounds="391.400451001669,148.883759882825,204.260189923541,7.7201838378418" IsSourceVirtualized="True" IsTargetVirtualized="True" Weight="119">
+    <Link Source="@11" Target="@6" Category="References" Bounds="666.511237158066,167.824656004576,383.960378449252,1.8825988001646" IsSourceVirtualized="True" IsTargetVirtualized="True" Weight="39">
       <Category Ref="CodeMap_ProjectReference" />
       <Category Ref="CodeSchema_Calls" />
       <Category Ref="CodeSchema_ReturnTypeLink" />
     </Link>
-    <Link Source="@15" Target="@6" Category="References" Bounds="706.746983097082,182.228874238398,10.2236785971073,153.99160972007" IsSourceVirtualized="True" IsTargetVirtualized="True" Weight="134">
+    <Link Source="@11" Target="@9" Category="References" Bounds="821.196909064951,-26.9471495200997,325.136090200735,181.692111189957" IsSourceVirtualized="True" IsTargetVirtualized="True" Weight="199">
+      <Category Ref="CodeMap_ProjectReference" />
+      <Category Ref="CodeSchema_Calls" />
+    </Link>
+    <Link Source="@13" Target="@6" Category="References" Bounds="338.329505072689,165.88608605372,108.850296996666,2.17131331236175" IsSourceVirtualized="True" IsTargetVirtualized="True" Weight="237">
       <Category Ref="CodeMap_ProjectReference" />
       <Category Ref="CodeSchema_Calls" />
       <Category Ref="CodeSchema_ReturnTypeLink" />
     </Link>
-    <Link Source="@2" Target="@13" Category="References" Bounds="281.077700512385,-49.7791413487819,0.814834992063197,173.027885026289" IsSourceVirtualized="True" IsTargetVirtualized="True" Weight="240">
-      <Category Ref="CodeMap_ProjectReference" />
-      <Category Ref="CodeSchema_Calls" />
-    </Link>
-    <Link Source="@2" Target="@6" Category="References" Bounds="304.799618889193,-49.7791413487819,368.77398308751,193.840318312807" IsSourceVirtualized="True" IsTargetVirtualized="True" Weight="148">
+    <Link Source="@15" Target="@6" Category="References" Bounds="582.112946925016,187.899631081224,215.122998093661,150.304143363625" IsSourceVirtualized="True" IsTargetVirtualized="True" Weight="133">
       <Category Ref="CodeMap_ProjectReference" />
       <Category Ref="CodeSchema_Calls" />
       <Category Ref="CodeSchema_ReturnTypeLink" />
     </Link>
-    <Link Source="@2" Target="@9" Category="References" Bounds="418.342167973323,-59.9906127469962,169.646634330436,2.82720471050224" IsSourceVirtualized="True" IsTargetVirtualized="True" Weight="305">
+    <Link Source="@2" Target="@13" Category="References" Bounds="229.547232412173,-31.2547716633981,5.03850701442784,173.462240408004" IsSourceVirtualized="True" IsTargetVirtualized="True" Weight="237">
+      <Category Ref="CodeMap_ProjectReference" />
+      <Category Ref="CodeSchema_Calls" />
+    </Link>
+    <Link Source="@2" Target="@6" Category="References" Bounds="253.751174706215,-31.2547716633981,276.79628516209,184.017067070443" IsSourceVirtualized="True" IsTargetVirtualized="True" Weight="133">
       <Category Ref="CodeMap_ProjectReference" />
       <Category Ref="CodeSchema_Calls" />
       <Category Ref="CodeSchema_ReturnTypeLink" />
     </Link>
-    <Link Source="@4" Target="@13" Category="References" Bounds="272.473198973783,166.23512003549,8.34135426264629,151.985738564528" IsSourceVirtualized="True" IsTargetVirtualized="True" Weight="7">
-      <Category Ref="CodeMap_ProjectReference" />
-      <Category Ref="CodeSchema_Calls" />
-    </Link>
-    <Link Source="@4" Target="@15" Category="CodeSchema_Calls" Bounds="406.878834639989,336.17271157541,198.52903635245,8.01197545523269" IsSourceVirtualized="True" IsTargetVirtualized="True" Weight="2">
-      <Category Ref="CodeMap_ProjectReference" />
-    </Link>
-    <Link Source="@4" Target="@6" Category="References" Bounds="303.669858254826,176.533744747049,361.389309428352,141.687113852969" IsSourceVirtualized="True" IsTargetVirtualized="True" Weight="20">
+    <Link Source="@2" Target="@9" Category="References" Bounds="372.272156607648,-43.8204543795031,304.067961886854,0.0452478556634546" IsSourceVirtualized="True" IsTargetVirtualized="True" Weight="305">
       <Category Ref="CodeMap_ProjectReference" />
       <Category Ref="CodeSchema_Calls" />
       <Category Ref="CodeSchema_ReturnTypeLink" />
     </Link>
-    <Link Source="@9" Target="@6" Category="References" Bounds="702.775564657494,-42.7530627085146,2.27641648511576,182.002410540994" IsSourceVirtualized="True" IsTargetVirtualized="True" Weight="46">
+    <Link Source="@4" Target="@13" Category="References" Bounds="229.566392639534,185.199643777813,4.77653437212248,159.545584558788" IsSourceVirtualized="True" IsTargetVirtualized="True" Weight="13">
+      <Category Ref="CodeMap_ProjectReference" />
+      <Category Ref="CodeSchema_Calls" />
+    </Link>
+    <Link Source="@4" Target="@15" Category="CodeSchema_Calls" Bounds="369.808823274314,351.970562407592,332.918334332684,3.75212707313409" IsSourceVirtualized="True" IsTargetVirtualized="True" Weight="2">
+      <Category Ref="CodeMap_ProjectReference" />
+    </Link>
+    <Link Source="@4" Target="@6" Category="References" Bounds="256.249714274927,187.263431013442,271.278870592617,157.48179732316" IsSourceVirtualized="True" IsTargetVirtualized="True" Weight="38">
+      <Category Ref="CodeMap_ProjectReference" />
+      <Category Ref="CodeSchema_Calls" />
+      <Category Ref="CodeSchema_ReturnTypeLink" />
+    </Link>
+    <Link Source="@9" Target="@6" Category="References" Bounds="577.156987566702,-31.3375125301583,200.144417232206,183.009189747621" IsSourceVirtualized="True" IsTargetVirtualized="True" Weight="48">
       <Category Ref="CodeMap_ProjectReference" />
       <Category Ref="CodeSchema_Calls" />
       <Category Ref="CodeSchema_ReturnTypeLink" />
@@ -359,7 +359,7 @@
     <Path Id="d1f4d13c-006d-41b8-8885-69f22cafbaad.OutputPathUri" Value="file:///D:/Project_Nexcel/ROME/fanex-emaildelivery/Fanex.MailDelivery.Services/bin/Debug/Fanex.MailDelivery.Services.dll" />
     <Path Id="d4312b0d-cc74-4aa1-979a-af26702808a1.OutputPath" Value="D:\Project_Nexcel\ROME\fanex-emaildelivery\Fanex.Maintenance.Site\bin\Fanex.Maintenance.Site.dll" />
     <Path Id="d4312b0d-cc74-4aa1-979a-af26702808a1.OutputPathUri" Value="file:///D:/Project_Nexcel/ROME/fanex-emaildelivery/Fanex.Maintenance.Site/bin/Fanex.Maintenance.Site.dll" />
-    <Path Id="dc29b2d8-1460-403e-873b-63b55372f45e.OutputPath" Value="D:\Project_Nexcel\ROME\fanex-emaildelivery\WinServices\Fanex.MailDelivery.AdminWinService\bin\x86\Debug\Fanex.MailDelivery.AdminWinService.exe" />
-    <Path Id="dc29b2d8-1460-403e-873b-63b55372f45e.OutputPathUri" Value="file:///D:/Project_Nexcel/ROME/fanex-emaildelivery/WinServices/Fanex.MailDelivery.AdminWinService/bin/x86/Debug/Fanex.MailDelivery.AdminWinService.exe" />
+    <Path Id="dc29b2d8-1460-403e-873b-63b55372f45e.OutputPath" Value="D:\Project_Nexcel\ROME\fanex-emaildelivery\WinServices\Fanex.MailDelivery.AdminWinService\bin\Debug\Fanex.MailDelivery.AdminWinService.exe" />
+    <Path Id="dc29b2d8-1460-403e-873b-63b55372f45e.OutputPathUri" Value="file:///D:/Project_Nexcel/ROME/fanex-emaildelivery/WinServices/Fanex.MailDelivery.AdminWinService/bin/Debug/Fanex.MailDelivery.AdminWinService.exe" />
   </Paths>
 </DirectedGraph>

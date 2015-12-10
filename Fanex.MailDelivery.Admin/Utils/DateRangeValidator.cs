@@ -44,7 +44,7 @@ namespace Fanex.MailDelivery.Admin.Utils
         {
             if (day < 1 || day > 28)
             {
-                throw new ArgumentException("Date should not be greated than 28");
+                throw new ArgumentException("Date should not be greater than 28");
             }
         }
     }

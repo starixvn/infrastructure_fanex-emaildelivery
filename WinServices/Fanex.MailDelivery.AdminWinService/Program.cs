@@ -5,15 +5,8 @@ using Fanex.MailDelivery.AdminWinService.Installer;
 
 namespace Fanex.MailDelivery.AdminWinService
 {
-    /// <summary>
-    /// Program starts.
-    /// </summary>
     public class Program
     {
-        /// <summary>
-        /// Mains the specified arguments.
-        /// </summary>
-        /// <param name="args">The arguments.</param>
         public static void Main(string[] args)
         {
             ServiceBase[] servicesToRun = new ServiceBase[]

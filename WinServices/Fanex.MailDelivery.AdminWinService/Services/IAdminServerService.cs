@@ -4,7 +4,6 @@ using Fanex.MailDelivery.Admin.Messaging.ManageGroup;
 using Fanex.MailDelivery.Admin.Messaging.ManageMail;
 using Fanex.MailDelivery.Admin.Messaging.ManageRecipient;
 using Fanex.MailDelivery.Admin.Messaging.ManageReport;
-using Fanex.MailDelivery.Core.Messaging.Schedule;
 
 namespace Fanex.MailDelivery.AdminWinService.Services
 {

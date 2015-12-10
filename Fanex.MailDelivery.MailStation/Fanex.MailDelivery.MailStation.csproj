@@ -162,10 +162,6 @@
       <Project>{011C7F64-69E3-4867-9B3E-D6D1D931060B}</Project>
       <Name>Fanex.MailDelivery.Admin</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Fanex.MailDelivery.Client\Fanex.MailDelivery.Client.csproj">
-      <Project>{708e1fce-82c4-443b-b1e9-0e64bcabe80e}</Project>
-      <Name>Fanex.MailDelivery.Client</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Fanex.MailDelivery.Core\Fanex.MailDelivery.Core.csproj">
       <Project>{C7ED0DE9-6A20-4223-B251-6EF530B74139}</Project>
       <Name>Fanex.MailDelivery.Core</Name>
