@@ -5,17 +5,14 @@ using NUnit.Framework;
 namespace Fanex.MailDelivery.Admin.UserTest
 {
     [TestFixture]
-    public class MailAdminHandlerTest
+    public class MailServiceTest
     {
         [Test]
         public void GetMailListTest()
         {
             GetMailListRequest getMailListRequest = new GetMailListRequest();
 
-            getMailListRequest.MailName = "Create";
-            getMailListRequest.SiteId = -1;
-            getMailListRequest.IsActive = -1;
-            getMailListRequest.TriggerType = -1;
+            getMailListRequest.SiteId = 12; // mSite
 
             GetMailListResponse mails;
 
@@ -43,7 +40,7 @@ namespace Fanex.MailDelivery.Admin.UserTest
             return new GetMailListRequest
             {
                 MailName = mailName,
-                IsActive = 1,
+                Status = 1,
                 TriggerType = -1,
                 SiteId = 95
             };
@@ -53,19 +50,19 @@ namespace Fanex.MailDelivery.Admin.UserTest
         [Test]
         public void CreateFunctionMailTest()
         {
-            // MailGroupId: Mail_Group_GetMailGroup
+            // GroupIds: Mail_Group_GetMailGroup
             // SiteId
             // MailTo: Mail_MailManagement_GetSuggesionEmailList
             CreateFunctionMailRequest request = new CreateFunctionMailRequest
             {
-                MailGroupId = 1,
+                GroupIds = 1,
                 MailName = "CreateFunctionMailTest",
                 SiteId = 12,
 
                 MailFrom = "ddfgdg",
                 MailTo = "17",
 
-                IsActive = true,
+                Status = true,
 
                 Description = "CreateFunctionMailTest Description"
             };
@@ -77,19 +74,19 @@ namespace Fanex.MailDelivery.Admin.UserTest
         [Test]
         public void CreateAutoMailTest()
         {
-            // MailGroupId: Mail_Group_GetMailGroup
+            // GroupIds: Mail_Group_GetMailGroup
             // SiteId
             // MailTo: Mail_MailManagement_GetSuggesionEmailList
             CreateAutoMailRequest request = new CreateAutoMailRequest
             {
-                MailGroupId = 1,
+                GroupIds = 1,
                 MailName = "CreateAutoMailTest",
                 SiteId = 12,
 
                 MailFrom = "ddfgdg",
                 MailTo = "17",
 
-                IsActive = true,
+                Status = true,
 
                 Description = "CreateFunctionMailTest Description",
 
@@ -111,14 +108,14 @@ namespace Fanex.MailDelivery.Admin.UserTest
             {
                 MailId = 122,
 
-                MailGroupId = 1,
+                GroupIds = 1,
                 MailName = "CreateFunctionMailTest_Update1",
                 SiteId = 12,
 
                 MailFrom = "ddfgdg",
                 MailTo = "17",
 
-                IsActive = true,
+                Status = true,
 
                 Description = "CreateFunctionMailTest Description",
             };
@@ -133,14 +130,14 @@ namespace Fanex.MailDelivery.Admin.UserTest
             {
                 MailId = 123,
 
-                MailGroupId = 1,
+                GroupIds = 1,
                 MailName = "CreateAutoMailTest_Update2",
                 SiteId = 12,
 
                 MailFrom = "ddfgdg",
                 MailTo = "17",
 
-                IsActive = true,
+                Status = true,
 
                 Description = "CreateFunctionMailTest Description",
             };

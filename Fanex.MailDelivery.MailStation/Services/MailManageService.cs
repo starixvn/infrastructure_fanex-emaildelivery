@@ -32,8 +32,8 @@ namespace Fanex.MailDelivery.MailStation.Services
             GetMailListRequest request = new GetMailListRequest
             {
                 MailName = criteria.MailName,
-                IsActive = criteria.IsActive,
-                MailGroupId = criteria.MailGroupId,
+                Status = criteria.IsActive,
+                GroupIds = criteria.MailGroupId,
                 TriggerType = criteria.TriggerType,
                 Emails = criteria.Emails,
                 SiteId = criteria.SiteId

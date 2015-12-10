@@ -35,8 +35,8 @@ namespace Fanex.MailDelivery.AdminWinService.Services
             IList<MailModel> mailModels = _adminDataService.GetListMail(new GetMailListCriteria
             {
                 Emails = request.Emails,
-                IsActive = request.IsActive,
-                MailGroupId = request.MailGroupId,
+                IsActive = request.Status,
+                MailGroupId = request.GroupIds,
                 MailName = request.MailName,
                 SiteId = request.SiteId,
                 TriggerType = request.TriggerType
