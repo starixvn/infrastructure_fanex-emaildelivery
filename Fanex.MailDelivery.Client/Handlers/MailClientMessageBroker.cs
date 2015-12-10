@@ -33,10 +33,10 @@ namespace Fanex.MailDelivery.Client.Handlers
                     serviceRegister.Register<IEasyNetQLogger>(_ => new MailClientLogger());
                 });
 
+            SubscribeScheduleChange();
+
             SubscribeRunNowJob();
             SubscribeRetryJob();
-
-            SubscribeScheduleChange();
         }
 
         public void Stop()

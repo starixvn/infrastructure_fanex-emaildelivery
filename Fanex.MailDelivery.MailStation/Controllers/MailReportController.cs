@@ -59,13 +59,6 @@ namespace Fanex.MailDelivery.MailStation.Controllers
             return Json(_mailReportService.MailReport(criteria));
         }
 
-        [NapAuth(FunctionKey = MailDeliveryFunctionKeys.MailReport, Policy = Constant.Policy.Read)]
-        public ActionResult RetrySendMail(RetrySendMailCriteria criteria)
-        {
-            _mailReportService.RetrySendMail(criteria);
-            return new EmptyResult();
-        }
-
         public ActionResult MailDetail(int mailId)
         {
             var mailDetail = _mailReportService.MailDetail(new MailDetailCriteria { MailId = mailId });
@@ -85,6 +78,13 @@ namespace Fanex.MailDelivery.MailStation.Controllers
         public void AbortTask(int taskId)
         {
             _mailReportService.AbortJob(taskId);
+        }
+
+        [NapAuth(FunctionKey = MailDeliveryFunctionKeys.MailReport, Policy = Constant.Policy.Read)]
+        public ActionResult RetrySendMail(RetrySendMailCriteria criteria)
+        {
+            _mailReportService.RetrySendMail(criteria);
+            return new EmptyResult();
         }
 
         public ActionResult RetryMissingTask(RetryMissingTaskCriteria criteria)
