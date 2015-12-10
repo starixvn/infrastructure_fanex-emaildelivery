@@ -37,7 +37,7 @@ namespace Fanex.MailDelivery.MailStation.Controllers
 
         public MailManageController()
         {
-            _mailManageService = new MailManageService(new MailService(), new JobService());
+            _mailManageService = new MailManageService(new MailService(), new JobService(), new JobOperationService());
 
             _jobOperationService = new JobOperationService();
         }
@@ -149,13 +149,7 @@ namespace Fanex.MailDelivery.MailStation.Controllers
 
         public void RunNow(int mailId)
         {
-            IJobService jobService = new JobService();
-
-            GetScheduleByMailIdRequest request = new GetScheduleByMailIdRequest { MailId = mailId };
-
-            GetScheduleByMailIdResponse response = jobService.GetScheduleByIdsRequest(request);
-
-            _jobOperationService.RunNow(response.Schedule);
+            _mailManageService.RunNow(mailId);
         }
     }
 }

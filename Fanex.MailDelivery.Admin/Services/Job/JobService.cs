@@ -6,12 +6,6 @@ namespace Fanex.MailDelivery.Admin.Services.Job
 {
     public class JobService : AdminService, IJobService
     {
-        public void PublishScheduleChange(ScheduleChangeRequest request)
-        {
-            var updateSchedulePublishId = string.Format(MailDeliveryConstants.UpdateScheduleRoutingKeyFormat, request.Schedule.SiteId);
-            Bus.Publish(request, updateSchedulePublishId);
-        }
-
         public void AbortJob(AbortJobRequest request)
         {
             var jobMessage = new JobMessage

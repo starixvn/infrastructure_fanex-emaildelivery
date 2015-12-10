@@ -1,5 +1,4 @@
 using System;
-using EasyNetQ;
 using Fanex.MailDelivery.Core;
 using Fanex.MailDelivery.Core.Models;
 
@@ -7,6 +6,12 @@ namespace Fanex.MailDelivery.Admin.Services.JobOperation
 {
     public class JobOperationService : AdminService, IJobOperationService, IDisposable
     {
+        public void PublishScheduleChange(Schedule schedule)
+        {
+            var updateSchedulePublishId = string.Format(MailDeliveryConstants.UpdateScheduleRoutingKeyFormat, schedule.SiteId);
+            Bus.Publish(schedule, updateSchedulePublishId);
+        }
+
         public void RunNow(Schedule schedule)
         {
             var runnowJobPublishId = string.Format(MailDeliveryConstants.RunNowJobRoutingKeyFormat, schedule.SiteId);

@@ -109,11 +109,11 @@ namespace Fanex.MailDelivery.Client.Handlers
 
         public void SubscribeScheduleChange()
         {
-            _bus.Subscribe<ScheduleChangeRequest>(
+            _bus.Subscribe<Schedule>(
                 GetSubscriptionIdKey(_updateScheduleSubscriptionId),
-                    request =>
+                    schedule =>
                     {
-                        _jobHandler.UpdateSchedule(request.Schedule);
+                        _jobHandler.UpdateSchedule(schedule);
                     },
                     config => config.WithTopic(_updateScheduleSubscriptionId));
         }

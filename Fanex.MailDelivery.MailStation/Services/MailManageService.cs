@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Fanex.MailDelivery.Admin.Messaging;
 using Fanex.MailDelivery.Admin.Messaging.ManageMail;
 using Fanex.MailDelivery.Admin.Services.Job;
+using Fanex.MailDelivery.Admin.Services.JobOperation;
 using Fanex.MailDelivery.Admin.Services.Mail;
 using Fanex.MailDelivery.Core.Messaging.Job;
 using Fanex.MailDelivery.Core.Models;
@@ -16,13 +17,14 @@ namespace Fanex.MailDelivery.MailStation.Services
     public class MailManageService : MailStationBaseService
     {
         private readonly IMailService _mailService;
-
         private readonly IJobService _jobService;
+        private readonly IJobOperationService _jobOperationService;
 
-        public MailManageService(IMailService mailService, IJobService jobService)
+        public MailManageService(IMailService mailService, IJobService jobService, IJobOperationService jobOperationService)
         {
             _mailService = mailService;
             _jobService = jobService;
+            _jobOperationService = jobOperationService;
         }
 
         public IList<MailModel> MailList(GetMailListCriteria criteria)
@@ -128,20 +130,17 @@ namespace Fanex.MailDelivery.MailStation.Services
         public CommandResult UpdateMail(UpdateMailCriteria criteria)
         {
             // TODO: No need publish for Function Mail ?
-            _jobService.PublishScheduleChange(new ScheduleChangeRequest
+            _jobOperationService.PublishScheduleChange(new Schedule
             {
-                Schedule = new Schedule
-                {
-                    Id = criteria.MailId,
-                    Active = criteria.IsActive,
-                    EndTime = criteria.EndOn,
-                    StartTime = criteria.StartOn ?? DateTime.Now,
-                    MaxRetryTimes = criteria.Attempt,
-                    Name = criteria.MailName,
-                    RepeatExpression = criteria.CronExpression,
-                    RetryInterval = criteria.Interval,
-                    SiteId = criteria.SiteId
-                }
+                Id = criteria.MailId,
+                Active = criteria.IsActive,
+                EndTime = criteria.EndOn,
+                StartTime = criteria.StartOn ?? DateTime.Now,
+                MaxRetryTimes = criteria.Attempt,
+                Name = criteria.MailName,
+                RepeatExpression = criteria.CronExpression,
+                RetryInterval = criteria.Interval,
+                SiteId = criteria.SiteId
             });
 
             if (criteria.TriggerType == 0)
@@ -236,11 +235,11 @@ namespace Fanex.MailDelivery.MailStation.Services
             return ExecuteNonQuery(criteria);
         }
 
-        public void RunJobImmediately(int mailId)
+        public void RunNow(int mailId)
         {
-            // TODO: Will be changed
-            // Schedule schedule = GetScheduleByMailId(new GetScheduleByIdCriteria { MailId = mailId });
-            // MailAdminService.PublishRetryJobMessage(schedule);
+            GetScheduleByMailIdResponse response = _jobService.GetScheduleByIdsRequest(new GetScheduleByMailIdRequest { MailId = mailId });
+
+            _jobOperationService.RunNow(response.Schedule);
         }
 
         public void Dispose()

@@ -5,8 +5,6 @@ namespace Fanex.MailDelivery.Admin.Services.Job
 {
     public interface IJobService : IDisposable
     {
-        void PublishScheduleChange(ScheduleChangeRequest request);
-
         void AbortJob(AbortJobRequest request);
 
         void RetryJobMessage(ScheduleRequest schedule);
