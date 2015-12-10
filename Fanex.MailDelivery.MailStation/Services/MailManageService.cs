@@ -70,12 +70,9 @@ namespace Fanex.MailDelivery.MailStation.Services
         {
             CreateFunctionMailRequest request = new CreateFunctionMailRequest
             {
-                MailGroupId = criteria.MailGroupId,
+                GroupId = criteria.MailGroupId,
                 MailName = criteria.MailName,
                 SiteId = criteria.SiteId,
-
-                // TODO: Remove?
-                MailFrom = criteria.MailFrom,
 
                 MailTo = criteria.MailTo,
                 MailCc = criteria.MailCc,
@@ -100,12 +97,9 @@ namespace Fanex.MailDelivery.MailStation.Services
         {
             CreateAutoMailRequest request = new CreateAutoMailRequest
             {
-                MailGroupId = criteria.MailGroupId,
+                GroupId = criteria.MailGroupId,
                 MailName = criteria.MailName,
                 SiteId = criteria.SiteId,
-
-                // TODO: Remove?
-                MailFrom = criteria.MailFrom,
 
                 MailTo = criteria.MailTo,
                 MailCc = criteria.MailCc,
@@ -162,14 +156,12 @@ namespace Fanex.MailDelivery.MailStation.Services
             {
                 MailId = criteria.MailId,
                 MailName = criteria.MailName,
-                MailGroupId = criteria.MailGroupId,
+                GroupId = criteria.MailGroupId,
                 SiteId = criteria.SiteId,
                 MailTo = criteria.MailTo,
                 MailCc = criteria.MailCc,
                 MailBcc = criteria.MailBcc,
                 
-                // TODO: remove?
-                MailFrom = criteria.MailFrom,
                 Description = criteria.Description,
                 IsActive = criteria.IsActive
             };
@@ -191,14 +183,12 @@ namespace Fanex.MailDelivery.MailStation.Services
             {
                 MailId = criteria.MailId,
                 MailName = criteria.MailName,
-                MailGroupId = criteria.MailGroupId,
+                GroupId = criteria.MailGroupId,
                 SiteId = criteria.SiteId,
                 MailTo = criteria.MailTo,
                 MailCc = criteria.MailCc,
                 MailBcc = criteria.MailBcc,
                 
-                // TODO: remove?
-                MailFrom = criteria.MailFrom,
                 Description = criteria.Description,
                 IsActive = criteria.IsActive,
 

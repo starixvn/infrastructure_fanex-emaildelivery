@@ -65,11 +65,10 @@ namespace Fanex.MailDelivery.AdminWinService.Services
         {
             return _adminDataService.CreateMail(new CreateMailCriteria()
             {
-                MailGroupId = request.MailGroupId,
+                MailGroupId = request.GroupId,
                 MailName = request.MailName,
                 SiteId = request.SiteId,
 
-                MailFrom = request.MailFrom,
                 MailTo = request.MailTo,
                 MailCc = request.MailCc,
                 MailBcc = request.MailBcc,
@@ -85,11 +84,10 @@ namespace Fanex.MailDelivery.AdminWinService.Services
         {
             return _adminDataService.CreateMail(new CreateMailCriteria()
             {
-                MailGroupId = request.MailGroupId,
+                MailGroupId = request.GroupId,
                 MailName = request.MailName,
                 SiteId = request.SiteId,
 
-                MailFrom = request.MailFrom,
                 MailTo = request.MailTo,
                 MailCc = request.MailCc,
                 MailBcc = request.MailBcc,
@@ -116,11 +114,10 @@ namespace Fanex.MailDelivery.AdminWinService.Services
             {
                 MailId = request.MailId,
 
-                MailGroupId = request.MailGroupId,
+                MailGroupId = request.GroupId,
                 MailName = request.MailName,
                 SiteId = request.SiteId,
 
-                MailFrom = request.MailFrom,
                 MailTo = request.MailTo,
                 MailCc = request.MailCc,
                 MailBcc = request.MailBcc,
@@ -138,11 +135,10 @@ namespace Fanex.MailDelivery.AdminWinService.Services
             {
                 MailId = request.MailId,
 
-                MailGroupId = request.MailGroupId,
+                MailGroupId = request.GroupId,
                 MailName = request.MailName,
                 SiteId = request.SiteId,
 
-                MailFrom = request.MailFrom,
                 MailTo = request.MailTo,
                 MailCc = request.MailCc,
                 MailBcc = request.MailBcc,
