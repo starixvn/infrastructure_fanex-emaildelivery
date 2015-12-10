@@ -1,9 +1,6 @@
-﻿#region
-
-using System;
+﻿using System;
 using Fanex.MailDelivery.Admin.Messaging.Job;
-
-#endregion
+using Fanex.MailDelivery.Core.Messaging.Schedule;
 
 namespace Fanex.MailDelivery.Admin.Services.Job
 {

@@ -1,10 +1,6 @@
-﻿#region
+﻿using System;
 
-using System;
-
-#endregion
-
-namespace Fanex.MailDelivery.Admin.Messaging.Job
+namespace Fanex.MailDelivery.Core.Messaging.Schedule
 {
     public class ScheduleRequest
     {

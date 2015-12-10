@@ -1,18 +1,9 @@
-﻿// -----------------------------------------------------------------------
-// <copyright file="CreateMailCriteria.cs" company="Microsoft">
-// TODO: Update copyright text.
-// </copyright>
-// -----------------------------------------------------------------------
-
-using System;
+﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using Fanex.Data.Repository;
 
 namespace Fanex.MailDelivery.Services.Criteria.Mail
 {
-    /// <summary>
-    /// TODO: Update summary.
-    /// </summary>
     public class CreateMailCriteria : CriteriaBase
     {
         public CreateMailCriteria()

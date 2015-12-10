@@ -5,6 +5,7 @@ using Fanex.MailDelivery.Admin.Messaging.Job;
 using Fanex.MailDelivery.Admin.Messaging.ManageMail;
 using Fanex.MailDelivery.Admin.Services.Job;
 using Fanex.MailDelivery.Admin.Services.Mail;
+using Fanex.MailDelivery.Core.Messaging.Schedule;
 using Fanex.MailDelivery.Core.Models.Mails;
 using Fanex.MailDelivery.MailStation.Criteria.MailGroup;
 using Fanex.MailDelivery.MailStation.Criteria.MailManage;
@@ -12,9 +13,6 @@ using Fanex.NAP.Framework.Command;
 
 namespace Fanex.MailDelivery.MailStation.Services
 {
-    /// <summary>
-    /// Mail Manage Service.
-    /// </summary>
     public class MailManageService : MailStationBaseService
     {
         private readonly IMailService _mailService;
@@ -56,7 +54,17 @@ namespace Fanex.MailDelivery.MailStation.Services
             return response.MailModel;
         }
 
-        public CommandResult CreateFunctionMail(CreateMailCriteria criteria)
+        public CommandResult CreateMail(CreateMailCriteria criteria)
+        {
+            if (criteria.TriggerType == 0)
+            {
+                return CreateFunctionMail(criteria);
+            }
+
+            return CreateAutoMail(criteria);
+        }
+
+        private CommandResult CreateFunctionMail(CreateMailCriteria criteria)
         {
             CreateFunctionMailRequest request = new CreateFunctionMailRequest
             {
@@ -83,7 +91,7 @@ namespace Fanex.MailDelivery.MailStation.Services
             return commandResult;
         }
 
-        public CommandResult CreateAutoMail(CreateMailCriteria criteria)
+        private CommandResult CreateAutoMail(CreateMailCriteria criteria)
         {
             CreateAutoMailRequest request = new CreateAutoMailRequest
             {

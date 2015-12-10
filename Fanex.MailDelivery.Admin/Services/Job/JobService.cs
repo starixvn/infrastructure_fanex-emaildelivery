@@ -1,10 +1,7 @@
-﻿#region
-
-using Fanex.MailDelivery.Admin.Messaging.Job;
+﻿using Fanex.MailDelivery.Admin.Messaging.Job;
 using Fanex.MailDelivery.Core;
+using Fanex.MailDelivery.Core.Messaging.Schedule;
 using Fanex.MailDelivery.Core.Models;
-
-#endregion
 
 namespace Fanex.MailDelivery.Admin.Services.Job
 {

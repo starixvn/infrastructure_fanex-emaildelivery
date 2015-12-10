@@ -107,11 +107,7 @@ namespace Fanex.MailDelivery.MailStation.Controllers
                 criteria.EndOn = criteria.EndOn.Value.ToUniversalTime();
             }
 
-            CommandResult commandResult = criteria.TriggerType == 0
-                ? _mailManageService.CreateFunctionMail(criteria)
-                : _mailManageService.CreateAutoMail(criteria);
-
-            return Json(commandResult, JsonRequestBehavior.AllowGet);
+            return Json(_mailManageService.CreateMail(criteria), JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult MailList(GetMailListCriteria criteria)

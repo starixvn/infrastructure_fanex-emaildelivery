@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="Messaging\Schedule\GetScheduleListRequest.cs" />
     <Compile Include="Messaging\Schedule\GetScheduleListResponse.cs" />
+    <Compile Include="Messaging\Schedule\ScheduleRequest.cs" />
     <Compile Include="Models\FileExtension.cs" />
     <Compile Include="Models\Group\GroupModel.cs" />
     <Compile Include="Models\MailType.cs" />
