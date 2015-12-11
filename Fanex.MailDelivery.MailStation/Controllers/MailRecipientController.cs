@@ -186,5 +186,12 @@ namespace Fanex.MailDelivery.MailStation.Controllers
 
             return RedirectToAction("Index", "MailManage", new { Emails = string.Join(",", emails).Trim(',') });
         }
+
+        protected override void Dispose(bool disposing)
+        {
+            _recipientService.Dispose();
+
+            base.Dispose(disposing);
+        }
     }
 }

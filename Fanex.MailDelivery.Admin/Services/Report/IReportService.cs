@@ -1,9 +1,5 @@
-﻿#region
-
-using System;
+﻿using System;
 using Fanex.MailDelivery.Admin.Messaging.ManageReport;
-
-#endregion
 
 namespace Fanex.MailDelivery.Admin.Services.Report
 {
