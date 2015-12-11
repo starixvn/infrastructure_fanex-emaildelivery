@@ -1,8 +1,4 @@
-﻿#region
-
-using Fanex.MailDelivery.Core.Models.Group;
-
-#endregion
+﻿using Fanex.MailDelivery.Core.Models.Group;
 
 namespace Fanex.MailDelivery.Admin.Messaging.ManageGroup
 {

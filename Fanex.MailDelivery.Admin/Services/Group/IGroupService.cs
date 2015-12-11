@@ -1,10 +1,6 @@
-﻿#region
-
-using System;
+﻿using System;
 using Fanex.MailDelivery.Admin.Messaging;
 using Fanex.MailDelivery.Admin.Messaging.ManageGroup;
-
-#endregion
 
 namespace Fanex.MailDelivery.Admin.Services.Group
 {
