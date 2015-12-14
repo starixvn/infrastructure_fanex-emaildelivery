@@ -1,5 +1,6 @@
 using System;
 using Fanex.MailDelivery.Core;
+using Fanex.MailDelivery.Core.Messaging.Job;
 using Fanex.MailDelivery.Core.Models;
 
 namespace Fanex.MailDelivery.Admin.Services.JobOperation
@@ -24,9 +25,14 @@ namespace Fanex.MailDelivery.Admin.Services.JobOperation
             Bus.Publish(schedule, retryJobPublishId);
         }
 
-        public void Abort(JobMessage jobMessage)
+        public void AbortJob(AbortJobRequest request)
         {
-            throw new NotImplementedException();
+            var jobMessage = new JobMessage
+            {
+                JobStatus = JobStatus.Abort,
+                Schedule = new Schedule { TaskId = request.TaskId }
+            };
+            Bus.Publish(jobMessage, MailDeliveryConstants.AbortJobRoutingKeyFormat);
         }
     }
 }

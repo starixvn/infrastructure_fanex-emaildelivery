@@ -1,4 +1,6 @@
-﻿namespace Fanex.MailDelivery.MailStation.Services
+﻿using Fanex.MailDelivery.Core.Models;
+
+namespace Fanex.MailDelivery.MailStation.Services
 {
     using System;
     using System.Collections;
@@ -141,14 +143,15 @@
             }
         }
 
-        // public Schedule GetScheduleByMailId(GetScheduleByIdCriteria criteria)
-        // {
-        //     using (ObjectDb db = new ObjectDb(criteria.GetSettingKey()))
-        //     {
-        //         db.AssignParamValues(criteria.GetSpParams());
-        //         return db.Query<Schedule>().FirstOrDefault();
-        //     }
-        // }
+        public Schedule GetScheduleByMailId(GetScheduleByIdCriteria criteria)
+        {
+            using (ObjectDb db = new ObjectDb(criteria.GetSettingKey()))
+            {
+                db.AssignParamValues(criteria.GetSpParams());
+                return db.Query<Schedule>().FirstOrDefault();
+            }
+        }
+
         public string GetTimeZone()
         {
             return string.Empty;

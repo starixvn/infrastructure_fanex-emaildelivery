@@ -47,5 +47,7 @@ namespace Fanex.MailDelivery.Services.Repositories.Admin
         ResultModel DeleteGroup(DeleteGroupCriteria criteria);
 
         IList<MailTaskModel> GetReportList(GetReportListCriteria criteria);
+
+        Schedule GetScheduleByMailId(GetScheduleByMailIdCriteria criteria);
     }
 }

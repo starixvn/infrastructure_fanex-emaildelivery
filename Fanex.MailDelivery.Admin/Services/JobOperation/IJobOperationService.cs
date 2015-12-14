@@ -1,4 +1,5 @@
 ﻿using System;
+using Fanex.MailDelivery.Core.Messaging.Job;
 using Fanex.MailDelivery.Core.Models;
 
 namespace Fanex.MailDelivery.Admin.Services.JobOperation
@@ -11,6 +12,6 @@ namespace Fanex.MailDelivery.Admin.Services.JobOperation
 
         void Retry(Schedule schedule);
 
-        void Abort(JobMessage jobMessage);
+        void AbortJob(AbortJobRequest request);
     }
 }

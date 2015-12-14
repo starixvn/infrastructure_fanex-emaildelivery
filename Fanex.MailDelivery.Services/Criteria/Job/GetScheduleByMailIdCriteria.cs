@@ -2,9 +2,6 @@
 
 namespace Fanex.MailDelivery.Services.Criteria.Job
 {
-    /// <summary>
-    /// Get all log category criteria.
-    /// </summary>
     public class GetScheduleByMailIdCriteria : CriteriaBase
     {
         public int MailId { get; set; }

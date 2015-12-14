@@ -81,6 +81,8 @@ namespace Fanex.MailDelivery.Services.Repositories.Admin
 
         #endregion
 
+        #region Recipient
+
         public List<RecipientModel> GetRecipientList(GetRecipientListCriteria criteria)
         {
             using (var db = new ObjectDb(criteria.GetSettingKey()))
@@ -134,16 +136,7 @@ namespace Fanex.MailDelivery.Services.Repositories.Admin
             }
         }
 
-        private ResultModel GetCommandResult(Hashtable hash)
-        {
-            var errCode = hash["errcode"];
-            var errMsg = hash["errmsg"];
-            return new ResultModel()
-            {
-                ErrCode = (errCode is DBNull) ? 0 : Convert.ToInt32(errCode),
-                ErrMsg = (errMsg is DBNull) ? string.Empty : Convert.ToString(errMsg)
-            };
-        }
+        #endregion
 
         #region Group
         // TODO: Refactor
@@ -312,5 +305,26 @@ namespace Fanex.MailDelivery.Services.Repositories.Admin
         }
 
         #endregion
+
+        public Schedule GetScheduleByMailId(GetScheduleByMailIdCriteria criteria)
+        {
+            using (ObjectDb db = new ObjectDb(criteria.GetSettingKey()))
+            {
+                db.AssignParamValues(criteria.GetSpParams());
+                return db.Query<Schedule>().FirstOrDefault();
+            }
+        }
+
+        private ResultModel GetCommandResult(Hashtable hash)
+        {
+            var errCode = hash["errcode"];
+            var errMsg = hash["errmsg"];
+            return new ResultModel()
+            {
+                ErrCode = (errCode is DBNull) ? 0 : Convert.ToInt32(errCode),
+                ErrMsg = (errMsg is DBNull) ? string.Empty : Convert.ToString(errMsg)
+            };
+        }
+
     }
 }

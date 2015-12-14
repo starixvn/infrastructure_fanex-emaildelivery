@@ -1,10 +1,7 @@
-﻿namespace Fanex.MailDelivery.MailStation.Criteria.MailReport
-{
-    using Fanex.NAP.Framework.Data;
+﻿using Fanex.NAP.Framework.Data;
 
-    /// <summary>
-    /// Get all log category criteria.
-    /// </summary>
+namespace Fanex.MailDelivery.MailStation.Criteria.MailReport
+{
     public class GetScheduleByIdCriteria : CriteriaBase
     {
         public int MailId { get; set; }

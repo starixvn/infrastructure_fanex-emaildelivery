@@ -16,6 +16,7 @@ using Fanex.Common;
 using Fanex.Data;
 using Fanex.MailDeliver.Model;
 using Fanex.MailDelivery.Admin.Services.Job;
+using Fanex.MailDelivery.Admin.Services.JobOperation;
 using Fanex.MailDelivery.Core.Messaging.Job;
 using Fanex.MailDelivery.Core.Models;
 using Fanex.MailDelivery.MailStation.Criteria.MailReport;
@@ -33,15 +34,19 @@ namespace Fanex.MailDelivery.MailStation.Services
     /// </summary>
     public class MailReportService : MailStationBaseService, IDisposable
     {
-        private IMailService _mailServer;
+        private IMailService _mailService;
 
         private IJobService _jobService;
 
+        private IJobOperationService _jobOperationService;
+
         public MailReportService()
         {
-            _mailServer = _mailServer ?? MailService.Create();
+            _mailService = _mailService ?? MailService.Create();
 
             _jobService = new JobService();
+
+            _jobOperationService = new JobOperationService();
         }
 
         /// <summary>
@@ -134,7 +139,7 @@ namespace Fanex.MailDelivery.MailStation.Services
         {
             try
             {
-                return _mailServer.GetMail(criteria.MailId);
+                return _mailService.GetMail(criteria.MailId);
             }
             catch (Exception ex)
             {
@@ -163,14 +168,11 @@ namespace Fanex.MailDelivery.MailStation.Services
         /// <param name="criteria">The criteria.</param>
         public void RetrySendMail(RetrySendMailCriteria criteria)
         {
-            // MailAdminService.Start();
-            // MailTaskModel mailTask = this.GetMailTaskByID(new GetMailTaskByIdCriteria() { MailTaskId = criteria.TaskId });
-               
-            // TODO: Will be changed
-            // Schedule schedule = this.GetScheduleByMailId(new GetScheduleByIdCriteria() { MailId = mailTask.MailId });
-            // schedule.TaskId = mailTask.MailTaskId;
-            // MailAdminService.PublishRetryJobMessage(schedule);
-            // MailAdminService.Stop();
+            MailTaskModel mailTask = this.GetMailTaskByID(new GetMailTaskByIdCriteria() { MailTaskId = criteria.TaskId });
+            Schedule schedule = this.GetScheduleByMailId(new GetScheduleByIdCriteria() { MailId = mailTask.MailId });
+            schedule.TaskId = mailTask.MailTaskId;
+
+            _jobOperationService.Retry(schedule);
         }
 
         public void AbortJob(int taskId)
@@ -180,31 +182,27 @@ namespace Fanex.MailDelivery.MailStation.Services
                 TaskId = taskId,
             };
 
-            _jobService.AbortJob(request);
+            _jobOperationService.AbortJob(request);
         }
 
         public void RetryMissingJob(RetryMissingTaskCriteria criteria)
         {
             // Add Missing Task to DB first.
-            int mailTaskID;
+            int mailTaskId;
             Hashtable hash = criteria.GetSpParams();
             hash = (new ResultCriteria()).AddSpParams(hash);
             using (ObjectDb db = new ObjectDb(criteria.GetSettingKey()))
             {
                 db.ExecuteNonQuery(hash);
-                mailTaskID = Converter.ToInt(db.GetParameterValue("MailTaskID"));
+                mailTaskId = Converter.ToInt(db.GetParameterValue("MailTaskID"));
             }
 
-            // MailAdminService.Start();
-            MailTaskModel mailTask = this.GetMailTaskByID(new GetMailTaskByIdCriteria() { MailTaskId = mailTaskID });
+            MailTaskModel mailTask = this.GetMailTaskByID(new GetMailTaskByIdCriteria() { MailTaskId = mailTaskId });
+            Schedule schedule = this.GetScheduleByMailId(new GetScheduleByIdCriteria() { MailId = mailTask.MailId });
+            schedule.CurrentFireTime = criteria.ScheduledTime;
+            schedule.TaskId = mailTaskId;
 
-            // TODO: Will be changed 
-            // Schedule schedule = this.GetScheduleByMailId(new GetScheduleByIdCriteria() { MailId = mailTask.MailId });
-            // schedule.CurrentFireTime = criteria.ScheduledTime;
-            // schedule.TaskId = mailTaskID;
-            // MailAdminService.PublishRetryJobMessage(schedule);
-
-            // MailAdminService.Stop();
+            _jobOperationService.Retry(schedule);
         }
 
         /// <summary>
@@ -253,12 +251,8 @@ namespace Fanex.MailDelivery.MailStation.Services
 
         protected virtual void Dispose(bool disposing)
         {
-            if (disposing)
-            {
-                // free managed resources
-            }
-            // free native resources if there are any.
             _jobService.Dispose();
+            _jobOperationService.Dispose();
         }
     }
 }

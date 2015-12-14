@@ -110,7 +110,7 @@ namespace Fanex.MailDelivery.Services.Services.Admin
 
         public Schedule GetScheduleByMailId(GetScheduleByMailIdCriteria criteria)
         {
-            throw new System.NotImplementedException();
+            return _adminRepository.GetScheduleByMailId(criteria);
         }
     }
 }
