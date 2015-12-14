@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Fanex.Logging;
 using Fanex.MailDelivery.Core.Models;
 
 namespace Fanex.MailDelivery.Services.Services.MailService
@@ -78,7 +79,7 @@ namespace Fanex.MailDelivery.Services.Services.MailService
 
         public static void LogInfo(string messsage)
         {
-            //// Logger.Log.Info(messsage);
+            Logger.Log.Info(messsage);
         }
     }
 }

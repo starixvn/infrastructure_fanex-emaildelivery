@@ -43,7 +43,6 @@ namespace Fanex.MailDelivery.Client
             return _messageBroker.RequestAddMailTaskForRunningJob(jobResult);
         }
 
-
         public static void ReportJob(JobMessage jobResult)
         {
             _messageBroker.Publish(jobResult);

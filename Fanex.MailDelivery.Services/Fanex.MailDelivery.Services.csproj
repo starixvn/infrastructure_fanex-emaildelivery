@@ -37,6 +37,9 @@
       <HintPath>..\packages\Fanex.Data.0.5.404.63\lib\net40\Fanex.Data.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Fanex.Logging">
+      <HintPath>..\packages\Fanex.Logging.1.0.0.0\lib\net40\Fanex.Logging.dll</HintPath>
+    </Reference>
     <Reference Include="Fanex.MailDeliver.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="Fanex.MailDeliver.MailClient">
       <HintPath>..\_Dependencies\MailService\Fanex.MailDeliver.MailClient.dll</HintPath>
@@ -129,6 +132,7 @@
     <Compile Include="Services\Admin\AdminDataService.cs" />
     <Compile Include="Services\Client\IClientDataService.cs" />
     <Compile Include="Services\Admin\IAdminDataService.cs" />
+    <Compile Include="Services\Logging\LogService.cs" />
     <Compile Include="Services\MailService\IMailService.cs" />
     <Compile Include="Services\MailService\MailService.cs" />
     <Compile Include="Services\MailService\ServiceBase.cs" />
