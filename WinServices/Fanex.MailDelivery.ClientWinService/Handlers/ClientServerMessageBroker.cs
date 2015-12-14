@@ -39,7 +39,6 @@ namespace Fanex.MailDelivery.ClientWinService.Handlers
                     serviceRegister.Register<IEasyNetQLogger>(_ => new ServerClientLogger());
                 });
 
-
             ResponseGetScheduleList();
 
             SubscribeMail();

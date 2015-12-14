@@ -1,7 +1,9 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.ServiceProcess;
 using Fanex.Data.Configuration;
 using Fanex.MailDelivery.ClientWinService.Handlers;
+using Fanex.MailDelivery.Services.Services.Logging;
 
 namespace Fanex.MailDelivery.ClientWinService.Installer
 {
@@ -29,13 +31,13 @@ namespace Fanex.MailDelivery.ClientWinService.Installer
 
         protected override void OnStart(string[] args)
         {
-           // MailService.ServiceBase.LogInfo(string.Format(serviceInfo, ServiceName, "starts", DateTime.Now.ToString()));
+            LogService.LogInfo(string.Format(serviceInfo, ServiceName, "starts", DateTime.Now.ToString()));
             _clientServerMessageBroker.Start();
         }
 
         protected override void OnStop()
         {
-          //  MailService.ServiceBase.LogInfo(string.Format(serviceInfo, this.ServiceName, "stops", DateTime.Now.ToString()));
+            LogService.LogInfo(string.Format(serviceInfo, this.ServiceName, "stops", DateTime.Now.ToString()));
             _clientServerMessageBroker.Dispose();
         }
     }

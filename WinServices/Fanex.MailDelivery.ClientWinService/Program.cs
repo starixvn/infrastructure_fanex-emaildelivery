@@ -5,7 +5,7 @@ using Fanex.MailDelivery.ClientWinService.Installer;
 
 namespace Fanex.MailDelivery.ClientWinService
 {
-    static class Program
+    public static class Program
     {
         /// <summary>
         /// Mains the specified arguments.

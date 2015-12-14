@@ -3,10 +3,15 @@
     public interface IClientServerMessageBroker
     {
         void Dispose();
+
         void RespondAddMailTaskForRunningJob();
+
         void Start();
+
         void SubscribeClientNotificationMessage();
+
         void SubscribeJobResult();
+
         void SubscribeMail();
     }
 }
