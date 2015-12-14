@@ -2,7 +2,7 @@
 
 namespace Fanex.MailDelivery.ClientWinService.MessageBrokers
 {
-    public interface IClientServerMessageBroker: IDisposable
+    public interface IClientServerMessageBroker : IDisposable
     {
         void Start();
 
