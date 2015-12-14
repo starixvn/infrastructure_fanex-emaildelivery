@@ -207,7 +207,7 @@ namespace Fanex.MailDelivery.MailStation.Services
 
         /// <summary>
         /// Get maximum date time.
-        /// </summary>
+        /// </summary>javascript:;
         /// <param name="date1">The date1.</param>
         /// <param name="date2">The date2.</param>
         /// <returns>The max date.</returns>
