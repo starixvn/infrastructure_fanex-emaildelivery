@@ -6,20 +6,20 @@ using Fanex.MailDelivery.Admin.Messaging.ManageMail;
 using Fanex.MailDelivery.Admin.Messaging.ManageRecipient;
 using Fanex.MailDelivery.Admin.Messaging.ManageReport;
 using Fanex.MailDelivery.AdminWinService.Logging;
-using Fanex.MailDelivery.AdminWinService.MailService;
 using Fanex.MailDelivery.AdminWinService.Services;
 using Fanex.MailDelivery.Core;
 using Fanex.MailDelivery.Core.Messaging.Job;
 using Fanex.MailDelivery.Core.Models;
 using Fanex.MailDelivery.Services.Configurations;
 using Fanex.MailDelivery.Services.Services.Admin;
+using Fanex.MailDelivery.Services.Services.MailService;
 
 namespace Fanex.MailDelivery.AdminWinService.MessageBrokers
 {
     /// <summary>
     /// Mail Service Message Broker.
     /// </summary>
-    public class AdminServerMessageBroker : IDisposable
+    public class AdminServerMessageBroker : IDisposable, IAdminServerMessageBroker
     {
         private IBus _bus;
         private IMailService _mailService;
@@ -33,7 +33,7 @@ namespace Fanex.MailDelivery.AdminWinService.MessageBrokers
 
         public AdminServerMessageBroker(IMailService mailService)
         {
-            _mailService = mailService ?? new MailService.MailService();
+            _mailService = mailService ?? new MailService();
 
             _adminServerService = new AdminServerService(new AdminDataService());
         }
@@ -63,7 +63,7 @@ namespace Fanex.MailDelivery.AdminWinService.MessageBrokers
             SubscribeAbortJob();
         }
 
-        private void ResponseRecipientFunctions()
+        public void ResponseRecipientFunctions()
         {
             _bus.Respond<GetRecipientListRequest, GetRecipientListResponse>(request => _adminServerService.GetRecipientList(request));
             _bus.Respond<GetRecipientByIdRequest, GetRecipientByIdResponse>(request => _adminServerService.GetRecipientById(request));
@@ -73,7 +73,7 @@ namespace Fanex.MailDelivery.AdminWinService.MessageBrokers
             _bus.Respond<DeleteRecipientRequest, ResultResponse>(request => _adminServerService.DeleteRecipient(request));
         }
 
-        private void ResponseMailFunctions()
+        public void ResponseMailFunctions()
         {
             _bus.Respond<GetMailListRequest, GetMailListResponse>(request => _adminServerService.GetMailList(request));
 
@@ -87,7 +87,7 @@ namespace Fanex.MailDelivery.AdminWinService.MessageBrokers
             _bus.Respond<DeleteMailRequest, ResultResponse>(request => _adminServerService.DeleteMail(request));
         }
 
-        private void ResponseGroupFunctions()
+        public void ResponseGroupFunctions()
         {
             _bus.Respond<GetGroupListRequest, GetGroupListResponse>(request => _adminServerService.GetGroupList(request));
             _bus.Respond<GetMailGroupByIdRequest, GetMailGroupByIdResponse>(request => _adminServerService.GetGroupById(request));
@@ -97,17 +97,17 @@ namespace Fanex.MailDelivery.AdminWinService.MessageBrokers
             _bus.Respond<DeleteGroupRequest, ResultResponse>(request => _adminServerService.DeleteGroup(request));
         }
 
-        private void ResponseReportFunctions()
+        public void ResponseReportFunctions()
         {
             _bus.Respond<GetReportListRequest, GetReportListResponse>(request => _adminServerService.GetReportList(request));
         }
 
-        private void ResponseJobFunctions()
+        public void ResponseJobFunctions()
         {
             _bus.Respond<GetScheduleByMailIdRequest, GetScheduleByMailIdResponse>(request => _adminServerService.GetScheduleByMailId(request));
         }
 
-        private void SubscribeAbortJob()
+        public void SubscribeAbortJob()
         {
             _bus.Subscribe<JobMessage>(
                 MailDeliveryConstants.AbortJobRoutingKeyFormat,

@@ -138,9 +138,8 @@
       <DependentUpon>AdminServerWinServiceInstaller.cs</DependentUpon>
     </Compile>
     <Compile Include="Logging\RabbitMQLogger.cs" />
-    <Compile Include="MailService\IMailService.cs" />
-    <Compile Include="MailService\MailService.cs" />
     <Compile Include="Mapping\ResultModelMapper.cs" />
+    <Compile Include="MessageBrokers\IAdminServerMessageBroker.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\MailStationResource.Designer.cs">
