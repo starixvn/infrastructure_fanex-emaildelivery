@@ -83,8 +83,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Handlers\ClientServerMessageBroker.cs" />
-    <Compile Include="Handlers\IClientServerMessageBroker.cs" />
+    <Compile Include="MessageBrokers\ClientServerMessageBroker.cs" />
+    <Compile Include="MessageBrokers\IClientServerMessageBroker.cs" />
     <Compile Include="Installer\ClientServerWinService.cs">
       <SubType>Component</SubType>
     </Compile>

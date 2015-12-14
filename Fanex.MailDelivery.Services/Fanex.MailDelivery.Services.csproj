@@ -142,7 +142,6 @@
     <Compile Include="Services\Logging\LogService.cs" />
     <Compile Include="Services\MailService\IMailService.cs" />
     <Compile Include="Services\MailService\MailService.cs" />
-    <Compile Include="Services\MailService\ServiceBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Fanex.MailDelivery.Core\Fanex.MailDelivery.Core.csproj">

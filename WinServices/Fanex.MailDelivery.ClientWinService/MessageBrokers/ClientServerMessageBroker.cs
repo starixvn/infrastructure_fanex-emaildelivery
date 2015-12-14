@@ -9,7 +9,7 @@ using Fanex.MailDelivery.Core.Models;
 using Fanex.MailDelivery.Services.Services.Client;
 using Fanex.MailDelivery.Services.Services.MailService;
 
-namespace Fanex.MailDelivery.ClientWinService.Handlers
+namespace Fanex.MailDelivery.ClientWinService.MessageBrokers
 {
     public class ClientServerMessageBroker : IClientServerMessageBroker
     {

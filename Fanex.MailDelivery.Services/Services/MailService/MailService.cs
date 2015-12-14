@@ -8,6 +8,7 @@ using Fanex.MailDelivery.Core.Models;
 using Fanex.MailDelivery.Services.Criteria.Criteria;
 using Fanex.MailDelivery.Services.Criteria.Job;
 using Fanex.MailDelivery.Services.Repositories;
+using Fanex.MailDelivery.Services.Services.Logging;
 using Fanex.NAP.Framework.Command;
 
 namespace Fanex.MailDelivery.Services.Services.MailService
@@ -15,7 +16,7 @@ namespace Fanex.MailDelivery.Services.Services.MailService
     /// <summary>
     /// Mail Service.
     /// </summary>
-    public class MailService : ServiceBase, IMailService
+    public class MailService : IMailService
     {
         private IMailRepository _mailRepository;
         private IMailDeliverBusiness _mailDeliverBusiness;
@@ -67,7 +68,7 @@ namespace Fanex.MailDelivery.Services.Services.MailService
             }
             catch (Exception ex)
             {
-                LogError(ex, jobMessage.Schedule);
+                LogService.LogError(ex, jobMessage.Schedule);
             }
 
             return null;
@@ -88,7 +89,7 @@ namespace Fanex.MailDelivery.Services.Services.MailService
             }
             catch (Exception ex)
             {
-                LogError(ex, jobMessage.Schedule);
+                LogService.LogError(ex, jobMessage.Schedule);
             }
         }
 
@@ -141,7 +142,7 @@ namespace Fanex.MailDelivery.Services.Services.MailService
             }
             catch (Exception ex)
             {
-                LogError(ex, mail.MailingListId);
+                LogService.LogError(ex, mail.MailingListId);
             }
 
             return mailId;

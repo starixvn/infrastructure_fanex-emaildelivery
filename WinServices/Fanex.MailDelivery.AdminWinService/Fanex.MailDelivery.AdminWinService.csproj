@@ -121,10 +121,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cache\CacheExtension.cs" />
     <Compile Include="Handlers\CheckClientOnlineStatusJob.cs" />
-    <Compile Include="Handlers\IAdminServerMessageBroker.cs" />
     <Compile Include="Handlers\JobHandler.cs" />
-    <Compile Include="Handlers\AdminServerMessageBroker.cs" />
+    <Compile Include="MessageBrokers\AdminServerMessageBroker.cs" />
     <Compile Include="Installer\AdminServerWinService.cs">
       <SubType>Component</SubType>
     </Compile>

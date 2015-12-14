@@ -1,12 +1,12 @@
-﻿namespace Fanex.MailDelivery.ClientWinService.Handlers
+﻿using System;
+
+namespace Fanex.MailDelivery.ClientWinService.MessageBrokers
 {
-    public interface IClientServerMessageBroker
+    public interface IClientServerMessageBroker: IDisposable
     {
-        void Dispose();
+        void Start();
 
         void RespondAddMailTaskForRunningJob();
-
-        void Start();
 
         void SubscribeClientNotificationMessage();
 

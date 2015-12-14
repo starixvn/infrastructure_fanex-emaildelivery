@@ -325,6 +325,5 @@ namespace Fanex.MailDelivery.Services.Repositories.Admin
                 ErrMsg = (errMsg is DBNull) ? string.Empty : Convert.ToString(errMsg)
             };
         }
-
     }
 }

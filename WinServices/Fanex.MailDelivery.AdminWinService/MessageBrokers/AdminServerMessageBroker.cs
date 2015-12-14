@@ -14,12 +14,12 @@ using Fanex.MailDelivery.Core.Models;
 using Fanex.MailDelivery.Services.Configurations;
 using Fanex.MailDelivery.Services.Services.Admin;
 
-namespace Fanex.MailDelivery.AdminWinService.Handlers
+namespace Fanex.MailDelivery.AdminWinService.MessageBrokers
 {
     /// <summary>
     /// Mail Service Message Broker.
     /// </summary>
-    public class AdminServerMessageBroker : IAdminServerMessageBroker
+    public class AdminServerMessageBroker : IDisposable
     {
         private IBus _bus;
         private IMailService _mailService;
@@ -107,7 +107,7 @@ namespace Fanex.MailDelivery.AdminWinService.Handlers
             _bus.Respond<GetScheduleByMailIdRequest, GetScheduleByMailIdResponse>(request => _adminServerService.GetScheduleByMailId(request));
         }
 
-        public void SubscribeAbortJob()
+        private void SubscribeAbortJob()
         {
             _bus.Subscribe<JobMessage>(
                 MailDeliveryConstants.AbortJobRoutingKeyFormat,

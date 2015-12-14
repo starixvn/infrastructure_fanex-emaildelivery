@@ -3,6 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.ServiceProcess;
 using Fanex.Data.Configuration;
 using Fanex.MailDelivery.AdminWinService.Handlers;
+using Fanex.MailDelivery.AdminWinService.MessageBrokers;
 using Fanex.MailDelivery.Services.Services.Logging;
 
 namespace Fanex.MailDelivery.AdminWinService.Installer
@@ -13,20 +14,15 @@ namespace Fanex.MailDelivery.AdminWinService.Installer
     [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1400:AccessModifierMustBeDeclared", Justification = "Reviewed.")]
     partial class AdminServerWinService : ServiceBase
     {
-        private IAdminServerMessageBroker _messageBroker;
+        private AdminServerMessageBroker _messageBroker;
         private JobHandler _jobHandler;
 
         private string serviceInfo = "Service {0} {1} at {2}.";
 
         public AdminServerWinService()
-            : this(null)
-        {
-        }
-
-        public AdminServerWinService(IAdminServerMessageBroker messageBroker)
         {
             InitializeComponent();
-            _messageBroker = messageBroker ?? new AdminServerMessageBroker();
+            _messageBroker = new AdminServerMessageBroker();
             _jobHandler = new JobHandler();
             DbSettingProviderManager.Current.Start();
         }
