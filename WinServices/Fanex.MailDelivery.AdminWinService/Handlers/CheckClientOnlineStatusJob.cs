@@ -9,6 +9,7 @@ using Fanex.MailDelivery.Core.Models;
 using Fanex.MailDelivery.Services.Configurations;
 using Fanex.MailDelivery.Services.Criteria.Criteria;
 using Fanex.MailDelivery.Services.Repositories;
+using Fanex.MailDelivery.Services.Services.MailService;
 using Quartz;
 
 namespace Fanex.MailDelivery.AdminWinService.Handlers
@@ -67,7 +68,7 @@ namespace Fanex.MailDelivery.AdminWinService.Handlers
                         string reconnectServiceMessage = string.Format(MailStationResource.NotifyMailBodyReconnectServices, GenerateListServiceNameString(listReconnect));
                         string offlineServiceMessage = string.Format(MailStationResource.NotifyMailBodyDisconnectServices, GenerateListServiceNameString(listOffline));
                         mailRecord.Body = string.Format(MailStationResource.NotifyMailBody, offlineServiceMessage, reconnectServiceMessage);
-                        MailDelivery.Services.Services.MailService.MailService mailService = new MailDelivery.Services.Services.MailService.MailService();
+                        MailService mailService = new MailService();
                         var mailDeliverBusiness = new MailDeliverBusiness();
                         int mailId = (int)mailDeliverBusiness.InsertMailRecord(mailRecord);
                         mailRecord.MailID = mailId;
