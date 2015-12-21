@@ -86,7 +86,7 @@ namespace Fanex.MailDelivery.MailStation.Services
                 return MailStationConstants.AllItem.Union(MailStationConstants.TaskStatus).ToList();
             }
 
-            return MailStationConstants.AllItem;
+            return MailStationConstants.TaskStatus;
         }
 
         public List<SelectListItemExtra> Trigger(bool hasAllElement = true)

@@ -25,6 +25,7 @@ namespace MailClientTest.Installer
         protected override void OnStart(string[] args)
         {
             MailClientHandler.Start();
+            SendFunctionMail();
             Console.WriteLine("Mail Client Service Site: {0} started.", AppSettings.MailCientConfig.SiteId);
             Console.WriteLine("App Name: {0}", System.Diagnostics.Process.GetProcessById(System.Diagnostics.Process.GetCurrentProcess().Id).ProcessName);
             try

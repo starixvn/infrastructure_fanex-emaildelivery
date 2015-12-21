@@ -7,23 +7,26 @@
 //   <change who="Louis" date="2012.12.07">Created</change>
 // </history>
 
-using Fanex.MailDelivery.Admin.Messaging;
-using Fanex.MailDelivery.Admin.Messaging.ManageRecipient;
-using Fanex.MailDelivery.Admin.Services.Recipient;
-using Fanex.MailDelivery.MailStation.Models;
-using Fanex.MailDelivery.MailStation.Services;
-using Fanex.NAP.Framework.Command;
-
 namespace Fanex.MailDelivery.MailStation.Controllers
 {
     using System.Web.Mvc;
+    using Fanex.MailDelivery.Admin.Messaging;
+    using Fanex.MailDelivery.Admin.Messaging.ManageRecipient;
+    using Fanex.MailDelivery.Admin.Services.Recipient;
+    using Fanex.MailDelivery.MailStation.Constants;
     using Fanex.MailDelivery.MailStation.Criteria.ManageRecipient;
     using Fanex.MailDelivery.MailStation.Extensions;
+    using Fanex.MailDelivery.MailStation.Models;
+    using Fanex.MailDelivery.MailStation.Services;
     using Fanex.Maintenance.Controller;
+    using Fanex.NAP.Core.Business;
+    using Fanex.NAP.Core.Web.Attribute;
+    using Fanex.NAP.Framework.Command;
 
     /// <summary>
     /// Mail Recipient Controller.
     /// </summary>
+    [NapSuperAuth]
     public class MailRecipientController : BaseController
     {
         private ManageRecipientService _manageRecipientService;
@@ -37,6 +40,7 @@ namespace Fanex.MailDelivery.MailStation.Controllers
             _recipientService = new RecipientService();
         }
 
+        [NapAuth(FunctionKey = MailDeliveryFunctionKeys.ManageRecipient, Policy = Constant.Policy.Read)]
         public ActionResult Index()
         {
             ViewBag.ListStatus = _manageRecipientService.Status(true);
@@ -44,12 +48,14 @@ namespace Fanex.MailDelivery.MailStation.Controllers
             return View("~/Areas/MailStation/ManageRecipient/ManageRecipient/Index.cshtml");
         }
 
+        [NapAuth(FunctionKey = MailDeliveryFunctionKeys.ManageRecipient, Policy = Constant.Policy.Host)]
         public ActionResult CreateRecipientView()
         {
             ViewBag.TimeZoneString = TimeZoneExtension.GetTimeZoneString();
             return View("~/Areas/MailStation/ManageRecipient/CreateRecipient/Index.cshtml");
         }
 
+        [NapAuth(FunctionKey = MailDeliveryFunctionKeys.ManageRecipient, Policy = Constant.Policy.Read)]
         public ActionResult RecipientList(RecipientListCriteria criteria)
         {
             GetRecipientListRequest request = new GetRecipientListRequest
@@ -64,6 +70,7 @@ namespace Fanex.MailDelivery.MailStation.Controllers
             return Json(response.RecipientModels);
         }
 
+        [NapAuth(FunctionKey = MailDeliveryFunctionKeys.ManageRecipient, Policy = Constant.Policy.Host)]
         public ActionResult UpdateRecipientView(RecipientByIdCriteria criteria)
         {
             GetRecipientByIdRequest request = new GetRecipientByIdRequest
@@ -98,6 +105,7 @@ namespace Fanex.MailDelivery.MailStation.Controllers
         }
 
         [HttpPost]
+        [NapAuth(FunctionKey = MailDeliveryFunctionKeys.ManageRecipient, Policy = Constant.Policy.Host)]
         public JsonResult UpdateRecipient(UpdateRecipientCriteria criteria)
         {
             UpdateRecipientRequest request = new UpdateRecipientRequest
@@ -129,6 +137,7 @@ namespace Fanex.MailDelivery.MailStation.Controllers
         }
 
         [HttpPost]
+        [NapAuth(FunctionKey = MailDeliveryFunctionKeys.ManageRecipient, Policy = Constant.Policy.Host)]
         public JsonResult DeleteRecipient(DeleteRecipientCriteria criteria)
         {
             DeleteRecipientRequest request = new DeleteRecipientRequest
@@ -148,6 +157,7 @@ namespace Fanex.MailDelivery.MailStation.Controllers
         }
 
         [HttpPost]
+        [NapAuth(FunctionKey = MailDeliveryFunctionKeys.ManageRecipient, Policy = Constant.Policy.Host)]
         public JsonResult CreateRecipient(CreateRecipientCriteria criteria)
         {
             CreateRecipientRequest request = new CreateRecipientRequest
@@ -174,11 +184,13 @@ namespace Fanex.MailDelivery.MailStation.Controllers
         }
 
         [HttpPost]
+        [NapAuth(FunctionKey = MailDeliveryFunctionKeys.ManageRecipient, Policy = Constant.Policy.Read)]
         public JsonResult CheckRecipient(CheckRecipientInfoCriteria criteria)
         {
             return Json(_manageRecipientService.CheckRecipient(criteria));
         }
 
+        [NapAuth(FunctionKey = MailDeliveryFunctionKeys.ManageRecipient, Policy = Constant.Policy.Read)]
         public ActionResult ViewRelevantMail(RecipientByIdCriteria criteria)
         {
             var recipient = _manageRecipientService.RecipientById(criteria);

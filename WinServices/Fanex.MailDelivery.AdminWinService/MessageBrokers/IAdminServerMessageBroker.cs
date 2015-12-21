@@ -1,7 +1,7 @@
-﻿using System;
-
-namespace Fanex.MailDelivery.AdminWinService.MessageBrokers
+﻿namespace Fanex.MailDelivery.AdminWinService.MessageBrokers
 {
+    using System;
+
     public interface IAdminServerMessageBroker : IDisposable
     {
         void Start();

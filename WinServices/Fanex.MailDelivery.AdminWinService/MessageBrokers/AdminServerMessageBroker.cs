@@ -1,21 +1,21 @@
-﻿using System;
-using EasyNetQ;
-using Fanex.MailDelivery.Admin.Messaging;
-using Fanex.MailDelivery.Admin.Messaging.ManageGroup;
-using Fanex.MailDelivery.Admin.Messaging.ManageMail;
-using Fanex.MailDelivery.Admin.Messaging.ManageRecipient;
-using Fanex.MailDelivery.Admin.Messaging.ManageReport;
-using Fanex.MailDelivery.AdminWinService.Logging;
-using Fanex.MailDelivery.AdminWinService.Services;
-using Fanex.MailDelivery.Core;
-using Fanex.MailDelivery.Core.Messaging.Job;
-using Fanex.MailDelivery.Core.Models;
-using Fanex.MailDelivery.Services.Configurations;
-using Fanex.MailDelivery.Services.Services.Admin;
-using Fanex.MailDelivery.Services.Services.MailService;
-
-namespace Fanex.MailDelivery.AdminWinService.MessageBrokers
+﻿namespace Fanex.MailDelivery.AdminWinService.MessageBrokers
 {
+    using System;
+    using EasyNetQ;
+    using Fanex.MailDelivery.Admin.Messaging;
+    using Fanex.MailDelivery.Admin.Messaging.ManageGroup;
+    using Fanex.MailDelivery.Admin.Messaging.ManageMail;
+    using Fanex.MailDelivery.Admin.Messaging.ManageRecipient;
+    using Fanex.MailDelivery.Admin.Messaging.ManageReport;
+    using Fanex.MailDelivery.AdminWinService.Logging;
+    using Fanex.MailDelivery.AdminWinService.Services;
+    using Fanex.MailDelivery.Core;
+    using Fanex.MailDelivery.Core.Messaging.Job;
+    using Fanex.MailDelivery.Core.Models;
+    using Fanex.MailDelivery.Services.Configurations;
+    using Fanex.MailDelivery.Services.Services.Admin;
+    using Fanex.MailDelivery.Services.Services.MailService;
+
     /// <summary>
     /// Mail Service Message Broker.
     /// </summary>

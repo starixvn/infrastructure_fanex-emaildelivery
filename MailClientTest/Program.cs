@@ -14,14 +14,6 @@ namespace MailClientTest
         public static void Main(string[] args)
         {
             MailClientHandler.Start();
-
-            /*
-            Console.WriteLine("Mail Client Service Site: {0} started.", AppSettings.MailCientConfig.SiteId);
-            Type type = typeof(MailClientTestService);
-            MethodInfo method = type.GetMethod("SendFunctionMail", BindingFlags.Instance | BindingFlags.NonPublic);
-            method.Invoke(new MailClientTestService(), null);
-
-
             ServiceBase[] servicesToRun = new ServiceBase[]
             {
                 new MailClientTestService()
@@ -47,7 +39,7 @@ namespace MailClientTest
             {
                 ServiceBase.Run(servicesToRun);
             }
-            */
+            
 
             Console.WriteLine("Wait!");
             Console.ReadLine();

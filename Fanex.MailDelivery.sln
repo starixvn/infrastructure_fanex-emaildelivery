@@ -1,8 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
-MinimumVisualStudioVersion = 10.0.40219.1
+# Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fanex.MailDelivery.Client", "Fanex.MailDelivery.Client\Fanex.MailDelivery.Client.csproj", "{708E1FCE-82C4-443B-B1E9-0E64BCABE80E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fanex.MailDelivery.Admin", "Fanex.MailDelivery.Admin\Fanex.MailDelivery.Admin.csproj", "{011C7F64-69E3-4867-9B3E-D6D1D931060B}"
@@ -31,6 +29,13 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fanex.MailDelivery.ClientWinService", "WinServices\Fanex.MailDelivery.ClientWinService\Fanex.MailDelivery.ClientWinService.csproj", "{B7144728-6615-4A45-9810-34D141410569}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fanex.MailDelivery.AdminWinService", "WinServices\Fanex.MailDelivery.AdminWinService\Fanex.MailDelivery.AdminWinService.csproj", "{DC29B2D8-1460-403E-873B-63B55372F45E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{0A02C7EC-98E3-46FE-8DE8-5A56755FDF5B}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -154,8 +159,8 @@ Global
 		{D1F4D13C-006D-41B8-8885-69F22CAFBAAD}.Release|x86.Build.0 = Release|Any CPU
 		{B7144728-6615-4A45-9810-34D141410569}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B7144728-6615-4A45-9810-34D141410569}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B7144728-6615-4A45-9810-34D141410569}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{B7144728-6615-4A45-9810-34D141410569}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{B7144728-6615-4A45-9810-34D141410569}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{B7144728-6615-4A45-9810-34D141410569}.Debug|Mixed Platforms.Build.0 = Debug|x86
 		{B7144728-6615-4A45-9810-34D141410569}.Debug|x64.ActiveCfg = Debug|Any CPU
 		{B7144728-6615-4A45-9810-34D141410569}.Debug|x64.Build.0 = Debug|Any CPU
 		{B7144728-6615-4A45-9810-34D141410569}.Debug|x86.ActiveCfg = Debug|Any CPU
