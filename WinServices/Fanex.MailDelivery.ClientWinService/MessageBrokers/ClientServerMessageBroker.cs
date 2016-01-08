@@ -1,6 +1,6 @@
 ﻿using System;
 using EasyNetQ;
-using Fanex.MailDelivery.Client.Configurations;
+using Fanex.MailDelivery.Services.Configurations;
 using Fanex.MailDelivery.ClientWinService.Logging;
 using Fanex.MailDelivery.ClientWinService.Services;
 using Fanex.MailDelivery.Core;
@@ -33,7 +33,7 @@ namespace Fanex.MailDelivery.ClientWinService.MessageBrokers
             //// https://github.com/mikehadlow/EasyNetQ/wiki/Connecting-to-RabbitMQ
             // TODO => Singleton
             _bus = RabbitHutch.CreateBus(
-                AppSettings.MailCientConfig.RabbitMQConnectionString,
+                AppSettings.MailServiceSection.RabbitMQConnectionString,
                 serviceRegister =>
                 {
                     serviceRegister.Register<IEasyNetQLogger>(_ => new ServerClientLogger());
