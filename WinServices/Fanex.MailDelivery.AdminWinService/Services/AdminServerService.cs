@@ -41,7 +41,6 @@ namespace Fanex.MailDelivery.AdminWinService.Services
                 TriggerType = request.TriggerType
             });
 
-            // List<MailModel> getMailListResponseDtos = mailModels.Select(n => n.ToMailDto()).ToList();
             GetMailListResponse getMailListResponse = new GetMailListResponse
             {
                 MailModels = mailModels

@@ -15,13 +15,6 @@ namespace Fanex.MailDelivery.Admin.Configurations
             set { this["rabbitMQConnectionString"] = value; }
         }
 
-        [ConfigurationProperty("clientNotifyTimeOutInSecond", DefaultValue = "10", IsRequired = false)]
-        public int ClientNotifyTimeOutInSecond
-        {
-            get { return (int)this["clientNotifyTimeOutInSecond"]; }
-            set { this["clientNotifyTimeOutInSecond"] = value; }
-        }
-
         public static MailAdminSection GetConfig(string sectionName = "Fanex.MailDelivery.Admin")
         {
             return ConfigurationManager.GetSection(sectionName) as MailAdminSection;

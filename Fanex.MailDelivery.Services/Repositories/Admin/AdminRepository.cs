@@ -8,7 +8,7 @@ using Fanex.MailDelivery.Core.Models.Group;
 using Fanex.MailDelivery.Core.Models.Mails;
 using Fanex.MailDelivery.Core.Models.Recipient;
 using Fanex.MailDelivery.Core.Models.Report;
-using Fanex.MailDelivery.Services.Criteria.Criteria;
+using Fanex.MailDelivery.Services.Configurations;
 using Fanex.MailDelivery.Services.Criteria.Group;
 using Fanex.MailDelivery.Services.Criteria.Job;
 using Fanex.MailDelivery.Services.Criteria.Mail;
@@ -27,11 +27,27 @@ namespace Fanex.MailDelivery.Services.Repositories.Admin
 
         public List<MailModel> GetMailList(GetMailListCriteria criteria)
         {
+            List<MailModel> mailModels;
             using (var db = new ObjectDb(criteria.GetSettingKey()))
             {
                 db.AssignParamValues(criteria.GetSpParams());
-                return db.Query<MailModel>().ToList();
+                mailModels = db.Query<MailModel>().ToList();
             }
+
+            mailModels.ToList().ForEach(n =>
+            {
+                if (n.TriggerType == 1 && n.LastActive != null)
+                {
+                    n.IsClientOnline = n.LastActive.Value.AddSeconds(AppSettings.MailServiceSection.ClientNotifyTimeOutInSecond) >= DateTime.Now;
+                }
+                else
+                {
+                    // Function and others always true
+                    n.IsClientOnline = true;
+                }
+            });
+
+            return mailModels;
         }
 
         public MailModel GetMailById(GetMailByIdCriteria criteria)

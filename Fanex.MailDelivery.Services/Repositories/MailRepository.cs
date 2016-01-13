@@ -45,7 +45,7 @@ namespace Fanex.MailDelivery.Services.Repositories
                         element.LastActive = Converter.ToDateTime(reader["LastActive"]);
                     }
 
-                    element.IsOnline = element.LastActive != null && element.LastActive.Value >= now.AddSeconds(-AppSettings.MailServiceSection.ClientNotifyTimeOutInSecond * 2);
+                    element.IsOnline = element.LastActive != null && element.LastActive.Value.AddSeconds(AppSettings.MailServiceSection.ClientNotifyTimeOutInSecond) >= DateTime.Now;
                     restult.Add(element);
                 }
             }

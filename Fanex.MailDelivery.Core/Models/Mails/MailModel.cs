@@ -61,5 +61,7 @@ namespace Fanex.MailDelivery.Core.Models.Mails
         public string Description { get; set; }
 
         public DateTime? LastActive { get; set; }
+
+        public bool IsClientOnline { get; set; }
     }
 }
