@@ -25,7 +25,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{B7144728-6615-4A45-9810-34D141410569}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Fanex.MailDelivery.ClientWinService</RootNamespace>
     <AssemblyName>Fanex.MailDelivery.ClientWinService</AssemblyName>
