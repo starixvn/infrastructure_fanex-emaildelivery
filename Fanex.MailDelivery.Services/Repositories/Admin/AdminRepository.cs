@@ -36,9 +36,9 @@ namespace Fanex.MailDelivery.Services.Repositories.Admin
 
             mailModels.ToList().ForEach(n =>
             {
-                if (n.TriggerType == 1 && n.LastActive != null)
+                if (n.TriggerType == 1)
                 {
-                    n.IsClientOnline = n.LastActive.Value.AddSeconds(AppSettings.MailServiceSection.ClientNotifyTimeOutInSecond) >= DateTime.Now;
+                    n.IsClientOnline = n.LastActive != null && n.LastActive.Value.AddSeconds(AppSettings.MailServiceSection.ClientNotifyTimeOutInSecond) >= DateTime.Now;
                 }
                 else
                 {
