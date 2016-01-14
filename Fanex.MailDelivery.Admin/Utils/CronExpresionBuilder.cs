@@ -31,7 +31,7 @@ namespace Fanex.MailDelivery.Admin.Utils
             DateRangeValidator.ValidateMinute(minute);
 
             var dayOfWeekStr = string.Empty;
-            for (var i = 1; i < daysOfWeek.Length; i++)
+            for (var i = 0; i < daysOfWeek.Length; i++)
             {
                 dayOfWeekStr += (int)daysOfWeek[i] + 1 + ",";
             }
