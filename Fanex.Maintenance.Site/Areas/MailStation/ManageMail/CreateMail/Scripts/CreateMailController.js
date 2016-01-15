@@ -212,7 +212,7 @@ var InsertMailController = function () {
             IsActive: DOMElements.IsActive.is(':checked'),
             StartOn: cronResult.StartOn,
             EndOn: cronResult.EndOn,
-            Attemp: cronResult.Attemp,
+            Attempt: cronResult.Attempt,
             Interval: cronResult.Interval,
             Description: DOMElements.Description.val()
         };

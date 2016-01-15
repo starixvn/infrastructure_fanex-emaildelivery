@@ -113,7 +113,7 @@ namespace Fanex.MailDelivery.MailStation.Services
                 StartOn = criteria.StartOn,
                 EndOn = criteria.EndOn,
                 Attempt = criteria.Attempt,
-                Interval = criteria.Attempt
+                Interval = criteria.Interval
             };
 
             ResultResponse response = _mailService.CreateAutoMail(request);
