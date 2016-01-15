@@ -153,7 +153,7 @@ namespace Fanex.MailDelivery.MailStation.Controllers
                 Message = response.ErrMsg
             };
 
-            return Json(response);
+            return Json(commandResult);
         }
 
         [HttpPost]
