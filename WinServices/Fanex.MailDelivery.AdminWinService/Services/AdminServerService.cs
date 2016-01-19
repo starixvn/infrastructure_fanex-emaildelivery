@@ -174,12 +174,12 @@ namespace Fanex.MailDelivery.AdminWinService.Services
                 UserName = request.UserName
             });
 
-            GetRecipientListResponse getMailListResponse = new GetRecipientListResponse
+            GetRecipientListResponse getRecipientListResponse = new GetRecipientListResponse
             {
                 RecipientModels = recipientModels
             };
 
-            return getMailListResponse;
+            return getRecipientListResponse;
         }
 
         public GetRecipientByIdResponse GetRecipientById(GetRecipientByIdRequest request)
