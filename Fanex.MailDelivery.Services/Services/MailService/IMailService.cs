@@ -1,5 +1,6 @@
-﻿using Fanex.MailDelivery.Core.Models;
-using Fanex.NAP.Framework.Command;
+﻿using Fanex.MailDelivery.Core.Messaging.Job;
+using Fanex.MailDelivery.Core.Models;
+using Fanex.MailDelivery.Core.Models.Report;
 
 namespace Fanex.MailDelivery.Services.Services.MailService
 {
@@ -8,10 +9,12 @@ namespace Fanex.MailDelivery.Services.Services.MailService
     /// </summary>
     public interface IMailService
     {
-        CommandResult UpdateJobStatus(JobMessage jobMessage);
+        void UpdateJobStatus(JobMessage jobMessage);
 
         int SendMail(Mail mail);
 
         void AddMailTaskForRunningJob(JobMessage jobMessage);
+
+        MailTaskModel GetMailTaskById(GetMailTaskByIdRequest request);
     }
 }

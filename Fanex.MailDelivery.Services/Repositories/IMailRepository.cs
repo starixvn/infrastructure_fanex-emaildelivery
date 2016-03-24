@@ -1,4 +1,5 @@
 ﻿using Fanex.MailDelivery.Core.Models;
+using Fanex.MailDelivery.Core.Models.Report;
 using Fanex.MailDelivery.Services.Criteria.Criteria;
 using Fanex.MailDelivery.Services.Criteria.Job;
 using Fanex.MailDelivery.Services.Models;
@@ -24,5 +25,7 @@ namespace Fanex.MailDelivery.Services.Repositories
         MailTask GetMailTask(GetMailTaskByIdCriteria criteria);
 
         void UpdateClientActiveTime(UpdateClientActiveTimeCriteria criteria);
+
+        MailTaskModel GetMailTaskById(GetMailTaskByIdCriteria criteria);
     }
 }

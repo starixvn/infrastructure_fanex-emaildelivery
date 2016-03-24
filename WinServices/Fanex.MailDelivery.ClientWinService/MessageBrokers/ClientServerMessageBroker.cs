@@ -8,6 +8,7 @@ using Fanex.MailDelivery.Core.Messaging.Job;
 using Fanex.MailDelivery.Core.Models;
 using Fanex.MailDelivery.Services.Services.Client;
 using Fanex.MailDelivery.Services.Services.MailService;
+using Fanex.MailDelivery.Core.Models.Report;
 
 namespace Fanex.MailDelivery.ClientWinService.MessageBrokers
 {
@@ -45,7 +46,7 @@ namespace Fanex.MailDelivery.ClientWinService.MessageBrokers
             SubscribeJobResult();
 
             RespondAddMailTaskForRunningJob();
-
+            RespondGetMailTaskForById();
             SubscribeClientNotificationMessage();
         }
 
@@ -84,6 +85,11 @@ namespace Fanex.MailDelivery.ClientWinService.MessageBrokers
                     _clientServerService.AddMailTaskForRunningJob(jobMessage);
                     return jobMessage;
                 });
+        }
+
+        public void RespondGetMailTaskForById()
+        {
+            _bus.Respond<GetMailTaskByIdRequest, MailTaskModel>(request => { return _clientServerService.GetMailTaskById(request); });
         }
 
         public void SubscribeJobResult()

@@ -8,6 +8,7 @@ using Fanex.MailDelivery.Client.Logging;
 using Fanex.MailDelivery.Core;
 using Fanex.MailDelivery.Core.Messaging.Job;
 using Fanex.MailDelivery.Core.Models;
+using Fanex.MailDelivery.Core.Models.Report;
 
 namespace Fanex.MailDelivery.Client.Handlers
 {
@@ -95,6 +96,11 @@ namespace Fanex.MailDelivery.Client.Handlers
         public JobMessage RequestAddMailTaskForRunningJob(JobMessage jobResult)
         {
             return _bus.Request<JobMessage, JobMessage>(jobResult);
+        }
+
+        public MailTaskModel RequestMailTaskById(GetMailTaskByIdRequest taskId)
+        {
+            return _bus.Request<GetMailTaskByIdRequest, MailTaskModel>(taskId);
         }
 
         public void Publish(JobMessage jobStatus)

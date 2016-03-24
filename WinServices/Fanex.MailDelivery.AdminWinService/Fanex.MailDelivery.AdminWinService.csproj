@@ -6,7 +6,7 @@
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{DC29B2D8-1460-403E-873B-63B55372F45E}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Fanex.MailDelivery.AdminWinService</RootNamespace>
     <AssemblyName>Fanex.MailDelivery.AdminWinService</AssemblyName>

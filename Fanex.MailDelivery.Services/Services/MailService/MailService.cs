@@ -1,15 +1,17 @@
-﻿using System;
-using Fanex.MailDeliver.Business;
+﻿using Fanex.MailDeliver.Business;
 using Fanex.MailDeliver.Business.Implement;
 using Fanex.MailDeliver.Business.Interface;
 using Fanex.MailDeliver.Core.Infrastructure.Logging;
 using Fanex.MailDeliver.Model;
+using Fanex.MailDelivery.Core.Messaging.Job;
 using Fanex.MailDelivery.Core.Models;
+using Fanex.MailDelivery.Core.Models.Report;
 using Fanex.MailDelivery.Services.Criteria.Criteria;
 using Fanex.MailDelivery.Services.Criteria.Job;
 using Fanex.MailDelivery.Services.Repositories;
 using Fanex.MailDelivery.Services.Services.Logging;
 using Fanex.NAP.Framework.Command;
+using System;
 
 namespace Fanex.MailDelivery.Services.Services.MailService
 {
@@ -35,7 +37,7 @@ namespace Fanex.MailDelivery.Services.Services.MailService
         /// <returns>
         /// Command Result.
         /// </returns>
-        public CommandResult UpdateJobStatus(JobMessage jobMessage)
+        public void UpdateJobStatus(JobMessage jobMessage)
         {
             try
             {
@@ -70,8 +72,6 @@ namespace Fanex.MailDelivery.Services.Services.MailService
             {
                 LogService.LogError(ex, jobMessage.Schedule);
             }
-
-            return null;
         }
 
         public void AddMailTaskForRunningJob(JobMessage jobMessage)
@@ -91,6 +91,24 @@ namespace Fanex.MailDelivery.Services.Services.MailService
             {
                 LogService.LogError(ex, jobMessage.Schedule);
             }
+        }
+
+        public MailTaskModel GetMailTaskById(GetMailTaskByIdRequest request)
+        {
+            MailTaskModel result = new MailTaskModel();
+            try
+            {
+                result = this._mailRepository.GetMailTaskById(new GetMailTaskByIdCriteria()
+                {
+                    MailTaskId = request.TaskId
+                });
+            }
+            catch (Exception ex)
+            {
+                LogService.LogError(ex, request.TaskId);
+            }
+
+            return result;
         }
 
         /// <summary>

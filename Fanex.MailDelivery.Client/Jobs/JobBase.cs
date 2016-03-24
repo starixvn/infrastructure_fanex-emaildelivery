@@ -3,10 +3,10 @@ using Fanex.MailDelivery.Core.Models;
 
 namespace Fanex.MailDelivery.Client.Jobs
 {
-    using System;
+    using Core.Messaging.Job;
     using Fanex.MailDelivery.Client.Handlers;
     using Quartz;
-
+    using System;
     /// <summary>
     /// JobRequest Base abstract.
     /// </summary>
@@ -34,7 +34,7 @@ namespace Fanex.MailDelivery.Client.Jobs
                 if (schedule != null && schedule.Active == true)
                 {
                     int taskId = schedule.TaskId;
-
+                    
                     JobMessage jobResult = new JobMessage();
                     jobResult.JobStatus = JobStatus.Running;
                     jobResult.ScheduledTime = context.ScheduledFireTimeUtc.GetValueOrDefault().DateTime.ToLocalTime();
@@ -46,6 +46,15 @@ namespace Fanex.MailDelivery.Client.Jobs
                         jobResult = MailClientHandler.RequestAddMailTaskForRunningJob(jobResult);
 
                         taskId = jobResult.Schedule.TaskId;
+                    }
+                    else
+                    {
+                        var mailtask = MailClientHandler.RequestMailTaskById(new GetMailTaskByIdRequest() {TaskId = schedule.TaskId });
+                        if (mailtask != null && mailtask.Status == (int)JobStatus.Abort)
+                        {
+                            // If the job is aborted, then shut down.
+                            return;
+                        }
                     }
 
                     MailClientHandler.ReportJob(jobResult);

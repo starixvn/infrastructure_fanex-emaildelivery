@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using Fanex.MailDelivery.Client.Handlers;
 using Fanex.MailDelivery.Core.Models;
+using Fanex.MailDelivery.Core.Models.Report;
+using Fanex.MailDelivery.Core.Messaging.Job;
 
 namespace Fanex.MailDelivery.Client
 {
@@ -41,6 +43,11 @@ namespace Fanex.MailDelivery.Client
         public static JobMessage RequestAddMailTaskForRunningJob(JobMessage jobResult)
         {
             return _messageBroker.RequestAddMailTaskForRunningJob(jobResult);
+        }
+
+        internal static MailTaskModel RequestMailTaskById(GetMailTaskByIdRequest taskID)
+        {
+            return _messageBroker.RequestMailTaskById(taskID);
         }
 
         public static void ReportJob(JobMessage jobResult)

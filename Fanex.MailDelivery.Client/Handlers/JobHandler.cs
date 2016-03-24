@@ -75,7 +75,7 @@ namespace Fanex.MailDelivery.Client.Handlers
         {
             IJobDetail job = GetRetryJob(schedule);
             ITrigger trigger = GetRetryTrigger(schedule);
-
+            
             // Tell quartz to schedule the job using our trigger
             _scheduler.ScheduleJob(job, trigger);
         }

@@ -10,6 +10,7 @@ using Fanex.MailDelivery.Services.Criteria.Criteria;
 using Fanex.MailDelivery.Services.Criteria.Job;
 using Fanex.MailDelivery.Services.Models;
 using Fanex.Maintenance.Repository.Criteria.Misc;
+using Fanex.MailDelivery.Core.Models.Report;
 
 namespace Fanex.MailDelivery.Services.Repositories
 {
@@ -62,6 +63,30 @@ namespace Fanex.MailDelivery.Services.Repositories
                 db.ExecuteNonQuery(hash);
                 return Converter.ToInt(db.GetParameterValue("MailTaskID"));
             }
+        }
+
+        public MailTaskModel GetMailTaskById(GetMailTaskByIdCriteria criteria)
+        {
+            MailTaskModel result = new MailTaskModel();
+            using (var db = new ObjectDb(criteria.GetSettingKey()))
+            {
+                db.AssignParamValues(criteria.GetSpParams());
+                var reader = db.ExecuteReader();
+                if (reader.Read())
+                {
+                    result.MailTaskId = Converter.ToInt(reader["TaskID"]);
+                    result.MailId = Converter.ToInt(reader["MailID"]);
+                    result.SiteId = Converter.ToInt(reader["SiteID"]);
+                    result.ScheduledTime = Converter.ToDateTime(reader["ScheduledTime"]);
+                    result.LastSent = Converter.ToDateTime(reader["LastSent"]);
+                    result.Status = Converter.ToInt(reader["Status"]);
+                    result.Attempt = Converter.ToInt(reader["Attempt"]);
+                    result.MSiteMailId = Converter.ToInt(reader["MSiteMailID"]);
+                    result.IsUnableToRetry = Converter.ToBool(reader["IsUnableToRetry"]);
+                }
+            }
+
+            return result;
         }
 
         public void UpdateMailTaskStatus(UpdateMailTaskStatusCriteria criteria)

@@ -1,5 +1,6 @@
 ﻿using Fanex.MailDelivery.Core.Messaging.Job;
 using Fanex.MailDelivery.Core.Models;
+using Fanex.MailDelivery.Core.Models.Report;
 using Fanex.NAP.Framework.Command;
 
 namespace Fanex.MailDelivery.ClientWinService.Services
@@ -14,6 +15,8 @@ namespace Fanex.MailDelivery.ClientWinService.Services
 
         void AddMailTaskForRunningJob(JobMessage jobMessage);
 
-        CommandResult UpdateJobStatus(JobMessage jobMessage);
+        void UpdateJobStatus(JobMessage jobMessage);
+
+        MailTaskModel GetMailTaskById(GetMailTaskByIdRequest request);
     }
 }

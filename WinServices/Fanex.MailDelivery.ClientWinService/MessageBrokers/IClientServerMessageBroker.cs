@@ -8,6 +8,8 @@ namespace Fanex.MailDelivery.ClientWinService.MessageBrokers
 
         void RespondAddMailTaskForRunningJob();
 
+        void RespondGetMailTaskForById();
+
         void SubscribeClientNotificationMessage();
 
         void SubscribeJobResult();

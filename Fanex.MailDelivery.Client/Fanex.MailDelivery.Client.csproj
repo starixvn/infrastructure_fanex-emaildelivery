@@ -55,14 +55,6 @@
     <Reference Include="Fanex.Logging">
       <HintPath>..\packages\Fanex.Logging.1.0.0.0\lib\net40\Fanex.Logging.dll</HintPath>
     </Reference>
-    <Reference Include="Fanex.MailDelivery.Client, Version=1.0.0.6, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Fanex.MailStation.1.1.0.0\lib\net40\Fanex.MailDelivery.Client.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Fanex.MailDelivery.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Fanex.MailStation.1.1.0.0\lib\net40\Fanex.MailDelivery.Core.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Microsoft.Practices.EnterpriseLibrary.Common">
       <HintPath>..\packages\EnterpriseLibrary.Common.5.0.414.0\lib\net40\Microsoft.Practices.EnterpriseLibrary.Common.dll</HintPath>
     </Reference>
@@ -153,7 +145,12 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Fanex.MailDelivery.Core\Fanex.MailDelivery.Core.csproj">
+      <Project>{c7ed0de9-6a20-4223-b251-6ef530b74139}</Project>
+      <Name>Fanex.MailDelivery.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

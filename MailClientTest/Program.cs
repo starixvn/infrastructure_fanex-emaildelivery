@@ -13,7 +13,6 @@ namespace MailClientTest
     {
         public static void Main(string[] args)
         {
-            MailClientHandler.Start();
             ServiceBase[] servicesToRun = new ServiceBase[]
             {
                 new MailClientTestService()
@@ -39,12 +38,6 @@ namespace MailClientTest
             {
                 ServiceBase.Run(servicesToRun);
             }
-            
-
-            Console.WriteLine("Wait!");
-            Console.ReadLine();
-
-            MailClientHandler.Stop();
         }
     }
 }

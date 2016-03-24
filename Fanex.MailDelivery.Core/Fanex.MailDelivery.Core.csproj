@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Messaging\Job\AbortJobRequest.cs" />
+    <Compile Include="Messaging\Job\GetMailTaskByIdRequest.cs" />
     <Compile Include="Messaging\Job\GetScheduleByMailIdRequest.cs" />
     <Compile Include="Messaging\Job\GetScheduleByMailIdResponse.cs" />
     <Compile Include="Messaging\Job\GetScheduleListRequest.cs" />

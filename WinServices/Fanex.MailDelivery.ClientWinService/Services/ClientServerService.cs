@@ -5,6 +5,7 @@ using Fanex.MailDelivery.Services.Criteria.Job;
 using Fanex.MailDelivery.Services.Services.Client;
 using Fanex.MailDelivery.Services.Services.MailService;
 using Fanex.NAP.Framework.Command;
+using Fanex.MailDelivery.Core.Models.Report;
 
 namespace Fanex.MailDelivery.ClientWinService.Services
 {
@@ -51,9 +52,14 @@ namespace Fanex.MailDelivery.ClientWinService.Services
             _mailService.AddMailTaskForRunningJob(jobMessage);
         }
 
-        public CommandResult UpdateJobStatus(JobMessage jobMessage)
+        public MailTaskModel GetMailTaskById(GetMailTaskByIdRequest request)
         {
-            return _mailService.UpdateJobStatus(jobMessage);
+            return _mailService.GetMailTaskById(request);
+        }
+
+        public void UpdateJobStatus(JobMessage jobMessage)
+        {
+            _mailService.UpdateJobStatus(jobMessage);
         }
     }
 }
