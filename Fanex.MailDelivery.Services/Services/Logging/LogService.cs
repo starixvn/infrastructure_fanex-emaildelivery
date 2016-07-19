@@ -29,6 +29,7 @@ namespace Fanex.MailDelivery.Services.Services.Logging
             ////    ex);
 
             string message =
+                (schedule.TriggerTypeEnum == MailType.Function ? "Function " : "Schedule ") +
                 "MailId: " + schedule.Id +
                 "<br>\r\nMail Name: " + (schedule.Name ?? string.Empty) +
                 "<br>\r\nMessage: " + ex.Message +

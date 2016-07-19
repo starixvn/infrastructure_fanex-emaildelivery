@@ -72,7 +72,7 @@
 
   <Function Name="Manage Recipient">
     <Setting Key="MailStation_MailReport_GetRecipientById" SpName="Mail_ManageRecipient_GetRecipientByID" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
-    <Setting Key="MailStation_MailReport_GetRecipientList" SpName="Mail_ManageRecipient_GetRecipientList" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
+    <Setting Key="MailStation_MailReport_GetRecipientList" SpName="Mail_ManageRecipient_GetRecipientList_xtest" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
     <Setting Key="MailStation_MailReport_UpdateRecipient" SpName="Mail_ManageRecipient_UpdateRecipient" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
     <Setting Key="MailStation_MailReport_InsertRecipient" SpName="Mail_ManageRecipient_InsertRecipient" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
     <Setting Key="MailStation_MailReport_DeleteRecipient" SpName="Mail_ManageRecipient_DeleteRecipient" DbName="DBMMS.bodb_MMS.bodbAdminNet" />

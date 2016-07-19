@@ -119,12 +119,12 @@ namespace Fanex.MailDelivery.Services.Services.MailService
         public int SendMail(Mail mail)
         {
             var mailId = 0;
+            var mailService = new MailDeliver.MailClient.API.MailDeliver();
+            var mailRecord = this.ConvertFromMailToMailRecord(mail);
+            mailId = (int)_mailDeliverBusiness.InsertMailRecord(mailRecord);
+            var schedule = this._mailRepository.GetScheduleById(new GetScheduleByMailIdCriteria() { MailId = mail.MailingListId });
             try
             {
-                var mailService = new MailDeliver.MailClient.API.MailDeliver();
-                var mailRecord = this.ConvertFromMailToMailRecord(mail);
-                mailId = (int)_mailDeliverBusiness.InsertMailRecord(mailRecord);
-                var schedule = this._mailRepository.GetScheduleById(new GetScheduleByMailIdCriteria() { MailId = mail.MailingListId });
                 if (schedule.Active)
                 {
                     if (mailId > 0)
@@ -160,7 +160,7 @@ namespace Fanex.MailDelivery.Services.Services.MailService
             }
             catch (Exception ex)
             {
-                LogService.LogError(ex, mail.MailingListId);
+                LogService.LogError(ex, schedule);
             }
 
             return mailId;
