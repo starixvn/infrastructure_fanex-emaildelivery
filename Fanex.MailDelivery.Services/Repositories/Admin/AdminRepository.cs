@@ -15,9 +15,9 @@ using Fanex.MailDelivery.Services.Criteria.Mail;
 using Fanex.MailDelivery.Services.Criteria.Recipient;
 using Fanex.MailDelivery.Services.Criteria.Report;
 using Fanex.MailDelivery.Services.Models;
-using Fanex.Maintenance.Repository.Criteria.Misc;
 using Quartz;
 using Quartz.Spi;
+using Fanex.MailDelivery.Services.Criteria;
 
 namespace Fanex.MailDelivery.Services.Repositories.Admin
 {

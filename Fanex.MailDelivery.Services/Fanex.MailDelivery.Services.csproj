@@ -49,9 +49,6 @@
     <Reference Include="Fanex.MailDeliver.MailClient">
       <HintPath>..\_Dependencies\MailService\Fanex.MailDeliver.MailClient.dll</HintPath>
     </Reference>
-    <Reference Include="Fanex.Maintenance.Repository">
-      <HintPath>..\_Dependencies\mSite\Fanex.Maintenance.Repository.dll</HintPath>
-    </Reference>
     <Reference Include="Fanex.NAP.Framework">
       <HintPath>..\_Dependencies\Fanex\Fanex.NAP.Framework.dll</HintPath>
     </Reference>
@@ -125,6 +122,7 @@
     <Compile Include="Criteria\Recipient\UpdateRecipientCriteria.cs" />
     <Compile Include="Criteria\Report\GetAllScheduleCriteria.cs" />
     <Compile Include="Criteria\Report\GetReportListCriteria.cs" />
+    <Compile Include="Criteria\ResultCriteria.cs" />
     <Compile Include="Models\MailTask.cs" />
     <Compile Include="Models\MailTaskDetailModel.cs" />
     <Compile Include="Models\ResultModel.cs" />
