@@ -25,7 +25,6 @@ namespace MailClientTest.Installer
         protected override void OnStart(string[] args)
         {
             MailClientHandler.Start();
-            SendFunctionMail();
             Console.WriteLine("Mail Client Service Site: {0} started.", AppSettings.MailCientConfig.SiteId);
             Console.WriteLine("App Name: {0}", System.Diagnostics.Process.GetProcessById(System.Diagnostics.Process.GetCurrentProcess().Id).ProcessName);
             try
@@ -50,6 +49,8 @@ namespace MailClientTest.Installer
                         schedule.ConvertToServerTime(MailClientSection.GetConfig().IsLocalEnvironment());
                     }
                 }
+
+                SendFunctionMail();
             }
             catch (Exception ex)
             {
@@ -86,6 +87,7 @@ namespace MailClientTest.Installer
             // mail.AlternativeViews.Add(new MailLinkedResource("D:\\image1.jpg", Fanex.MailDelivery.Client.Enumerations.FileExtension.IMG_JPG, "contentId1"));
             mail.MailingListId = AppSettings.GetFunctionId("FuntionA");
             MailClientHandler.SendFunctionMail(mail);
+            Console.WriteLine("Function Mail has been sent.");
         }
     }
 }
