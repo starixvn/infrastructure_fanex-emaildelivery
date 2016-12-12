@@ -131,26 +131,30 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="Fanex.MailDelivery.ClientWinService.LOCAL1.exe.config">
+    <Content Include="Fanex.MailDelivery.ClientWinService.LOCAL1.exe.config">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Fanex.MailDelivery.ClientWinService.MASTER.exe.config">
+    </Content>
+    <Content Include="Fanex.MailDelivery.ClientWinService.MASTER.exe.config">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Fanex.MailDelivery.ClientWinService.PRO.exe.config">
+    </Content>
+    <Content Include="Fanex.MailDelivery.ClientWinService.PRO.exe.config">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Fanex.MailDelivery.ClientWinService.UAT.exe.config">
+    </Content>
+    <Content Include="Fanex.MailDelivery.ClientWinService.SIT.exe.config">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Fanex.MailDelivery.ClientWinService.LOCAL.exe.config">
+    </Content>
+    <Content Include="Fanex.MailDelivery.ClientWinService.UAT.exe.config">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    </Content>
+    <Content Include="Fanex.MailDelivery.ClientWinService.LOCAL.exe.config">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="Installer\InstallMailService.bat" />
     <None Include="Installer\UnInstallMailService.bat" />
     <None Include="packages.config" />
@@ -184,6 +188,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="AppData\StoreProcedureName.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AppData\SIT\StoreProcedureName.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="AppData\UAT\StoreProcedureName.xml">

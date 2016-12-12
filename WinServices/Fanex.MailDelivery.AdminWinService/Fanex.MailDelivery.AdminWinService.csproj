@@ -160,26 +160,30 @@
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Fanex.MailDelivery.AdminWinService.LOCAL1.exe.config">
+    <Content Include="Fanex.MailDelivery.AdminWinService.LOCAL1.exe.config">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Fanex.MailDelivery.AdminWinService.MASTER.exe.config">
+    </Content>
+    <Content Include="Fanex.MailDelivery.AdminWinService.MASTER.exe.config">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Fanex.MailDelivery.AdminWinService.UAT.exe.config">
+    </Content>
+    <Content Include="Fanex.MailDelivery.AdminWinService.SIT.exe.config">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Fanex.MailDelivery.AdminWinService.PRO.exe.config">
+    </Content>
+    <Content Include="Fanex.MailDelivery.AdminWinService.UAT.exe.config">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Fanex.MailDelivery.AdminWinService.LOCAL.exe.config">
+    </Content>
+    <Content Include="Fanex.MailDelivery.AdminWinService.PRO.exe.config">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    </Content>
+    <Content Include="Fanex.MailDelivery.AdminWinService.LOCAL.exe.config">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="deployment.ignore">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -205,6 +209,10 @@
     <Content Include="AppData\StoreProcedureName.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
+    </Content>
+    <Content Include="AppData\SIT\StoreProcedureName.xml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="AppData\UAT\StoreProcedureName.xml">
       <SubType>Designer</SubType>
