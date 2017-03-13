@@ -120,11 +120,11 @@ namespace Fanex.MailDelivery.Services.Services.MailService
         {
             var mailId = 0;
             var mailService = new MailDeliver.MailClient.API.MailDeliver();
-            var mailRecord = this.ConvertFromMailToMailRecord(mail);
-            mailId = (int)_mailDeliverBusiness.InsertMailRecord(mailRecord);
             var schedule = this._mailRepository.GetScheduleById(new GetScheduleByMailIdCriteria() { MailId = mail.MailingListId });
+            var mailRecord = this.ConvertFromMailToMailRecord(mail);
             try
             {
+                mailId = (int)_mailDeliverBusiness.InsertMailRecord(mailRecord);
                 if (schedule.Active)
                 {
                     if (mailId > 0)
