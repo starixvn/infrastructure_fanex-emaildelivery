@@ -24,11 +24,11 @@ namespace MailClientTest.Installer
         /// <param name="args">Data passed by the start command.</param>
         protected override void OnStart(string[] args)
         {
-            MailClientHandler.Start();
-            Console.WriteLine("Mail Client Service Site: {0} started.", AppSettings.MailCientConfig.SiteId);
-            Console.WriteLine("App Name: {0}", System.Diagnostics.Process.GetProcessById(System.Diagnostics.Process.GetCurrentProcess().Id).ProcessName);
             try
             {
+                MailClientHandler.Start();
+                Console.WriteLine("Mail Client Service Site: {0} started.", AppSettings.MailCientConfig.SiteId);
+                Console.WriteLine("App Name: {0}", System.Diagnostics.Process.GetProcessById(System.Diagnostics.Process.GetCurrentProcess().Id).ProcessName);
                 var schedules = AppSettings.MailCientConfig.Schedules;
                 foreach (ScheduleElement schedule in schedules)
                 {

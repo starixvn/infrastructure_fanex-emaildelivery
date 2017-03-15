@@ -116,6 +116,11 @@ namespace Fanex.MailDelivery.Core.Models
                     hour -= 24;
                 }
 
+                while (hour < 0)
+                {
+                    hour += 24;
+                }
+
                 cron[2] = hour.ToString();
                 this.RepeatExpression = string.Join(" ", cron);
             }
