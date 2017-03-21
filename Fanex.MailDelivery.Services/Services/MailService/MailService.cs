@@ -124,6 +124,7 @@ namespace Fanex.MailDelivery.Services.Services.MailService
             var mailRecord = this.ConvertFromMailToMailRecord(mail);
             try
             {
+                this.ValidateMail(mail);
                 mailId = (int)_mailDeliverBusiness.InsertMailRecord(mailRecord);
                 if (schedule.Active)
                 {
@@ -178,6 +179,14 @@ namespace Fanex.MailDelivery.Services.Services.MailService
                 string error = string.Empty;
                 MailExtension.SendMail(record, out error);
                 ////LogExtension.LogMessage(string.Format("Sending mail: {0}. Error message: {1}", record.MailID, error));
+            }
+        }
+
+        private void ValidateMail(Mail mail)
+        {
+            if (string.IsNullOrEmpty(mail.Subject))
+            {
+                throw new ArgumentNullException("Subject", "Mail subject cannot be null or empty.");
             }
         }
 
