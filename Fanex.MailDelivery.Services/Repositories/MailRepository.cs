@@ -1,16 +1,16 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using Fanex.Common;
+﻿using Fanex.Common;
 using Fanex.Data;
 using Fanex.MailDelivery.Core.Models;
+using Fanex.MailDelivery.Core.Models.Report;
 using Fanex.MailDelivery.Services.Configurations;
+using Fanex.MailDelivery.Services.Criteria;
 using Fanex.MailDelivery.Services.Criteria.Criteria;
 using Fanex.MailDelivery.Services.Criteria.Job;
 using Fanex.MailDelivery.Services.Models;
-using Fanex.MailDelivery.Core.Models.Report;
-using Fanex.MailDelivery.Services.Criteria;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Fanex.MailDelivery.Services.Repositories
 {
@@ -46,7 +46,8 @@ namespace Fanex.MailDelivery.Services.Repositories
                         element.LastActive = Converter.ToDateTime(reader["LastActive"]);
                     }
 
-                    element.IsOnline = element.LastActive != null && element.LastActive.Value.AddSeconds(AppSettings.MailServiceSection.ClientNotifyTimeOutInSecond) >= DateTime.Now;
+                    element.IsOnline = element.LastActive != null && 
+                        element.LastActive.Value.AddSeconds(AppSettings.MailServiceSection.ClientNotifyTimeOutInSecond) >= DateTime.Now;
                     restult.Add(element);
                 }
             }

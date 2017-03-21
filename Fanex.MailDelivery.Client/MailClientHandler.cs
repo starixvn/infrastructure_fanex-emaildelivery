@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using Fanex.MailDelivery.Client.Handlers;
+﻿using Fanex.MailDelivery.Client.Handlers;
+using Fanex.MailDelivery.Core.Messaging.Job;
 using Fanex.MailDelivery.Core.Models;
 using Fanex.MailDelivery.Core.Models.Report;
-using Fanex.MailDelivery.Core.Messaging.Job;
+using System.Collections.Generic;
 
 namespace Fanex.MailDelivery.Client
 {

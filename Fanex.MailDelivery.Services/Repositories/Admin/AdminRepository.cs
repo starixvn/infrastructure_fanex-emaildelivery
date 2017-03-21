@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using Fanex.Data;
+﻿using Fanex.Data;
 using Fanex.MailDelivery.Core.Models;
 using Fanex.MailDelivery.Core.Models.Group;
 using Fanex.MailDelivery.Core.Models.Mails;
 using Fanex.MailDelivery.Core.Models.Recipient;
 using Fanex.MailDelivery.Core.Models.Report;
 using Fanex.MailDelivery.Services.Configurations;
+using Fanex.MailDelivery.Services.Criteria;
 using Fanex.MailDelivery.Services.Criteria.Group;
 using Fanex.MailDelivery.Services.Criteria.Job;
 using Fanex.MailDelivery.Services.Criteria.Mail;
@@ -17,7 +14,11 @@ using Fanex.MailDelivery.Services.Criteria.Report;
 using Fanex.MailDelivery.Services.Models;
 using Quartz;
 using Quartz.Spi;
-using Fanex.MailDelivery.Services.Criteria;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 
 namespace Fanex.MailDelivery.Services.Repositories.Admin
 {
@@ -207,6 +208,7 @@ namespace Fanex.MailDelivery.Services.Repositories.Admin
             }
         }
 
+        [SuppressMessage("StyleCop.CSharp.StylecopPlus.Rules", "SP2101:MethodMustNotContainMoreLinesThan", Justification = "Reviewed. Suppression is OK here.")]
         public IList<MailTaskModel> GetReportList(GetReportListCriteria criteria)
         {
             int oldStatus = criteria.Status;

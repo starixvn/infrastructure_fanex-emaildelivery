@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Fanex.MailDeliver.Business.Implement;
+﻿using Fanex.MailDeliver.Business.Implement;
 using Fanex.MailDeliver.Core.Infrastructure.Logging;
 using Fanex.MailDeliver.Model;
 using Fanex.MailDelivery.AdminWinService.Cache;
@@ -11,6 +9,9 @@ using Fanex.MailDelivery.Services.Criteria.Criteria;
 using Fanex.MailDelivery.Services.Repositories;
 using Fanex.MailDelivery.Services.Services.MailService;
 using Quartz;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Fanex.MailDelivery.AdminWinService.Handlers
 {
@@ -23,6 +24,7 @@ namespace Fanex.MailDelivery.AdminWinService.Handlers
         public const string CheckClientOnlineStatusJobName = "CheckClientOnlineStatusJobName";
         public const string CheckClientOnlineStatusTriggerName = "CheckClientOnlineStatusTriggerName";
 
+        [SuppressMessage("StyleCop.CSharp.StylecopPlus.Rules", "SP2101:MethodMustNotContainMoreLinesThan", Justification = "Reviewed. Suppression is OK here.")]
         public void Execute(IJobExecutionContext context)
         {
             var repository = new MailRepository();

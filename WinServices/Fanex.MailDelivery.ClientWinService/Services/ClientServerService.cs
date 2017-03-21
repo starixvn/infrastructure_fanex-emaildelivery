@@ -1,11 +1,10 @@
-﻿using System.Collections.Generic;
-using Fanex.MailDelivery.Core.Messaging.Job;
+﻿using Fanex.MailDelivery.Core.Messaging.Job;
 using Fanex.MailDelivery.Core.Models;
+using Fanex.MailDelivery.Core.Models.Report;
 using Fanex.MailDelivery.Services.Criteria.Job;
 using Fanex.MailDelivery.Services.Services.Client;
 using Fanex.MailDelivery.Services.Services.MailService;
-using Fanex.NAP.Framework.Command;
-using Fanex.MailDelivery.Core.Models.Report;
+using System.Collections.Generic;
 
 namespace Fanex.MailDelivery.ClientWinService.Services
 {

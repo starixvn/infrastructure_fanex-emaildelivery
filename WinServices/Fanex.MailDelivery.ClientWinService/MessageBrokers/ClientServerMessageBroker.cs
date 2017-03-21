@@ -1,14 +1,14 @@
-﻿using System;
-using EasyNetQ;
-using Fanex.MailDelivery.Services.Configurations;
+﻿using EasyNetQ;
 using Fanex.MailDelivery.ClientWinService.Logging;
 using Fanex.MailDelivery.ClientWinService.Services;
 using Fanex.MailDelivery.Core;
 using Fanex.MailDelivery.Core.Messaging.Job;
 using Fanex.MailDelivery.Core.Models;
+using Fanex.MailDelivery.Core.Models.Report;
+using Fanex.MailDelivery.Services.Configurations;
 using Fanex.MailDelivery.Services.Services.Client;
 using Fanex.MailDelivery.Services.Services.MailService;
-using Fanex.MailDelivery.Core.Models.Report;
+using System;
 
 namespace Fanex.MailDelivery.ClientWinService.MessageBrokers
 {
