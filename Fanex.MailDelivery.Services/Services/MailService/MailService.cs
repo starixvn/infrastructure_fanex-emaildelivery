@@ -124,7 +124,7 @@ namespace Fanex.MailDelivery.Services.Services.MailService
             var mailRecord = this.ConvertFromMailToMailRecord(mail);
             try
             {
-                this.ValidateMail(mail);
+                this.ValidateMail(mailRecord);
                 mailId = (int)_mailDeliverBusiness.InsertMailRecord(mailRecord);
                 if (schedule.Active)
                 {
@@ -182,7 +182,7 @@ namespace Fanex.MailDelivery.Services.Services.MailService
             }
         }
 
-        private void ValidateMail(Mail mail)
+        private void ValidateMail(MailRecord mail)
         {
             if (string.IsNullOrEmpty(mail.Subject))
             {
