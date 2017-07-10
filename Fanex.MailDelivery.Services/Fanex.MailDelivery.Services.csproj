@@ -32,15 +32,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Fanex.Common">
-      <HintPath>..\_Dependencies\Fanex\Fanex.Common.dll</HintPath>
-    </Reference>
-    <Reference Include="Fanex.Data, Version=0.5.404.63, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Fanex.Data.0.5.404.63\lib\net40\Fanex.Data.dll</HintPath>
+    <Reference Include="Fanex.Common, Version=1.0.404.97, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Fanex.Common.1.0.404.97\lib\net40\Fanex.Common.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Fanex.Data.DbSettingProviderExtension, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Fanex.Data.DbSettingProviderExtension.1.0.0.1\lib\net40\Fanex.Data.DbSettingProviderExtension.dll</HintPath>
+    <Reference Include="Fanex.Data, Version=0.5.404.62, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Fanex.Data.0.5.404.62\lib\net40\Fanex.Data.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Fanex.Logging, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -50,11 +47,13 @@
     <Reference Include="Fanex.MailDeliver.Core">
       <HintPath>..\_Dependencies\MailService\Fanex.MailDeliver.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Fanex.MailDeliver.MailClient">
-      <HintPath>..\_Dependencies\MailService\Fanex.MailDeliver.MailClient.dll</HintPath>
+    <Reference Include="Fanex.MailDeliver.MailClient, Version=1.0.0.2, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Fanex.MailDeliver.MailClient.1.0.0.2\lib\net40\Fanex.MailDeliver.MailClient.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Fanex.NAP.Framework">
-      <HintPath>..\_Dependencies\Fanex\Fanex.NAP.Framework.dll</HintPath>
+    <Reference Include="Fanex.NAP.Framework, Version=1.0.0.3, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Fanex.NAP.Framework.1.0.0.3\lib\net40\Fanex.NAP.Framework.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="log4net, Version=1.2.9.0, Culture=neutral, PublicKeyToken=b32731d11ce58905">
       <HintPath>..\packages\log4net.1.2.9.0\lib\net11\log4net.dll</HintPath>
