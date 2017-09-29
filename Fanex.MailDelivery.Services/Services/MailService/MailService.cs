@@ -184,7 +184,7 @@ namespace Fanex.MailDelivery.Services.Services.MailService
 
         private void ValidateMail(MailRecord mail)
         {
-            if (string.IsNullOrEmpty(mail.Subject))
+            if (string.IsNullOrWhiteSpace(mail.Subject))
             {
                 throw new ArgumentNullException("Subject", "Mail subject cannot be null or empty.");
             }
