@@ -5,8 +5,13 @@ using Fanex.MailDelivery.Core.Models;
 
 namespace Fanex.MailDelivery.Admin.Services.JobOperation
 {
-    public class JobOperationService : AdminService, IJobOperationService, IDisposable
+    public class JobOperationService : AdminService, IJobOperationService
     {
+        ~JobOperationService()
+        {
+            Dispose(false);
+        }
+
         public void PublishScheduleChange(Schedule schedule)
         {
             var updateSchedulePublishId = string.Format(MailDeliveryConstants.UpdateScheduleRoutingKeyFormat, schedule.SiteId);
@@ -33,6 +38,17 @@ namespace Fanex.MailDelivery.Admin.Services.JobOperation
                 Schedule = new Schedule { TaskId = request.TaskId }
             };
             Bus.Publish(jobMessage, MailDeliveryConstants.AbortJobRoutingKeyFormat);
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            // Cleanup
         }
     }
 }

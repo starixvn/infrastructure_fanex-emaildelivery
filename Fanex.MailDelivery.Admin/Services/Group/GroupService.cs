@@ -1,10 +1,16 @@
-﻿using Fanex.MailDelivery.Admin.Messaging;
+﻿using System;
+using Fanex.MailDelivery.Admin.Messaging;
 using Fanex.MailDelivery.Admin.Messaging.ManageGroup;
 
 namespace Fanex.MailDelivery.Admin.Services.Group
 {
     public class GroupService : AdminService, IGroupService
     {
+        ~GroupService()
+        {
+            Dispose(false);
+        }
+
         public GetGroupListResponse GetGroupList(GetGroupListRequest request)
         {
             return Bus.Request<GetGroupListRequest, GetGroupListResponse>(request);
@@ -28,6 +34,17 @@ namespace Fanex.MailDelivery.Admin.Services.Group
         public ResultResponse DeleteGroup(DeleteGroupRequest request)
         {
             return Bus.Request<DeleteGroupRequest, ResultResponse>(request);
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            // Cleanup
         }
     }
 }

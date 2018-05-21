@@ -1,9 +1,8 @@
-﻿using System;
-using Fanex.MailDelivery.Admin.Messaging.ManageReport;
+﻿using Fanex.MailDelivery.Admin.Messaging.ManageReport;
 
 namespace Fanex.MailDelivery.Admin.Services.Report
 {
-    public interface IReportService : IDisposable
+    public interface IReportService
     {
         GetReportListResponse GetReportList(GetReportListRequest request);
     }

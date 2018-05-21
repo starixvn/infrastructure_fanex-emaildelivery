@@ -16,10 +16,9 @@ namespace Fanex.MailDelivery.Admin.UserTest
 
             GetMailListResponse mails;
 
-            using (IMailService mailService = new MailService())
-            {
-                mails = mailService.GetMailList(getMailListRequest);
-            }
+            var mailService = new MailService();
+
+            mails = mailService.GetMailList(getMailListRequest);
         }
 
         [Test]
@@ -31,10 +30,8 @@ namespace Fanex.MailDelivery.Admin.UserTest
 
             GetMailByIdResponse mails;
 
-            using (IMailService mailService = new MailService())
-            {
-                mails = mailService.GetMailById(getMailByIdRequest);
-            }
+            IMailService mailService = new MailService();
+            mails = mailService.GetMailById(getMailByIdRequest);
         }
     }
 

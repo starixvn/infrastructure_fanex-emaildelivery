@@ -1,10 +1,16 @@
-﻿using Fanex.MailDelivery.Admin.Messaging;
+﻿using System;
+using Fanex.MailDelivery.Admin.Messaging;
 using Fanex.MailDelivery.Admin.Messaging.ManageMail;
 
 namespace Fanex.MailDelivery.Admin.Services.Mail
 {
     public class MailService : AdminService, IMailService
     {
+        ~MailService()
+        {
+            Dispose(false);
+        }
+
         public GetMailListResponse GetMailList(GetMailListRequest request)
         {
             return Bus.Request<GetMailListRequest, GetMailListResponse>(request);
@@ -38,6 +44,17 @@ namespace Fanex.MailDelivery.Admin.Services.Mail
         public ResultResponse DeleteMail(DeleteMailRequest request)
         {
             return Bus.Request<DeleteMailRequest, ResultResponse>(request);
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            // Cleanup
         }
     }
 }
