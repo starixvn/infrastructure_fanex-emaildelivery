@@ -36,7 +36,7 @@ namespace Fanex.MailDelivery.AdminWinService.Installer
         private void InitializeComponent()
         {
             _components = new System.ComponentModel.Container();
-            this.ServiceName = "Fanex.MailStation.Service";
+            this.ServiceName = "Fanex.MailStation.AdminService";
         }
 
         #endregion

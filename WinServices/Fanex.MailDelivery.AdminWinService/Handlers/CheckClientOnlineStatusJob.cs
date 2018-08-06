@@ -1,4 +1,9 @@
-﻿using Fanex.MailDeliver.Business.Implement;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.IO;
+using System.Net;
+using Fanex.MailDeliver.Business.Implement;
 using Fanex.MailDeliver.Core.Infrastructure.Logging;
 using Fanex.MailDeliver.Model;
 using Fanex.MailDelivery.AdminWinService.Cache;
@@ -9,14 +14,13 @@ using Fanex.MailDelivery.Services.Criteria.Criteria;
 using Fanex.MailDelivery.Services.Repositories;
 using Fanex.MailDelivery.Services.Services.MailService;
 using Quartz;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
+using RazorEngine;
+using RazorEngine.Templating;
 
 namespace Fanex.MailDelivery.AdminWinService.Handlers
 {
     /// <summary>
-    /// For every 5 mins, load all schedules into cache and identify online status. 
+    /// For every 5 mins, load all schedules into cache and identify online status.
     /// Send mail to admin if there is any change on online status (On/Off).
     /// </summary>
     public class CheckClientOnlineStatusJob : IJob
@@ -61,15 +65,25 @@ namespace Fanex.MailDelivery.AdminWinService.Handlers
 
                     if (listOffline.Count > 0 || listReconnect.Count > 0)
                     {
+                        var hostName = Dns.GetHostName();
+                        var addressList = Dns.GetHostEntry(hostName).AddressList;
+                        var ips = new List<string>();
+                        ips.Add(hostName);
+                        foreach (var ip in addressList)
+                        {
+                            ips.Add(ip.ToString());
+                        }
+
+                        var subject = $"{string.Format(MailStationResource.NotifyMailSubject, DateTime.Now.ToString("yyyyMMdd"))} - HostName: {hostName}";
                         MailRecord mailRecord = new MailRecord();
                         mailRecord.MailTo = AppSettings.MailServiceSection.AdminMail;
-                        mailRecord.Subject = string.Format(MailStationResource.NotifyMailSubject, DateTime.Now.ToString("yyyyMMdd"));
-                        mailRecord.Title = string.Format(MailStationResource.NotifyMailSubject, DateTime.Now.ToString("yyyyMMdd"));
+                        mailRecord.Subject = subject;
+                        mailRecord.Title = "Auto Generated Report Administrator";
                         mailRecord.AppID = AppSettings.MailServiceSection.AppSendMailToAdminId;
                         mailRecord.Config = new MailConfig() { AppID = AppSettings.MailServiceSection.AppSendMailToAdminId };
                         string reconnectServiceMessage = string.Format(MailStationResource.NotifyMailBodyReconnectServices, GenerateListServiceNameString(listReconnect));
-                        string offlineServiceMessage = string.Format(MailStationResource.NotifyMailBodyDisconnectServices, GenerateListServiceNameString(listOffline));
-                        mailRecord.Body = string.Format(MailStationResource.NotifyMailBody, offlineServiceMessage, reconnectServiceMessage);
+                        string offlineServiceMessage = $"{string.Format(MailStationResource.NotifyMailBodyDisconnectServices, GenerateListServiceNameString(listOffline))} <br/> - From Server: {string.Join("<br/> - ", ips)}";
+                        mailRecord.Body = GenBody(listReconnect, listOffline, ips);// $"{string.Format(MailStationResource.NotifyMailBody, offlineServiceMessage, reconnectServiceMessage)}";
                         MailService mailService = new MailService();
                         var mailDeliverBusiness = new MailDeliverBusiness();
                         int mailId = (int)mailDeliverBusiness.InsertMailRecord(mailRecord);
@@ -100,6 +114,13 @@ namespace Fanex.MailDelivery.AdminWinService.Handlers
             }
 
             return reconnectServiceMessage;
+        }
+
+        public string GenBody(List<ClientStatusModel> listReconnect, List<ClientStatusModel> listOffline, List<string> ips)
+        {
+            var template = File.ReadAllText(@"Templates\EmailTemplate.cshtml");
+            var tuple = new Tuple<List<ClientStatusModel>, List<ClientStatusModel>, List<string>>(listReconnect, listOffline, ips);
+            return Engine.Razor.RunCompile(template, "template", model: tuple);
         }
     }
 }

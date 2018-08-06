@@ -30,7 +30,7 @@
     </Setting>
     <Setting Key="Mail_Core_UpdateMailTaskMSiteMailID" SpName="Mail_Core_UpdateMailTaskMSiteMailID" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
     <Setting Key="Mail_Core_ClientActiveTimeUpdate" SpName="Mail_Core_ClientActiveTimeUpdate" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
-    <Setting Key="Mail_Core_GetAllScheduleMail" SpName="Mail_Core_GetAllScheduleMail" DbName="DBMMS.bodb_MMS.bodbAdminNet" >
+    <Setting Key="Mail_Core_GetAllScheduleMail" SpName="Mail_Core_GetAllScheduleMail_xtest" DbName="DBMMS.bodb_MMS.bodbAdminNet" >
       <Mapping DataField="MailID" ObjectProperty="MailId" />
       <Mapping DataField="MailName" ObjectProperty="MailName" />
       <Mapping DataField="CronExpression" ObjectProperty="CronExpression" />
@@ -63,7 +63,7 @@
   </Function>
 
   <Function Name="Manage Mail">
-    <Setting Key="MailStation_GetMailList" SpName="Mail_MailManagement_GetMailList" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
+    <Setting Key="MailStation_GetMailList" SpName="Mail_MailManagement_GetMailList_xtest" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
     <Setting Key="MailStation_GetMailByID" SpName="Mail_MailManagement_GetMailByID" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
     <Setting Key="MailStation_CreateMail" SpName="Mail_MailManagement_InsertMail" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
     <Setting Key="MailStation_EditMail" SpName="Mail_MailManagement_UpdateMail" DbName="DBMMS.bodb_MMS.bodbAdminNet" />

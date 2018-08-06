@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using System.ServiceProcess;
 using Fanex.Data.Configuration;
 using Fanex.MailDelivery.AdminWinService.Handlers;
@@ -29,6 +30,7 @@ namespace Fanex.MailDelivery.AdminWinService.Installer
 
         protected override void OnStart(string[] args)
         {
+            Directory.SetCurrentDirectory(AppDomain.CurrentDomain.BaseDirectory);
             LogService.LogInfo(string.Format(serviceInfo, ServiceName, "starts", DateTime.Now.ToString()));
             _messageBroker.Start();
             _jobHandler.Start();

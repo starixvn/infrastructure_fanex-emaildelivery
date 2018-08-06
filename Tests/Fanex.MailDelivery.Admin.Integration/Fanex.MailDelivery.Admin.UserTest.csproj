@@ -63,6 +63,9 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
+    <Content Include="Templates\EmailTemplate.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Fanex.MailDelivery.Admin\Fanex.MailDelivery.Admin.csproj">
@@ -72,6 +75,10 @@
     <ProjectReference Include="..\..\Fanex.MailDelivery.Core\Fanex.MailDelivery.Core.csproj">
       <Project>{C7ED0DE9-6A20-4223-B251-6EF530B74139}</Project>
       <Name>Fanex.MailDelivery.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\WinServices\Fanex.MailDelivery.AdminWinService\Fanex.MailDelivery.AdminWinService.csproj">
+      <Project>{DC29B2D8-1460-403E-873B-63B55372F45E}</Project>
+      <Name>Fanex.MailDelivery.AdminWinService</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
