@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Net;
 using Fanex.MailDelivery.Admin.Messaging.ManageMail;
 using Fanex.MailDelivery.Admin.Services.Mail;
-using Fanex.MailDelivery.AdminWinService.Handlers;
 using Fanex.MailDelivery.Core.Models;
+using Fanex.MailStation.Admin.Service.Cache;
+using Fanex.MailStation.Admin.Service.Handlers;
 using NUnit.Framework;
 
 namespace Fanex.MailDelivery.Admin.UserTest
@@ -46,8 +46,26 @@ namespace Fanex.MailDelivery.Admin.UserTest
             mails = mailService.GetMailById(getMailByIdRequest);
         }
 
-      
-    }
+        [Test]
+        public void TestRazor()
+        {
+            var service = new CheckClientOnlineStatusJob();
+            var list = new List<ClientStatusModel>
+            {
+                new ClientStatusModel { MailName = "test1" },
+                new ClientStatusModel { MailName = "test2" },
+            };
 
-  
+            var body = service.GenBody(list, list, list, new List<string> { "10.1.1.1" });
+        }
+
+        [Test]
+        public void TestCouchbase()
+        {
+            Caching.Register();
+            Caching.Set("Test", DateTime.Now);
+
+            var result = Caching.Get<DateTime>("Test");
+        }
+    }
 }

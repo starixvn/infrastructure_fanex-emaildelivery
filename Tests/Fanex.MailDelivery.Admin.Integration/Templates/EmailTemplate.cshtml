@@ -1,9 +1,10 @@
 ﻿@using Fanex.MailDelivery.Core.Models;
 @using System.Collections.Generic;
 @{
-    List<ClientStatusModel> onlines = Model.Item1;
-    List<ClientStatusModel> offlines = Model.Item2;
-    List<string> ips = Model.Item3;
+    List<ClientStatusModel> newClients = Model.Item1;
+    List<ClientStatusModel> onlines = Model.Item2;
+    List<ClientStatusModel> offlines = Model.Item3;
+    List<string> ips = Model.Item4;
 }
 
 <div style="font-family:Verdana, Geneva, Tahoma, sans-serif; font-size:10pt">
@@ -22,7 +23,25 @@
         </ul>
     </div>
     <div>
-        1> DISCONNECTED service(s):
+        1> NEW service(s):
+    </div>
+    <div>
+        <ul>
+            @foreach (ClientStatusModel status in @newClients)
+            {
+
+                <li>
+                    <span>@status.MailName</span>
+                </li>
+
+
+            }
+        </ul>
+        <br />
+    </div>
+
+    <div>
+        2> DISCONNECTED service(s):
     </div>
     <div>
         <ul>
@@ -30,7 +49,7 @@
             {
 
                 <li>
-                    <span> - @status.MailName</span>
+                    <span>@status.MailName</span>
                 </li>
 
                 
@@ -40,7 +59,7 @@
     </div>
 
     <div>
-        2> RE-CONNECTED service(s):
+        3> RE-CONNECTED service(s):
     </div>
     <div>
         <ul>
@@ -48,7 +67,7 @@
             {
 
                 <li>
-                    <span> - @status.MailName</span>
+                    <span>@status.MailName</span>
                 </li>
 
                 
