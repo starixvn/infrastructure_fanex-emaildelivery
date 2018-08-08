@@ -2,21 +2,22 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Linq;
 using System.Net;
 using Fanex.MailDeliver.Business.Implement;
 using Fanex.MailDeliver.Core.Infrastructure.Logging;
 using Fanex.MailDeliver.Model;
-using Fanex.MailStation.Admin.Service.Cache;
-using Fanex.MailStation.Admin.Service.Resources;
 using Fanex.MailDelivery.Core.Models;
 using Fanex.MailDelivery.Services.Configurations;
 using Fanex.MailDelivery.Services.Criteria.Criteria;
 using Fanex.MailDelivery.Services.Repositories;
 using Fanex.MailDelivery.Services.Services.MailService;
+using Fanex.MailStation.Admin.Service.Cache;
+using Fanex.MailStation.Admin.Service.Resources;
+using Newtonsoft.Json;
 using Quartz;
 using RazorEngine;
 using RazorEngine.Templating;
-using System.Linq;
 
 namespace Fanex.MailStation.Admin.Service.Handlers
 {
@@ -38,7 +39,8 @@ namespace Fanex.MailStation.Admin.Service.Handlers
             {
                 var scheduleMailListFromDB = repository.GetAllScheduleMail(new GetAllScheduleMailCriteria());
                 var cacheScheduleMailList = Caching.Get<List<ClientStatusModel>>(keyScheduleMailListCache);
-                if (cacheScheduleMailList != null && cacheScheduleMailList.Count != 0)
+
+                if (cacheScheduleMailList != null && cacheScheduleMailList.Count > 0)
                 {
                     var listOffline = new List<ClientStatusModel>();
                     var listReconnect = new List<ClientStatusModel>();
@@ -48,7 +50,7 @@ namespace Fanex.MailStation.Admin.Service.Handlers
                         var cacheScheduleMail = cacheScheduleMailList.FirstOrDefault(m => m.MailId == scheduleMail.MailId);
                         if (cacheScheduleMail == null)
                         {
-                            // There is new added Mail.                            
+                            // There is new added Mail.
                             newClients.Add(cacheScheduleMail);
                         }
                         else if (cacheScheduleMail.IsOnline != scheduleMail.IsOnline)
@@ -66,7 +68,7 @@ namespace Fanex.MailStation.Admin.Service.Handlers
                         }
                     }
 
-                    if (listOffline.Count > 0 || listReconnect.Count > 0)
+                    //if (listOffline.Count > 0 || listReconnect.Count > 0 || newClients.Count > 0)
                     {
                         var hostName = Dns.GetHostName();
                         var addressList = Dns.GetHostEntry(hostName).AddressList;
@@ -83,7 +85,7 @@ namespace Fanex.MailStation.Admin.Service.Handlers
                         mailRecord.Subject = subject;
                         mailRecord.Title = "Auto Generated Report Administrator";
                         mailRecord.AppID = AppSettings.MailServiceSection.AppSendMailToAdminId;
-                        mailRecord.Config = new MailConfig() { AppID = AppSettings.MailServiceSection.AppSendMailToAdminId };                        
+                        mailRecord.Config = new MailConfig() { AppID = AppSettings.MailServiceSection.AppSendMailToAdminId };
                         mailRecord.Body = GenBody(newClients, listReconnect, listOffline, ips);
                         MailService mailService = new MailService();
                         var mailDeliverBusiness = new MailDeliverBusiness();
@@ -94,14 +96,17 @@ namespace Fanex.MailStation.Admin.Service.Handlers
                         {
                             mailService.SendMail(mailRecord);
                         }
+
+                        Fanex.Logging.LogService.Info($"mailId: {mailId}, content: {mailRecord.Body}");
                     }
                 }
 
-                // If there is no previous cache.                
+                // If there is no previous cache.
                 Caching.Set(keyScheduleMailListCache, scheduleMailListFromDB);
             }
             catch (Exception ex)
             {
+                Fanex.Logging.LogService.Info(ex.Message);
                 LogExtension.LogError(ex);
             }
         }
