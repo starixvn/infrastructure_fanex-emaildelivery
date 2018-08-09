@@ -54,7 +54,7 @@ namespace Fanex.MailStation.Admin.Service.Handlers
                         if (cacheScheduleMail == null)
                         {
                             // There is new added Mail.
-                            newClients.Add(cacheScheduleMail);
+                            newClients.Add(scheduleMail);
                         }
                         else if (cacheScheduleMail.IsOnline != scheduleMail.IsOnline)
                         {

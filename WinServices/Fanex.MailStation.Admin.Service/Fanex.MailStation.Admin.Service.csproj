@@ -202,15 +202,23 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Configurations\Fanex.MailStation.Admin.Service.UAT.exe.config">
+    <Content Include="Configurations\Fanex.MailStation.Admin.Service.UAT75.exe.config">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Configurations\Fanex.MailStation.Admin.Service.PRO.exe.config">
+    <Content Include="Configurations\Fanex.MailStation.Admin.Service.PRO22.exe.config">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Configurations\Fanex.MailStation.Admin.Service.LOCAL104.exe.config">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Configurations\Fanex.MailStation.Admin.Service.UAT73.exe.config">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Configurations\Fanex.MailStation.Admin.Service.PRO127.exe.config">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
