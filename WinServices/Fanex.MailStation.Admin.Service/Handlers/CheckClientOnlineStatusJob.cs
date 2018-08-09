@@ -14,10 +14,8 @@ using Fanex.MailDelivery.Services.Repositories;
 using Fanex.MailDelivery.Services.Services.MailService;
 using Fanex.MailStation.Admin.Service.Cache;
 using Fanex.MailStation.Admin.Service.Resources;
-using Newtonsoft.Json;
 using Quartz;
 using RazorEngine;
-using RazorEngine.Templating;
 
 namespace Fanex.MailStation.Admin.Service.Handlers
 {
@@ -35,6 +33,11 @@ namespace Fanex.MailStation.Admin.Service.Handlers
         public void Execute(IJobExecutionContext context)
         {
             var repository = new MailRepository();
+            var hostName = Dns.GetHostName();
+            var addressList = Dns.GetHostEntry(hostName).AddressList;
+            var ips = new List<string>();
+            ips.Add(hostName);
+
             try
             {
                 var scheduleMailListFromDB = repository.GetAllScheduleMail(new GetAllScheduleMailCriteria());
@@ -68,12 +71,8 @@ namespace Fanex.MailStation.Admin.Service.Handlers
                         }
                     }
 
-                    //if (listOffline.Count > 0 || listReconnect.Count > 0 || newClients.Count > 0)
+                    if (listOffline.Count > 0 || listReconnect.Count > 0 || newClients.Count > 0)
                     {
-                        var hostName = Dns.GetHostName();
-                        var addressList = Dns.GetHostEntry(hostName).AddressList;
-                        var ips = new List<string>();
-                        ips.Add(hostName);
                         foreach (var ip in addressList)
                         {
                             ips.Add(ip.ToString());
@@ -96,8 +95,6 @@ namespace Fanex.MailStation.Admin.Service.Handlers
                         {
                             mailService.SendMail(mailRecord);
                         }
-
-                        Fanex.Logging.LogService.Info($"mailId: {mailId}, content: {mailRecord.Body}");
                     }
                 }
 
@@ -106,7 +103,7 @@ namespace Fanex.MailStation.Admin.Service.Handlers
             }
             catch (Exception ex)
             {
-                Fanex.Logging.LogService.Info(ex.Message);
+                Fanex.Logging.LogService.Info($"hostName: {string.Join(Environment.NewLine, ips)} - {ex.Message}");
                 LogExtension.LogError(ex);
             }
         }
@@ -115,7 +112,8 @@ namespace Fanex.MailStation.Admin.Service.Handlers
         {
             var template = File.ReadAllText(@"Templates\EmailTemplate.cshtml");
             var tuple = new Tuple<List<ClientStatusModel>, List<ClientStatusModel>, List<ClientStatusModel>, List<string>>(newClient, listReconnect, listOffline, ips);
-            return Engine.Razor.RunCompile(template, "template", model: tuple);
+
+            return Razor.Parse(template, tuple);
         }
     }
 }

@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Reflection;
+using System.Security;
+using System.Security.Permissions;
+using System.Security.Policy;
 using System.ServiceProcess;
 using Fanex.MailStation.Admin.Service.Installer;
 
