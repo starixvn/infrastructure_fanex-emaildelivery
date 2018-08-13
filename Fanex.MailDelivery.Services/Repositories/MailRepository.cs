@@ -30,26 +30,21 @@ namespace Fanex.MailDelivery.Services.Repositories
 
         public List<ClientStatusModel> GetAllScheduleMail(GetAllScheduleMailCriteria criteria)
         {
-            List<ClientStatusModel> restult = new List<ClientStatusModel>();
-            DateTime now = DateTime.Now;
+            List<ClientStatusModel> restult;
+            DateTime now;
             using (var db = new ObjectDb(criteria.GetSettingKey()))
             {
                 db.AssignParamValues(criteria.GetSpParams());
-                var reader = db.ExecuteReader();
-                while (reader.Read())
+                using (var multi = db.QueryMultiple())
                 {
-                    ClientStatusModel element = new ClientStatusModel();
-                    element.MailId = Converter.ToInt(reader["MailID"]);
-                    element.MailName = Converter.ToString2(reader["MailName"]);
-                    if (reader["LastActive"] != null)
-                    {
-                        element.LastActive = Converter.ToDateTime(reader["LastActive"]);
-                    }
-
-                    element.IsOnline = element.LastActive != null && 
-                        element.LastActive.Value.AddSeconds(AppSettings.MailServiceSection.ClientNotifyTimeOutInSecond) >= DateTime.Now;
-                    restult.Add(element);
+                    restult = multi.Read<ClientStatusModel>().ToList();
+                    now = multi.Read<DateTime>().FirstOrDefault();
                 }
+
+                restult.ForEach(n =>
+                {
+                    n.IsOnline = n.LastActive != null && n.LastActive.Value.AddSeconds(AppSettings.MailServiceSection.ClientNotifyTimeOutInSecond) >= now;
+                });
             }
 
             return restult;

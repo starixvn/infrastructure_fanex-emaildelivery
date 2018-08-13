@@ -29,17 +29,22 @@ namespace Fanex.MailDelivery.Services.Repositories.Admin
         public List<MailModel> GetMailList(GetMailListCriteria criteria)
         {
             List<MailModel> mailModels;
+            DateTime now;
             using (var db = new ObjectDb(criteria.GetSettingKey()))
             {
                 db.AssignParamValues(criteria.GetSpParams());
-                mailModels = db.Query<MailModel>().ToList();
+                using (var multi = db.QueryMultiple())
+                {
+                    mailModels = multi.Read<MailModel>().ToList();
+                    now = multi.Read<DateTime>().FirstOrDefault();
+                }
             }
 
             mailModels.ToList().ForEach(n =>
             {
                 if (n.TriggerType == 1)
                 {
-                    n.IsClientOnline = n.LastActive != null && n.LastActive.Value.AddSeconds(AppSettings.MailServiceSection.ClientNotifyTimeOutInSecond) >= DateTime.Now;
+                    n.IsClientOnline = n.LastActive != null && n.LastActive.Value.AddSeconds(AppSettings.MailServiceSection.ClientNotifyTimeOutInSecond) >= now;
                 }
                 else
                 {
