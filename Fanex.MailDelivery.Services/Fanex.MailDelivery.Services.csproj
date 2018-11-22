@@ -102,6 +102,7 @@
     <Compile Include="Criteria\Criteria\GetAllScheduleMailCriteria.cs" />
     <Compile Include="Criteria\Criteria\GetMailTaskByIDCriteria.cs" />
     <Compile Include="Criteria\Criteria\GetMailWithEmailAddressByMailIDCriteria.cs" />
+    <Compile Include="Criteria\Criteria\MailRecorderGetMailById.cs" />
     <Compile Include="Criteria\Job\GetScheduleByMailIdCriteria.cs" />
     <Compile Include="Criteria\Criteria\UpdateClientActiveTimeCriteria.cs" />
     <Compile Include="Criteria\Criteria\UpdateMailTaskMailRecordIDCriteria.cs" />
@@ -144,6 +145,7 @@
     <Compile Include="Services\Logging\LogService.cs" />
     <Compile Include="Services\MailService\IMailService.cs" />
     <Compile Include="Services\MailService\MailService.cs" />
+    <Compile Include="Services\MailService\RetryOnMailRecordService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Fanex.MailDelivery.Core\Fanex.MailDelivery.Core.csproj">

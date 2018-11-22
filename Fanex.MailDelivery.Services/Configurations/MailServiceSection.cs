@@ -54,5 +54,12 @@ namespace Fanex.MailDelivery.Services.Configurations
         {
             return ConfigurationManager.GetSection(sectionName) as MailServiceSection;
         }
+
+        [ConfigurationProperty("maxRetrySendMailServiceCounter", DefaultValue = "3", IsRequired = false)]
+        public int MaxRetrySendMailServiceCounter
+        {
+            get { return (int)this["maxRetrySendMailServiceCounter"]; }
+            set { this["maxRetrySendMailServiceCounter"] = value; }
+        }
     }
 }
