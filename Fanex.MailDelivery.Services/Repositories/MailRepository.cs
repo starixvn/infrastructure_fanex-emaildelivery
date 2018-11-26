@@ -1,5 +1,11 @@
-﻿using Fanex.Common;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using Fanex.Common;
 using Fanex.Data;
+using Fanex.MailDeliver.Model;
 using Fanex.MailDelivery.Core.Models;
 using Fanex.MailDelivery.Core.Models.Report;
 using Fanex.MailDelivery.Services.Configurations;
@@ -7,10 +13,6 @@ using Fanex.MailDelivery.Services.Criteria;
 using Fanex.MailDelivery.Services.Criteria.Criteria;
 using Fanex.MailDelivery.Services.Criteria.Job;
 using Fanex.MailDelivery.Services.Models;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Fanex.MailDelivery.Services.Repositories
 {
@@ -170,15 +172,28 @@ namespace Fanex.MailDelivery.Services.Repositories
             }
         }
 
-        private ResultModel GetCommandResult(Hashtable hash)
+        public MailRecord GetMailRecordById(int mailId)
         {
-            var errCode = hash["errcode"];
-            var errMsg = hash["errmsg"];
-            return new ResultModel()
+            var criteria = new MailRecorderGetMailById { MailId = mailId };
+            var mailRecord = new MailRecord();
+            using (var db = new ObjectDb(criteria.GetSettingKey()))
             {
-                ErrCode = (errCode is DBNull) ? 0 : Convert.ToInt32(errCode),
-                ErrMsg = (errMsg is DBNull) ? string.Empty : Convert.ToString(errMsg)
-            };
+                db.AssignParamValues(criteria.GetSpParams());
+                var dataSet = db.ExecuteDataSet();
+                var dataTable = new DataTable();
+                if(dataSet != null && dataSet.Tables.Count>0)
+                {
+                    dataTable = dataSet.Tables[0];
+                }
+
+                foreach(DataRow row in dataTable.Rows)
+                {
+                    mailRecord.SentSuccess = Converter.To<int>(row["SentSuccess"]);
+                    mailRecord.SentFail = Converter.To<int>(row["SentFail"]);
+                }
+
+                return mailRecord;
+            }
         }
     }
 }

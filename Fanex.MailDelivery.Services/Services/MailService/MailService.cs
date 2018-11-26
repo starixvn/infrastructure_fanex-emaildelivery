@@ -12,6 +12,7 @@ using Fanex.MailDelivery.Services.Repositories;
 using Fanex.MailDelivery.Services.Services.Logging;
 using Fanex.NAP.Framework.Command;
 using System;
+using System.Threading;
 
 namespace Fanex.MailDelivery.Services.Services.MailService
 {
@@ -22,11 +23,13 @@ namespace Fanex.MailDelivery.Services.Services.MailService
     {
         private IMailRepository _mailRepository;
         private IMailDeliverBusiness _mailDeliverBusiness;
+        private RetryOnMailRecordService retryOnMailRecordService;
 
         public MailService()
         {
             this._mailRepository = this._mailRepository ?? new MailRepository();
             this._mailDeliverBusiness = new MailDeliverBusiness();
+            this.retryOnMailRecordService = new RetryOnMailRecordServiceImp(_mailRepository);
         }
 
         /// <summary>
@@ -178,7 +181,9 @@ namespace Fanex.MailDelivery.Services.Services.MailService
             {
                 string error = string.Empty;
                 MailExtension.SendMail(record, out error);
-                ////LogExtension.LogMessage(string.Format("Sending mail: {0}. Error message: {1}", record.MailID, error));
+
+                var InstanceCaller = new Thread(()=> retryOnMailRecordService.Retry((int)record.MailID));
+                InstanceCaller.Start();
             }
         }
 
