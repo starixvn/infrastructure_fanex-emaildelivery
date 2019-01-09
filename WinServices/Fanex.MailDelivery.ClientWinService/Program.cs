@@ -18,6 +18,7 @@ namespace Fanex.MailDelivery.ClientWinService
                 new ClientServerWinService()
             };
 
+
             if (Environment.UserInteractive)
             {
                 Type type = typeof(ServiceBase);
