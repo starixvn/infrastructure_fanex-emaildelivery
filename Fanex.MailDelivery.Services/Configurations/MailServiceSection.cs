@@ -62,14 +62,14 @@ namespace Fanex.MailDelivery.Services.Configurations
             set { this["maxRetrySendMailServiceCounter"] = value; }
         }
 
-        [ConfigurationProperty("maxRetryStartUpService", DefaultValue = "5", IsRequired = false)]
+        [ConfigurationProperty("maxRetryStartUpService", DefaultValue = "3", IsRequired = false)]
         public int MaxRetryStartUpService
         {
             get { return (int)this["maxRetryStartUpService"]; }
             set { this["maxRetryStartUpService"] = value; }
         }
 
-        [ConfigurationProperty("maxIntervalStartUpServiceInSecond", DefaultValue = "60", IsRequired = false)]
+        [ConfigurationProperty("maxIntervalStartUpServiceInSecond", DefaultValue = "300", IsRequired = false)]
         public int MaxIntervalStartUpServiceInSecond
         {
             get { return (int)this["maxIntervalStartUpServiceInSecond"]; }

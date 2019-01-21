@@ -50,6 +50,7 @@ namespace Fanex.MailStation.Admin.Service.Installer
 
                 if (counter >= maxRetryStartUpService)
                 {
+                    Environment.Exit(-1);
                     throw new Exception("The service Fanex.MailStation.Service can't be started, maybe it's related to RabbitMQ or something else.");
                 }
 
