@@ -218,6 +218,10 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Fanex.MailDelivery.ClientWinService.LOCAL111-112.exe.config">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="Installer\InstallMailService.bat" />
     <None Include="Installer\UnInstallMailService.bat" />
     <None Include="job_scheduling_data_2_0.xsd">

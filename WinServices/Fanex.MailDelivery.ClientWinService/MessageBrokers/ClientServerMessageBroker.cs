@@ -117,7 +117,10 @@ namespace Fanex.MailDelivery.ClientWinService.MessageBrokers
             }
 
             // Free native resources if there are any.
-            _bus.Dispose();
+            if (_bus != null)
+            {
+                _bus.Dispose();
+            }
         }
     }
 }

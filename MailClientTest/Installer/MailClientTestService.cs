@@ -5,6 +5,7 @@ namespace MailClientTest.Installer
 {
     using System;
     using System.ServiceProcess;
+    using System.Threading;
     using Fanex.MailDelivery.Client.Configurations;
     using Fanex.MailDelivery.Client.Handlers;
 
@@ -13,6 +14,10 @@ namespace MailClientTest.Installer
     /// </summary>
     public partial class MailClientTestService : ServiceBase
     {
+        private int counter;
+        private int maxRetryStartUpService = 5;
+        private int maxIntervalStartUpServiceInSecond = 60;
+
         public MailClientTestService()
         {
         }
@@ -26,7 +31,25 @@ namespace MailClientTest.Installer
         {
             try
             {
-                MailClientHandler.Start();
+                //MailClientHandler.Start();
+
+                while (true)
+                {
+                    var result = Execute();
+                    if (result)
+                    {
+                        break;
+                    }
+
+                    if (counter >= maxRetryStartUpService)
+                    {
+                        throw new Exception("The service can't be started, maybe it's related to RabbitMQ or something else.");
+                    }
+
+                    Thread.Sleep(1000 * maxIntervalStartUpServiceInSecond);
+                }
+
+
                 Console.WriteLine("Mail Client Service Site: {0} started.", AppSettings.MailCientConfig.SiteId);
                 Console.WriteLine("App Name: {0}", System.Diagnostics.Process.GetProcessById(System.Diagnostics.Process.GetCurrentProcess().Id).ProcessName);
                 var schedules = AppSettings.MailCientConfig.Schedules;
@@ -88,6 +111,23 @@ namespace MailClientTest.Installer
             mail.MailingListId = AppSettings.GetFunctionId("FuntionA");
             MailClientHandler.SendFunctionMail(mail);
             Console.WriteLine("Function Mail has been sent.");
+        }
+
+        private bool Execute()
+        {
+            var result = false;
+            try
+            {
+                counter++;
+                MailClientHandler.Start();
+                result = true;
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine($"Service starts fail at {DateTime.Now} - {exception.Message}");
+            }
+
+            return result;
         }
     }
 }
