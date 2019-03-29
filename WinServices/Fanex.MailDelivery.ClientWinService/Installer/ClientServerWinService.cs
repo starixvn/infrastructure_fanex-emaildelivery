@@ -3,6 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.ServiceProcess;
 using System.Threading;
 using Fanex.Data.Configuration;
+using Fanex.MailDelivery.ClientWinService.Handlers;
 using Fanex.MailDelivery.ClientWinService.MessageBrokers;
 using Fanex.MailDelivery.Services.Configurations;
 using Fanex.MailDelivery.Services.Services.Logging;
@@ -19,6 +20,7 @@ namespace Fanex.MailDelivery.ClientWinService.Installer
         private int counter; 
         private int maxRetryStartUpService = AppSettings.MailServiceSection.MaxRetryStartUpService;
         private int maxIntervalStartUpServiceInSecond = AppSettings.MailServiceSection.MaxIntervalStartUpServiceInSecond;
+        private JobHandler _jobHandler;
 
         private string serviceInfo = "Service {0} {1} at {2}.";
 
@@ -31,6 +33,7 @@ namespace Fanex.MailDelivery.ClientWinService.Installer
         {
             InitializeComponent();
             _clientServerMessageBroker = messageBroker ?? new ClientServerMessageBroker();
+            _jobHandler = new JobHandler();
             DbSettingProviderManager.Current.Start();
         }
 
@@ -56,6 +59,7 @@ namespace Fanex.MailDelivery.ClientWinService.Installer
 
         protected override void OnStop()
         {
+            _jobHandler.Stop();
             LogService.LogInfo(string.Format(serviceInfo, this.ServiceName, "stops", DateTime.Now.ToString()));
             if (_clientServerMessageBroker != null)
             {
@@ -71,6 +75,7 @@ namespace Fanex.MailDelivery.ClientWinService.Installer
                 counter++;
                 LogService.LogInfo(string.Format(serviceInfo, ServiceName, "starts", DateTime.Now.ToString()));
                 _clientServerMessageBroker.Start();
+                _jobHandler.Start();
                 result = true;
             }
             catch (Exception exception)

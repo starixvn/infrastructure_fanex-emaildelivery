@@ -55,8 +55,6 @@ namespace Fanex.MailDelivery.Admin.UserTest
                 new ClientStatusModel { MailName = "test1" },
                 new ClientStatusModel { MailName = "test2" },
             };
-
-            var body = service.GenBody(list, list, list, new List<string> { "10.1.1.1" });
         }
 
         [Test]

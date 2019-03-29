@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Fanex.Data;
 using Fanex.MailDelivery.Core.Models;
 using Fanex.MailDelivery.Services.Criteria.Criteria;
@@ -18,6 +19,14 @@ namespace Fanex.MailDelivery.Services.Repositories.Client
         }
 
         public void UpdateClientActiveTime(UpdateClientActiveTimeCriteria criteria)
+        {
+            using (var db = new ObjectDb(criteria.GetSettingKey()))
+            {
+                db.ExecuteNonQuery(criteria.GetSpParams());
+            }
+        }
+
+        public void UpdateServiceCheckIn(ServiceMonitoringCheckInCriteria criteria)
         {
             using (var db = new ObjectDb(criteria.GetSettingKey()))
             {

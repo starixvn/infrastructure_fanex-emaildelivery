@@ -74,6 +74,6 @@ namespace Fanex.MailDelivery.Client.Configurations
             bool isLocal = environment.Length == 0 || environment.Trim().Equals("local");
 
             return isLocal;
-        }
+        }       
     }
 }
