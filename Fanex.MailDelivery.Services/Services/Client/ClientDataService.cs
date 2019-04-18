@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using Fanex.Logging;
 using Fanex.MailDelivery.Core.Messaging.Job;
 using Fanex.MailDelivery.Core.Models;
 using Fanex.MailDelivery.Services.Configurations;
@@ -40,6 +41,9 @@ namespace Fanex.MailDelivery.Services.Services.Client
                 OrderBy = 1,
                 ServiceName = AppSettings.MailServiceSection.ServiceName
             };
+
+            var msg = $"ServiceName: {AppSettings.MailServiceSection.ServiceName}, IP: {GetLocalIP()}, Interval: {AppSettings.MailServiceSection.CheckClientOnlineStatusJobInterval}, Time: {DateTime.Now}";
+            LogService.Info($"{msg}");
 
             _clientRepository.UpdateServiceCheckIn(criteria);
         }

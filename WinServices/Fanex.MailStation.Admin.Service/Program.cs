@@ -33,7 +33,7 @@ namespace Fanex.MailStation.Admin.Service
 
                 foreach (ServiceBase service in servicesToRun)
                 {
-                    service.Stop();
+                  //  service.Stop();
                 }
             }
             else
