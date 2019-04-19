@@ -43,7 +43,7 @@ namespace Fanex.MailDelivery.ClientWinService.Services
 
         public void UpdateClientActiveTime(UpdateActiveTimeRequest updateActiveTimeRequest)
         {
-            _clientDataService.UpdateClientActiveTime(updateActiveTimeRequest);
+            _clientDataService.UpdateClientActiveTime(updateActiveTimeRequest);            
         }
 
         public void AddMailTaskForRunningJob(JobMessage jobMessage)

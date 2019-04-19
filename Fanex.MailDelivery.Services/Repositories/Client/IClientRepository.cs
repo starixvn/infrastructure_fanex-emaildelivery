@@ -9,6 +9,8 @@ namespace Fanex.MailDelivery.Services.Repositories.Client
     {
         Schedule GetScheduleByMailId(GetScheduleByMailIdCriteria criteria);
 
-        void UpdateClientActiveTime(UpdateClientActiveTimeCriteria criteria);        
+        void UpdateClientActiveTime(UpdateClientActiveTimeCriteria criteria);
+
+        void UpdateServiceCheckIn(ServiceMonitoringCheckInCriteria criteria);
     }
 }

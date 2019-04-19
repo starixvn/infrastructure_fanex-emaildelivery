@@ -35,7 +35,7 @@ namespace Fanex.MailDelivery.ClientWinService
 
                 foreach (ServiceBase service in servicesToRun)
                 {
-                    service.Stop();
+                //    service.Stop();
                 }
             }
             else

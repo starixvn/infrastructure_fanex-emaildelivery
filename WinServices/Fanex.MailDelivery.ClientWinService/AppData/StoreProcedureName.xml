@@ -89,10 +89,11 @@
 
   <Function Name="Mail Report">
     <Setting Key="MailStation_MailReport_GetMailTaskList" SpName="Mail_Report_GetMailTaskList" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
-    <Setting Key="Mail_Report_GetAllSchedule" SpName="Mail_Report_GetAllSchedule" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
-
-    <!--<Setting Key="MailStation_MailReport_GetLogDetail" SpName="Mail_Report_GetLogDetails" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
-    <Setting Key="Mail_Report_GetMailTaskByID" SpName="Mail_Report_GetMailTaskByID" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
-    <Setting Key="Mail_Core_InsertMailTask" SpName="Mail_Core_InsertMailTask" DbName="DBMMS.bodb_MMS.bodbAdminNet" />-->
+    <Setting Key="Mail_Report_GetAllSchedule" SpName="Mail_Report_GetAllSchedule" DbName="DBMMS.bodb_MMS.bodbAdminNet" />    
   </Function>
+
+  <Function Name="Service Monitoring">
+    <Setting Key="ServiceMonitoring_CheckIn" SpName="ServiceMonitoring_CheckIn" DbName="DBMA.bodb_Maintenance.bodbAdminNet" />
+  </Function>
+  
 </Functions>

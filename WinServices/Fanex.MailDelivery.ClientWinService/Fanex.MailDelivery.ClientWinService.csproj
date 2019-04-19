@@ -168,6 +168,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Handlers\CheckClientOnlineStatusJob.cs" />
+    <Compile Include="Handlers\JobHandler.cs" />
     <Compile Include="MessageBrokers\ClientServerMessageBroker.cs" />
     <Compile Include="MessageBrokers\IClientServerMessageBroker.cs" />
     <Compile Include="Installer\ClientServerWinService.cs">

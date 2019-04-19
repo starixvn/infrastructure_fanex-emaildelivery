@@ -1,5 +1,6 @@
 ﻿using Fanex.MailDelivery.Core.Messaging.Job;
 using Fanex.MailDelivery.Core.Models;
+using Fanex.MailDelivery.Services.Criteria.Criteria;
 using Fanex.MailDelivery.Services.Criteria.Job;
 
 namespace Fanex.MailDelivery.Services.Services.Client
@@ -12,5 +13,7 @@ namespace Fanex.MailDelivery.Services.Services.Client
         Schedule GetScheduleByMailId(GetScheduleByMailIdCriteria criteria);
 
         void UpdateClientActiveTime(UpdateActiveTimeRequest clientInfoMessage);
+
+        void UpdateServiceCheckIn();
     }
 }

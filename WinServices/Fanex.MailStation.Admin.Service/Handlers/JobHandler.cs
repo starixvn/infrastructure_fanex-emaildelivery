@@ -13,19 +13,15 @@ namespace Fanex.MailStation.Admin.Service.Handlers
 
         public void Start()
         {
-            if (AppSettings.MailServiceSection.IsRunAutoMailStatusReport)
-            {
-                ISchedulerFactory schedFact = new StdSchedulerFactory();
-                _scheduler = schedFact.GetScheduler();
-                _scheduler.Start();
-                StartCheckAutoMailStatusJob();
-            }
+            ISchedulerFactory schedFact = new StdSchedulerFactory();
+            _scheduler = schedFact.GetScheduler();
+            _scheduler.Start();
+            StartCheckAutoMailStatusJob();
         }
 
         public void Stop()
         {
-            if (AppSettings.MailServiceSection.IsRunAutoMailStatusReport
-                && _scheduler != null)
+            if (_scheduler != null)
             {
                 _scheduler.Shutdown();
             }

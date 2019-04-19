@@ -180,10 +180,19 @@ namespace Fanex.MailDelivery.Services.Services.MailService
             if (record != null && record.IsReady)
             {
                 string error = string.Empty;
-                MailExtension.SendMail(record, out error);
-
-                var InstanceCaller = new Thread(()=> retryOnMailRecordService.Retry((int)record.MailID));
-                InstanceCaller.Start();
+                try
+                {
+                    MailExtension.SendMail(record, out error);
+                }
+                catch (Exception exception)
+                {
+                    LogService.LogError(exception);
+                }
+                finally
+                {
+                    var InstanceCaller = new Thread(() => retryOnMailRecordService.Retry((int)record.MailID));
+                    InstanceCaller.Start();
+                }
             }
         }
 

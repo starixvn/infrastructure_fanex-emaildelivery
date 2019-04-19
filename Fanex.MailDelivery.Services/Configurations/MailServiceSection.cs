@@ -75,5 +75,13 @@ namespace Fanex.MailDelivery.Services.Configurations
             get { return (int)this["maxIntervalStartUpServiceInSecond"]; }
             set { this["maxIntervalStartUpServiceInSecond"] = value; }
         }
+
+        public string ServiceName
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings["ServiceName"];
+            }
+        }
     }
 }
