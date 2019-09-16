@@ -6,7 +6,6 @@ using System.Threading;
 using Fanex.Data.Configuration;
 using Fanex.MailDelivery.Services.Configurations;
 using Fanex.MailDelivery.Services.Services.Logging;
-using Fanex.MailStation.Admin.Service.Cache;
 using Fanex.MailStation.Admin.Service.Handlers;
 using Fanex.MailStation.Admin.Service.MessageBrokers;
 
@@ -37,7 +36,7 @@ namespace Fanex.MailStation.Admin.Service.Installer
         protected override void OnStart(string[] args)
         {
             Directory.SetCurrentDirectory(AppDomain.CurrentDomain.BaseDirectory);
-            Caching.Register();
+            
             LogService.LogInfo(string.Format(serviceInfo, ServiceName, "starts", DateTime.Now.ToString()));            
 
             while (true)

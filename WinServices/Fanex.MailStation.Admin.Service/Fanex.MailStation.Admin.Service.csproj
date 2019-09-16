@@ -191,7 +191,6 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Services\AdminServerService.cs" />
-    <Compile Include="Cache\Caching.cs" />
     <Compile Include="Services\IAdminServerService.cs" />
   </ItemGroup>
   <ItemGroup>

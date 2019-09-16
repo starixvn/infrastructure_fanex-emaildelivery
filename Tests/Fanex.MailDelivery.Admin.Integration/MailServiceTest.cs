@@ -4,7 +4,6 @@ using System.IO;
 using Fanex.MailDelivery.Admin.Messaging.ManageMail;
 using Fanex.MailDelivery.Admin.Services.Mail;
 using Fanex.MailDelivery.Core.Models;
-using Fanex.MailStation.Admin.Service.Cache;
 using Fanex.MailStation.Admin.Service.Handlers;
 using NUnit.Framework;
 
@@ -55,15 +54,6 @@ namespace Fanex.MailDelivery.Admin.UserTest
                 new ClientStatusModel { MailName = "test1" },
                 new ClientStatusModel { MailName = "test2" },
             };
-        }
-
-        [Test]
-        public void TestCouchbase()
-        {
-            Caching.Register();
-            Caching.Set("Test", DateTime.Now);
-
-            var result = Caching.Get<DateTime>("Test");
         }
     }
 }
