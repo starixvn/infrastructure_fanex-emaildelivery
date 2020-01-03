@@ -7,11 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fanex.MailDelivery.Client",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fanex.MailDelivery.Admin", "Fanex.MailDelivery.Admin\Fanex.MailDelivery.Admin.csproj", "{011C7F64-69E3-4867-9B3E-D6D1D931060B}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CodeAnalysis", "CodeAnalysis", "{7DE92006-276B-494A-B5B3-B28C9AD125E0}"
-	ProjectSection(SolutionItems) = preProject
-		CodeAnalysis\CodeAnalysisConfiguration.xml = CodeAnalysis\CodeAnalysisConfiguration.xml
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MailClientTest", "MailClientTest\MailClientTest.csproj", "{2218E3C7-066D-47A4-AA3E-8F81063FB046}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{D3A8EF67-1DC6-4430-B368-16BD2824EDC8}"
@@ -25,13 +20,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WinServices", "WinServices", "{C6CD15F0-2D43-405F-A2BF-FF11EADCB8A1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fanex.MailDelivery.ClientWinService", "WinServices\Fanex.MailDelivery.ClientWinService\Fanex.MailDelivery.ClientWinService.csproj", "{B7144728-6615-4A45-9810-34D141410569}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{0A02C7EC-98E3-46FE-8DE8-5A56755FDF5B}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.exe = .nuget\NuGet.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fanex.MailDelivery.Admin.Tests.Unit", "Tests\Fanex.MailDelivery.Admin.Tests.Unit\Fanex.MailDelivery.Admin.Tests.Unit.csproj", "{BBFF4B29-34CF-446F-8011-AA992BA90BC4}"
 EndProject

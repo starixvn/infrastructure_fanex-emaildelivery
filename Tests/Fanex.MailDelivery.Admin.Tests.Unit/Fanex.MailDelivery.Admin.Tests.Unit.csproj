@@ -50,9 +50,6 @@
     <Compile Include="Utils\DateRangeValidatorTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\Fanex.MailDelivery.Admin\Fanex.MailDelivery.Admin.csproj">
       <Project>{011c7f64-69e3-4867-9b3e-d6d1d931060b}</Project>
       <Name>Fanex.MailDelivery.Admin</Name>
@@ -60,6 +57,10 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
