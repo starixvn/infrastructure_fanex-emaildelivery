@@ -1,12 +1,11 @@
 ﻿using System;
-using EasyNetQ;
 
 namespace Fanex.MailStation.Admin.Service.Logging
 {
     /// <summary>
     /// Rabbit MQ Logger.
     /// </summary>
-    public class RabbitMqLogger : IEasyNetQLogger
+    public class RabbitMqLogger //: IEasyNetQLogger
     {
         public void DebugWrite(string format, params object[] args)
         {

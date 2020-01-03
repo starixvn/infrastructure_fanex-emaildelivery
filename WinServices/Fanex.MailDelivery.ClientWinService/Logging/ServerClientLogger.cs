@@ -1,9 +1,8 @@
 ﻿using System;
-using EasyNetQ;
 
 namespace Fanex.MailDelivery.ClientWinService.Logging
 {
-    public class ServerClientLogger : IEasyNetQLogger
+    public class ServerClientLogger //: IEasyNetQLogger
     {
         public void DebugWrite(string format, params object[] args)
         {

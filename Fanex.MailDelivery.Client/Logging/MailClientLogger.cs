@@ -1,14 +1,13 @@
-﻿using System;
-using EasyNetQ;
-using Fanex.Logging;
+﻿using Fanex.Logging;
 using Fanex.MailDelivery.Client.Configurations;
+using System;
 
 namespace Fanex.MailDelivery.Client.Logging
 {
     /// <summary>
     /// Mail Client Logger.
     /// </summary>
-    public class MailClientLogger : IEasyNetQLogger
+    public class MailClientLogger //: IEasyNetQLogger
     {
         public void DebugWrite(string format, params object[] args)
         {

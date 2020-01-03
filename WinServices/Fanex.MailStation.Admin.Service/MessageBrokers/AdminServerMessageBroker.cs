@@ -1,20 +1,19 @@
 ﻿namespace Fanex.MailStation.Admin.Service.MessageBrokers
 {
-    using System;
     using EasyNetQ;
     using Fanex.MailDelivery.Admin.Messaging;
     using Fanex.MailDelivery.Admin.Messaging.ManageGroup;
     using Fanex.MailDelivery.Admin.Messaging.ManageMail;
     using Fanex.MailDelivery.Admin.Messaging.ManageRecipient;
     using Fanex.MailDelivery.Admin.Messaging.ManageReport;
-    using Fanex.MailStation.Admin.Service.Logging;
-    using Fanex.MailStation.Admin.Service.Services;
     using Fanex.MailDelivery.Core;
     using Fanex.MailDelivery.Core.Messaging.Job;
     using Fanex.MailDelivery.Core.Models;
     using Fanex.MailDelivery.Services.Configurations;
     using Fanex.MailDelivery.Services.Services.Admin;
     using Fanex.MailDelivery.Services.Services.MailService;
+    using Fanex.MailStation.Admin.Service.Services;
+    using System;
 
     /// <summary>
     /// Mail Service Message Broker.
@@ -50,7 +49,7 @@
                 AppSettings.MailServiceSection.RabbitMQConnectionString,
                 serviceRegister =>
                 {
-                    serviceRegister.Register<IEasyNetQLogger>(_ => new RabbitMqLogger());
+                    //serviceRegister.Register<IEasyNetQLogger>(_ => new RabbitMqLogger());
                 });
 
             // Register admin functions

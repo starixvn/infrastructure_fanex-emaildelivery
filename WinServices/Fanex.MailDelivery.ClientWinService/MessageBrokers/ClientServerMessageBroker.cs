@@ -1,5 +1,4 @@
 ﻿using EasyNetQ;
-using Fanex.MailDelivery.ClientWinService.Logging;
 using Fanex.MailDelivery.ClientWinService.Services;
 using Fanex.MailDelivery.Core;
 using Fanex.MailDelivery.Core.Messaging.Job;
@@ -37,7 +36,7 @@ namespace Fanex.MailDelivery.ClientWinService.MessageBrokers
                 AppSettings.MailServiceSection.RabbitMQConnectionString,
                 serviceRegister =>
                 {
-                    serviceRegister.Register<IEasyNetQLogger>(_ => new ServerClientLogger());
+                    //serviceRegister.Register<IEasyNetQLogger>(_ => new ServerClientLogger());
                 });
 
             ResponseGetScheduleList();

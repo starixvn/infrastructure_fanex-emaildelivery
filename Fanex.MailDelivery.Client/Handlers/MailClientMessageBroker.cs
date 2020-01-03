@@ -1,14 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Net;
-using EasyNetQ;
+﻿using EasyNetQ;
 using Fanex.MailDelivery.Client.Configurations;
-using Fanex.MailDelivery.Client.Logging;
 using Fanex.MailDelivery.Core;
 using Fanex.MailDelivery.Core.Messaging.Job;
 using Fanex.MailDelivery.Core.Models;
 using Fanex.MailDelivery.Core.Models.Report;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Net;
 
 namespace Fanex.MailDelivery.Client.Handlers
 {
@@ -31,7 +30,7 @@ namespace Fanex.MailDelivery.Client.Handlers
                 AppSettings.MailCientConfig.RabbitMQConnectionString,
                 serviceRegister =>
                 {
-                    serviceRegister.Register<IEasyNetQLogger>(_ => new MailClientLogger());
+                    //serviceRegister.Register<IEasyNetQLogger>(_ => new MailClientLogger());
                 });
 
             SubscribeScheduleChange();
