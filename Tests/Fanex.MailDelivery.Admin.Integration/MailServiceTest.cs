@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using Fanex.MailDelivery.Admin.Messaging.ManageMail;
-using Fanex.MailDelivery.Admin.Services.Mail;
+﻿using Fanex.MailDelivery.Admin.Messaging.ManageMail;
+using Fanex.MailDelivery.Admin.Services;
 using Fanex.MailDelivery.Core.Models;
 using Fanex.MailStation.Admin.Service.Handlers;
 using NUnit.Framework;
+using System;
+using System.Collections.Generic;
+using System.IO;
 
 namespace Fanex.MailDelivery.Admin.UserTest
 {
@@ -27,7 +27,7 @@ namespace Fanex.MailDelivery.Admin.UserTest
 
             GetMailListResponse mails;
 
-            var mailService = new MailService();
+            var mailService = new MailAdminService();
 
             mails = mailService.GetMailList(getMailListRequest);
         }
@@ -41,7 +41,7 @@ namespace Fanex.MailDelivery.Admin.UserTest
 
             GetMailByIdResponse mails;
 
-            IMailService mailService = new MailService();
+            var mailService = new MailAdminService();
             mails = mailService.GetMailById(getMailByIdRequest);
         }
 

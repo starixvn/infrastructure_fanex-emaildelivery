@@ -1,11 +1,8 @@
-﻿using System.Configuration;
-using Fanex.MailDelivery.Core;
+﻿using Fanex.MailDelivery.Core;
+using System.Configuration;
 
 namespace Fanex.MailDelivery.Admin.Configurations
 {
-    /// <summary>
-    ///     Mail Admin Section.
-    /// </summary>
     public class MailAdminSection : ConfigurationSection
     {
         [ConfigurationProperty("rabbitMQConnectionString", IsRequired = true)]
