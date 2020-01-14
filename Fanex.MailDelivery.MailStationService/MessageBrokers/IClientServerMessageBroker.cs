@@ -1,0 +1,19 @@
+﻿using System;
+
+namespace Fanex.MailDelivery.MailStationService.MessageBrokers
+{
+    public interface IClientServerMessageBroker : IDisposable
+    {
+        void Start();
+
+        void RespondAddMailTaskForRunningJob();
+
+        void RespondGetMailTaskForById();
+
+        void SubscribeClientNotificationMessage();
+
+        void SubscribeJobResult();
+
+        void SubscribeMail();
+    }
+}

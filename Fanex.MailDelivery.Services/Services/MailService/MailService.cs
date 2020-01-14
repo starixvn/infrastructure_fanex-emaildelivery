@@ -10,7 +10,6 @@ using Fanex.MailDelivery.Services.Criteria.Criteria;
 using Fanex.MailDelivery.Services.Criteria.Job;
 using Fanex.MailDelivery.Services.Repositories;
 using Fanex.MailDelivery.Services.Services.Logging;
-using Fanex.NAP.Framework.Command;
 using System;
 using System.Threading;
 
