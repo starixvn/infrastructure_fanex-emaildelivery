@@ -187,35 +187,35 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <Content Include="Fanex.MailDelivery.ClientWinService.LOCAL1.exe.config">
+    <Content Include="Configurations\Fanex.MailDelivery.MailStationService.LOCAL1.exe.config">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Fanex.MailDelivery.ClientWinService.MASTER.exe.config">
+    <Content Include="Configurations\Fanex.MailDelivery.MailStationService.MASTER.exe.config">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Fanex.MailDelivery.ClientWinService.PRO.exe.config">
+    <Content Include="Configurations\Fanex.MailDelivery.MailStationService.PRO.exe.config">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Fanex.MailDelivery.ClientWinService.SIT.exe.config">
+    <Content Include="Configurations\Fanex.MailDelivery.MailStationService.SIT.exe.config">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Fanex.MailDelivery.ClientWinService.UAT.exe.config">
+    <Content Include="Configurations\Fanex.MailDelivery.MailStationService.UAT.exe.config">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Fanex.MailDelivery.ClientWinService.LOCAL.exe.config">
+    <Content Include="Configurations\Fanex.MailDelivery.MailStationService.LOCAL.exe.config">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Fanex.MailDelivery.ClientWinService.MNL.exe.config">
+    <Content Include="Configurations\Fanex.MailDelivery.MailStationService.MNL.exe.config">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Fanex.MailDelivery.ClientWinService.LOCAL111-112.exe.config">
+    <Content Include="Configurations\Fanex.MailDelivery.MailStationService.LOCAL111-112.exe.config">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

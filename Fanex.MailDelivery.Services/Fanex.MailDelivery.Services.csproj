@@ -159,18 +159,12 @@
     <Compile Include="Models\MailTaskDetailModel.cs" />
     <Compile Include="Models\ResultModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repositories\Admin\AdminRepository.cs">
-      <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
-    </Compile>
     <Compile Include="Repositories\Client\ClientRepository.cs" />
     <Compile Include="Repositories\Client\IClientRepository.cs" />
-    <Compile Include="Repositories\Admin\IAdminRepository.cs" />
     <Compile Include="Repositories\IMailRepository.cs" />
     <Compile Include="Repositories\MailRepository.cs" />
     <Compile Include="Services\Client\ClientDataService.cs" />
-    <Compile Include="Services\Admin\AdminDataService.cs" />
     <Compile Include="Services\Client\IClientDataService.cs" />
-    <Compile Include="Services\Admin\IAdminDataService.cs" />
     <Compile Include="Services\Logging\LogService.cs" />
     <Compile Include="Services\MailService\IMailService.cs" />
     <Compile Include="Services\MailService\MailService.cs" />
