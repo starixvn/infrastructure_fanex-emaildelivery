@@ -1,40 +1,21 @@
-﻿using Fanex.MailDelivery.Core;
+﻿using Fanex.MailDelivery.Client.Logging;
+using Fanex.MailDelivery.Core;
+using Fanex.MailDelivery.Core.Messaging.Job;
 using Fanex.MailDelivery.Core.Models;
+using Quartz;
+using System;
 
 namespace Fanex.MailDelivery.Client.Jobs
 {
-    using Core.Messaging.Job;
-    using Fanex.MailDelivery.Client.Handlers;
-    using Quartz;
-    using System;
-    using System.Diagnostics.CodeAnalysis;
-
-    /// <summary>
-    /// JobRequest Base abstract.
-    /// </summary>
     public abstract class JobBase : IJob
     {
-        /// <summary>
-        /// Called by the <see cref="T:Quartz.IScheduler" /> when a <see cref="T:Quartz.ITrigger" />
-        /// fires that is associated with the <see cref="T:Quartz.IJob" />.
-        /// </summary>
-        /// <param name="context">The execution context.</param>
-        /// <remarks>
-        /// The implementation may wish to set a  result object on the
-        /// JobExecutionContext before this method exits.  The result itself
-        /// is meaningless to Quartz, but may be informative to
-        /// <see cref="T:Quartz.IJobListener" />s or
-        /// <see cref="T:Quartz.ITriggerListener" />s that are watching the job's
-        /// execution.
-        /// </remarks>
-        [SuppressMessage("StyleCop.CSharp.StylecopPlus.Rules", "SP2101:MethodMustNotContainMoreLinesThan", Justification = "Reviewed. Suppression is OK here.")]
         public void Execute(IJobExecutionContext context)
         {
             try
             {
                 Schedule schedule = context.MergedJobDataMap[MailDeliveryConstants.ScheduleJobDataKey] as Schedule;
 
-                if (schedule != null && schedule.Active == true)
+                if (schedule != null && schedule.Active)
                 {
                     int taskId = schedule.TaskId;
 
@@ -53,6 +34,7 @@ namespace Fanex.MailDelivery.Client.Jobs
                     else
                     {
                         var mailtask = MailClientHandler.RequestMailTaskById(new GetMailTaskByIdRequest() { TaskId = schedule.TaskId });
+
                         if (mailtask != null && mailtask.Status == (int)JobStatus.Abort)
                         {
                             // If the job is aborted, then shut down.
@@ -102,7 +84,7 @@ namespace Fanex.MailDelivery.Client.Jobs
             }
             catch (Exception ex)
             {
-                BaseHandler.LogError(ex);
+                LogService.LogError(ex);
             }
         }
 

@@ -57,6 +57,10 @@
       <HintPath>..\packages\Fanex.Logging.1.0.4\lib\net40\Fanex.Logging.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Fanex.Logging.Extensions, Version=1.0.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Fanex.Logging.Extensions.1.0.6\lib\net461\Fanex.Logging.Extensions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.Diagnostics.Tracing.EventSource, Version=1.1.28.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Diagnostics.Tracing.EventSource.Redist.1.1.28\lib\net46\Microsoft.Diagnostics.Tracing.EventSource.dll</HintPath>
       <Private>True</Private>
@@ -124,13 +128,11 @@
     <Compile Include="Configurations\MailClientSection.cs" />
     <Compile Include="Configurations\ScheduleElement.cs" />
     <Compile Include="Configurations\ScheduleElementCollection.cs" />
-    <Compile Include="Handlers\BaseHandler.cs" />
-    <Compile Include="Logging\MailClientLogger.cs" />
     <Compile Include="Jobs\ClientNotificationJob.cs" />
     <Compile Include="Handlers\JobHandler.cs" />
     <Compile Include="Handlers\MailClientMessageBroker.cs" />
-    <Compile Include="Handlers\IJobHandler.cs" />
-    <Compile Include="Handlers\IMailClientMessageBroker.cs" />
+    <Compile Include="Logging\LogService.cs" />
+    <Compile Include="Logging\RabbitMQLogProvider.cs" />
     <Compile Include="MailClientHandler.cs" />
     <Compile Include="Jobs\JobBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

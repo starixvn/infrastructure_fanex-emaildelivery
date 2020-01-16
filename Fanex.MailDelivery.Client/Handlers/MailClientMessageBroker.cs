@@ -11,37 +11,50 @@ using System.Net;
 
 namespace Fanex.MailDelivery.Client.Handlers
 {
+    public interface IMailClientMessageBroker
+    {
+        void Start(IJobHandler jobHandler);
+
+        void Stop();
+
+        void Publish(Mail mail);
+
+        IList<Schedule> GetSchedules();
+
+        void PublishClientNotifyMessage();
+
+        void SubscribeScheduleChange();
+
+        void Publish(JobMessage jobStatus);
+
+        JobMessage RequestAddMailTaskForRunningJob(JobMessage jobResult);
+
+        MailTaskModel RequestMailTaskById(GetMailTaskByIdRequest taskId);
+
+        void SubscribeRetryJob();
+    }
+
     public class MailClientMessageBroker : IMailClientMessageBroker
     {
-        private string _updateScheduleSubscriptionId = string.Format(MailDeliveryConstants.UpdateScheduleRoutingKeyFormat, AppSettings.MailCientConfig.SiteId);
-        private string _retryJobSubscriptionId = string.Format(MailDeliveryConstants.RetryJobRoutingKeyFormat, AppSettings.MailCientConfig.SiteId);
-        private string _runNowJobSubscriptionId = string.Format(MailDeliveryConstants.RunNowJobRoutingKeyFormat, AppSettings.MailCientConfig.SiteId);
-        private IBus _bus;
-        private IJobHandler _jobHandler;
+        private readonly string updateScheduleSubscriptionId = string.Format(MailDeliveryConstants.UpdateScheduleRoutingKeyFormat, AppSettings.MailCientConfig.SiteId);
+        private readonly string retryJobSubscriptionId = string.Format(MailDeliveryConstants.RetryJobRoutingKeyFormat, AppSettings.MailCientConfig.SiteId);
+        private readonly string runNowJobSubscriptionId = string.Format(MailDeliveryConstants.RunNowJobRoutingKeyFormat, AppSettings.MailCientConfig.SiteId);
+        private IBus bus;
+        private IJobHandler jobHandler;
 
-        /// <summary>
-        /// Starts the specified job handler.
-        /// </summary>
-        /// <param name="jobHandler">The job handler.</param>
         public void Start(IJobHandler jobHandler)
         {
-            _jobHandler = jobHandler;
-            _bus = RabbitHutch.CreateBus(
-                AppSettings.MailCientConfig.RabbitMQConnectionString,
-                serviceRegister =>
-                {
-                    //serviceRegister.Register<IEasyNetQLogger>(_ => new MailClientLogger());
-                });
+            this.jobHandler = jobHandler;
+            bus = RabbitHutch.CreateBus(AppSettings.MailCientConfig.RabbitMQConnectionString);
 
             SubscribeScheduleChange();
-
             SubscribeRunNowJob();
             SubscribeRetryJob();
         }
 
         public void Stop()
         {
-            _bus.Dispose();
+            bus.Dispose();
         }
 
         public void Publish(Mail mail)
@@ -53,7 +66,7 @@ namespace Fanex.MailDelivery.Client.Handlers
 
             mail.SiteId = AppSettings.MailCientConfig.SiteId;
 
-            _bus.Publish(mail, MailDeliveryConstants.SendMailRoutingKey);
+            bus.Publish(mail, MailDeliveryConstants.SendMailRoutingKey);
         }
 
         public IList<Schedule> GetSchedules()
@@ -67,7 +80,7 @@ namespace Fanex.MailDelivery.Client.Handlers
                 request.MailIds.Add(scheduleConfig.Id);
             }
 
-            GetScheduleListResponse response = _bus.Request<GetScheduleListRequest, GetScheduleListResponse>(request);
+            GetScheduleListResponse response = bus.Request<GetScheduleListRequest, GetScheduleListResponse>(request);
             IList<Schedule> schedules = new List<Schedule>();
             response.Schedules.ToList().ForEach(n => schedules.Add(n));
 
@@ -85,7 +98,7 @@ namespace Fanex.MailDelivery.Client.Handlers
 
             mailIds = mailIds.Trim(',');
 
-            _bus.Publish(new UpdateActiveTimeRequest() { MailIds = mailIds }, MailDeliveryConstants.ClientNotificationTopic);
+            bus.Publish(new UpdateActiveTimeRequest() { MailIds = mailIds }, MailDeliveryConstants.ClientNotificationTopic);
         }
 
         /// <summary>
@@ -94,12 +107,12 @@ namespace Fanex.MailDelivery.Client.Handlers
         /// </summary>
         public JobMessage RequestAddMailTaskForRunningJob(JobMessage jobResult)
         {
-            return _bus.Request<JobMessage, JobMessage>(jobResult);
+            return bus.Request<JobMessage, JobMessage>(jobResult);
         }
 
         public MailTaskModel RequestMailTaskById(GetMailTaskByIdRequest taskId)
         {
-            return _bus.Request<GetMailTaskByIdRequest, MailTaskModel>(taskId);
+            return bus.Request<GetMailTaskByIdRequest, MailTaskModel>(taskId);
         }
 
         public void Publish(JobMessage jobStatus)
@@ -109,40 +122,40 @@ namespace Fanex.MailDelivery.Client.Handlers
                 jobStatus.Mail.ApplicationSendMailId = AppSettings.MailCientConfig.ApplicationSendMailId;
             }
 
-            _bus.Publish(jobStatus, MailDeliveryConstants.JobResultRoutingKey);
+            bus.Publish(jobStatus, MailDeliveryConstants.JobResultRoutingKey);
         }
 
         public void SubscribeScheduleChange()
         {
-            _bus.Subscribe<Schedule>(
-                GetSubscriptionIdKey(_updateScheduleSubscriptionId),
+            bus.Subscribe<Schedule>(
+                GetSubscriptionIdKey(updateScheduleSubscriptionId),
                     schedule =>
                     {
-                        _jobHandler.UpdateSchedule(schedule);
+                        jobHandler.UpdateSchedule(schedule);
                     },
-                    config => config.WithTopic(_updateScheduleSubscriptionId));
+                    config => config.WithTopic(updateScheduleSubscriptionId));
         }
 
         public void SubscribeRunNowJob()
         {
-            _bus.Subscribe<Schedule>(
-                GetSubscriptionIdKey(_runNowJobSubscriptionId),
+            bus.Subscribe<Schedule>(
+                GetSubscriptionIdKey(runNowJobSubscriptionId),
                     request =>
                     {
-                        _jobHandler.RetryAllProcess(request);
+                        jobHandler.RetryAllProcess(request);
                     },
-                    config => config.WithTopic(_runNowJobSubscriptionId));
+                    config => config.WithTopic(runNowJobSubscriptionId));
         }
 
         public void SubscribeRetryJob()
         {
-            _bus.Subscribe<Schedule>(
-                GetSubscriptionIdKey(_retryJobSubscriptionId),
+            bus.Subscribe<Schedule>(
+                GetSubscriptionIdKey(retryJobSubscriptionId),
                     schedule =>
                     {
-                        _jobHandler.RetryAllProcess(schedule);
+                        jobHandler.RetryAllProcess(schedule);
                     },
-                    config => config.WithTopic(_retryJobSubscriptionId));
+                    config => config.WithTopic(retryJobSubscriptionId));
         }
 
         private string GetSubscriptionIdKey(string topic)

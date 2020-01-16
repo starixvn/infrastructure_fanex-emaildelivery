@@ -1,26 +1,39 @@
-﻿using System;
-using System.Collections.Generic;
-using Fanex.MailDelivery.Client.Configurations;
+﻿using Fanex.MailDelivery.Client.Configurations;
 using Fanex.MailDelivery.Client.Jobs;
+using Fanex.MailDelivery.Client.Logging;
 using Fanex.MailDelivery.Core;
 using Fanex.MailDelivery.Core.Models;
 using Quartz;
 using Quartz.Impl;
+using System;
+using System.Collections.Generic;
 
 namespace Fanex.MailDelivery.Client.Handlers
 {
-    /// <summary>
-    /// Handling job executing.
-    /// </summary>
-    public class JobHandler : BaseHandler, IJobHandler
+    public interface IJobHandler
     {
-        private IScheduler _scheduler;
+        void Start();
+
+        void Stop();
+
+        void StartJobs(IList<Schedule> schedules);
+
+        void UpdateSchedule(Schedule schedule);
+
+        void RetryJob(Schedule schedule);
+
+        void RetryAllProcess(Schedule schedule);
+    }
+
+    public class JobHandler : IJobHandler
+    {
+        private IScheduler scheduler;
 
         public void Start()
         {
             ISchedulerFactory schedFact = new StdSchedulerFactory();
-            _scheduler = schedFact.GetScheduler();
-            _scheduler.Start();
+            scheduler = schedFact.GetScheduler();
+            scheduler.Start();
 
             StartUpdateActiveTimeJob();
 
@@ -32,9 +45,9 @@ namespace Fanex.MailDelivery.Client.Handlers
 
         public void Stop()
         {
-            if (_scheduler != null)
+            if (scheduler != null)
             {
-                _scheduler.Shutdown();
+                scheduler.Shutdown();
             }
         }
 
@@ -48,16 +61,16 @@ namespace Fanex.MailDelivery.Client.Handlers
                     ITrigger trigger = GetTrigger(schedule);
 
                     // Unschedule all redundant job.
-                    _scheduler.UnscheduleJob(trigger.Key);
+                    scheduler.UnscheduleJob(trigger.Key);
 
                     // Tell quartz to schedule the job using our trigger.
-                    _scheduler.ScheduleJob(job, trigger);
+                    scheduler.ScheduleJob(job, trigger);
 
-                    LogInfo(string.Format("Cron string: {0}", schedule.RepeatExpression));
+                    LogService.LogInfo(string.Format("Cron string: {0}", schedule.RepeatExpression));
 
                     if (schedule.SiteId != AppSettings.MailCientConfig.SiteId)
                     {
-                        LogInfo(string.Format("Current site id is {0}, but schedule site id is {1}", AppSettings.MailCientConfig.SiteId, schedule.SiteId));
+                        LogService.LogInfo(string.Format("Current site id is {0}, but schedule site id is {1}", AppSettings.MailCientConfig.SiteId, schedule.SiteId));
                     }
                 }
             }
@@ -68,16 +81,16 @@ namespace Fanex.MailDelivery.Client.Handlers
             IJobDetail job = GetRetryJob(schedule);
             ITrigger trigger = GetRetryAllProcessTrigger(schedule);
 
-            _scheduler.ScheduleJob(job, trigger);
+            scheduler.ScheduleJob(job, trigger);
         }
 
         public void RetryJob(Schedule schedule)
         {
             IJobDetail job = GetRetryJob(schedule);
             ITrigger trigger = GetRetryTrigger(schedule);
-            
+
             // Tell quartz to schedule the job using our trigger
-            _scheduler.ScheduleJob(job, trigger);
+            scheduler.ScheduleJob(job, trigger);
         }
 
         public void AbortJob(Schedule schedule)
@@ -85,7 +98,7 @@ namespace Fanex.MailDelivery.Client.Handlers
             IJobDetail job = GetRetryJob(schedule);
 
             // Tell quartz to schedule the job using our trigger
-            _scheduler.Interrupt(job.Key);
+            scheduler.Interrupt(job.Key);
         }
 
         public void UpdateSchedule(Schedule schedule)
@@ -96,7 +109,7 @@ namespace Fanex.MailDelivery.Client.Handlers
             if (AppSettings.HasScheduleId(schedule.Id))
             {
                 var triggerKey = new TriggerKey(schedule.Id.ToString(), MailDeliveryConstants.MailCentralizedTriggerGroup);
-                var oldTrigger = _scheduler.GetTrigger(triggerKey);
+                var oldTrigger = scheduler.GetTrigger(triggerKey);
 
                 if (oldTrigger != null)
                 {
@@ -104,11 +117,11 @@ namespace Fanex.MailDelivery.Client.Handlers
                     if (schedule.Active && !schedule.IsScheduleEnd())
                     {
                         ITrigger newTrigger = GetTrigger(schedule);
-                        _scheduler.RescheduleJob(triggerKey, newTrigger);
+                        scheduler.RescheduleJob(triggerKey, newTrigger);
                     }
                     else
                     {
-                        _scheduler.UnscheduleJob(triggerKey);
+                        scheduler.UnscheduleJob(triggerKey);
                     }
                 }
                 else
@@ -118,7 +131,7 @@ namespace Fanex.MailDelivery.Client.Handlers
                         IJobDetail job = GetJobDetail(schedule);
                         ITrigger trigger = GetTrigger(schedule);
                         //// Tell quartz to schedule the job using our trigger
-                        _scheduler.ScheduleJob(job, trigger);
+                        scheduler.ScheduleJob(job, trigger);
                     }
                 }
             }
@@ -137,8 +150,8 @@ namespace Fanex.MailDelivery.Client.Handlers
                 .ForJob(MailDeliveryConstants.ClientNotificationJobName)
                 .Build();
 
-            _scheduler.DeleteJob(job.Key);
-            _scheduler.ScheduleJob(job, trigger);
+            scheduler.DeleteJob(job.Key);
+            scheduler.ScheduleJob(job, trigger);
         }
 
         private IJobDetail GetJobDetail(Schedule schedule)
