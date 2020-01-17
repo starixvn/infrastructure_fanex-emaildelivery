@@ -3,61 +3,64 @@ using Fanex.MailDelivery.Core.Messaging.Job;
 using Fanex.MailDelivery.Core.Models;
 using Fanex.MailDelivery.Core.Models.Report;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Fanex.MailDelivery.Client
 {
     public static class MailClientHandler
     {
-        private static IJobHandler _jobHandler;
-        private static IMailClientMessageBroker _messageBroker;
+        private static IJobHandler jobHandler;
+        private static IMailClientMessageBroker messageBroker;
 
         public static void Start(IJobHandler jobHandler = null, IMailClientMessageBroker messageBroker = null)
         {
-            _jobHandler = jobHandler ?? new JobHandler();
-            _messageBroker = messageBroker ?? new MailClientMessageBroker();
-            _messageBroker.Start(_jobHandler);
-            _jobHandler.Start();
+            MailClientHandler.jobHandler = jobHandler ?? new JobHandler();
+            MailClientHandler.messageBroker = messageBroker ?? new MailClientMessageBroker();
+
+            MailClientHandler.messageBroker.Start(MailClientHandler.jobHandler);
+            MailClientHandler.jobHandler.Start();
         }
 
-        public static void Stop()
+        public static async Task Stop()
         {
-            _messageBroker.Stop();
-            _jobHandler.Stop();
+            messageBroker.Stop();
+
+            await jobHandler.Stop();
         }
 
-        public static void SendFunctionMail(Mail mail)
+        public static async Task SendFunctionMailAsync(Mail mail)
         {
-            _messageBroker.Publish(mail);
+            await messageBroker.PublishMailAsync(mail);
         }
 
-        public static IList<Schedule> GetSchedules()
+        public static async Task<IList<Schedule>> GetSchedulesAsync()
         {
-            return _messageBroker.GetSchedules();
+            return await messageBroker.GetSchedulesAsync();
         }
 
-        public static void PublishClientNotifyMessage()
+        public static async Task PublishClientNotifyMessageAsync()
         {
-            _messageBroker.PublishClientNotifyMessage();
+            await messageBroker.PublishClientNotifyMessageAsync();
         }
 
-        public static JobMessage RequestAddMailTaskForRunningJob(JobMessage jobResult)
+        public static async Task<JobMessage> RequestAddMailTaskForRunningJobAsync(JobMessage jobResult)
         {
-            return _messageBroker.RequestAddMailTaskForRunningJob(jobResult);
+            return await messageBroker.RequestAddMailTaskForRunningJobAsync(jobResult);
         }
 
-        internal static MailTaskModel RequestMailTaskById(GetMailTaskByIdRequest taskID)
+        internal static async Task<MailTaskModel> RequestMailTaskByIdAsync(GetMailTaskByIdRequest taskID)
         {
-            return _messageBroker.RequestMailTaskById(taskID);
+            return await messageBroker.RequestMailTaskByIdAsync(taskID);
         }
 
-        public static void ReportJob(JobMessage jobResult)
+        public static async Task ReportJobAsync(JobMessage jobResult)
         {
-            _messageBroker.Publish(jobResult);
+            await messageBroker.PublishJobMessageAsync(jobResult);
         }
 
-        public static void RetryJob(Schedule schedule)
+        public static async Task RetryJob(Schedule schedule)
         {
-            _jobHandler.RetryJob(schedule);
+            await jobHandler.RetryJob(schedule);
         }
     }
 }

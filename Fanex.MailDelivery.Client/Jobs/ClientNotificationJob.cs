@@ -1,22 +1,13 @@
-﻿// -----------------------------------------------------------------------
-// <copyright file="ClientNotificationJob.cs" company="Microsoft">
-// TODO: Update copyright text.
-// </copyright>
-// -----------------------------------------------------------------------
+﻿using Quartz;
+using System.Threading.Tasks;
 
 namespace Fanex.MailDelivery.Client.Jobs
 {
-    using Fanex.MailDelivery.Client.Handlers;
-    using Quartz;
-
-    /// <summary>
-    /// TODO: Update summary.
-    /// </summary>
     public class ClientNotificationJob : IJob
     {
-        public void Execute(IJobExecutionContext context)
+        public async Task Execute(IJobExecutionContext context)
         {
-            MailClientHandler.PublishClientNotifyMessage();
+            await MailClientHandler.PublishClientNotifyMessageAsync();
         }
     }
 }

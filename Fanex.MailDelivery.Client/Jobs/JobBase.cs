@@ -4,12 +4,13 @@ using Fanex.MailDelivery.Core.Messaging.Job;
 using Fanex.MailDelivery.Core.Models;
 using Quartz;
 using System;
+using System.Threading.Tasks;
 
 namespace Fanex.MailDelivery.Client.Jobs
 {
     public abstract class JobBase : IJob
     {
-        public void Execute(IJobExecutionContext context)
+        public async Task Execute(IJobExecutionContext context)
         {
             try
             {
@@ -22,18 +23,21 @@ namespace Fanex.MailDelivery.Client.Jobs
                     JobMessage jobResult = new JobMessage();
                     jobResult.JobStatus = JobStatus.Running;
                     jobResult.ScheduledTime = context.ScheduledFireTimeUtc.GetValueOrDefault().DateTime.ToLocalTime();
-                    jobResult.RunningTime = context.FireTimeUtc.GetValueOrDefault().DateTime.ToLocalTime();
+                    jobResult.RunningTime = context.FireTimeUtc.DateTime.ToLocalTime();
                     jobResult.Schedule = schedule.Clone();
 
                     if (schedule.TaskId == 0)
                     {
-                        jobResult = MailClientHandler.RequestAddMailTaskForRunningJob(jobResult);
+                        jobResult = await MailClientHandler.RequestAddMailTaskForRunningJobAsync(jobResult);
 
                         taskId = jobResult.Schedule.TaskId;
                     }
                     else
                     {
-                        var mailtask = MailClientHandler.RequestMailTaskById(new GetMailTaskByIdRequest() { TaskId = schedule.TaskId });
+                        var mailtask = await MailClientHandler.RequestMailTaskByIdAsync(new GetMailTaskByIdRequest()
+                        {
+                            TaskId = schedule.TaskId
+                        });
 
                         if (mailtask != null && mailtask.Status == (int)JobStatus.Abort)
                         {
@@ -42,14 +46,19 @@ namespace Fanex.MailDelivery.Client.Jobs
                         }
                     }
 
-                    MailClientHandler.ReportJob(jobResult);
+                    await MailClientHandler.ReportJobAsync(jobResult);
 
                     try
                     {
-                        jobResult = Run(schedule, context);
+                        var mailJobResult = Run(schedule, context);
 
-                        if (jobResult != null && jobResult.Mail != null)
+                        if (mailJobResult == null || mailJobResult.Mail == null)
                         {
+                            throw new InvalidOperationException($"Mail information cannot be null");
+                        }
+                        else
+                        {
+                            jobResult = mailJobResult;
                             jobResult.Mail.MailingListId = schedule.Id;
                         }
                     }
@@ -69,12 +78,12 @@ namespace Fanex.MailDelivery.Client.Jobs
 
                     if (jobResult.JobStatus != JobStatus.Success && jobResult.JobStatus != JobStatus.SuccessWithoutSendmail)
                     {
-                        RetryJob(jobResult.Schedule);
+                        await RetryJob(jobResult.Schedule);
 
                         jobResult.JobStatus = jobResult.Schedule.IsRunning() ? JobStatus.Running : jobResult.JobStatus;
                     }
 
-                    MailClientHandler.ReportJob(jobResult);
+                    await MailClientHandler.ReportJobAsync(jobResult);
 
                     if (jobResult.JobStatus != JobStatus.Running)
                     {
@@ -90,13 +99,13 @@ namespace Fanex.MailDelivery.Client.Jobs
 
         protected abstract JobMessage Run(Schedule schedule, IJobExecutionContext jobContext);
 
-        private void RetryJob(Schedule schedule)
+        private async Task RetryJob(Schedule schedule)
         {
             schedule.CurrentRetryTimes++;
 
             if (schedule.IsRunning())
             {
-                MailClientHandler.RetryJob(schedule);
+                await MailClientHandler.RetryJob(schedule);
             }
         }
     }

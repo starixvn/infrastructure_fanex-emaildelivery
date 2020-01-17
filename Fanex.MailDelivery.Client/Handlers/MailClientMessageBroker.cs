@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 
 namespace Fanex.MailDelivery.Client.Handlers
 {
@@ -17,19 +18,19 @@ namespace Fanex.MailDelivery.Client.Handlers
 
         void Stop();
 
-        void Publish(Mail mail);
+        Task PublishMailAsync(Mail mail);
 
-        IList<Schedule> GetSchedules();
+        Task<IList<Schedule>> GetSchedulesAsync();
 
-        void PublishClientNotifyMessage();
+        Task PublishClientNotifyMessageAsync();
 
         void SubscribeScheduleChange();
 
-        void Publish(JobMessage jobStatus);
+        Task PublishJobMessageAsync(JobMessage jobMessage);
 
-        JobMessage RequestAddMailTaskForRunningJob(JobMessage jobResult);
+        Task<JobMessage> RequestAddMailTaskForRunningJobAsync(JobMessage jobMessage);
 
-        MailTaskModel RequestMailTaskById(GetMailTaskByIdRequest taskId);
+        Task<MailTaskModel> RequestMailTaskByIdAsync(GetMailTaskByIdRequest request);
 
         void SubscribeRetryJob();
     }
@@ -57,7 +58,8 @@ namespace Fanex.MailDelivery.Client.Handlers
             bus.Dispose();
         }
 
-        public void Publish(Mail mail)
+        #region PublishAsync
+        public async Task PublishMailAsync(Mail mail)
         {
             if (mail.ApplicationSendMailId == 0)
             {
@@ -66,97 +68,81 @@ namespace Fanex.MailDelivery.Client.Handlers
 
             mail.SiteId = AppSettings.MailCientConfig.SiteId;
 
-            bus.Publish(mail, MailDeliveryConstants.SendMailRoutingKey);
+            await bus.PublishAsync(mail, MailDeliveryConstants.SendMailRoutingKey);
         }
 
-        public IList<Schedule> GetSchedules()
+        public async Task PublishClientNotifyMessageAsync()
         {
-            ScheduleElementCollection scheduleEles = AppSettings.MailCientConfig.Schedules;
+            ScheduleElementCollection schedules = AppSettings.MailCientConfig.Schedules;
+            string mailIds = string.Join(",", schedules.OfType<ScheduleElement>().Select(x => x.Id));
 
-            GetScheduleListRequest request = new GetScheduleListRequest();
+            await bus.PublishAsync(new UpdateActiveTimeRequest() { MailIds = mailIds }, MailDeliveryConstants.ClientNotificationTopic);
+        }
 
-            foreach (ScheduleElement scheduleConfig in scheduleEles)
+        public async Task PublishJobMessageAsync(JobMessage jobMessage)
+        {
+            if (jobMessage.Mail != null && jobMessage.Mail.ApplicationSendMailId == 0)
+            {
+                jobMessage.Mail.ApplicationSendMailId = AppSettings.MailCientConfig.ApplicationSendMailId;
+            }
+
+            await bus.PublishAsync(jobMessage, MailDeliveryConstants.JobResultRoutingKey);
+        }
+
+        #endregion
+
+        #region RequestAsync
+        public async Task<IList<Schedule>> GetSchedulesAsync()
+        {
+            ScheduleElementCollection schedules = AppSettings.MailCientConfig.Schedules;
+            var request = new GetScheduleListRequest();
+
+            foreach (ScheduleElement scheduleConfig in schedules)
             {
                 request.MailIds.Add(scheduleConfig.Id);
             }
 
-            GetScheduleListResponse response = bus.Request<GetScheduleListRequest, GetScheduleListResponse>(request);
-            IList<Schedule> schedules = new List<Schedule>();
-            response.Schedules.ToList().ForEach(n => schedules.Add(n));
+            GetScheduleListResponse response = await bus.RequestAsync<GetScheduleListRequest, GetScheduleListResponse>(request);
 
-            return schedules;
+            return response.Schedules;
         }
 
-        public void PublishClientNotifyMessage()
+        public async Task<JobMessage> RequestAddMailTaskForRunningJobAsync(JobMessage jobMessage)
         {
-            string mailIds = string.Empty;
-            ScheduleElementCollection schedules = AppSettings.MailCientConfig.Schedules;
-            foreach (ScheduleElement schedule in schedules)
-            {
-                mailIds += schedule.Id + ",";
-            }
-
-            mailIds = mailIds.Trim(',');
-
-            bus.Publish(new UpdateActiveTimeRequest() { MailIds = mailIds }, MailDeliveryConstants.ClientNotificationTopic);
+            return await bus.RequestAsync<JobMessage, JobMessage>(jobMessage);
         }
 
-        /// <summary>
-        /// For the first time JobRequest is running, we need to get back the TaskId of the current running JobRequest.
-        /// By insert new record at DB, it get back itself with additional TaskId's value.
-        /// </summary>
-        public JobMessage RequestAddMailTaskForRunningJob(JobMessage jobResult)
+        public async Task<MailTaskModel> RequestMailTaskByIdAsync(GetMailTaskByIdRequest request)
         {
-            return bus.Request<JobMessage, JobMessage>(jobResult);
+            return await bus.RequestAsync<GetMailTaskByIdRequest, MailTaskModel>(request);
         }
+        #endregion
 
-        public MailTaskModel RequestMailTaskById(GetMailTaskByIdRequest taskId)
-        {
-            return bus.Request<GetMailTaskByIdRequest, MailTaskModel>(taskId);
-        }
-
-        public void Publish(JobMessage jobStatus)
-        {
-            if (jobStatus.Mail != null && jobStatus.Mail.ApplicationSendMailId == 0)
-            {
-                jobStatus.Mail.ApplicationSendMailId = AppSettings.MailCientConfig.ApplicationSendMailId;
-            }
-
-            bus.Publish(jobStatus, MailDeliveryConstants.JobResultRoutingKey);
-        }
-
+        #region Subscribe
         public void SubscribeScheduleChange()
         {
-            bus.Subscribe<Schedule>(
+            bus.SubscribeAsync<Schedule>(
                 GetSubscriptionIdKey(updateScheduleSubscriptionId),
-                    schedule =>
-                    {
-                        jobHandler.UpdateSchedule(schedule);
-                    },
-                    config => config.WithTopic(updateScheduleSubscriptionId));
+                schedule => jobHandler.UpdateSchedule(schedule),
+                config => config.WithTopic(updateScheduleSubscriptionId));
         }
 
         public void SubscribeRunNowJob()
         {
-            bus.Subscribe<Schedule>(
+            bus.SubscribeAsync<Schedule>(
                 GetSubscriptionIdKey(runNowJobSubscriptionId),
-                    request =>
-                    {
-                        jobHandler.RetryAllProcess(request);
-                    },
-                    config => config.WithTopic(runNowJobSubscriptionId));
+                request => jobHandler.RetryAllProcess(request),
+                config => config.WithTopic(runNowJobSubscriptionId));
         }
 
         public void SubscribeRetryJob()
         {
-            bus.Subscribe<Schedule>(
+            bus.SubscribeAsync<Schedule>(
                 GetSubscriptionIdKey(retryJobSubscriptionId),
-                    schedule =>
-                    {
-                        jobHandler.RetryAllProcess(schedule);
-                    },
-                    config => config.WithTopic(retryJobSubscriptionId));
+                schedule => jobHandler.RetryAllProcess(schedule),
+                config => config.WithTopic(retryJobSubscriptionId));
         }
+        #endregion
 
         private string GetSubscriptionIdKey(string topic)
         {
