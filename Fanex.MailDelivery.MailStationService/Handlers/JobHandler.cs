@@ -1,18 +1,19 @@
 ﻿using Fanex.MailDelivery.Services.Configurations;
 using Quartz;
 using Quartz.Impl;
+using System.Threading.Tasks;
 
 namespace Fanex.MailDelivery.MailStationService.Handlers
 {
     public class JobHandler
     {
-        private IScheduler _scheduler;
+        private IScheduler scheduler;
 
-        public void Start()
+        public async Task Start()
         {
             ISchedulerFactory schedFact = new StdSchedulerFactory();
-            _scheduler = schedFact.GetScheduler();
-            _scheduler.Start();
+            scheduler = await schedFact.GetScheduler();
+            await scheduler.Start();
 
             IJobDetail job = JobBuilder.Create<CheckClientOnlineStatusJob>()
                     .WithIdentity("CheckClientOnlineStatusJob_CheckIn")
@@ -24,15 +25,16 @@ namespace Fanex.MailDelivery.MailStationService.Handlers
                 .StartNow()
                 .Build();
 
-            _scheduler.DeleteJob(job.Key);
-            _scheduler.ScheduleJob(job, trigger);
+            await scheduler.DeleteJob(job.Key);
+
+            await scheduler.ScheduleJob(job, trigger);
         }
 
-        public void Stop()
+        public async Task Stop()
         {
-            if (_scheduler != null)
+            if (scheduler != null)
             {
-                _scheduler.Shutdown();
+                await scheduler.Shutdown();
             }
         }
     }

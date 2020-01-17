@@ -167,7 +167,6 @@
     <Compile Include="Services\Client\ClientDataService.cs" />
     <Compile Include="Services\Client\IClientDataService.cs" />
     <Compile Include="Services\Logging\LogService.cs" />
-    <Compile Include="Services\MailService\IMailService.cs" />
     <Compile Include="Services\MailService\MailService.cs" />
     <Compile Include="Services\MailService\RetryOnMailRecordService.cs" />
   </ItemGroup>

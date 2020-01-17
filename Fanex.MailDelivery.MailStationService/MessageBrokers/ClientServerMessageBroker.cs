@@ -1,21 +1,38 @@
 ﻿using EasyNetQ;
-using Fanex.MailDelivery.MailStationService.Services;
+using EasyNetQ.Logging;
 using Fanex.MailDelivery.Core;
 using Fanex.MailDelivery.Core.Messaging.Job;
 using Fanex.MailDelivery.Core.Models;
 using Fanex.MailDelivery.Core.Models.Report;
+using Fanex.MailDelivery.MailStationService.Logging;
+using Fanex.MailDelivery.MailStationService.Services;
 using Fanex.MailDelivery.Services.Configurations;
 using Fanex.MailDelivery.Services.Services.Client;
 using Fanex.MailDelivery.Services.Services.MailService;
 using System;
+using System.Threading.Tasks;
 
 namespace Fanex.MailDelivery.MailStationService.MessageBrokers
 {
+    public interface IClientServerMessageBroker : IDisposable
+    {
+        void Start();
+
+        void RespondAddMailTaskForRunningJob();
+
+        void RespondGetMailTaskForById();
+
+        void SubscribeClientNotificationMessage();
+
+        void SubscribeJobResult();
+
+        void SubscribeMail();
+    }
+
     public class ClientServerMessageBroker : IClientServerMessageBroker
     {
-        private IBus _bus;
-
-        private IClientServerService _clientServerService;
+        private IBus bus;
+        private readonly IClientServerService clientServerService;
 
         public ClientServerMessageBroker()
             : this(null)
@@ -24,20 +41,13 @@ namespace Fanex.MailDelivery.MailStationService.MessageBrokers
 
         public ClientServerMessageBroker(IClientServerService adminServerService)
         {
-            _clientServerService = _clientServerService ?? new ClientServerService(new ClientDataService(), new MailService());
+            LogProvider.SetCurrentLogProvider(new RabbitMQLogProvider());
+            clientServerService = clientServerService ?? new ClientServerService(new ClientDataService(), new MailService());
         }
 
         public void Start()
         {
-            //// Standard practice is to create a single IBus instance for the lifetime of your application. Dispose it when your application closes.
-            //// https://github.com/mikehadlow/EasyNetQ/wiki/Connecting-to-RabbitMQ
-            // TODO => Singleton
-            _bus = RabbitHutch.CreateBus(
-                AppSettings.MailServiceSection.RabbitMQConnectionString,
-                serviceRegister =>
-                {
-                    //serviceRegister.Register<IEasyNetQLogger>(_ => new ServerClientLogger());
-                });
+            bus = RabbitHutch.CreateBus(AppSettings.MailServiceSection.RabbitMQConnectionString);
 
             ResponseGetScheduleList();
 
@@ -51,53 +61,58 @@ namespace Fanex.MailDelivery.MailStationService.MessageBrokers
 
         public void SubscribeMail()
         {
-            _bus.Subscribe<Mail>(
+            bus.SubscribeAsync<Mail>(
                 MailDeliveryConstants.SendMailRoutingKey,
                     mail =>
                     {
-                        _clientServerService.SendMail(mail);
+                        clientServerService.SendMail(mail);
+
+                        return Task.CompletedTask;
                     },
                     config => config.WithTopic(MailDeliveryConstants.SendMailRoutingKey));
         }
 
         private void ResponseGetScheduleList()
         {
-            _bus.Respond<GetScheduleListRequest, GetScheduleListResponse>(request => _clientServerService.GetScheduleList(request));
+            bus.RespondAsync<GetScheduleListRequest, GetScheduleListResponse>(request => Task.FromResult(clientServerService.GetScheduleList(request)));
         }
 
         public void SubscribeClientNotificationMessage()
         {
-            _bus.Subscribe<UpdateActiveTimeRequest>(
+            bus.SubscribeAsync<UpdateActiveTimeRequest>(
                 MailDeliveryConstants.ClientNotificationTopic,
                     clientInfoMessage =>
                     {
-                        _clientServerService.UpdateClientActiveTime(clientInfoMessage);
+                        clientServerService.UpdateClientActiveTime(clientInfoMessage);
+
+                        return Task.CompletedTask;
                     },
                     config => config.WithTopic(MailDeliveryConstants.ClientNotificationTopic));
         }
 
         public void RespondAddMailTaskForRunningJob()
         {
-            _bus.Respond<JobMessage, JobMessage>(
+            bus.RespondAsync<JobMessage, JobMessage>(
                 jobMessage =>
                 {
-                    _clientServerService.AddMailTaskForRunningJob(jobMessage);
-                    return jobMessage;
+                    clientServerService.AddMailTaskForRunningJob(jobMessage);
+
+                    return Task.FromResult(jobMessage);
                 });
         }
 
         public void RespondGetMailTaskForById()
         {
-            _bus.Respond<GetMailTaskByIdRequest, MailTaskModel>(request => { return _clientServerService.GetMailTaskById(request); });
+            bus.Respond<GetMailTaskByIdRequest, MailTaskModel>(request => { return clientServerService.GetMailTaskById(request); });
         }
 
         public void SubscribeJobResult()
         {
-            _bus.Subscribe<JobMessage>(
+            bus.Subscribe<JobMessage>(
                 MailDeliveryConstants.JobResultRoutingKey,
                     jobStatus =>
                     {
-                        _clientServerService.UpdateJobStatus(jobStatus);
+                        clientServerService.UpdateJobStatus(jobStatus);
                     },
                     config => config.WithTopic(MailDeliveryConstants.JobResultRoutingKey));
         }
@@ -116,9 +131,9 @@ namespace Fanex.MailDelivery.MailStationService.MessageBrokers
             }
 
             // Free native resources if there are any.
-            if (_bus != null)
+            if (bus != null)
             {
-                _bus.Dispose();
+                bus.Dispose();
             }
         }
     }

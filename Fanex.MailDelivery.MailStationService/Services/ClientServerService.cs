@@ -8,6 +8,21 @@ using System.Collections.Generic;
 
 namespace Fanex.MailDelivery.MailStationService.Services
 {
+    public interface IClientServerService
+    {
+        int SendMail(Mail mail);
+
+        GetScheduleListResponse GetScheduleList(GetScheduleListRequest request);
+
+        void UpdateClientActiveTime(UpdateActiveTimeRequest updateActiveTimeRequest);
+
+        void AddMailTaskForRunningJob(JobMessage jobMessage);
+
+        void UpdateJobStatus(JobMessage jobMessage);
+
+        MailTaskModel GetMailTaskById(GetMailTaskByIdRequest request);
+    }
+
     public class ClientServerService : IClientServerService
     {
         private readonly IClientDataService _clientDataService;

@@ -1,33 +1,30 @@
-﻿using System.Net;
-using Fanex.MailDelivery.Core.Messaging.Job;
+﻿using Fanex.MailDelivery.Core.Messaging.Job;
 using Fanex.MailDelivery.Core.Models;
 using Fanex.MailDelivery.Services.Configurations;
 using Fanex.MailDelivery.Services.Criteria.Criteria;
 using Fanex.MailDelivery.Services.Criteria.Job;
 using Fanex.MailDelivery.Services.Repositories.Client;
+using System.Net;
 
 namespace Fanex.MailDelivery.Services.Services.Client
 {
-    /// <summary>
-    /// Admin Service.
-    /// </summary>
     public class ClientDataService : IClientDataService
     {
-        private readonly IClientRepository _clientRepository;
+        private readonly IClientRepository clientRepository;
 
         public ClientDataService()
         {
-            _clientRepository = _clientRepository ?? new ClientRepository();
+            clientRepository = clientRepository ?? new ClientRepository();
         }
 
         public Schedule GetScheduleByMailId(GetScheduleByMailIdCriteria criteria)
         {
-            return _clientRepository.GetScheduleByMailId(criteria);
+            return clientRepository.GetScheduleByMailId(criteria);
         }
 
         public void UpdateClientActiveTime(UpdateActiveTimeRequest clientInfoMessage)
         {
-            _clientRepository.UpdateClientActiveTime(new UpdateClientActiveTimeCriteria() { MailIds = clientInfoMessage.MailIds });
+            clientRepository.UpdateClientActiveTime(new UpdateClientActiveTimeCriteria() { MailIds = clientInfoMessage.MailIds });
         }
 
         public void UpdateServiceCheckIn()
@@ -40,7 +37,7 @@ namespace Fanex.MailDelivery.Services.Services.Client
                 ServiceName = AppSettings.MailServiceSection.ServiceName
             };
 
-            _clientRepository.UpdateServiceCheckIn(criteria);
+            clientRepository.UpdateServiceCheckIn(criteria);
         }
 
         private string GetLocalIP()

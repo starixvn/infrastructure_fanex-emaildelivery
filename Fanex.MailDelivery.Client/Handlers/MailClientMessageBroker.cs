@@ -1,5 +1,7 @@
 ﻿using EasyNetQ;
+using EasyNetQ.Logging;
 using Fanex.MailDelivery.Client.Configurations;
+using Fanex.MailDelivery.Client.Logging;
 using Fanex.MailDelivery.Core;
 using Fanex.MailDelivery.Core.Messaging.Job;
 using Fanex.MailDelivery.Core.Models;
@@ -45,6 +47,7 @@ namespace Fanex.MailDelivery.Client.Handlers
 
         public void Start(IJobHandler jobHandler)
         {
+            LogProvider.SetCurrentLogProvider(new RabbitMQLogProvider());
             this.jobHandler = jobHandler;
             bus = RabbitHutch.CreateBus(AppSettings.MailCientConfig.RabbitMQConnectionString);
 

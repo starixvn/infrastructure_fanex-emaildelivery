@@ -15,9 +15,17 @@ using System.Threading;
 
 namespace Fanex.MailDelivery.Services.Services.MailService
 {
-    /// <summary>
-    /// Mail Service.
-    /// </summary>
+    public interface IMailService
+    {
+        void UpdateJobStatus(JobMessage jobMessage);
+
+        int SendMail(Mail mail);
+
+        void AddMailTaskForRunningJob(JobMessage jobMessage);
+
+        MailTaskModel GetMailTaskById(GetMailTaskByIdRequest request);
+    }
+  
     public class MailService : IMailService
     {
         private IMailRepository _mailRepository;
