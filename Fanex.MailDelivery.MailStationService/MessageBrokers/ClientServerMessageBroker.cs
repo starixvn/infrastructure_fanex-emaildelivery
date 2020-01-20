@@ -6,7 +6,6 @@ using Fanex.MailDelivery.Core.Models;
 using Fanex.MailDelivery.Core.Models.Report;
 using Fanex.MailDelivery.MailStationService.Logging;
 using Fanex.MailDelivery.MailStationService.Services;
-using Fanex.MailDelivery.Services.Configurations;
 using Fanex.MailDelivery.Services.Services.Client;
 using Fanex.MailDelivery.Services.Services.MailService;
 using System;
@@ -47,18 +46,18 @@ namespace Fanex.MailDelivery.MailStationService.MessageBrokers
 
         public void Start()
         {
-            bus = RabbitHutch.CreateBus(AppSettings.MailServiceSection.RabbitMQConnectionString);
+            bus = RabbitHutch.CreateBus(AppSettings.RabbitMQConnectionString);
 
             ResponseGetScheduleList();
+            RespondGetMailTaskForById();
+            RespondAddMailTaskForRunningJob();
 
             SubscribeMail();
             SubscribeJobResult();
-
-            RespondAddMailTaskForRunningJob();
-            RespondGetMailTaskForById();
             SubscribeClientNotificationMessage();
         }
 
+        #region Subscribe
         public void SubscribeMail()
         {
             bus.SubscribeAsync<Mail>(
@@ -72,11 +71,6 @@ namespace Fanex.MailDelivery.MailStationService.MessageBrokers
                     config => config.WithTopic(MailDeliveryConstants.SendMailRoutingKey));
         }
 
-        private void ResponseGetScheduleList()
-        {
-            bus.RespondAsync<GetScheduleListRequest, GetScheduleListResponse>(request => Task.FromResult(clientServerService.GetScheduleList(request)));
-        }
-
         public void SubscribeClientNotificationMessage()
         {
             bus.SubscribeAsync<UpdateActiveTimeRequest>(
@@ -88,6 +82,26 @@ namespace Fanex.MailDelivery.MailStationService.MessageBrokers
                         return Task.CompletedTask;
                     },
                     config => config.WithTopic(MailDeliveryConstants.ClientNotificationTopic));
+        }
+
+        public void SubscribeJobResult()
+        {
+            bus.SubscribeAsync<JobMessage>(
+                MailDeliveryConstants.JobResultRoutingKey,
+                    jobStatus =>
+                    {
+                        clientServerService.UpdateJobStatus(jobStatus);
+
+                        return Task.CompletedTask;
+                    },
+                    config => config.WithTopic(MailDeliveryConstants.JobResultRoutingKey));
+        }
+        #endregion
+
+        #region Response
+        private void ResponseGetScheduleList()
+        {
+            bus.RespondAsync<GetScheduleListRequest, GetScheduleListResponse>(request => Task.FromResult(clientServerService.GetScheduleList(request)));
         }
 
         public void RespondAddMailTaskForRunningJob()
@@ -105,17 +119,7 @@ namespace Fanex.MailDelivery.MailStationService.MessageBrokers
         {
             bus.Respond<GetMailTaskByIdRequest, MailTaskModel>(request => { return clientServerService.GetMailTaskById(request); });
         }
-
-        public void SubscribeJobResult()
-        {
-            bus.Subscribe<JobMessage>(
-                MailDeliveryConstants.JobResultRoutingKey,
-                    jobStatus =>
-                    {
-                        clientServerService.UpdateJobStatus(jobStatus);
-                    },
-                    config => config.WithTopic(MailDeliveryConstants.JobResultRoutingKey));
-        }
+        #endregion
 
         public void Dispose()
         {
@@ -130,11 +134,7 @@ namespace Fanex.MailDelivery.MailStationService.MessageBrokers
                 // Free managed resources
             }
 
-            // Free native resources if there are any.
-            if (bus != null)
-            {
-                bus.Dispose();
-            }
+            bus?.Dispose();
         }
     }
 }

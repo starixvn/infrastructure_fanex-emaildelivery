@@ -1,5 +1,4 @@
-﻿using Fanex.MailDelivery.Services.Configurations;
-using Quartz;
+﻿using Quartz;
 using Quartz.Impl;
 using System.Threading.Tasks;
 
@@ -21,7 +20,7 @@ namespace Fanex.MailDelivery.MailStationService.Handlers
 
             ITrigger trigger = TriggerBuilder.Create()
                 .WithIdentity("CheckClientOnlineStatusTriggerName_CheckIn")
-                .WithSimpleSchedule(m => m.WithIntervalInSeconds(AppSettings.MailServiceSection.CheckClientOnlineStatusJobInterval).RepeatForever())
+                .WithSimpleSchedule(m => m.WithIntervalInSeconds(10).RepeatForever())
                 .StartNow()
                 .Build();
 

@@ -25,18 +25,18 @@ namespace Fanex.MailDelivery.MailStationService.Services
 
     public class ClientServerService : IClientServerService
     {
-        private readonly IClientDataService _clientDataService;
-        private readonly IMailService _mailService;
+        private readonly IClientDataService clientDataService;
+        private readonly IMailService mailService;
 
         public ClientServerService(IClientDataService clientDataService, IMailService mailService)
         {
-            _clientDataService = clientDataService;
-            _mailService = mailService;
+            this.clientDataService = clientDataService;
+            this.mailService = mailService;
         }
 
         public int SendMail(Mail mail)
         {
-            return _mailService.SendMail(mail);
+            return mailService.SendMail(mail);
         }
 
         public GetScheduleListResponse GetScheduleList(GetScheduleListRequest request)
@@ -45,7 +45,7 @@ namespace Fanex.MailDelivery.MailStationService.Services
 
             foreach (int mail in request.MailIds)
             {
-                Schedule schedule = _clientDataService.GetScheduleByMailId(new GetScheduleByMailIdCriteria
+                Schedule schedule = clientDataService.GetScheduleByMailId(new GetScheduleByMailIdCriteria
                 {
                     MailId = mail
                 });
@@ -58,22 +58,22 @@ namespace Fanex.MailDelivery.MailStationService.Services
 
         public void UpdateClientActiveTime(UpdateActiveTimeRequest updateActiveTimeRequest)
         {
-            _clientDataService.UpdateClientActiveTime(updateActiveTimeRequest);            
+            clientDataService.UpdateClientActiveTime(updateActiveTimeRequest);            
         }
 
         public void AddMailTaskForRunningJob(JobMessage jobMessage)
         {
-            _mailService.AddMailTaskForRunningJob(jobMessage);
+            mailService.AddMailTaskForRunningJob(jobMessage);
         }
 
         public MailTaskModel GetMailTaskById(GetMailTaskByIdRequest request)
         {
-            return _mailService.GetMailTaskById(request);
+            return mailService.GetMailTaskById(request);
         }
 
         public void UpdateJobStatus(JobMessage jobMessage)
         {
-            _mailService.UpdateJobStatus(jobMessage);
+            mailService.UpdateJobStatus(jobMessage);
         }
     }
 }

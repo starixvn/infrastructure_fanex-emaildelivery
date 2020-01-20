@@ -1,24 +1,15 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
-using System.ServiceProcess;
-using System.Threading;
-using Fanex.Data.Configuration;
-using Fanex.MailDelivery.MailStationService.Handlers;
+﻿using Fanex.Data.Configuration;
 using Fanex.MailDelivery.MailStationService.MessageBrokers;
-using Fanex.MailDelivery.Services.Configurations;
 using Fanex.MailDelivery.Services.Services.Logging;
+using System;
+using System.ServiceProcess;
 
 namespace Fanex.MailDelivery.MailStationService
-{   
+{
     partial class MainService : ServiceBase
     {
-        private IClientServerMessageBroker _clientServerMessageBroker;
-        private int counter; 
-        private int maxRetryStartUpService = AppSettings.MailServiceSection.MaxRetryStartUpService;
-        private int maxIntervalStartUpServiceInSecond = AppSettings.MailServiceSection.MaxIntervalStartUpServiceInSecond;
-        private JobHandler _jobHandler;
-
-        private string serviceInfo = "Service {0} {1} at {2}.";
+        private IClientServerMessageBroker messageBroker;
+        private int startCounter = 0;
 
         public MainService()
             : this(null)
@@ -28,58 +19,44 @@ namespace Fanex.MailDelivery.MailStationService
         public MainService(IClientServerMessageBroker messageBroker)
         {
             InitializeComponent();
-            _clientServerMessageBroker = messageBroker ?? new ClientServerMessageBroker();
-            _jobHandler = new JobHandler();
+
+            this.messageBroker = messageBroker ?? new ClientServerMessageBroker();
             DbSettingProviderManager.Current.Start();
         }
 
         protected override void OnStart(string[] args)
         {
-            while (true)
-            {
-                var result = Execute();
-                if (result)
-                {
-                    break;
-                }
-
-                if (counter >= maxRetryStartUpService)
-                {
-                    Environment.Exit(-1);
-                    throw new Exception("The service Fanex.MailStation.Service can't be started, maybe it's related to RabbitMQ or something else.");
-                }
-
-                Thread.Sleep(1000 * maxIntervalStartUpServiceInSecond);
-            }
+            StartService();
         }
 
         protected override void OnStop()
         {
-            _jobHandler.Stop();
-            LogService.LogInfo(string.Format(serviceInfo, this.ServiceName, "stops", DateTime.Now.ToString()));
-            if (_clientServerMessageBroker != null)
-            {
-                _clientServerMessageBroker.Dispose();
-            }
+            messageBroker?.Dispose();
         }
 
-        private bool Execute()
+        private void StartService()
         {
-            var result = false;
-            try
-            {
-                counter++;
-                LogService.LogInfo(string.Format(serviceInfo, ServiceName, "starts", DateTime.Now.ToString()));
-                _clientServerMessageBroker.Start();
-                _jobHandler.Start();
-                result = true;
-            }
-            catch (Exception exception)
-            {
-                LogService.LogError(exception);
-            }
+            startCounter++;
 
-            return result;
+            if (startCounter <= AppSettings.StartLimitTime)
+            {
+                try
+                {
+                    messageBroker.Start();
+
+                    startCounter = 0;
+                }
+                catch (Exception exception)
+                {
+                    LogService.LogError(exception);
+
+                    StartService();
+                }
+            }
+            else
+            {
+                Environment.Exit(-99);
+            }
         }
     }
 }
