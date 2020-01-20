@@ -38,7 +38,7 @@ namespace Fanex.MailDelivery.MailStationService
         {
             startCounter++;
 
-            if (startCounter <= AppSettings.StartLimitTime)
+            if (startCounter <= AppSettings.StartRetryLimit)
             {
                 try
                 {

@@ -1,96 +1,68 @@
-﻿
-using Fanex.MailDelivery.Core.Enumerations;
-using Fanex.MailDelivery.Core.Messaging;
+﻿using Fanex.MailDeliver.Business;
+using Fanex.MailDeliver.Business.Implement;
+using Fanex.MailDeliver.Business.Interface;
+using Fanex.MailDeliver.Core.Infrastructure.Logging;
+using Fanex.MailDeliver.Model;
+using Fanex.MailDelivery.Core.Messaging.Job;
 using Fanex.MailDelivery.Core.Models;
-using ResultMessage = Fanex.MailDelivery.Services.Messaging.ResultMessage;
+using Fanex.MailDelivery.Core.Models.Report;
+using Fanex.MailDelivery.Services.Criteria.Criteria;
+using Fanex.MailDelivery.Services.Criteria.Job;
+using Fanex.MailDelivery.Services.Repositories;
+using Fanex.MailDelivery.Services.Services.Logging;
+using System;
+using System.Threading;
 
-namespace Fanex.MailDelivery.Services
+namespace Fanex.MailDelivery.Services.Services.MailService
 {
-    using System;
-    using System.Collections.Generic;
-    using Fanex.MailDeliver.Business;
-    using Fanex.MailDeliver.Business.Implement;
-    using Fanex.MailDeliver.Business.Interface;
-    using Fanex.MailDeliver.Core.Infrastructure.Logging;
-    using Fanex.MailDeliver.MailClient.API;
-    using Fanex.MailDeliver.Model;
-    using Fanex.MailDelivery.Client.Models;
-    using Fanex.MailDelivery.Criteria;
-    using Fanex.MailDelivery.Criteria.Mail;
-    using Fanex.MailDelivery.Criteria.Recipient;
-    using Fanex.MailDelivery.Repositories;
-    using Fanex.NAP.Framework.Command;
-
-    /// <summary>
-    /// Mail Service.
-    /// </summary>
-    public class MailService : ServiceBase, IMailService
+    public interface IMailService
     {
-        private IMailRepository _mailRepository;
-        private IMailDeliverBusiness _mailDeliverBusiness;
+        void UpdateJobStatus(JobMessage jobMessage);
 
-        public MailService()
+        int SendMail(Mail mail);
+
+        void AddMailTaskForRunningJob(JobMessage jobMessage);
+
+        MailTaskModel GetMailTaskById(GetMailTaskByIdRequest request);
+    }
+
+    public class MailService : IMailService
+    {
+        private readonly IMailRepository mailRepository;
+        private readonly IMailDeliverBusiness mailDeliverBusiness;
+        private readonly RetryOnMailRecordService retryOnMailRecordService;
+
+        public MailService(int sendMailRetryLimit, int clientNotifyTimeOutInSecond)
         {
-            this._mailRepository = this._mailRepository ?? new MailRepository();
-            this._mailDeliverBusiness = new MailDeliverBusiness();
+            this.mailRepository = new MailRepository(clientNotifyTimeOutInSecond);
+            this.mailDeliverBusiness = new MailDeliverBusiness();
+            this.retryOnMailRecordService = new RetryOnMailRecordServiceImp(mailRepository, sendMailRetryLimit);
         }
 
-        /// <summary>
-        /// Gets the schedules.
-        /// </summary>
-        /// <param name="scheduleIds">The schedule ids.</param>
-        /// <returns>Schedule list.</returns>
-        public List<Schedule> GetSchedules(List<int> scheduleIds)
-        {
-            List<Schedule> schedules = new List<Schedule>();
-
-            try
-            {
-                foreach (int scheduleId in scheduleIds)
-                {
-                    schedules.Add(this._mailRepository.GetScheduleByID(new GetScheduleByIdCriteria() { MailId = scheduleId }));
-                }
-            }
-            catch (Exception ex)
-            {
-                LogError(ex, scheduleIds);
-            }
-
-            return schedules;
-        }
-
-        /// <summary>
-        /// Updates the job status.
-        /// Just incase of status is Running, Retry, DataIsNotReady using this function.
-        /// </summary>
-        /// <param name="jobResultMessage">The job result message.</param>
-        /// <returns>
-        /// Command Result.
-        /// </returns>
-        public CommandResult UpdateJobStatus(JobResultMessage jobResultMessage)
+        public void UpdateJobStatus(JobMessage jobMessage)
         {
             try
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                switch (jobResultMessage.JobStatus)
+                switch (jobMessage.JobStatus)
                 {
                     case JobStatus.Running:
-                        this.UpdateRunningJob(jobResultMessage);
+                        this.UpdateRunningJob(jobMessage);
                         break;
                     case JobStatus.DataIsNotReady:
-                        this.UpdateDataNotReadyJob(jobResultMessage);
+                        this.UpdateDataNotReadyJob(jobMessage);
                         break;
                     case JobStatus.Success:
-                        this.UpdateSuccessJob(jobResultMessage);
+                        this.UpdateSuccessJob(jobMessage);
                         break;
                     case JobStatus.SuccessWithoutSendmail:
-                        this.UpdateSuccessJobWithoutSendMail(jobResultMessage);
+                        this.UpdateSuccessJobWithoutSendMail(jobMessage);
                         break;
                     case JobStatus.JobFailed:
-                        this.UpdateFailedJob(jobResultMessage);
+                        this.UpdateFailedJob(jobMessage);
                         break;
                     case JobStatus.Abort:
-                        this.UpdateAbortJob(jobResultMessage);
+                        this.UpdateAbortJob(jobMessage);
                         break;
                     default:
                         break;
@@ -100,29 +72,45 @@ namespace Fanex.MailDelivery.Services
             }
             catch (Exception ex)
             {
-                LogError(ex, jobResultMessage.Schedule);
+                LogService.LogError(ex, jobMessage.Schedule);
             }
-
-            return null;
         }
 
-        public void AddMailTaskForRunningJob(JobResultMessage jobResultMessage)
+        public void AddMailTaskForRunningJob(JobMessage jobMessage)
         {
             try
             {
-                jobResultMessage.Schedule.TaskId = this._mailRepository.AddMailTask(new AddMailTaskCriteria()
+                jobMessage.Schedule.TaskId = this.mailRepository.AddMailTask(new AddMailTaskCriteria()
                 {
-                    MailId = jobResultMessage.Schedule.Id,
-                    SiteId = jobResultMessage.Schedule.SiteId,
-                    ScheduledTime = jobResultMessage.ScheduledTime,
+                    MailId = jobMessage.Schedule.Id,
+                    SiteId = jobMessage.Schedule.SiteId,
+                    ScheduledTime = jobMessage.ScheduledTime,
                     Status = (int)JobStatus.Running,
-                    Attempt = jobResultMessage.Schedule.CurrentRetryTimes
+                    Attempt = jobMessage.Schedule.CurrentRetryTimes
                 });
             }
             catch (Exception ex)
             {
-                LogError(ex, jobResultMessage.Schedule);
+                LogService.LogError(ex, jobMessage.Schedule);
             }
+        }
+
+        public MailTaskModel GetMailTaskById(GetMailTaskByIdRequest request)
+        {
+            MailTaskModel result = new MailTaskModel();
+            try
+            {
+                result = this.mailRepository.GetMailTaskById(new GetMailTaskByIdCriteria()
+                {
+                    MailTaskId = request.TaskId
+                });
+            }
+            catch (Exception ex)
+            {
+                LogService.LogError(ex, request.TaskId);
+            }
+
+            return result;
         }
 
         /// <summary>
@@ -133,12 +121,13 @@ namespace Fanex.MailDelivery.Services
         public int SendMail(Mail mail)
         {
             var mailId = 0;
+            var mailService = new MailDeliver.MailClient.API.MailDeliver();
+            var schedule = this.mailRepository.GetScheduleById(new GetScheduleByMailIdCriteria() { MailId = mail.MailingListId });
+            var mailRecord = this.ConvertFromMailToMailRecord(mail);
             try
             {
-                var mailService = new MailDeliver();
-                var mailRecord = this.ConvertFromMailToMailRecord(mail);
-                mailId = (int)_mailDeliverBusiness.InsertMailRecord(mailRecord);
-                var schedule = this._mailRepository.GetScheduleByID(new GetScheduleByIdCriteria() { MailId = mail.MailingListId });
+                this.ValidateMail(mailRecord);
+                mailId = (int)mailDeliverBusiness.InsertMailRecord(mailRecord);
                 if (schedule.Active)
                 {
                     if (mailId > 0)
@@ -152,10 +141,10 @@ namespace Fanex.MailDelivery.Services
                         // If is function mail
                         // Insert a MailTask record to database
                         // else
-                        // Leave the MailTask record for Job to handle.
+                        // Leave the MailTask record for JobRequest to handle.
                         if (schedule.TriggerTypeEnum == MailType.Function)
                         {
-                            _mailRepository.AddMailTask(new AddMailTaskCriteria()
+                            mailRepository.AddMailTask(new AddMailTaskCriteria()
                             {
                                 MailId = mail.MailingListId,
                                 SiteId = mail.SiteId,
@@ -174,7 +163,7 @@ namespace Fanex.MailDelivery.Services
             }
             catch (Exception ex)
             {
-                LogError(ex, mail.MailingListId);
+                LogService.LogError(ex, schedule);
             }
 
             return mailId;
@@ -186,177 +175,156 @@ namespace Fanex.MailDelivery.Services
         /// <param name="record">Mail information.</param>
         public void SendMail(MailRecord record)
         {
-            record = record.IsReady ? record : _mailDeliverBusiness.GetMailRecord(record.MailID, true);
+            record = record.IsReady ? record : mailDeliverBusiness.GetMailRecord(record.MailID, true);
             if (record != null && record.IsReady)
             {
                 string error = string.Empty;
-                MailExtension.SendMail(record, out error);
-                ////LogExtension.LogMessage(string.Format("Sending mail: {0}. Error message: {1}", record.MailID, error));
+                try
+                {
+                    MailExtension.SendMail(record, out error);
+                }
+                catch (Exception exception)
+                {
+                    LogService.LogError(exception);
+                }
+                finally
+                {
+                    var InstanceCaller = new Thread(() => retryOnMailRecordService.Retry((int)record.MailID));
+                    InstanceCaller.Start();
+                }
             }
         }
 
-        public void UpdateClientActiveTime(ClientInfomationMessage clientInfoMessage)
+        private void ValidateMail(MailRecord mail)
         {
-            this._mailRepository.UpdateClientActiveTime(new UpdateClientActiveTimeCriteria() { MailIds = clientInfoMessage.MailIds });
-        }
-
-        public List<RecipientModel> GetListRecipient(RecipientListCriteria criteria)
-        {
-            return this._mailRepository.GetListRecipient(criteria);
-        }
-
-        public ResultMessage CreateRecipient(CreateRecipientCriteria criteria)
-        {
-            return this._mailRepository.CreateRecipient(criteria);
-        }
-
-        public ResultMessage UpdateRecipient(UpdateRecipientCriteria criteria)
-        {
-            return this._mailRepository.UpdateRecipient(criteria);
-        }
-
-        public List<MailModel> GetListMail(GetMailListCriteria criteria)
-        {
-            return this._mailRepository.GetListMail(criteria);
-        }
-
-        public ResultMessage CreateMail(CreateMailCriteria criteria)
-        {
-            return this._mailRepository.CreateMail(criteria);
-        }
-
-        public ResultMessage UpdateMail(UpdateMailCriteria criteria)
-        {
-            return this._mailRepository.UpdateMail(criteria);
-        }
-
-        public RecipientModel RecipientById(RecipientByIdCriteria criteria)
-        {
-            return this._mailRepository.RecipientById(criteria);
+            if (string.IsNullOrWhiteSpace(mail.Subject))
+            {
+                throw new ArgumentNullException("Subject", "Mail subject cannot be null or empty.");
+            }
         }
 
         /// <summary>
-        /// Updates the running job.
+        /// Updates the running JobRequest.
         /// </summary>
-        /// <param name="jobResultMessage">The job result message.</param>
-        private void UpdateRunningJob(JobResultMessage jobResultMessage)
+        /// <param name="jobRequestJobRequest result message.</param>
+        private void UpdateRunningJob(JobMessage jobMessage)
         {
-            this._mailRepository.UpdateMailTaskStatus(new UpdateMailTaskStatusCriteria()
+            this.mailRepository.UpdateMailTaskStatus(new UpdateMailTaskStatusCriteria()
             {
-                TaskId = jobResultMessage.Schedule.TaskId,
+                TaskId = jobMessage.Schedule.TaskId,
                 Status = (int)JobStatus.Running
             });
 
-            this._mailRepository.UpdateRetryCounter(new UpdateTaskRetryCounterCriteria()
+            this.mailRepository.UpdateRetryCounter(new UpdateTaskRetryCounterCriteria()
             {
-                TaskId = jobResultMessage.Schedule.TaskId,
-                RetryCount = jobResultMessage.Schedule.CurrentRetryTimes
+                TaskId = jobMessage.Schedule.TaskId,
+                RetryCount = jobMessage.Schedule.CurrentRetryTimes
             });
 
-            if (jobResultMessage.Schedule.CurrentRetryTimes > 0 && jobResultMessage.TaskLog != null)
+            if (jobMessage.Schedule.CurrentRetryTimes > 0 && jobMessage.TaskLog != null)
             {
                 // If is retried then write log.
-                this._mailRepository.AddMailLog(new AddMailLogCriteria()
+                this.mailRepository.AddMailLog(new AddMailLogCriteria()
                 {
-                    LogTime = jobResultMessage.TaskLog.LogTime,
-                    ExceptionMessage = jobResultMessage.TaskLog.Message,
-                    StackTrace = jobResultMessage.TaskLog.StackTrace,
-                    Status = (int)jobResultMessage.JobStatus,
-                    TaskId = jobResultMessage.Schedule.TaskId
+                    LogTime = jobMessage.TaskLog.LogTime,
+                    ExceptionMessage = jobMessage.TaskLog.Message,
+                    StackTrace = jobMessage.TaskLog.StackTrace,
+                    Status = (int)jobMessage.JobStatus,
+                    TaskId = jobMessage.Schedule.TaskId
                 });
             }
         }
 
-        private void UpdateAbortJob(JobResultMessage jobResultMessage)
+        private void UpdateAbortJob(JobMessage jobMessage)
         {
-            this._mailRepository.UpdateMailTaskStatus(new UpdateMailTaskStatusCriteria()
+            this.mailRepository.UpdateMailTaskStatus(new UpdateMailTaskStatusCriteria()
             {
-                TaskId = jobResultMessage.Schedule.TaskId,
+                TaskId = jobMessage.Schedule.TaskId,
                 Status = (int)JobStatus.Abort
             });
         }
 
         /// <summary>
-        /// Updates for the data not ready job.
+        /// Updates for the data not ready JobRequest.
         /// </summary>
-        /// <param name="jobResultMessage">The job result message.</param>
-        private void UpdateDataNotReadyJob(JobResultMessage jobResultMessage)
+        /// <param name="jobRequestJobRequest result message.</param>
+        private void UpdateDataNotReadyJob(JobMessage jobMessage)
         {
-            this._mailRepository.UpdateMailTaskStatus(new UpdateMailTaskStatusCriteria()
+            this.mailRepository.UpdateMailTaskStatus(new UpdateMailTaskStatusCriteria()
             {
-                TaskId = jobResultMessage.Schedule.TaskId,
-                Status = (int)jobResultMessage.JobStatus
+                TaskId = jobMessage.Schedule.TaskId,
+                Status = (int)jobMessage.JobStatus
             });
         }
 
         /// <summary>
-        /// Updates the success job.
+        /// Updates the success JobRequest.
         /// </summary>
-        /// <param name="jobResultMessage">The job result message.</param>
-        private void UpdateSuccessJob(JobResultMessage jobResultMessage)
+        /// <param name="jobRequestJobRequest result message.</param>
+        private void UpdateSuccessJob(JobMessage jobMessage)
         {
-            this._mailRepository.UpdateMailTaskStatus(new UpdateMailTaskStatusCriteria()
+            this.mailRepository.UpdateMailTaskStatus(new UpdateMailTaskStatusCriteria()
             {
-                TaskId = jobResultMessage.Schedule.TaskId,
-                Status = (int)jobResultMessage.JobStatus,
+                TaskId = jobMessage.Schedule.TaskId,
+                Status = (int)jobMessage.JobStatus,
                 LastSent = DateTime.Now
             });
 
-            // Because the job cannot be update to success when aborted. We will check Status again to make sure job is done.
-            var mailTask = this._mailRepository.GetMailTask(new GetMailTaskByIdCriteria() { MailTaskId = jobResultMessage.Schedule.TaskId });
-            if (mailTask.Status == (int)jobResultMessage.JobStatus)
+            // Because the JobRequest cannot be update to success when aborted. We will check Status again to make sure JobRequest is done.
+            var mailTask = this.mailRepository.GetMailTaskById(new GetMailTaskByIdCriteria() { MailTaskId = jobMessage.Schedule.TaskId });
+            if (mailTask.Status == (int)jobMessage.JobStatus)
             {
-                int mailRecordId = this.SendMail(jobResultMessage.Mail);
-                this._mailRepository.UpdateMailTask(new UpdateMailTaskMSiteMailIdCriteria()
+                int mailRecordId = this.SendMail(jobMessage.Mail);
+                this.mailRepository.UpdateMailTask(new UpdateMailTaskMSiteMailIdCriteria()
                 {
-                    TaskId = jobResultMessage.Schedule.TaskId,
+                    TaskId = jobMessage.Schedule.TaskId,
                     MSiteMailId = mailRecordId
                 });
             }
         }
 
         /// <summary>
-        /// Updates the success job.
+        /// Updates the success JobRequest.
         /// </summary>
-        /// <param name="jobResultMessage">The job result message.</param>
-        private void UpdateSuccessJobWithoutSendMail(JobResultMessage jobResultMessage)
+        /// <param name="jobRequestJobRequest result message.</param>
+        private void UpdateSuccessJobWithoutSendMail(JobMessage jobMessage)
         {
-            this._mailRepository.UpdateMailTaskStatus(new UpdateMailTaskStatusCriteria()
+            this.mailRepository.UpdateMailTaskStatus(new UpdateMailTaskStatusCriteria()
             {
-                TaskId = jobResultMessage.Schedule.TaskId,
-                Status = (int)jobResultMessage.JobStatus,
+                TaskId = jobMessage.Schedule.TaskId,
+                Status = (int)jobMessage.JobStatus,
                 LastSent = DateTime.Now
             });
 
-            // Because the job cannot be update to success when aborted. We will check Status again to make sure job is done.
-            var mailTask = this._mailRepository.GetMailTask(new GetMailTaskByIdCriteria() { MailTaskId = jobResultMessage.Schedule.TaskId });
-            if (mailTask.Status == (int)jobResultMessage.JobStatus)
+            // Because the JobRequest cannot be update to success when aborted. We will check Status again to make sure JobRequest is done.
+            var mailTask = this.mailRepository.GetMailTaskById(new GetMailTaskByIdCriteria() { MailTaskId = jobMessage.Schedule.TaskId });
+            if (mailTask.Status == (int)jobMessage.JobStatus)
             {
-                this._mailRepository.UpdateMailTask(new UpdateMailTaskMSiteMailIdCriteria()
+                this.mailRepository.UpdateMailTask(new UpdateMailTaskMSiteMailIdCriteria()
                 {
-                    TaskId = jobResultMessage.Schedule.TaskId,
+                    TaskId = jobMessage.Schedule.TaskId,
                     MSiteMailId = 0
                 });
             }
         }
 
-        private void UpdateFailedJob(JobResultMessage jobResultMessage)
+        private void UpdateFailedJob(JobMessage jobMessage)
         {
-            this._mailRepository.UpdateMailTaskStatus(new UpdateMailTaskStatusCriteria()
+            this.mailRepository.UpdateMailTaskStatus(new UpdateMailTaskStatusCriteria()
             {
-                TaskId = jobResultMessage.Schedule.TaskId,
+                TaskId = jobMessage.Schedule.TaskId,
                 Status = (int)JobStatus.JobFailed
             });
 
-            if (jobResultMessage != null && jobResultMessage.TaskLog != null)
+            if (jobMessage != null && jobMessage.TaskLog != null)
             {
-                this._mailRepository.AddMailLog(new AddMailLogCriteria()
+                this.mailRepository.AddMailLog(new AddMailLogCriteria()
                 {
-                    LogTime = jobResultMessage.TaskLog.LogTime,
-                    ExceptionMessage = jobResultMessage.TaskLog.Message,
-                    StackTrace = jobResultMessage.TaskLog.StackTrace,
-                    Status = (int)jobResultMessage.JobStatus,
-                    TaskId = jobResultMessage.Schedule.TaskId
+                    LogTime = jobMessage.TaskLog.LogTime,
+                    ExceptionMessage = jobMessage.TaskLog.Message,
+                    StackTrace = jobMessage.TaskLog.StackTrace,
+                    Status = (int)jobMessage.JobStatus,
+                    TaskId = jobMessage.Schedule.TaskId
                 });
             }
         }
@@ -411,7 +379,7 @@ namespace Fanex.MailDelivery.Services
             }
 
             // Get Mailing List from database
-            var mailingList = _mailRepository.GetMailingList(new GetMailWithEmailAddressByMailId() { MailId = mail.MailingListId });
+            var mailingList = mailRepository.GetMailingList(new GetMailWithEmailAddressByMailId() { MailId = mail.MailingListId });
             mailRecord.MailTo = string.Join(";", mailingList.TOs);
             mailRecord.MailCc = string.Join(";", mailingList.CCs);
             mailRecord.MailBcc = string.Join(";", mailingList.BCCs);

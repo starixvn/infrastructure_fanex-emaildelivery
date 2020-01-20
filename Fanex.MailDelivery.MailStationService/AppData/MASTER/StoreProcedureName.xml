@@ -22,7 +22,7 @@
       <Mapping DataField="TaskID" ObjectProperty="TaskId" />
       <Mapping DataField="MailID" ObjectProperty="MailId" />
       <Mapping DataField="SiteID" ObjectProperty="SiteId" />
-      <Mapping DataField="ScheduleTime" ObjectProperty="ScheduleTime" />
+      <Mapping DataField="ScheduledTime" ObjectProperty="ScheduleTime" />
       <Mapping DataField="LastSent" ObjectProperty="LastSent" />
       <Mapping DataField="Status" ObjectProperty="Status" />
       <Mapping DataField="Attempt" ObjectProperty="Attempt" />

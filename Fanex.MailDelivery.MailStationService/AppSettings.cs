@@ -9,6 +9,10 @@ namespace Fanex.MailDelivery.MailStationService
         public static string RabbitMQConnectionString
             => $"{ ConfigurationManager.AppSettings.Get("MailStation:RabbitMQConnectionString")}{MailDeliveryConstants.RabbitMQLoginPassword}";
 
-        public static int StartLimitTime => Convert.ToInt32(ConfigurationManager.AppSettings.Get("MailStation:StartLimitTime"));
+        public static int StartRetryLimit => Convert.ToInt32(ConfigurationManager.AppSettings.Get("MailStation:StartRetryLimit"));
+
+        public static int SendMailRetryLimit => Convert.ToInt32(ConfigurationManager.AppSettings.Get("MailStation:SendMailRetryLimit"));
+
+        public static int ClientNotifyTimeOutInSecond => Convert.ToInt32(ConfigurationManager.AppSettings.Get("MailStation:ClientNotifyTimeOutInSecond"));
     }
 }

@@ -16,16 +16,6 @@ namespace Fanex.MailDelivery.MailStationService.MessageBrokers
     public interface IClientServerMessageBroker : IDisposable
     {
         void Start();
-
-        void RespondAddMailTaskForRunningJob();
-
-        void RespondGetMailTaskForById();
-
-        void SubscribeClientNotificationMessage();
-
-        void SubscribeJobResult();
-
-        void SubscribeMail();
     }
 
     public class ClientServerMessageBroker : IClientServerMessageBroker
@@ -38,10 +28,13 @@ namespace Fanex.MailDelivery.MailStationService.MessageBrokers
         {
         }
 
-        public ClientServerMessageBroker(IClientServerService adminServerService)
+        public ClientServerMessageBroker(IClientServerService clientServerService)
         {
             LogProvider.SetCurrentLogProvider(new RabbitMQLogProvider());
-            clientServerService = clientServerService ?? new ClientServerService(new ClientDataService(), new MailService());
+            this.clientServerService = clientServerService
+                ?? new ClientServerService(
+                    new ClientDataService(),
+                    new MailService(AppSettings.SendMailRetryLimit, AppSettings.ClientNotifyTimeOutInSecond));
         }
 
         public void Start()
@@ -58,7 +51,7 @@ namespace Fanex.MailDelivery.MailStationService.MessageBrokers
         }
 
         #region Subscribe
-        public void SubscribeMail()
+        private void SubscribeMail()
         {
             bus.SubscribeAsync<Mail>(
                 MailDeliveryConstants.SendMailRoutingKey,
@@ -71,7 +64,7 @@ namespace Fanex.MailDelivery.MailStationService.MessageBrokers
                     config => config.WithTopic(MailDeliveryConstants.SendMailRoutingKey));
         }
 
-        public void SubscribeClientNotificationMessage()
+        private void SubscribeClientNotificationMessage()
         {
             bus.SubscribeAsync<UpdateActiveTimeRequest>(
                 MailDeliveryConstants.ClientNotificationTopic,
@@ -84,7 +77,7 @@ namespace Fanex.MailDelivery.MailStationService.MessageBrokers
                     config => config.WithTopic(MailDeliveryConstants.ClientNotificationTopic));
         }
 
-        public void SubscribeJobResult()
+        private void SubscribeJobResult()
         {
             bus.SubscribeAsync<JobMessage>(
                 MailDeliveryConstants.JobResultRoutingKey,
@@ -104,7 +97,7 @@ namespace Fanex.MailDelivery.MailStationService.MessageBrokers
             bus.RespondAsync<GetScheduleListRequest, GetScheduleListResponse>(request => Task.FromResult(clientServerService.GetScheduleList(request)));
         }
 
-        public void RespondAddMailTaskForRunningJob()
+        private void RespondAddMailTaskForRunningJob()
         {
             bus.RespondAsync<JobMessage, JobMessage>(
                 jobMessage =>
@@ -115,26 +108,41 @@ namespace Fanex.MailDelivery.MailStationService.MessageBrokers
                 });
         }
 
-        public void RespondGetMailTaskForById()
+        private void RespondGetMailTaskForById()
         {
             bus.Respond<GetMailTaskByIdRequest, MailTaskModel>(request => { return clientServerService.GetMailTaskById(request); });
         }
         #endregion
 
+        #region IDisposable Support
+        private bool disposedValue = false;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    //  dispose managed state (managed objects).
+                }
+
+                bus?.Dispose();
+
+                disposedValue = true;
+            }
+        }
+
+        ~ClientServerMessageBroker()
+        {
+            Dispose(false);
+        }
+
+        // This code added to correctly implement the disposable pattern.
         public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                // Free managed resources
-            }
-
-            bus?.Dispose();
-        }
+        #endregion
     }
 }

@@ -1,8 +1,6 @@
-﻿using System;
-using System.Timers;
-using Fanex.MailDeliver.Model;
-using Fanex.MailDelivery.Services.Configurations;
+﻿using Fanex.MailDeliver.Model;
 using Fanex.MailDelivery.Services.Repositories;
+using System.Timers;
 
 namespace Fanex.MailDelivery.Services.Services.MailService
 {
@@ -15,12 +13,13 @@ namespace Fanex.MailDelivery.Services.Services.MailService
     {
         private Timer timer;
         private int retryCounter;
-        private readonly int maxRetryCounter = AppSettings.MailServiceSection.MaxRetrySendMailServiceCounter;
+        private readonly int sendMailRetryLimit;
         private readonly IMailRepository mailRepository;
 
-        public RetryOnMailRecordServiceImp(IMailRepository mailRepository)
+        public RetryOnMailRecordServiceImp(IMailRepository mailRepository, int sendMailRetryLimit)
         {
-            this.mailRepository = mailRepository;            
+            this.mailRepository = mailRepository;
+            this.sendMailRetryLimit = sendMailRetryLimit;
         }
 
         public void Retry(int mailId)
@@ -39,25 +38,25 @@ namespace Fanex.MailDelivery.Services.Services.MailService
         private void Execute(int mailId)
         {
             var mailRecord = mailRepository.GetMailRecordById(mailId);
-            var isNeedToRetry = IsNeedToRetry(mailRecord);           
+            var isNeedToRetry = IsNeedToRetry(mailRecord);
 
             try
             {
-                if (retryCounter < maxRetryCounter && isNeedToRetry)
+                if (retryCounter < sendMailRetryLimit && isNeedToRetry)
                 {
                     ResendMail(mailId);
                 }
-            }              
+            }
             finally
             {
-                if (retryCounter >= maxRetryCounter || !isNeedToRetry)
+                if (retryCounter >= sendMailRetryLimit || !isNeedToRetry)
                 {
                     timer.Stop();
-                    timer.Dispose();                    
+                    timer.Dispose();
                 }
 
                 retryCounter++;
-            }            
+            }
         }
 
         private bool IsNeedToRetry(MailRecord mailRecord)

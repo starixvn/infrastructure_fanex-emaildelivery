@@ -1,26 +1,78 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using Fanex.Common;
+﻿using Fanex.Common;
 using Fanex.Data;
 using Fanex.MailDeliver.Model;
 using Fanex.MailDelivery.Core.Models;
 using Fanex.MailDelivery.Core.Models.Report;
-using Fanex.MailDelivery.Services.Configurations;
 using Fanex.MailDelivery.Services.Criteria;
 using Fanex.MailDelivery.Services.Criteria.Criteria;
 using Fanex.MailDelivery.Services.Criteria.Job;
-using Fanex.MailDelivery.Services.Models;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
 
 namespace Fanex.MailDelivery.Services.Repositories
 {
-    /// <summary>
-    /// Mail Repository.
-    /// </summary>
+    public interface IMailRepository
+    {
+        Schedule GetScheduleById(GetScheduleByMailIdCriteria criteria);
+
+        int AddMailTask(AddMailTaskCriteria criteria);
+
+        void UpdateMailTaskStatus(UpdateMailTaskStatusCriteria criteria);
+
+        void UpdateRetryCounter(UpdateTaskRetryCounterCriteria criteria);
+
+        void AddMailLog(AddMailLogCriteria criteria);
+
+        MailingList GetMailingList(GetMailWithEmailAddressByMailId criteria);
+
+        void UpdateMailTask(UpdateMailTaskMSiteMailIdCriteria criteria);
+
+        void UpdateClientActiveTime(UpdateClientActiveTimeCriteria criteria);
+
+        MailTaskModel GetMailTaskById(GetMailTaskByIdCriteria criteria);
+
+        MailRecord GetMailRecordById(int mailId);
+
+        void UpdateServiceCheckIn(ServiceMonitoringCheckInCriteria criteria);
+    }
+
     public class MailRepository : IMailRepository
     {
+        private readonly int clientNotifyTimeOutInSecond;
+
+        public MailRepository(int clientNotifyTimeOutInSecond)
+        {
+            this.clientNotifyTimeOutInSecond = clientNotifyTimeOutInSecond;
+        }
+
+        public Schedule GetScheduleByMailId(GetScheduleByMailIdCriteria criteria)
+        {
+            using (var db = new ObjectDb(criteria.GetSettingKey()))
+            {
+                db.AssignParamValues(criteria.GetSpParams());
+                return db.Query<Schedule>().FirstOrDefault();
+            }
+        }
+
+        public void UpdateClientActiveTime(UpdateClientActiveTimeCriteria criteria)
+        {
+            using (var db = new ObjectDb(criteria.GetSettingKey()))
+            {
+                db.ExecuteNonQuery(criteria.GetSpParams());
+            }
+        }
+
+        public void UpdateServiceCheckIn(ServiceMonitoringCheckInCriteria criteria)
+        {
+            using (var db = new ObjectDb(criteria.GetSettingKey()))
+            {
+                db.ExecuteNonQuery(criteria.GetSpParams());
+            }
+        }
+
         public Schedule GetScheduleById(GetScheduleByMailIdCriteria criteria)
         {
             using (var db = new ObjectDb(criteria.GetSettingKey()))
@@ -45,7 +97,7 @@ namespace Fanex.MailDelivery.Services.Repositories
 
                 restult.ForEach(n =>
                 {
-                    n.IsOnline = n.LastActive != null && n.LastActive.Value.AddSeconds(AppSettings.MailServiceSection.ClientNotifyTimeOutInSecond) >= now;
+                    n.IsOnline = n.LastActive != null && n.LastActive.Value.AddSeconds(clientNotifyTimeOutInSecond) >= now;
                 });
             }
 
@@ -117,11 +169,6 @@ namespace Fanex.MailDelivery.Services.Repositories
             }
         }
 
-        /// <summary>
-        /// Gets the mailing list.
-        /// </summary>
-        /// <param name="criteria">The criteria.</param>
-        /// <returns>Mailing List.</returns>
         public MailingList GetMailingList(GetMailWithEmailAddressByMailId criteria)
         {
             var result = new MailingList();
@@ -149,26 +196,10 @@ namespace Fanex.MailDelivery.Services.Repositories
         {
             Hashtable hash = criteria.GetSpParams();
             hash = (new ResultCriteria()).AddSpParams(hash);
+
             using (var db = new ObjectDb(criteria.GetSettingKey()))
             {
                 db.ExecuteNonQuery(hash);
-            }
-        }
-
-        public MailTask GetMailTask(GetMailTaskByIdCriteria criteria)
-        {
-            using (var db = new ObjectDb(criteria.GetSettingKey()))
-            {
-                db.AssignParamValues(criteria.GetSpParams());
-                return db.Query<MailTask>().FirstOrDefault();
-            }
-        }
-
-        public void UpdateClientActiveTime(UpdateClientActiveTimeCriteria criteria)
-        {
-            using (var db = new ObjectDb(criteria.GetSettingKey()))
-            {
-                db.ExecuteNonQuery(criteria.GetSpParams());
             }
         }
 
@@ -181,12 +212,12 @@ namespace Fanex.MailDelivery.Services.Repositories
                 db.AssignParamValues(criteria.GetSpParams());
                 var dataSet = db.ExecuteDataSet();
                 var dataTable = new DataTable();
-                if(dataSet != null && dataSet.Tables.Count>0)
+                if (dataSet != null && dataSet.Tables.Count > 0)
                 {
                     dataTable = dataSet.Tables[0];
                 }
 
-                foreach(DataRow row in dataTable.Rows)
+                foreach (DataRow row in dataTable.Rows)
                 {
                     mailRecord.SentSuccess = Converter.To<int>(row["SentSuccess"]);
                     mailRecord.SentFail = Converter.To<int>(row["SentFail"]);

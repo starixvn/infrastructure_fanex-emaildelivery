@@ -2,7 +2,6 @@
 using Fanex.MailDelivery.Core.Models;
 using Fanex.MailDelivery.Core.Models.Report;
 using Fanex.MailDelivery.Services.Criteria.Job;
-using Fanex.MailDelivery.Services.Services.Client;
 using Fanex.MailDelivery.Services.Services.MailService;
 using System.Collections.Generic;
 
@@ -25,12 +24,10 @@ namespace Fanex.MailDelivery.MailStationService.Services
 
     public class ClientServerService : IClientServerService
     {
-        private readonly IClientDataService clientDataService;
         private readonly IMailService mailService;
 
-        public ClientServerService(IClientDataService clientDataService, IMailService mailService)
+        public ClientServerService(IMailService mailService)
         {
-            this.clientDataService = clientDataService;
             this.mailService = mailService;
         }
 
@@ -45,7 +42,7 @@ namespace Fanex.MailDelivery.MailStationService.Services
 
             foreach (int mail in request.MailIds)
             {
-                Schedule schedule = clientDataService.GetScheduleByMailId(new GetScheduleByMailIdCriteria
+                Schedule schedule = mailService.GetScheduleByMailId(new GetScheduleByMailIdCriteria
                 {
                     MailId = mail
                 });
@@ -58,7 +55,7 @@ namespace Fanex.MailDelivery.MailStationService.Services
 
         public void UpdateClientActiveTime(UpdateActiveTimeRequest updateActiveTimeRequest)
         {
-            clientDataService.UpdateClientActiveTime(updateActiveTimeRequest);            
+            mailService.UpdateClientActiveTime(updateActiveTimeRequest);
         }
 
         public void AddMailTaskForRunningJob(JobMessage jobMessage)
