@@ -1,11 +1,8 @@
-﻿using System;
-using Fanex.Data.Repository;
+﻿using Fanex.Data.Repository;
+using System;
 
-namespace Fanex.MailDelivery.Services.Criteria.Criteria
+namespace Fanex.MailDelivery.Services.Criteria
 {
-    /// <summary>
-    /// Get all log category criteria.
-    /// </summary>
     public class UpdateMailTaskStatusCriteria : CriteriaBase
     {
         public int TaskId { get; set; }

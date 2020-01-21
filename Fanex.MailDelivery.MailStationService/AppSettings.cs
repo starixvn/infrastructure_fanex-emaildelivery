@@ -12,7 +12,5 @@ namespace Fanex.MailDelivery.MailStationService
         public static int StartRetryLimit => Convert.ToInt32(ConfigurationManager.AppSettings.Get("MailStation:StartRetryLimit"));
 
         public static int SendMailRetryLimit => Convert.ToInt32(ConfigurationManager.AppSettings.Get("MailStation:SendMailRetryLimit"));
-
-        public static int ClientNotifyTimeOutInSecond => Convert.ToInt32(ConfigurationManager.AppSettings.Get("MailStation:ClientNotifyTimeOutInSecond"));
     }
 }

@@ -6,11 +6,12 @@ using Fanex.MailDeliver.Model;
 using Fanex.MailDelivery.Core.Messaging.Job;
 using Fanex.MailDelivery.Core.Models;
 using Fanex.MailDelivery.Core.Models.Report;
-using Fanex.MailDelivery.Services.Criteria.Criteria;
+using Fanex.MailDelivery.Services.Criteria;
 using Fanex.MailDelivery.Services.Criteria.Job;
 using Fanex.MailDelivery.Services.Repositories;
 using Fanex.MailDelivery.Services.Services.Logging;
 using System;
+using System.Collections.Generic;
 using System.Threading;
 
 namespace Fanex.MailDelivery.Services.Services.MailService
@@ -24,6 +25,10 @@ namespace Fanex.MailDelivery.Services.Services.MailService
         void AddMailTaskForRunningJob(JobMessage jobMessage);
 
         MailTaskModel GetMailTaskById(GetMailTaskByIdRequest request);
+
+        GetScheduleListResponse GetScheduleList(GetScheduleListRequest request);
+
+        void UpdateClientActiveTime(UpdateActiveTimeRequest updateActiveTimeRequest);
     }
 
     public class MailService : IMailService
@@ -32,11 +37,38 @@ namespace Fanex.MailDelivery.Services.Services.MailService
         private readonly IMailDeliverBusiness mailDeliverBusiness;
         private readonly RetryOnMailRecordService retryOnMailRecordService;
 
-        public MailService(int sendMailRetryLimit, int clientNotifyTimeOutInSecond)
+        public MailService(int sendMailRetryLimit)
         {
-            this.mailRepository = new MailRepository(clientNotifyTimeOutInSecond);
-            this.mailDeliverBusiness = new MailDeliverBusiness();
-            this.retryOnMailRecordService = new RetryOnMailRecordServiceImp(mailRepository, sendMailRetryLimit);
+            mailRepository = new MailRepository();
+            mailDeliverBusiness = new MailDeliverBusiness();
+            retryOnMailRecordService = new RetryOnMailRecordServiceImp(mailRepository, sendMailRetryLimit);
+        }
+
+        public GetScheduleListResponse GetScheduleList(GetScheduleListRequest request)
+        {
+            var schedules = new List<Schedule>();
+
+            foreach (int mail in request.MailIds)
+            {
+                Schedule schedule = mailRepository.GetScheduleByMailId(new GetScheduleByMailIdCriteria
+                {
+                    MailId = mail
+                });
+
+                schedules.Add(schedule);
+            }
+
+            return new GetScheduleListResponse { Schedules = schedules };
+        }
+
+        public void UpdateClientActiveTime(UpdateActiveTimeRequest updateActiveTimeRequest)
+        {
+            var criteria = new UpdateClientActiveTimeCriteria
+            {
+                MailIds = updateActiveTimeRequest.MailIds
+            };
+
+            mailRepository.UpdateClientActiveTime(criteria);
         }
 
         public void UpdateJobStatus(JobMessage jobMessage)
@@ -47,22 +79,22 @@ namespace Fanex.MailDelivery.Services.Services.MailService
                 switch (jobMessage.JobStatus)
                 {
                     case JobStatus.Running:
-                        this.UpdateRunningJob(jobMessage);
+                        UpdateRunningJob(jobMessage);
                         break;
                     case JobStatus.DataIsNotReady:
-                        this.UpdateDataNotReadyJob(jobMessage);
+                        UpdateDataNotReadyJob(jobMessage);
                         break;
                     case JobStatus.Success:
-                        this.UpdateSuccessJob(jobMessage);
+                        UpdateSuccessJob(jobMessage);
                         break;
                     case JobStatus.SuccessWithoutSendmail:
-                        this.UpdateSuccessJobWithoutSendMail(jobMessage);
+                        UpdateSuccessJobWithoutSendMail(jobMessage);
                         break;
                     case JobStatus.JobFailed:
-                        this.UpdateFailedJob(jobMessage);
+                        UpdateFailedJob(jobMessage);
                         break;
                     case JobStatus.Abort:
-                        this.UpdateAbortJob(jobMessage);
+                        UpdateAbortJob(jobMessage);
                         break;
                     default:
                         break;
@@ -80,7 +112,7 @@ namespace Fanex.MailDelivery.Services.Services.MailService
         {
             try
             {
-                jobMessage.Schedule.TaskId = this.mailRepository.AddMailTask(new AddMailTaskCriteria()
+                jobMessage.Schedule.TaskId = mailRepository.AddMailTask(new AddMailTaskCriteria()
                 {
                     MailId = jobMessage.Schedule.Id,
                     SiteId = jobMessage.Schedule.SiteId,
@@ -100,7 +132,7 @@ namespace Fanex.MailDelivery.Services.Services.MailService
             MailTaskModel result = new MailTaskModel();
             try
             {
-                result = this.mailRepository.GetMailTaskById(new GetMailTaskByIdCriteria()
+                result = mailRepository.GetMailTaskById(new GetMailTaskByIdCriteria()
                 {
                     MailTaskId = request.TaskId
                 });
@@ -122,11 +154,11 @@ namespace Fanex.MailDelivery.Services.Services.MailService
         {
             var mailId = 0;
             var mailService = new MailDeliver.MailClient.API.MailDeliver();
-            var schedule = this.mailRepository.GetScheduleById(new GetScheduleByMailIdCriteria() { MailId = mail.MailingListId });
-            var mailRecord = this.ConvertFromMailToMailRecord(mail);
+            var schedule = mailRepository.GetScheduleByMailId(new GetScheduleByMailIdCriteria() { MailId = mail.MailingListId });
+            var mailRecord = ConvertFromMailToMailRecord(mail);
             try
             {
-                this.ValidateMail(mailRecord);
+                ValidateMail(mailRecord);
                 mailId = (int)mailDeliverBusiness.InsertMailRecord(mailRecord);
                 if (schedule.Active)
                 {
@@ -209,13 +241,13 @@ namespace Fanex.MailDelivery.Services.Services.MailService
         /// <param name="jobRequestJobRequest result message.</param>
         private void UpdateRunningJob(JobMessage jobMessage)
         {
-            this.mailRepository.UpdateMailTaskStatus(new UpdateMailTaskStatusCriteria()
+            mailRepository.UpdateMailTaskStatus(new UpdateMailTaskStatusCriteria()
             {
                 TaskId = jobMessage.Schedule.TaskId,
                 Status = (int)JobStatus.Running
             });
 
-            this.mailRepository.UpdateRetryCounter(new UpdateTaskRetryCounterCriteria()
+            mailRepository.UpdateRetryCounter(new UpdateTaskRetryCounterCriteria()
             {
                 TaskId = jobMessage.Schedule.TaskId,
                 RetryCount = jobMessage.Schedule.CurrentRetryTimes
@@ -224,7 +256,7 @@ namespace Fanex.MailDelivery.Services.Services.MailService
             if (jobMessage.Schedule.CurrentRetryTimes > 0 && jobMessage.TaskLog != null)
             {
                 // If is retried then write log.
-                this.mailRepository.AddMailLog(new AddMailLogCriteria()
+                mailRepository.AddMailLog(new AddMailLogCriteria()
                 {
                     LogTime = jobMessage.TaskLog.LogTime,
                     ExceptionMessage = jobMessage.TaskLog.Message,
@@ -237,7 +269,7 @@ namespace Fanex.MailDelivery.Services.Services.MailService
 
         private void UpdateAbortJob(JobMessage jobMessage)
         {
-            this.mailRepository.UpdateMailTaskStatus(new UpdateMailTaskStatusCriteria()
+            mailRepository.UpdateMailTaskStatus(new UpdateMailTaskStatusCriteria()
             {
                 TaskId = jobMessage.Schedule.TaskId,
                 Status = (int)JobStatus.Abort
@@ -250,7 +282,7 @@ namespace Fanex.MailDelivery.Services.Services.MailService
         /// <param name="jobRequestJobRequest result message.</param>
         private void UpdateDataNotReadyJob(JobMessage jobMessage)
         {
-            this.mailRepository.UpdateMailTaskStatus(new UpdateMailTaskStatusCriteria()
+            mailRepository.UpdateMailTaskStatus(new UpdateMailTaskStatusCriteria()
             {
                 TaskId = jobMessage.Schedule.TaskId,
                 Status = (int)jobMessage.JobStatus
@@ -263,7 +295,7 @@ namespace Fanex.MailDelivery.Services.Services.MailService
         /// <param name="jobRequestJobRequest result message.</param>
         private void UpdateSuccessJob(JobMessage jobMessage)
         {
-            this.mailRepository.UpdateMailTaskStatus(new UpdateMailTaskStatusCriteria()
+            mailRepository.UpdateMailTaskStatus(new UpdateMailTaskStatusCriteria()
             {
                 TaskId = jobMessage.Schedule.TaskId,
                 Status = (int)jobMessage.JobStatus,
@@ -271,11 +303,11 @@ namespace Fanex.MailDelivery.Services.Services.MailService
             });
 
             // Because the JobRequest cannot be update to success when aborted. We will check Status again to make sure JobRequest is done.
-            var mailTask = this.mailRepository.GetMailTaskById(new GetMailTaskByIdCriteria() { MailTaskId = jobMessage.Schedule.TaskId });
+            var mailTask = mailRepository.GetMailTaskById(new GetMailTaskByIdCriteria() { MailTaskId = jobMessage.Schedule.TaskId });
             if (mailTask.Status == (int)jobMessage.JobStatus)
             {
-                int mailRecordId = this.SendMail(jobMessage.Mail);
-                this.mailRepository.UpdateMailTask(new UpdateMailTaskMSiteMailIdCriteria()
+                int mailRecordId = SendMail(jobMessage.Mail);
+                mailRepository.UpdateMailTask(new UpdateMailTaskMSiteMailIdCriteria()
                 {
                     TaskId = jobMessage.Schedule.TaskId,
                     MSiteMailId = mailRecordId
@@ -289,7 +321,7 @@ namespace Fanex.MailDelivery.Services.Services.MailService
         /// <param name="jobRequestJobRequest result message.</param>
         private void UpdateSuccessJobWithoutSendMail(JobMessage jobMessage)
         {
-            this.mailRepository.UpdateMailTaskStatus(new UpdateMailTaskStatusCriteria()
+            mailRepository.UpdateMailTaskStatus(new UpdateMailTaskStatusCriteria()
             {
                 TaskId = jobMessage.Schedule.TaskId,
                 Status = (int)jobMessage.JobStatus,
@@ -297,10 +329,10 @@ namespace Fanex.MailDelivery.Services.Services.MailService
             });
 
             // Because the JobRequest cannot be update to success when aborted. We will check Status again to make sure JobRequest is done.
-            var mailTask = this.mailRepository.GetMailTaskById(new GetMailTaskByIdCriteria() { MailTaskId = jobMessage.Schedule.TaskId });
+            var mailTask = mailRepository.GetMailTaskById(new GetMailTaskByIdCriteria() { MailTaskId = jobMessage.Schedule.TaskId });
             if (mailTask.Status == (int)jobMessage.JobStatus)
             {
-                this.mailRepository.UpdateMailTask(new UpdateMailTaskMSiteMailIdCriteria()
+                mailRepository.UpdateMailTask(new UpdateMailTaskMSiteMailIdCriteria()
                 {
                     TaskId = jobMessage.Schedule.TaskId,
                     MSiteMailId = 0
@@ -310,7 +342,7 @@ namespace Fanex.MailDelivery.Services.Services.MailService
 
         private void UpdateFailedJob(JobMessage jobMessage)
         {
-            this.mailRepository.UpdateMailTaskStatus(new UpdateMailTaskStatusCriteria()
+            mailRepository.UpdateMailTaskStatus(new UpdateMailTaskStatusCriteria()
             {
                 TaskId = jobMessage.Schedule.TaskId,
                 Status = (int)JobStatus.JobFailed
@@ -318,7 +350,7 @@ namespace Fanex.MailDelivery.Services.Services.MailService
 
             if (jobMessage != null && jobMessage.TaskLog != null)
             {
-                this.mailRepository.AddMailLog(new AddMailLogCriteria()
+                mailRepository.AddMailLog(new AddMailLogCriteria()
                 {
                     LogTime = jobMessage.TaskLog.LogTime,
                     ExceptionMessage = jobMessage.TaskLog.Message,

@@ -1,10 +1,7 @@
 ﻿using Fanex.Data.Repository;
 
-namespace Fanex.MailDelivery.Services.Criteria.Criteria
+namespace Fanex.MailDelivery.Services.Criteria
 {
-    /// <summary>
-    /// Get all log category criteria.
-    /// </summary>
     public class GetMailWithEmailAddressByMailId : CriteriaBase
     {
         public int MailId { get; set; }

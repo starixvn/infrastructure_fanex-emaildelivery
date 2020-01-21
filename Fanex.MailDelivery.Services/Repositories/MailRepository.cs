@@ -4,11 +4,8 @@ using Fanex.MailDeliver.Model;
 using Fanex.MailDelivery.Core.Models;
 using Fanex.MailDelivery.Core.Models.Report;
 using Fanex.MailDelivery.Services.Criteria;
-using Fanex.MailDelivery.Services.Criteria.Criteria;
 using Fanex.MailDelivery.Services.Criteria.Job;
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 
@@ -16,7 +13,7 @@ namespace Fanex.MailDelivery.Services.Repositories
 {
     public interface IMailRepository
     {
-        Schedule GetScheduleById(GetScheduleByMailIdCriteria criteria);
+        Schedule GetScheduleByMailId(GetScheduleByMailIdCriteria criteria);
 
         int AddMailTask(AddMailTaskCriteria criteria);
 
@@ -41,19 +38,13 @@ namespace Fanex.MailDelivery.Services.Repositories
 
     public class MailRepository : IMailRepository
     {
-        private readonly int clientNotifyTimeOutInSecond;
-
-        public MailRepository(int clientNotifyTimeOutInSecond)
-        {
-            this.clientNotifyTimeOutInSecond = clientNotifyTimeOutInSecond;
-        }
-
         public Schedule GetScheduleByMailId(GetScheduleByMailIdCriteria criteria)
         {
             using (var db = new ObjectDb(criteria.GetSettingKey()))
             {
                 db.AssignParamValues(criteria.GetSpParams());
-                return db.Query<Schedule>().FirstOrDefault();
+
+                return db.QueryEntity<Schedule>();
             }
         }
 
@@ -73,37 +64,6 @@ namespace Fanex.MailDelivery.Services.Repositories
             }
         }
 
-        public Schedule GetScheduleById(GetScheduleByMailIdCriteria criteria)
-        {
-            using (var db = new ObjectDb(criteria.GetSettingKey()))
-            {
-                db.AssignParamValues(criteria.GetSpParams());
-                return db.Query<Schedule>().FirstOrDefault();
-            }
-        }
-
-        public List<ClientStatusModel> GetAllScheduleMail(GetAllScheduleMailCriteria criteria)
-        {
-            List<ClientStatusModel> restult;
-            DateTime now;
-            using (var db = new ObjectDb(criteria.GetSettingKey()))
-            {
-                db.AssignParamValues(criteria.GetSpParams());
-                using (var multi = db.QueryMultiple())
-                {
-                    restult = multi.Read<ClientStatusModel>().ToList();
-                    now = multi.Read<DateTime>().FirstOrDefault();
-                }
-
-                restult.ForEach(n =>
-                {
-                    n.IsOnline = n.LastActive != null && n.LastActive.Value.AddSeconds(clientNotifyTimeOutInSecond) >= now;
-                });
-            }
-
-            return restult;
-        }
-
         public int AddMailTask(AddMailTaskCriteria criteria)
         {
             Hashtable hash = criteria.GetSpParams();
@@ -117,26 +77,12 @@ namespace Fanex.MailDelivery.Services.Repositories
 
         public MailTaskModel GetMailTaskById(GetMailTaskByIdCriteria criteria)
         {
-            MailTaskModel result = new MailTaskModel();
             using (var db = new ObjectDb(criteria.GetSettingKey()))
             {
                 db.AssignParamValues(criteria.GetSpParams());
-                var reader = db.ExecuteReader();
-                if (reader.Read())
-                {
-                    result.MailTaskId = Converter.ToInt(reader["TaskID"]);
-                    result.MailId = Converter.ToInt(reader["MailID"]);
-                    result.SiteId = Converter.ToInt(reader["SiteID"]);
-                    result.ScheduledTime = Converter.ToDateTime(reader["ScheduledTime"]);
-                    result.LastSent = Converter.ToDateTime(reader["LastSent"]);
-                    result.Status = Converter.ToInt(reader["Status"]);
-                    result.Attempt = Converter.ToInt(reader["Attempt"]);
-                    result.MSiteMailId = Converter.ToInt(reader["MSiteMailID"]);
-                    result.IsUnableToRetry = Converter.ToBool(reader["IsUnableToRetry"]);
-                }
-            }
 
-            return result;
+                return db.QueryEntity<MailTaskModel>();
+            }
         }
 
         public void UpdateMailTaskStatus(UpdateMailTaskStatusCriteria criteria)

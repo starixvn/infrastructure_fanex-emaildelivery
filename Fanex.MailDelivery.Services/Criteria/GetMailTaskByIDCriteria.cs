@@ -1,10 +1,10 @@
 ﻿using Fanex.Data.Repository;
 
-namespace Fanex.MailDelivery.Services.Criteria.Mail
+namespace Fanex.MailDelivery.Services.Criteria
 {
-    public class GetMailByIdCriteria : CriteriaBase
+    public class GetMailTaskByIdCriteria : CriteriaBase
     {
-        public int MailId { get; set; }
+        public int MailTaskId { get; set; }
 
         public override bool IsValid()
         {
@@ -13,7 +13,7 @@ namespace Fanex.MailDelivery.Services.Criteria.Mail
 
         public override string GetSettingKey()
         {
-            return "MailStation_GetMailByID";
+            return "Mail_Core_GetMailTask";
         }
     }
 }

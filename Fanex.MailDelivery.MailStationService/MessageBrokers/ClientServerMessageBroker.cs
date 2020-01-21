@@ -5,8 +5,6 @@ using Fanex.MailDelivery.Core.Messaging.Job;
 using Fanex.MailDelivery.Core.Models;
 using Fanex.MailDelivery.Core.Models.Report;
 using Fanex.MailDelivery.MailStationService.Logging;
-using Fanex.MailDelivery.MailStationService.Services;
-using Fanex.MailDelivery.Services.Services.Client;
 using Fanex.MailDelivery.Services.Services.MailService;
 using System;
 using System.Threading.Tasks;
@@ -21,20 +19,17 @@ namespace Fanex.MailDelivery.MailStationService.MessageBrokers
     public class ClientServerMessageBroker : IClientServerMessageBroker
     {
         private IBus bus;
-        private readonly IClientServerService clientServerService;
+        private readonly IMailService mailService;
 
         public ClientServerMessageBroker()
             : this(null)
         {
         }
 
-        public ClientServerMessageBroker(IClientServerService clientServerService)
+        public ClientServerMessageBroker(IMailService mailService)
         {
             LogProvider.SetCurrentLogProvider(new RabbitMQLogProvider());
-            this.clientServerService = clientServerService
-                ?? new ClientServerService(
-                    new ClientDataService(),
-                    new MailService(AppSettings.SendMailRetryLimit, AppSettings.ClientNotifyTimeOutInSecond));
+            this.mailService = mailService ?? new MailService(AppSettings.SendMailRetryLimit);
         }
 
         public void Start()
@@ -57,7 +52,7 @@ namespace Fanex.MailDelivery.MailStationService.MessageBrokers
                 MailDeliveryConstants.SendMailRoutingKey,
                     mail =>
                     {
-                        clientServerService.SendMail(mail);
+                        mailService.SendMail(mail);
 
                         return Task.CompletedTask;
                     },
@@ -70,7 +65,7 @@ namespace Fanex.MailDelivery.MailStationService.MessageBrokers
                 MailDeliveryConstants.ClientNotificationTopic,
                     clientInfoMessage =>
                     {
-                        clientServerService.UpdateClientActiveTime(clientInfoMessage);
+                        mailService.UpdateClientActiveTime(clientInfoMessage);
 
                         return Task.CompletedTask;
                     },
@@ -83,7 +78,7 @@ namespace Fanex.MailDelivery.MailStationService.MessageBrokers
                 MailDeliveryConstants.JobResultRoutingKey,
                     jobStatus =>
                     {
-                        clientServerService.UpdateJobStatus(jobStatus);
+                        mailService.UpdateJobStatus(jobStatus);
 
                         return Task.CompletedTask;
                     },
@@ -94,7 +89,7 @@ namespace Fanex.MailDelivery.MailStationService.MessageBrokers
         #region Response
         private void ResponseGetScheduleList()
         {
-            bus.RespondAsync<GetScheduleListRequest, GetScheduleListResponse>(request => Task.FromResult(clientServerService.GetScheduleList(request)));
+            bus.RespondAsync<GetScheduleListRequest, GetScheduleListResponse>(request => Task.FromResult(mailService.GetScheduleList(request)));
         }
 
         private void RespondAddMailTaskForRunningJob()
@@ -102,7 +97,7 @@ namespace Fanex.MailDelivery.MailStationService.MessageBrokers
             bus.RespondAsync<JobMessage, JobMessage>(
                 jobMessage =>
                 {
-                    clientServerService.AddMailTaskForRunningJob(jobMessage);
+                    mailService.AddMailTaskForRunningJob(jobMessage);
 
                     return Task.FromResult(jobMessage);
                 });
@@ -110,7 +105,7 @@ namespace Fanex.MailDelivery.MailStationService.MessageBrokers
 
         private void RespondGetMailTaskForById()
         {
-            bus.Respond<GetMailTaskByIdRequest, MailTaskModel>(request => { return clientServerService.GetMailTaskById(request); });
+            bus.Respond<GetMailTaskByIdRequest, MailTaskModel>(request => { return mailService.GetMailTaskById(request); });
         }
         #endregion
 

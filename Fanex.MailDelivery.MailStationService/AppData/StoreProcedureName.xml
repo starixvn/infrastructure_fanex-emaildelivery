@@ -19,14 +19,10 @@
     <Setting Key="Mail_Core_InsertMailLogs" SpName="Mail_Core_InsertMailLogs" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
     <Setting Key="Mail_MailManagement_GetMailWithEmailAddressByMailID" SpName="Mail_MailManagement_GetMailWithEmailAddressByMailID" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
     <Setting Key="Mail_Core_GetMailTask" SpName="Mail_Core_GetMailTask" DbName="DBMMS.bodb_MMS.bodbAdminNet" >
-      <Mapping DataField="TaskID" ObjectProperty="TaskId" />
-      <Mapping DataField="MailID" ObjectProperty="MailId" />
-      <Mapping DataField="SiteID" ObjectProperty="SiteId" />
-      <Mapping DataField="ScheduledTime" ObjectProperty="ScheduleTime" />
-      <Mapping DataField="LastSent" ObjectProperty="LastSent" />
-      <Mapping DataField="Status" ObjectProperty="Status" />
-      <Mapping DataField="Attempt" ObjectProperty="Attempt" />
-      <Mapping DataField="MSiteMailID" ObjectProperty="MSiteMailId" />
+        <Mapping DataField="TaskID" ObjectProperty="MailTaskId" />
+        <Mapping DataField="MailID" ObjectProperty="MailId" />
+        <Mapping DataField="SiteID" ObjectProperty="SiteId" />
+        <Mapping DataField="MSiteMailID" ObjectProperty="MSiteMailId" />
     </Setting>
     <Setting Key="Mail_Core_UpdateMailTaskMSiteMailID" SpName="Mail_Core_UpdateMailTaskMSiteMailID" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
     <Setting Key="Mail_Core_ClientActiveTimeUpdate" SpName="Mail_Core_ClientActiveTimeUpdate" DbName="DBMMS.bodb_MMS.bodbAdminNet" />

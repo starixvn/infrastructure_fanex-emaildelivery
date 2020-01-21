@@ -1,10 +1,7 @@
 ﻿using Fanex.Data.Repository;
 
-namespace Fanex.MailDelivery.Services.Criteria.Criteria
+namespace Fanex.MailDelivery.Services.Criteria
 {
-    /// <summary>
-    /// Get all log category criteria.
-    /// </summary>
     public class UpdateTaskRetryCounterCriteria : CriteriaBase
     {
         public int TaskId { get; set; }

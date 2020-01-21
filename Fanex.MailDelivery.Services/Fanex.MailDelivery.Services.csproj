@@ -35,18 +35,6 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Common.Logging, Version=3.0.0.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
-      <HintPath>..\packages\Common.Logging.3.0.0\lib\net40\Common.Logging.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Common.Logging.Core, Version=3.0.0.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
-      <HintPath>..\packages\Common.Logging.Core.3.0.0\lib\net40\Common.Logging.Core.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="EasyNetQ, Version=3.7.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\EasyNetQ.3.7.1\lib\net46\EasyNetQ.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Fanex.Common, Version=1.0.404.97, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Fanex.Common.1.0.404.97\lib\net40\Fanex.Common.dll</HintPath>
       <Private>True</Private>
@@ -73,10 +61,6 @@
     <Reference Include="log4net">
       <HintPath>..\_Dependencies\MailService\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Diagnostics.Tracing.EventSource, Version=1.1.28.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Diagnostics.Tracing.EventSource.Redist.1.1.28\lib\net46\Microsoft.Diagnostics.Tracing.EventSource.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Microsoft.Practices.EnterpriseLibrary.Common, Version=5.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\EnterpriseLibrary.Common.5.0.414.0\lib\net40\Microsoft.Practices.EnterpriseLibrary.Common.dll</HintPath>
       <Private>True</Private>
@@ -101,18 +85,6 @@
       <HintPath>..\packages\EnterpriseLibrary.Unity.5.0.414.0\lib\net40\Microsoft.Practices.Unity.Interception.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Quartz, Version=3.0.7.0, Culture=neutral, PublicKeyToken=f6b8c98a402cc8a4, processorArchitecture=MSIL">
-      <HintPath>..\packages\Quartz.3.0.7\lib\net452\Quartz.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="RabbitMQ.Client, Version=5.0.0.0, Culture=neutral, PublicKeyToken=89e7d7c5feba84ce, processorArchitecture=MSIL">
-      <HintPath>..\packages\RabbitMQ.Client.5.1.1\lib\net451\RabbitMQ.Client.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -124,39 +96,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Criteria\Criteria\AddMailLogCriteria.cs" />
-    <Compile Include="Criteria\Criteria\AddMailTaskCriteria.cs" />
-    <Compile Include="Criteria\Criteria\GetAllScheduleMailCriteria.cs" />
-    <Compile Include="Criteria\Criteria\GetMailTaskByIDCriteria.cs" />
-    <Compile Include="Criteria\Criteria\GetMailWithEmailAddressByMailIDCriteria.cs" />
-    <Compile Include="Criteria\Criteria\MailRecorderGetMailById.cs" />
-    <Compile Include="Criteria\Criteria\ServiceMonitoringCheckInCriteria.cs" />
-    <Compile Include="Criteria\Job\GetScheduleByMailIdCriteria.cs" />
-    <Compile Include="Criteria\Criteria\UpdateClientActiveTimeCriteria.cs" />
-    <Compile Include="Criteria\Criteria\UpdateMailTaskMailRecordIDCriteria.cs" />
-    <Compile Include="Criteria\Criteria\UpdateMailTaskStatusCriteria.cs" />
-    <Compile Include="Criteria\Criteria\UpdateTaskRetryCounterCriteria.cs" />
-    <Compile Include="Criteria\Group\CreateGroupCriteria.cs" />
-    <Compile Include="Criteria\Group\DeleteGroupCriteria.cs" />
-    <Compile Include="Criteria\Group\GetGroupByIdCriteria.cs" />
-    <Compile Include="Criteria\Group\GetGroupListCriteria.cs" />
-    <Compile Include="Criteria\Group\UpdateGroupCriteria.cs" />
-    <Compile Include="Criteria\Mail\CreateMailCriteria.cs" />
-    <Compile Include="Criteria\Mail\DeleteMailCriteria.cs" />
-    <Compile Include="Criteria\Mail\GetMailByIdCriteria.cs" />
-    <Compile Include="Criteria\Mail\GetMailListCriteria.cs" />
-    <Compile Include="Criteria\Mail\UpdateMailCriteria.cs" />
-    <Compile Include="Criteria\Recipient\CreateRecipientCriteria.cs" />
-    <Compile Include="Criteria\Recipient\DeleteRecipientCriteria.cs" />
-    <Compile Include="Criteria\Recipient\GetRecipientByIdCriteria.cs" />
-    <Compile Include="Criteria\Recipient\GetRecipientListCriteria.cs" />
-    <Compile Include="Criteria\Recipient\UpdateRecipientCriteria.cs" />
-    <Compile Include="Criteria\Report\GetAllScheduleCriteria.cs" />
-    <Compile Include="Criteria\Report\GetReportListCriteria.cs" />
+    <Compile Include="Criteria\AddMailLogCriteria.cs" />
+    <Compile Include="Criteria\AddMailTaskCriteria.cs" />
+    <Compile Include="Criteria\GetMailTaskByIDCriteria.cs" />
+    <Compile Include="Criteria\GetMailWithEmailAddressByMailIDCriteria.cs" />
+    <Compile Include="Criteria\MailRecorderGetMailById.cs" />
+    <Compile Include="Criteria\ServiceMonitoringCheckInCriteria.cs" />
+    <Compile Include="Criteria\GetScheduleByMailIdCriteria.cs" />
+    <Compile Include="Criteria\UpdateClientActiveTimeCriteria.cs" />
+    <Compile Include="Criteria\UpdateMailTaskStatusCriteria.cs" />
+    <Compile Include="Criteria\UpdateMailTaskMSiteMailIdCriteria.cs" />
+    <Compile Include="Criteria\UpdateTaskRetryCounterCriteria.cs" />
     <Compile Include="Criteria\ResultCriteria.cs" />
-    <Compile Include="Models\MailTask.cs" />
-    <Compile Include="Models\MailTaskDetailModel.cs" />
-    <Compile Include="Models\ResultModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\MailRepository.cs" />
     <Compile Include="Services\LogService.cs" />
