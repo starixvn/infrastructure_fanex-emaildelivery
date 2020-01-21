@@ -1,7 +1,6 @@
 ﻿using Fanex.MailDeliver.Business;
 using Fanex.MailDeliver.Business.Implement;
 using Fanex.MailDeliver.Business.Interface;
-using Fanex.MailDeliver.Core.Infrastructure.Logging;
 using Fanex.MailDeliver.Model;
 using Fanex.MailDelivery.Core.Messaging.Job;
 using Fanex.MailDelivery.Core.Models;
@@ -12,6 +11,7 @@ using Fanex.MailDelivery.Services.Repositories;
 using Fanex.MailDelivery.Services.Services.Logging;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading;
 
 namespace Fanex.MailDelivery.Services.Services.MailService
@@ -36,9 +36,15 @@ namespace Fanex.MailDelivery.Services.Services.MailService
         private readonly IMailRepository mailRepository;
         private readonly IMailDeliverBusiness mailDeliverBusiness;
         private readonly RetryOnMailRecordService retryOnMailRecordService;
+        private readonly LogService logService;
 
-        public MailService(int sendMailRetryLimit)
+        public MailService(int sendMailRetryLimit) : this(null, sendMailRetryLimit)
         {
+        }
+
+        public MailService(LogService logService, int sendMailRetryLimit)
+        {
+            this.logService = logService ?? new LogServiceImpl();
             mailRepository = new MailRepository();
             mailDeliverBusiness = new MailDeliverBusiness();
             retryOnMailRecordService = new RetryOnMailRecordServiceImp(mailRepository, sendMailRetryLimit);
@@ -76,26 +82,33 @@ namespace Fanex.MailDelivery.Services.Services.MailService
             try
             {
                 Console.ForegroundColor = ConsoleColor.Red;
+
                 switch (jobMessage.JobStatus)
                 {
                     case JobStatus.Running:
                         UpdateRunningJob(jobMessage);
                         break;
+
                     case JobStatus.DataIsNotReady:
                         UpdateDataNotReadyJob(jobMessage);
                         break;
+
                     case JobStatus.Success:
                         UpdateSuccessJob(jobMessage);
                         break;
+
                     case JobStatus.SuccessWithoutSendmail:
                         UpdateSuccessJobWithoutSendMail(jobMessage);
                         break;
+
                     case JobStatus.JobFailed:
                         UpdateFailedJob(jobMessage);
                         break;
+
                     case JobStatus.Abort:
                         UpdateAbortJob(jobMessage);
                         break;
+
                     default:
                         break;
                 }
@@ -104,7 +117,7 @@ namespace Fanex.MailDelivery.Services.Services.MailService
             }
             catch (Exception ex)
             {
-                LogService.LogError(ex, jobMessage.Schedule);
+                logService.LogError(ex, jobMessage.Schedule);
             }
         }
 
@@ -123,13 +136,14 @@ namespace Fanex.MailDelivery.Services.Services.MailService
             }
             catch (Exception ex)
             {
-                LogService.LogError(ex, jobMessage.Schedule);
+                logService.LogError(ex, jobMessage.Schedule);
             }
         }
 
         public MailTaskModel GetMailTaskById(GetMailTaskByIdRequest request)
         {
-            MailTaskModel result = new MailTaskModel();
+            var result = new MailTaskModel();
+
             try
             {
                 result = mailRepository.GetMailTaskById(new GetMailTaskByIdCriteria()
@@ -139,36 +153,35 @@ namespace Fanex.MailDelivery.Services.Services.MailService
             }
             catch (Exception ex)
             {
-                LogService.LogError(ex, request.TaskId);
+                logService.LogError(ex, request.TaskId);
             }
 
             return result;
         }
 
-        /// <summary>
-        /// Sends the mail.
-        /// </summary>
-        /// <param name="mail">The mail need to send out.</param>
-        /// <returns>Command Result for sending mail.</returns>
         public int SendMail(Mail mail)
         {
             var mailId = 0;
-            var mailService = new MailDeliver.MailClient.API.MailDeliver();
-            var schedule = mailRepository.GetScheduleByMailId(new GetScheduleByMailIdCriteria() { MailId = mail.MailingListId });
-            var mailRecord = ConvertFromMailToMailRecord(mail);
-            try
+            var schedule = mailRepository.GetScheduleByMailId(new GetScheduleByMailIdCriteria { MailId = mail.MailingListId });
+
+            if (schedule.Active)
             {
-                ValidateMail(mailRecord);
-                mailId = (int)mailDeliverBusiness.InsertMailRecord(mailRecord);
-                if (schedule.Active)
+                try
                 {
+                    var mailRecord = ConvertFromMailToMailRecord(mail);
+
+                    ValidateMail(mailRecord);
+
+                    mailId = (int)mailDeliverBusiness.InsertMailRecord(mailRecord);
+
                     if (mailId > 0)
                     {
-                        LogExtension.LogMessage(string.Format("Stored mail {0}", mailId));
+                        logService.LogInfo($"Mail({mail.MailingListId}) are stored successfully with msite mail id {mailId}.");
+
                         mailRecord.IsReady = true;
                         mailRecord.MailID = mailId;
 
-                        SendMail(mailRecord);
+                        SendMailRecord(mailRecord);
 
                         // If is function mail
                         // Insert a MailTask record to database
@@ -189,35 +202,33 @@ namespace Fanex.MailDelivery.Services.Services.MailService
                     }
                     else
                     {
-                        LogExtension.LogMessage("Store mail failed.");
+                        throw new InvalidOperationException($"Failed to store Mail({mail.MailingListId}).");
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                LogService.LogError(ex, schedule);
+                catch (Exception ex)
+                {
+                    logService.LogError(ex, schedule);
+                }
             }
 
             return mailId;
         }
 
-        /// <summary>
-        /// Send mail.
-        /// </summary>
-        /// <param name="record">Mail information.</param>
-        public void SendMail(MailRecord record)
+        public void SendMailRecord(MailRecord record)
         {
             record = record.IsReady ? record : mailDeliverBusiness.GetMailRecord(record.MailID, true);
+
             if (record != null && record.IsReady)
             {
                 string error = string.Empty;
+
                 try
                 {
                     MailExtension.SendMail(record, out error);
                 }
                 catch (Exception exception)
                 {
-                    LogService.LogError(exception);
+                    logService.LogError(exception);
                 }
                 finally
                 {
@@ -231,14 +242,10 @@ namespace Fanex.MailDelivery.Services.Services.MailService
         {
             if (string.IsNullOrWhiteSpace(mail.Subject))
             {
-                throw new ArgumentNullException("Subject", "Mail subject cannot be null or empty.");
+                throw new ArgumentNullException("mail.Subject", "Mail subject cannot be null or empty.");
             }
         }
 
-        /// <summary>
-        /// Updates the running JobRequest.
-        /// </summary>
-        /// <param name="jobRequestJobRequest result message.</param>
         private void UpdateRunningJob(JobMessage jobMessage)
         {
             mailRepository.UpdateMailTaskStatus(new UpdateMailTaskStatusCriteria()
@@ -276,10 +283,6 @@ namespace Fanex.MailDelivery.Services.Services.MailService
             });
         }
 
-        /// <summary>
-        /// Updates for the data not ready JobRequest.
-        /// </summary>
-        /// <param name="jobRequestJobRequest result message.</param>
         private void UpdateDataNotReadyJob(JobMessage jobMessage)
         {
             mailRepository.UpdateMailTaskStatus(new UpdateMailTaskStatusCriteria()
@@ -289,10 +292,6 @@ namespace Fanex.MailDelivery.Services.Services.MailService
             });
         }
 
-        /// <summary>
-        /// Updates the success JobRequest.
-        /// </summary>
-        /// <param name="jobRequestJobRequest result message.</param>
         private void UpdateSuccessJob(JobMessage jobMessage)
         {
             mailRepository.UpdateMailTaskStatus(new UpdateMailTaskStatusCriteria()
@@ -304,9 +303,11 @@ namespace Fanex.MailDelivery.Services.Services.MailService
 
             // Because the JobRequest cannot be update to success when aborted. We will check Status again to make sure JobRequest is done.
             var mailTask = mailRepository.GetMailTaskById(new GetMailTaskByIdCriteria() { MailTaskId = jobMessage.Schedule.TaskId });
+
             if (mailTask.Status == (int)jobMessage.JobStatus)
             {
                 int mailRecordId = SendMail(jobMessage.Mail);
+
                 mailRepository.UpdateMailTask(new UpdateMailTaskMSiteMailIdCriteria()
                 {
                     TaskId = jobMessage.Schedule.TaskId,
@@ -315,10 +316,6 @@ namespace Fanex.MailDelivery.Services.Services.MailService
             }
         }
 
-        /// <summary>
-        /// Updates the success JobRequest.
-        /// </summary>
-        /// <param name="jobRequestJobRequest result message.</param>
         private void UpdateSuccessJobWithoutSendMail(JobMessage jobMessage)
         {
             mailRepository.UpdateMailTaskStatus(new UpdateMailTaskStatusCriteria()
@@ -330,6 +327,7 @@ namespace Fanex.MailDelivery.Services.Services.MailService
 
             // Because the JobRequest cannot be update to success when aborted. We will check Status again to make sure JobRequest is done.
             var mailTask = mailRepository.GetMailTaskById(new GetMailTaskByIdCriteria() { MailTaskId = jobMessage.Schedule.TaskId });
+
             if (mailTask.Status == (int)jobMessage.JobStatus)
             {
                 mailRepository.UpdateMailTask(new UpdateMailTaskMSiteMailIdCriteria()
@@ -348,7 +346,7 @@ namespace Fanex.MailDelivery.Services.Services.MailService
                 Status = (int)JobStatus.JobFailed
             });
 
-            if (jobMessage != null && jobMessage.TaskLog != null)
+            if (jobMessage.TaskLog != null)
             {
                 mailRepository.AddMailLog(new AddMailLogCriteria()
                 {
@@ -361,61 +359,75 @@ namespace Fanex.MailDelivery.Services.Services.MailService
             }
         }
 
-        /// <summary>
-        /// Converts from mail to mail record.
-        /// </summary>
-        /// <param name="mail">The mail info.</param>
-        /// <returns>Mail Record.</returns>
         private MailRecord ConvertFromMailToMailRecord(Mail mail)
         {
-            var mailRecord = new MailRecord();
-            mailRecord.AppID = mail.ApplicationSendMailId;
-            mailRecord.Config = new MailConfig();
-            mailRecord.Config.AppID = mail.ApplicationSendMailId;
-            mailRecord.Body = mail.Body;
-            mailRecord.Subject = mail.Subject;
-            mailRecord.Title = mail.Title;
-            if (mail.Attachments != null && mail.Attachments.Count > 0)
-            {
-                int mailAttachCount = mail.Attachments.Count;
-                for (int i = 0; i < mailAttachCount; i++)
-                {
-                    var attach = mail.Attachments[i];
-                    mailRecord.Attachments.Add(new Fanex.MailDeliver.Model.MailAttachment()
-                    {
-                        AttachmentID = attach.Id,
-                        Content = new System.IO.MemoryStream(attach.FileContent),
-                        ContentType = (FileExtentions)((int)attach.FileExtension),
-                        FileName = attach.FileName,
-                        MailID = attach.MailId
-                    });
-                }
-            }
+            var mailingList = mailRepository.GetMailingList(new GetMailWithEmailAddressByMailId() { MailId = mail.MailingListId });
 
-            if (mail.AlternativeViews != null && mail.AlternativeViews.Count > 0)
+            var mailRecord = new MailRecord
             {
-                int alternativeViewsCount = mail.AlternativeViews.Count;
+                AppID = mail.ApplicationSendMailId,
+                Config = new MailConfig
+                {
+                    AppID = mail.ApplicationSendMailId
+                },
+                Body = mail.Body,
+                Subject = mail.Subject,
+                Title = mail.Title,
+                MailTo = string.Join(";", mailingList.TOs),
+                MailCc = string.Join(";", mailingList.CCs),
+                MailBcc = string.Join(";", mailingList.BCCs)
+            };
+
+            TransferAttachmentsToMailRecord(mail, mailRecord);
+
+            TransferAlternateViewToMailRecord(mail, mailRecord);
+
+            return mailRecord;
+        }
+
+        private static void TransferAlternateViewToMailRecord(Mail sourceMail, MailRecord destinationMailRecord)
+        {
+            if (sourceMail.AlternativeViews != null && sourceMail.AlternativeViews.Count > 0)
+            {
+                int alternativeViewsCount = sourceMail.AlternativeViews.Count;
+
                 for (int i = 0; i < alternativeViewsCount; i++)
                 {
-                    var alternativeView = mail.AlternativeViews[i];
-                    mailRecord.AlternateView.Add(new Fanex.MailDeliver.Model.MailLinkedResource()
+                    var alternativeView = sourceMail.AlternativeViews[i];
+
+                    destinationMailRecord.AlternateView.Add(new MailDeliver.Model.MailLinkedResource()
                     {
                         ContentCID = alternativeView.ContentId,
                         FileName = alternativeView.FileName,
                         ImageType = (FileExtentions)((int)alternativeView.FileExtension),
                         LinkedID = alternativeView.Id,
                         MailID = alternativeView.MailId,
-                        StreamContent = new System.IO.MemoryStream(alternativeView.FileContent)
+                        StreamContent = new MemoryStream(alternativeView.FileContent)
                     });
                 }
             }
+        }
 
-            // Get Mailing List from database
-            var mailingList = mailRepository.GetMailingList(new GetMailWithEmailAddressByMailId() { MailId = mail.MailingListId });
-            mailRecord.MailTo = string.Join(";", mailingList.TOs);
-            mailRecord.MailCc = string.Join(";", mailingList.CCs);
-            mailRecord.MailBcc = string.Join(";", mailingList.BCCs);
-            return mailRecord;
+        private static void TransferAttachmentsToMailRecord(Mail sourceMail, MailRecord destinationMailRecord)
+        {
+            if (sourceMail.Attachments != null && sourceMail.Attachments.Count > 0)
+            {
+                int mailAttachCount = sourceMail.Attachments.Count;
+
+                for (int i = 0; i < mailAttachCount; i++)
+                {
+                    var attach = sourceMail.Attachments[i];
+
+                    destinationMailRecord.Attachments.Add(new MailDeliver.Model.MailAttachment()
+                    {
+                        AttachmentID = attach.Id,
+                        Content = new MemoryStream(attach.FileContent),
+                        ContentType = (FileExtentions)((int)attach.FileExtension),
+                        FileName = attach.FileName,
+                        MailID = attach.MailId
+                    });
+                }
+            }
         }
     }
 }

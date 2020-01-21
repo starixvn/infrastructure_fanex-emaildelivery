@@ -1,4 +1,5 @@
 ﻿using EasyNetQ.Logging;
+using Fanex.MailDelivery.Services.Services.Logging;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -7,13 +8,23 @@ using System.Timers;
 
 namespace Fanex.MailDelivery.MailStationService.Logging
 {
-    public static class RabbitMQLogger
+    public class RabbitMQLogger
     {
         private const int SendingMaxTime = 10;
-        private static int sendingMessageCount = SendingMaxTime;
-        private static readonly Timer timer = new Timer(10 * 60 * 1000);
+        private int sendingMessageCount = SendingMaxTime;
+        private readonly Timer timer = new Timer(10 * 60 * 1000);
+        private readonly LogService logService;
 
-        public static void LogError(string message, Exception exception)
+        public RabbitMQLogger() : this(null)
+        {
+        }
+
+        public RabbitMQLogger(LogService logService)
+        {
+            this.logService = logService ?? new LogServiceImpl();
+        }
+
+        public void LogError(string message, Exception exception)
         {
             if (sendingMessageCount > 0)
             {
@@ -25,11 +36,11 @@ namespace Fanex.MailDelivery.MailStationService.Logging
                     timer.Start();
                 }
 
-                LogService.LogError(message, exception);
+                logService.LogError(message, exception);
             }
         }
 
-        private static void Timer_Elapsed(object sender, ElapsedEventArgs e)
+        private void Timer_Elapsed(object sender, ElapsedEventArgs e)
         {
             timer.Stop();
             timer.Elapsed -= Timer_Elapsed;
@@ -40,6 +51,13 @@ namespace Fanex.MailDelivery.MailStationService.Logging
 
     public class RabbitMQLogProvider : EasyNetQ.Logging.ILogProvider
     {
+        private readonly RabbitMQLogger logger;
+
+        public RabbitMQLogProvider()
+        {
+            this.logger = new RabbitMQLogger();
+        }
+
         public EasyNetQ.Logging.Logger GetLogger(string name)
         {
             return (logLevel, messageFunc, exception, formatParameters) =>
@@ -51,7 +69,7 @@ namespace Fanex.MailDelivery.MailStationService.Logging
 
                     if (exception != null)
                     {
-                        RabbitMQLogger.LogError(message, exception);
+                        logger.LogError(message, exception);
                     }
                 }
 

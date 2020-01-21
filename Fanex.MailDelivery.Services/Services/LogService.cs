@@ -1,83 +1,71 @@
-﻿using System;
-using System.Collections.Generic;
-using Fanex.Logging;
+﻿using Fanex.Logging;
+using Fanex.Logging.Extensions;
 using Fanex.MailDelivery.Core.Models;
+using System;
+using System.Collections.Generic;
 
 namespace Fanex.MailDelivery.Services.Services.Logging
 {
-    public static class LogService
+    public interface LogService
     {
-        public static void LogError(Exception ex)
+        void LogInfo(string logMessage);
+
+        void LogError(Exception exception);
+
+        void LogError(string message, Exception exception);
+
+        void LogError(Exception ex, Schedule schedule);
+
+        void LogError(Exception ex, int mailId);
+
+        void LogError(Exception ex, List<int> scheduleIds);
+    }
+
+    public class LogServiceImpl : LogService
+    {
+        public void LogError(Exception exception)
         {
-            string message = ex.Message +
-                "<br>\r\nSOURCE: " + ex.Source +
-                "<br>\r\nTARGETSITE: " + ex.TargetSite +
-                "<br>\r\nSTACKTRACE: " + ex.StackTrace;
-            Logger.Log.Error(message);
+            LogError(exception.Message, exception);
         }
 
-        public static void LogError(Exception ex, Schedule schedule)
+        public void LogError(string message, Exception exception)
         {
-            //// Logger.Log.Error(
-            ////    "MailId: " +
-            ////    schedule.Id +
-            ////    Environment.NewLine +
-            ////    "Mail Name: " +
-            ////    (schedule.Name ?? string.Empty) +
-            ////    Environment.NewLine +
-            ////    ex.Message,
-            ////    ex);
+            var logMessage = new LogMessage(message)
+                        .AddSection("Server Info", CommonInfoGetters.GetServerInfo())
+                        .AddSection("Exception Info", CommonInfoGetters.GetExceptionInfo(exception))
+                        .ToString();
 
-            string message =
-                (schedule.TriggerTypeEnum == MailType.Function ? "Function " : "Schedule ") +
-                "MailId: " + schedule.Id +
-                "<br>\r\nMail Name: " + (schedule.Name ?? string.Empty) +
-                "<br>\r\nMessage: " + ex.Message +
-                "<br>\r\nSOURCE: " + ex.Source +
-                "<br>\r\nTARGETSITE: " + ex.TargetSite +
-                "<br>\r\nSTACKTRACE: " + ex.StackTrace;
-            Logger.Log.Error(message);
+            Logger.Log.Error(logMessage);
         }
 
-        public static void LogError(Exception ex, int id)
+        public void LogInfo(string logMessage)
         {
-            ////Logger.Log.Error(
-            ////    "Function MailId: " +
-            ////    id +
-            ////    Environment.NewLine +
-            ////    ex.Message,
-            ////    ex);
-
-            string message =
-               "Function MailId: " + id +
-               "<br>\r\nMessage: " + ex.Message +
-               "<br>\r\nSOURCE: " + ex.Source +
-               "<br>\r\nTARGETSITE: " + ex.TargetSite +
-               "<br>\r\nSTACKTRACE: " + ex.StackTrace;
-            Logger.Log.Error(message);
+            Logger.Log.Info(logMessage);
         }
 
-        public static void LogError(Exception ex, List<int> scheduleIds)
+        public void LogError(Exception ex, Schedule schedule)
         {
-            ////Logger.Log.Error(
-            ////    "MailId: " +
-            ////    string.Join(", ", scheduleIds) +
-            ////    Environment.NewLine +
-            ////    ex.Message,
-            ////    ex);
+            string message = $@"{(schedule.TriggerTypeEnum == MailType.Function ? "Function" : "Schedule")} MailId: {schedule.Id}
+                                <br>\r\nMail Name: {schedule.Name}
+                                <br>\r\nMessage: {ex.Message}";
 
-            string message =
-               "MailId: " + string.Join(", ", scheduleIds) +
-               "<br>\r\nMessage: " + ex.Message +
-               "<br>\r\nSOURCE: " + ex.Source +
-               "<br>\r\nTARGETSITE: " + ex.TargetSite +
-               "<br>\r\nSTACKTRACE: " + ex.StackTrace;
-            Logger.Log.Error(message);
+            LogError(message, ex);
         }
 
-        public static void LogInfo(string messsage)
+        public void LogError(Exception ex, int mailId)
         {
-            Logger.Log.Info(messsage);
+            string message = $@"Schedule MailId: {mailId}
+                                <br>\r\nMessage: {ex.Message}";
+
+            LogError(message, ex);
+        }
+
+        public void LogError(Exception ex, List<int> scheduleIds)
+        {
+            string message = $@"MailId: {string.Join(", ", scheduleIds)}
+                                <br>\r\nMessage: {ex.Message}";
+
+            LogError(message, ex);
         }
     }
 }

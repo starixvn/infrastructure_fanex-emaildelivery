@@ -8,19 +8,21 @@ namespace Fanex.MailDelivery.MailStationService
 {
     partial class MainService : ServiceBase
     {
-        private IClientServerMessageBroker messageBroker;
+        private IMessageBroker messageBroker;
         private int startCounter = 0;
+        private readonly LogService logService;
 
         public MainService()
-            : this(null)
+            : this(null, null)
         {
         }
 
-        public MainService(IClientServerMessageBroker messageBroker)
+        public MainService(IMessageBroker messageBroker, LogService logService)
         {
             InitializeComponent();
 
-            this.messageBroker = messageBroker ?? new ClientServerMessageBroker();
+            this.logService = logService ?? new LogServiceImpl();
+            this.messageBroker = messageBroker ?? new MessageBroker();
             DbSettingProviderManager.Current.Start();
         }
 
@@ -48,7 +50,7 @@ namespace Fanex.MailDelivery.MailStationService
                 }
                 catch (Exception exception)
                 {
-                    LogService.LogError(exception);
+                    logService.LogError(exception);
 
                     StartService();
                 }

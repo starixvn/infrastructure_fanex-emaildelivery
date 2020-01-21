@@ -11,24 +11,25 @@ using System.Threading.Tasks;
 
 namespace Fanex.MailDelivery.MailStationService.MessageBrokers
 {
-    public interface IClientServerMessageBroker : IDisposable
+    public interface IMessageBroker : IDisposable
     {
         void Start();
     }
 
-    public class ClientServerMessageBroker : IClientServerMessageBroker
+    public class MessageBroker : IMessageBroker
     {
         private IBus bus;
         private readonly IMailService mailService;
 
-        public ClientServerMessageBroker()
+        public MessageBroker()
             : this(null)
         {
         }
 
-        public ClientServerMessageBroker(IMailService mailService)
+        public MessageBroker(IMailService mailService)
         {
             LogProvider.SetCurrentLogProvider(new RabbitMQLogProvider());
+
             this.mailService = mailService ?? new MailService(AppSettings.SendMailRetryLimit);
         }
 
@@ -127,7 +128,7 @@ namespace Fanex.MailDelivery.MailStationService.MessageBrokers
             }
         }
 
-        ~ClientServerMessageBroker()
+        ~MessageBroker()
         {
             Dispose(false);
         }
