@@ -106,7 +106,7 @@ namespace Fanex.MailDelivery.MailStationService.MessageBrokers
 
         private void RespondGetMailTaskForById()
         {
-            bus.Respond<GetMailTaskByIdRequest, MailTaskModel>(request => { return mailService.GetMailTaskById(request); });
+            bus.RespondAsync<GetMailTaskByIdRequest, MailTaskModel>(request => Task.FromResult(mailService.GetMailTaskById(request)));
         }
         #endregion
 

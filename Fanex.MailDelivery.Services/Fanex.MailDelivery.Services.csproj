@@ -51,8 +51,9 @@
       <HintPath>..\packages\Fanex.Logging.Extensions.1.0.6\lib\net461\Fanex.Logging.Extensions.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Fanex.MailDeliver.Core">
-      <HintPath>..\_Dependencies\MailService\Fanex.MailDeliver.Core.dll</HintPath>
+    <Reference Include="Fanex.MailDeliver.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Fanex.MailDeliver.Core.1.0.0-beta1\lib\net40\Fanex.MailDeliver.Core.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Fanex.MailDeliver.MailClient, Version=1.0.0.4, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Fanex.MailDeliver.MailClient.1.0.0.4\lib\net40\Fanex.MailDeliver.MailClient.dll</HintPath>
