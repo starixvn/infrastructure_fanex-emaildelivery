@@ -117,7 +117,6 @@
     <Compile Include="Repositories\MailRepository.cs" />
     <Compile Include="Services\LogService.cs" />
     <Compile Include="Services\MailService.cs" />
-    <Compile Include="Services\RetryOnMailRecordService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Fanex.MailDelivery.Core\Fanex.MailDelivery.Core.csproj">

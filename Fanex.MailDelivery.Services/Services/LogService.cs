@@ -16,6 +16,8 @@ namespace Fanex.MailDelivery.Services.Services.Logging
 
         void LogError(Exception ex, Schedule schedule);
 
+        void LogError(Exception ex, Schedule schedule, int mailId);
+
         void LogError(Exception ex, int mailId);
 
         void LogError(Exception ex, List<int> scheduleIds);
@@ -45,11 +47,18 @@ namespace Fanex.MailDelivery.Services.Services.Logging
 
         public void LogError(Exception ex, Schedule schedule)
         {
-            string message = $@"{(schedule.TriggerTypeEnum == MailType.Function ? "Function" : "Schedule")} MailId: {schedule.Id}
+            if (schedule != null)
+            {
+                string message = $@"{(schedule.TriggerTypeEnum == MailType.Function ? "Function" : "Schedule")} MailId: {schedule.Id}
                                 <br>\r\nMail Name: {schedule.Name}
                                 <br>\r\nMessage: {ex.Message}";
 
-            LogError(message, ex);
+                LogError(message, ex);
+            }
+            else
+            {
+                LogError(ex);
+            }
         }
 
         public void LogError(Exception ex, int mailId)
@@ -66,6 +75,18 @@ namespace Fanex.MailDelivery.Services.Services.Logging
                                 <br>\r\nMessage: {ex.Message}";
 
             LogError(message, ex);
+        }
+
+        public void LogError(Exception ex, Schedule schedule, int mailId)
+        {
+            if (schedule != null)
+            {
+                LogError(ex, schedule);
+            }
+            else
+            {
+                LogError(ex, mailId);
+            }
         }
     }
 }
