@@ -17,13 +17,11 @@ namespace MailClientTest.Installer
         {
             try
             {
-                while (true)
+                bool isStarted = false;
+
+                while (!isStarted)
                 {
-                    var result = Execute();
-                    if (result)
-                    {
-                        break;
-                    }
+                    isStarted = Execute();
 
                     if (counter >= maxRetryStartUpService)
                     {
@@ -32,7 +30,6 @@ namespace MailClientTest.Installer
 
                     Thread.Sleep(1000 * maxIntervalStartUpServiceInSecond);
                 }
-
 
                 Console.WriteLine("Mail Client Service Site: {0} started.", AppSettings.MailCientConfig.SiteId);
                 Console.WriteLine("App Name: {0}", System.Diagnostics.Process.GetProcessById(System.Diagnostics.Process.GetCurrentProcess().Id).ProcessName);
