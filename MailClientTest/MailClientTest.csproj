@@ -18,6 +18,7 @@
     <RestorePackages>true</RestorePackages>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <SonarQubeExclude>True</SonarQubeExclude>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <PlatformTarget>AnyCPU</PlatformTarget>

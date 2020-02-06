@@ -2,10 +2,10 @@
 
 namespace MailClientTest.Jobs
 {
-    using System;
-    using System.Threading;
     using Fanex.MailDelivery.Client.Jobs;
     using Quartz;
+    using System;
+    using System.Threading;
 
     /// <summary>
     /// Hello JobRequest.
@@ -15,7 +15,7 @@ namespace MailClientTest.Jobs
         protected override JobMessage Run(Schedule schedule, IJobExecutionContext jobContext)
         {
             var jobLog = string.Format(
-                "Run Normal JobRequest but not send mail: \n\tSite Id: {0}, Schedule: {1}. \n\tSent at {2}",
+                "Run Normal JobRequest: \n\tSite Id: {0}, Schedule: {1}. \n\tSent at {2}",
                 schedule.SiteId,
                 schedule.Id,
                 DateTime.Now);

@@ -2,10 +2,10 @@
 
 namespace MailClientTest.Jobs
 {
-    using System;
-    using System.Threading;
     using Fanex.MailDelivery.Client.Jobs;
     using Quartz;
+    using System;
+    using System.Threading;
 
     /// <summary>
     /// Hello JobRequest.
