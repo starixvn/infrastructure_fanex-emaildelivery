@@ -18,76 +18,34 @@ namespace Fanex.MailDelivery.Client.Jobs
 
                 if (schedule != null && schedule.Active)
                 {
-                    int taskId = schedule.TaskId;
-
-                    JobMessage jobResult = new JobMessage();
-                    jobResult.JobStatus = JobStatus.Running;
-                    jobResult.ScheduledTime = context.ScheduledFireTimeUtc.GetValueOrDefault().DateTime.ToLocalTime();
-                    jobResult.RunningTime = context.FireTimeUtc.DateTime.ToLocalTime();
-                    jobResult.Schedule = schedule.Clone();
+                    JobMessage jobResult = new JobMessage
+                    {
+                        JobStatus = JobStatus.Running,
+                        ScheduledTime = context.ScheduledFireTimeUtc.GetValueOrDefault().DateTime.ToLocalTime(),
+                        RunningTime = context.FireTimeUtc.DateTime.ToLocalTime(),
+                        Schedule = schedule.Clone()
+                    };
 
                     if (schedule.TaskId == 0)
                     {
                         jobResult = await MailClientHandler.RequestAddMailTaskForRunningJobAsync(jobResult);
 
-                        taskId = jobResult.Schedule.TaskId;
-                    }
-                    else
-                    {
-                        var mailtask = await MailClientHandler.RequestMailTaskByIdAsync(new GetMailTaskByIdRequest
-                        {
-                            TaskId = schedule.TaskId
-                        });
-
-                        if (mailtask != null && mailtask.Status == (int)JobStatus.Abort)
-                        {
-                            // If the job is aborted, then shut down.
-                            return;
-                        }
+                        schedule.TaskId = jobResult.Schedule.TaskId;
                     }
 
-                    await MailClientHandler.ReportJobAsync(jobResult);
-
-                    try
+                    if (schedule.TaskId == 0)
                     {
-                        var mailJobResult = Run(schedule, context);
-
-                        if (mailJobResult == null || mailJobResult.Mail == null)
-                        {
-                            throw new InvalidOperationException($"Mail information cannot be null");
-                        }
-                        else
-                        {
-                            jobResult = mailJobResult;
-                            jobResult.Mail.MailingListId = schedule.Id;
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        jobResult.TaskLog = new TaskLog
-                        {
-                            LogTime = DateTime.Now,
-                            Message = ex.Message,
-                            StackTrace = ex.StackTrace
-                        };
-
-                        jobResult.JobStatus = JobStatus.JobFailed;
+                        throw new InvalidOperationException($"Cannot add a new mail task for the scheduled mail #{schedule.Id}");
                     }
 
-                    jobResult.Schedule.TaskId = taskId;
-
-                    if (jobResult.JobStatus != JobStatus.Success && jobResult.JobStatus != JobStatus.SuccessWithoutSendmail)
+                    var mailtask = await MailClientHandler.RequestMailTaskByIdAsync(new GetMailTaskByIdRequest
                     {
-                        await RetryJob(jobResult.Schedule);
+                        TaskId = schedule.TaskId
+                    });
 
-                        jobResult.JobStatus = jobResult.Schedule.IsRunning() ? JobStatus.Running : jobResult.JobStatus;
-                    }
-
-                    await MailClientHandler.ReportJobAsync(jobResult);
-
-                    if (jobResult.JobStatus != JobStatus.Running)
+                    if (mailtask != null && mailtask.Status != (int)JobStatus.Abort)
                     {
-                        schedule.TaskId = 0;
+                        await HandleJob(context, schedule, jobResult);
                     }
                 }
             }
@@ -97,9 +55,67 @@ namespace Fanex.MailDelivery.Client.Jobs
             }
         }
 
+        private async Task HandleJob(IJobExecutionContext context, Schedule schedule, JobMessage jobMessage)
+        {
+            JobMessage jobResult = jobMessage;
+
+            await MailClientHandler.ReportJobAsync(jobResult);
+
+            jobResult = RunJob(context, schedule, jobResult);
+
+            jobResult.Schedule = schedule;
+
+            if (jobResult.JobStatus != JobStatus.Success && jobResult.JobStatus != JobStatus.SuccessWithoutSendmail)
+            {
+                jobResult.JobStatus = jobResult.Schedule.IsRunning() ? JobStatus.Running : jobResult.JobStatus;
+
+                await RetryJobAsync(jobResult.Schedule);
+            }
+
+            await MailClientHandler.ReportJobAsync(jobResult);
+
+            if (jobResult.JobStatus != JobStatus.Running)
+            {
+                schedule.TaskId = 0;
+            }
+        }
+
+        private JobMessage RunJob(IJobExecutionContext context, Schedule schedule, JobMessage jobMessage)
+        {
+            JobMessage jobResult = jobMessage;
+
+            try
+            {
+                var mailJobResult = Run(schedule, context);
+
+                if (mailJobResult == null || mailJobResult.Mail == null)
+                {
+                    throw new InvalidOperationException($"Mail information cannot be null");
+                }
+                else
+                {
+                    jobResult = mailJobResult;
+                    jobResult.Mail.MailingListId = schedule.Id;
+                }
+            }
+            catch (Exception ex)
+            {
+                jobResult.TaskLog = new TaskLog
+                {
+                    LogTime = DateTime.Now,
+                    Message = ex.InnerException?.Message ?? ex.Message,
+                    StackTrace = ex.StackTrace
+                };
+
+                jobResult.JobStatus = JobStatus.JobFailed;
+            }
+
+            return jobResult;
+        }
+
         protected abstract JobMessage Run(Schedule schedule, IJobExecutionContext jobContext);
 
-        private static async Task RetryJob(Schedule schedule)
+        private static async Task RetryJobAsync(Schedule schedule)
         {
             schedule.CurrentRetryTimes++;
 
