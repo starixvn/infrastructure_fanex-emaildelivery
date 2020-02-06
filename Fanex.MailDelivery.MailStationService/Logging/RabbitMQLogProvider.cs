@@ -8,7 +8,7 @@ using System.Timers;
 
 namespace Fanex.MailDelivery.MailStationService.Logging
 {
-    public class RabbitMQLogger
+    public class RabbitMQLogger : IDisposable
     {
         private const int SendingMaxTime = 10;
         private int sendingMessageCount = SendingMaxTime;
@@ -47,9 +47,39 @@ namespace Fanex.MailDelivery.MailStationService.Logging
 
             sendingMessageCount = SendingMaxTime;
         }
+
+        #region IDisposable Support
+        private bool disposedValue = false;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    // TODO: dispose managed state (managed objects).
+                }
+
+                timer?.Dispose();
+
+                disposedValue = true;
+            }
+        }
+
+        ~RabbitMQLogger()
+        {
+            Dispose(false);
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        #endregion
     }
 
-    public class RabbitMQLogProvider : EasyNetQ.Logging.ILogProvider
+    public class RabbitMQLogProvider : EasyNetQ.Logging.ILogProvider, IDisposable
     {
         private readonly RabbitMQLogger logger;
 
@@ -86,6 +116,36 @@ namespace Fanex.MailDelivery.MailStationService.Logging
         public IDisposable OpenNestedContext(string message)
         {
             throw new NotImplementedException();
+        }
+        #endregion
+
+        #region IDisposable Support
+        private bool disposedValue = false;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    // TODO: dispose managed state (managed objects).
+                }
+
+                logger?.Dispose();
+
+                disposedValue = true;
+            }
+        }
+
+        ~RabbitMQLogProvider()
+        {
+            Dispose(false);
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
         #endregion
     }

@@ -30,6 +30,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <RegisterForComInterop>false</RegisterForComInterop>
     <Prefer32Bit>false</Prefer32Bit>
+    <CodeAnalysisRuleSet>Fanex.MailDelivery.Client.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -39,6 +40,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <CodeAnalysisRuleSet>Fanex.MailDelivery.Client.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Common.Logging, Version=3.0.0.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
@@ -142,6 +144,7 @@
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Fanex.MailDelivery.Client.ruleset" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
