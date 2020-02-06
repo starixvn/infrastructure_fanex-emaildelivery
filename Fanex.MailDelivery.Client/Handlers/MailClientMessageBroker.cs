@@ -79,7 +79,7 @@ namespace Fanex.MailDelivery.Client.Handlers
             ScheduleElementCollection schedules = AppSettings.MailCientConfig.Schedules;
             string mailIds = string.Join(",", schedules.OfType<ScheduleElement>().Select(x => x.Id));
 
-            await bus.PublishAsync(new UpdateActiveTimeRequest() { MailIds = mailIds }, MailDeliveryConstants.ClientNotificationTopic);
+            await bus.PublishAsync(new UpdateActiveTimeRequest { MailIds = mailIds }, MailDeliveryConstants.ClientNotificationTopic);
         }
 
         public async Task PublishJobMessageAsync(JobMessage jobMessage)
@@ -147,7 +147,7 @@ namespace Fanex.MailDelivery.Client.Handlers
         }
         #endregion
 
-        private string GetSubscriptionIdKey(string topic)
+        private static string GetSubscriptionIdKey(string topic)
         {
             var ip = (
                 from ips in Dns.GetHostEntry(Dns.GetHostName()).AddressList

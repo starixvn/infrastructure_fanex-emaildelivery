@@ -1,15 +1,6 @@
-﻿// -----------------------------------------------------------------------
-// <copyright file="MailType.cs" company="">
-// TODO: Update copyright text.
-// </copyright>
-// -----------------------------------------------------------------------
-
-namespace Fanex.MailDelivery.Core.Models
+﻿namespace Fanex.MailDelivery.Core.Models
 {
-    /// <summary>
-    /// Mail Type.
-    /// </summary>
-    public enum MailType : int
+    public enum MailType
     {
         /// <summary>
         /// Function mail.

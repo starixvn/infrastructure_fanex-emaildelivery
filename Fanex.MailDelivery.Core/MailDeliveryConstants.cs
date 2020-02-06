@@ -1,9 +1,6 @@
 ﻿namespace Fanex.MailDelivery.Core
 {
-    /// <summary>
-    /// Route key for deliver message.
-    /// </summary>
-    public class MailDeliveryConstants
+    public static class MailDeliveryConstants
     {
         public const string SendMailRoutingKey = "RoutingKey.SendMail";
         public const string JobResultRoutingKey = "RoutingKey.JobResult";
@@ -25,7 +22,7 @@
         public const int ClientNotificationIntervalTimeInSecond = 10;
 
         // Server Time is UTC -4.
-        public const string LocalServerTimeZone = "Atlantic Standard Time";
+        public const string LocalServerTimeZone = "SA Western Standard Time";
 
         public const string LiveServerTimeZone = "SA Western Standard Time";
     }

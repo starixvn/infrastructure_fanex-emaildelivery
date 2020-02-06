@@ -1,38 +1,22 @@
 ﻿using Fanex.MailDelivery.Client;
+using Fanex.MailDelivery.Client.Configurations;
 using Fanex.MailDelivery.Core.Models;
+using System;
+using System.ServiceProcess;
+using System.Threading;
 
 namespace MailClientTest.Installer
 {
-    using System;
-    using System.ServiceProcess;
-    using System.Threading;
-    using Fanex.MailDelivery.Client.Configurations;
-    using Fanex.MailDelivery.Client.Handlers;
-
-    /// <summary>
-    /// Mail client service for testing.
-    /// </summary>
     public partial class MailClientTestService : ServiceBase
     {
         private int counter;
         private int maxRetryStartUpService = 5;
         private int maxIntervalStartUpServiceInSecond = 60;
 
-        public MailClientTestService()
-        {
-        }
-
-        /// <summary>
-        /// When implemented in a derived class, executes when a Start command is sent to the service by the Service Control Manager (SCM) 
-        /// or when the operating system starts (for a service that starts automatically). Specifies actions to take when the service starts.
-        /// </summary>
-        /// <param name="args">Data passed by the start command.</param>
         protected override void OnStart(string[] args)
         {
             try
             {
-                //MailClientHandler.Start();
-
                 while (true)
                 {
                     var result = Execute();
@@ -94,9 +78,6 @@ namespace MailClientTest.Installer
             MailClientHandler.Stop();
         }
 
-        /// <summary>
-        /// Sends the function mail.
-        /// </summary>
         private void SendFunctionMail()
         {
             var mail = new Mail
@@ -106,8 +87,6 @@ namespace MailClientTest.Installer
                 Body = "Email Body.",
             };
 
-            // mail.AlternativeViews = new System.Collections.Generic.List<MailLinkedResource>();
-            // mail.AlternativeViews.Add(new MailLinkedResource("D:\\image1.jpg", Fanex.MailDelivery.Client.Enumerations.FileExtension.IMG_JPG, "contentId1"));
             mail.MailingListId = AppSettings.GetFunctionId("FuntionA");
             MailClientHandler.SendFunctionMail(mail);
             Console.WriteLine("Function Mail has been sent.");
@@ -116,6 +95,7 @@ namespace MailClientTest.Installer
         private bool Execute()
         {
             var result = false;
+
             try
             {
                 counter++;

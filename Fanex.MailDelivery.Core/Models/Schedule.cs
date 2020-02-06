@@ -2,9 +2,6 @@
 
 namespace Fanex.MailDelivery.Core.Models
 {
-    /// <summary>
-    /// Schedule information.
-    /// </summary>
     [Serializable]
     public class Schedule
     {
@@ -41,21 +38,17 @@ namespace Fanex.MailDelivery.Core.Models
 
         public MailType TriggerTypeEnum
         {
-            get 
+            get
             {
-                return this.TriggerType == 0 ? MailType.Function : MailType.Schedule;
+                return TriggerType == 0 ? MailType.Function : MailType.Schedule;
             }
 
-            set 
+            set
             {
-                this.TriggerType = (int)value;
+                TriggerType = (int)value;
             }
         }
 
-        /// <summary>
-        /// Clones this instance.
-        /// </summary>
-        /// <returns>Schedule instance.</returns>
         public Schedule Clone()
         {
             return new Schedule
@@ -84,14 +77,12 @@ namespace Fanex.MailDelivery.Core.Models
             return EndTime != null && EndTime < DateTime.Now;
         }
 
-        /// <summary>
-        /// Converts to server time.
-        /// </summary>
         public void ConvertToServerTime(bool isLocalEnvironment)
         {
-            int hoursDifferent = this.CalculateHoursDifferentBeetweenLocalAndServer(isLocalEnvironment);
+            int hoursDifferent = CalculateHoursDifferentBeetweenLocalAndServer(isLocalEnvironment);
 
             StartTime = StartTime.AddHours(hoursDifferent);
+
             if (EndTime != null)
             {
                 EndTime = EndTime.Value.AddHours(hoursDifferent);
@@ -100,40 +91,33 @@ namespace Fanex.MailDelivery.Core.Models
             ConvertCronExpressionToServerTime(hoursDifferent);
         }
 
-        /// <summary>
-        /// Converts the CRON expression to server time.
-        /// </summary>
-        /// <param name="hoursDifferent">The hours different.</param>
         private void ConvertCronExpressionToServerTime(int hoursDifferent)
         {
-            try
-            {
-                string[] cron = this.RepeatExpression.Split(' ');
-                int hour = int.Parse(cron[2]);
-                hour += hoursDifferent;
-                while (hour > 23)
-                {
-                    hour -= 24;
-                }
+            string[] cron = RepeatExpression.Split(' ');
+            int hour = int.Parse(cron[2]);
 
-                while (hour < 0)
-                {
-                    hour += 24;
-                }
+            hour += hoursDifferent;
 
-                cron[2] = hour.ToString();
-                this.RepeatExpression = string.Join(" ", cron);
-            }
-            catch (Exception)
+            while (hour > 23)
             {
-                // Logger.Log.Error(ex.Message);
+                hour -= 24;
             }
+
+            while (hour < 0)
+            {
+                hour += 24;
+            }
+
+            cron[2] = hour.ToString();
+
+            RepeatExpression = string.Join(" ", cron);
         }
 
-        private int CalculateHoursDifferentBeetweenLocalAndServer(bool isLocalEnvironment)
+        private static int CalculateHoursDifferentBeetweenLocalAndServer(bool isLocalEnvironment)
         {
             string timezoneName = isLocalEnvironment ? MailDeliveryConstants.LocalServerTimeZone : MailDeliveryConstants.LiveServerTimeZone;
             DateTime nowDate = DateTime.Now;
+
             return -(TimeZoneInfo.ConvertTime(nowDate, TimeZoneInfo.FindSystemTimeZoneById(timezoneName)) - nowDate).Hours;
         }
     }

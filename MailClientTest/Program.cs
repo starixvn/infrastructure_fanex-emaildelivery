@@ -1,16 +1,16 @@
-﻿using Fanex.MailDelivery.Client;
-using Fanex.MailDelivery.Client.Configurations;
+﻿using MailClientTest.Installer;
+using System;
+using System.Reflection;
+using System.ServiceProcess;
 
 namespace MailClientTest
 {
-    using System;
-    using System.Reflection;
-    using System.ServiceProcess;
-    using Fanex.MailDelivery.Client.Handlers;
-    using MailClientTest.Installer;
-
     public class Program
     {
+        protected Program()
+        {
+        }
+
         public static void Main(string[] args)
         {
             ServiceBase[] servicesToRun = new ServiceBase[]

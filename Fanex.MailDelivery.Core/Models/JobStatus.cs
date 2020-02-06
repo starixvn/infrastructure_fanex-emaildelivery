@@ -3,7 +3,7 @@
     /// <summary>
     /// JobRequest Status.
     /// </summary>
-    public enum JobStatus : int
+    public enum JobStatus 
     {
         /// <summary>
         /// The waiting status.

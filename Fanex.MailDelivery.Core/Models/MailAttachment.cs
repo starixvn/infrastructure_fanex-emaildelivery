@@ -2,9 +2,6 @@
 
 namespace Fanex.MailDelivery.Core.Models
 {
-    /// <summary>
-    /// Mail Attachment.
-    /// </summary>
     public class MailAttachment
     {
         public MailAttachment()
@@ -33,11 +30,7 @@ namespace Fanex.MailDelivery.Core.Models
         public byte[] FileContent { get; set; }
 
         public string FileName { get; set; }
-
-        /// <summary>
-        /// Reads the content of the file.
-        /// </summary>
-        /// <param name="filePath">The file path.</param>
+     
         private void ReadFileContent(string filePath)
         {
             if (FileContent == null
@@ -46,6 +39,7 @@ namespace Fanex.MailDelivery.Core.Models
                 using (var stream = File.Open(filePath, FileMode.Open))
                 {
                     FileContent = new byte[stream.Length];
+
                     stream.Read(FileContent, 0, FileContent.Length);
                 }
 
