@@ -10,24 +10,24 @@ namespace Fanex.MailDelivery.Services.Services.Logging
     {
         void LogInfo(string logMessage);
 
-        void LogError(Exception exception);
-
         void LogError(string message, Exception exception);
 
-        void LogError(Exception ex, Schedule schedule);
-
-        void LogError(Exception ex, Schedule schedule, int mailId);
+        void LogError(Exception exception);
 
         void LogError(Exception ex, int mailId);
 
         void LogError(Exception ex, List<int> scheduleIds);
+
+        void LogError(Exception ex, Schedule schedule);
+
+        void LogError(Exception ex, Schedule schedule, int mailId);
     }
 
     public class LogServiceImpl : LogService
     {
-        public void LogError(Exception exception)
+        public void LogInfo(string logMessage)
         {
-            LogError(exception.Message, exception);
+            Logger.Log.Info(logMessage);
         }
 
         public void LogError(string message, Exception exception)
@@ -40,9 +40,9 @@ namespace Fanex.MailDelivery.Services.Services.Logging
             Logger.Log.Error(logMessage);
         }
 
-        public void LogInfo(string logMessage)
+        public void LogError(Exception exception)
         {
-            Logger.Log.Info(logMessage);
+            LogError(exception.Message, exception);
         }
 
         public void LogError(Exception ex, Schedule schedule)

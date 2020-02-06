@@ -49,7 +49,7 @@ namespace Fanex.MailDelivery.MailStationService.Logging
         }
 
         #region IDisposable Support
-        private bool disposedValue = false;
+        private bool disposedValue;
 
         protected virtual void Dispose(bool disposing)
         {
@@ -120,7 +120,7 @@ namespace Fanex.MailDelivery.MailStationService.Logging
         #endregion
 
         #region IDisposable Support
-        private bool disposedValue = false;
+        private bool disposedValue;
 
         protected virtual void Dispose(bool disposing)
         {

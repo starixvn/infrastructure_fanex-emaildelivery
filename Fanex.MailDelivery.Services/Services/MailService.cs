@@ -119,6 +119,7 @@ namespace Fanex.MailDelivery.Services.Services.MailService
                         break;
 
                     default:
+                        // Do nothing
                         break;
                 }
 
@@ -134,7 +135,7 @@ namespace Fanex.MailDelivery.Services.Services.MailService
         {
             try
             {
-                jobMessage.Schedule.TaskId = mailRepository.AddMailTask(new AddMailTaskCriteria()
+                jobMessage.Schedule.TaskId = mailRepository.AddMailTask(new AddMailTaskCriteria
                 {
                     MailId = jobMessage.Schedule.Id,
                     SiteId = jobMessage.Schedule.SiteId,
@@ -151,11 +152,11 @@ namespace Fanex.MailDelivery.Services.Services.MailService
 
         public MailTaskModel GetMailTaskById(GetMailTaskByIdRequest request)
         {
-            var result = new MailTaskModel();
+            MailTaskModel result = null;
 
             try
             {
-                result = mailRepository.GetMailTaskById(new GetMailTaskByIdCriteria()
+                result = mailRepository.GetMailTaskById(new GetMailTaskByIdCriteria
                 {
                     MailTaskId = request.TaskId
                 });
@@ -163,6 +164,8 @@ namespace Fanex.MailDelivery.Services.Services.MailService
             catch (Exception ex)
             {
                 logService.LogError(ex, request.TaskId);
+
+                result = new MailTaskModel();
             }
 
             return result;
@@ -318,7 +321,7 @@ namespace Fanex.MailDelivery.Services.Services.MailService
             return error;
         }
 
-        private void ValidateMail(MailRecord mail)
+        private static void ValidateMail(MailRecord mail)
         {
             if (string.IsNullOrWhiteSpace(mail.Subject))
             {
@@ -328,13 +331,13 @@ namespace Fanex.MailDelivery.Services.Services.MailService
 
         private void UpdateRunningJob(JobMessage jobMessage)
         {
-            mailRepository.UpdateMailTaskStatus(new UpdateMailTaskStatusCriteria()
+            mailRepository.UpdateMailTaskStatus(new UpdateMailTaskStatusCriteria
             {
                 TaskId = jobMessage.Schedule.TaskId,
                 Status = (int)JobStatus.Running
             });
 
-            mailRepository.UpdateRetryCounter(new UpdateTaskRetryCounterCriteria()
+            mailRepository.UpdateRetryCounter(new UpdateTaskRetryCounterCriteria
             {
                 TaskId = jobMessage.Schedule.TaskId,
                 RetryCount = jobMessage.Schedule.CurrentRetryTimes
@@ -343,7 +346,7 @@ namespace Fanex.MailDelivery.Services.Services.MailService
             if (jobMessage.Schedule.CurrentRetryTimes > 0 && jobMessage.TaskLog != null)
             {
                 // If is retried then write log.
-                mailRepository.AddMailLog(new AddMailLogCriteria()
+                mailRepository.AddMailLog(new AddMailLogCriteria
                 {
                     LogTime = jobMessage.TaskLog.LogTime,
                     ExceptionMessage = jobMessage.TaskLog.Message,
@@ -356,7 +359,7 @@ namespace Fanex.MailDelivery.Services.Services.MailService
 
         private void UpdateAbortJob(JobMessage jobMessage)
         {
-            mailRepository.UpdateMailTaskStatus(new UpdateMailTaskStatusCriteria()
+            mailRepository.UpdateMailTaskStatus(new UpdateMailTaskStatusCriteria
             {
                 TaskId = jobMessage.Schedule.TaskId,
                 Status = (int)JobStatus.Abort
@@ -365,7 +368,7 @@ namespace Fanex.MailDelivery.Services.Services.MailService
 
         private void UpdateDataNotReadyJob(JobMessage jobMessage)
         {
-            mailRepository.UpdateMailTaskStatus(new UpdateMailTaskStatusCriteria()
+            mailRepository.UpdateMailTaskStatus(new UpdateMailTaskStatusCriteria
             {
                 TaskId = jobMessage.Schedule.TaskId,
                 Status = (int)jobMessage.JobStatus
@@ -374,7 +377,7 @@ namespace Fanex.MailDelivery.Services.Services.MailService
 
         private async Task UpdateSuccessJob(JobMessage jobMessage)
         {
-            var mailTask = mailRepository.GetMailTaskById(new GetMailTaskByIdCriteria() { MailTaskId = jobMessage.Schedule.TaskId });
+            var mailTask = mailRepository.GetMailTaskById(new GetMailTaskByIdCriteria { MailTaskId = jobMessage.Schedule.TaskId });
 
             if (mailTask.Status != (int)JobStatus.Abort)
             {
@@ -384,7 +387,7 @@ namespace Fanex.MailDelivery.Services.Services.MailService
 
         private void UpdateSuccessJobWithoutSendMail(JobMessage jobMessage)
         {
-            mailRepository.UpdateMailTaskStatus(new UpdateMailTaskStatusCriteria()
+            mailRepository.UpdateMailTaskStatus(new UpdateMailTaskStatusCriteria
             {
                 TaskId = jobMessage.Schedule.TaskId,
                 Status = (int)jobMessage.JobStatus,
@@ -392,11 +395,11 @@ namespace Fanex.MailDelivery.Services.Services.MailService
             });
 
             // Because the JobRequest cannot be update to success when aborted. We will check Status again to make sure JobRequest is done.
-            var mailTask = mailRepository.GetMailTaskById(new GetMailTaskByIdCriteria() { MailTaskId = jobMessage.Schedule.TaskId });
+            var mailTask = mailRepository.GetMailTaskById(new GetMailTaskByIdCriteria { MailTaskId = jobMessage.Schedule.TaskId });
 
             if (mailTask.Status == (int)jobMessage.JobStatus)
             {
-                mailRepository.UpdateMailTask(new UpdateMailTaskMSiteMailIdCriteria()
+                mailRepository.UpdateMailTask(new UpdateMailTaskMSiteMailIdCriteria
                 {
                     TaskId = jobMessage.Schedule.TaskId,
                     MSiteMailId = 0
@@ -406,7 +409,7 @@ namespace Fanex.MailDelivery.Services.Services.MailService
 
         private void UpdateFailedJob(JobMessage jobMessage)
         {
-            mailRepository.UpdateMailTaskStatus(new UpdateMailTaskStatusCriteria()
+            mailRepository.UpdateMailTaskStatus(new UpdateMailTaskStatusCriteria
             {
                 TaskId = jobMessage.Schedule.TaskId,
                 Status = (int)JobStatus.JobFailed
@@ -414,7 +417,7 @@ namespace Fanex.MailDelivery.Services.Services.MailService
 
             if (jobMessage.TaskLog != null)
             {
-                mailRepository.AddMailLog(new AddMailLogCriteria()
+                mailRepository.AddMailLog(new AddMailLogCriteria
                 {
                     LogTime = jobMessage.TaskLog.LogTime,
                     ExceptionMessage = jobMessage.TaskLog.Message,
@@ -427,7 +430,7 @@ namespace Fanex.MailDelivery.Services.Services.MailService
 
         private MailRecord ConvertFromMailToMailRecord(Mail mail)
         {
-            var mailingList = mailRepository.GetMailingList(new GetMailWithEmailAddressByMailId() { MailId = mail.MailingListId });
+            var mailingList = mailRepository.GetMailingList(new GetMailWithEmailAddressByMailId { MailId = mail.MailingListId });
 
             var mailRecord = new MailRecord
             {
@@ -461,7 +464,7 @@ namespace Fanex.MailDelivery.Services.Services.MailService
                 {
                     var alternativeView = sourceMail.AlternativeViews[i];
 
-                    destinationMailRecord.AlternateView.Add(new MailDeliver.Model.MailLinkedResource()
+                    destinationMailRecord.AlternateView.Add(new MailDeliver.Model.MailLinkedResource
                     {
                         ContentCID = alternativeView.ContentId,
                         FileName = alternativeView.FileName,
@@ -484,7 +487,7 @@ namespace Fanex.MailDelivery.Services.Services.MailService
                 {
                     var attach = sourceMail.Attachments[i];
 
-                    destinationMailRecord.Attachments.Add(new MailDeliver.Model.MailAttachment()
+                    destinationMailRecord.Attachments.Add(new MailDeliver.Model.MailAttachment
                     {
                         AttachmentID = attach.Id,
                         Content = new MemoryStream(attach.FileContent),

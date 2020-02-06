@@ -16,7 +16,7 @@ namespace Fanex.MailDelivery.MailStationService
             if (Environment.UserInteractive)
             {
                 Type type = typeof(ServiceBase);
-                BindingFlags flags = BindingFlags.Instance | BindingFlags.NonPublic;
+                const BindingFlags flags = BindingFlags.Instance | BindingFlags.NonPublic;
                 MethodInfo method = type.GetMethod("OnStart", flags);
 
                 foreach (ServiceBase service in servicesToRun)

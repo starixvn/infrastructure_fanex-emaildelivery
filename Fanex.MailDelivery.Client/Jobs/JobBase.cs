@@ -34,7 +34,7 @@ namespace Fanex.MailDelivery.Client.Jobs
                     }
                     else
                     {
-                        var mailtask = await MailClientHandler.RequestMailTaskByIdAsync(new GetMailTaskByIdRequest()
+                        var mailtask = await MailClientHandler.RequestMailTaskByIdAsync(new GetMailTaskByIdRequest
                         {
                             TaskId = schedule.TaskId
                         });
@@ -64,7 +64,7 @@ namespace Fanex.MailDelivery.Client.Jobs
                     }
                     catch (Exception ex)
                     {
-                        jobResult.TaskLog = new TaskLog()
+                        jobResult.TaskLog = new TaskLog
                         {
                             LogTime = DateTime.Now,
                             Message = ex.Message,
@@ -99,7 +99,7 @@ namespace Fanex.MailDelivery.Client.Jobs
 
         protected abstract JobMessage Run(Schedule schedule, IJobExecutionContext jobContext);
 
-        private async Task RetryJob(Schedule schedule)
+        private static async Task RetryJob(Schedule schedule)
         {
             schedule.CurrentRetryTimes++;
 

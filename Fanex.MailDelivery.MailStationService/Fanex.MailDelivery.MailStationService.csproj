@@ -147,6 +147,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppSettings.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Logging\RabbitMQLogProvider.cs" />
     <Compile Include="MessageBrokers\MessageBroker.cs" />
     <Compile Include="MainService.cs">

@@ -9,8 +9,9 @@ namespace Fanex.MailDelivery.MailStationService
     partial class MainService : ServiceBase
     {
         private IMessageBroker messageBroker;
-        private int startCounter = 0;
+        private int startCounter;
         private readonly LogService logService;
+        private const int ErrorCode = -99;
 
         public MainService()
             : this(null, null)
@@ -57,7 +58,7 @@ namespace Fanex.MailDelivery.MailStationService
             }
             else
             {
-                Environment.Exit(-99);
+                Environment.Exit(ErrorCode);
             }
         }
     }
