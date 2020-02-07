@@ -1,6 +1,6 @@
 ﻿using Fanex.MailDelivery.Client.Logging;
 using Fanex.MailDelivery.Core;
-using Fanex.MailDelivery.Core.Messaging.Job;
+using Fanex.MailDelivery.Core.Messaging;
 using Fanex.MailDelivery.Core.Models;
 using Quartz;
 using System;

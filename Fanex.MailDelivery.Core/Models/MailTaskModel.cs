@@ -1,10 +1,7 @@
 ﻿using System;
 
-namespace Fanex.MailDelivery.Core.Models.Report
+namespace Fanex.MailDelivery.Core.Models
 {
-    /// <summary>
-    /// Mail Task Model.
-    /// </summary>
     public class MailTaskModel
     {
         public int MailTaskId { get; set; }

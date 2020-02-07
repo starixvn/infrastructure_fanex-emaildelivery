@@ -1,7 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
-
-namespace Fanex.MailDelivery.MailStationService
-{   
+﻿namespace Fanex.MailDelivery.MailStationService
+{
     partial class MainService
     {       
         private System.ComponentModel.IContainer _components = null;

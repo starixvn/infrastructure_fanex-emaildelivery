@@ -1,12 +1,11 @@
-﻿using Fanex.MailDelivery.Core.Messaging;
-using Fanex.MailDelivery.Core.Models;
+﻿using Fanex.MailDelivery.Core.Models;
 
 namespace MailClientTest.Jobs
 {
-    using System;
-    using System.Threading;
     using Fanex.MailDelivery.Client.Jobs;
     using Quartz;
+    using System;
+    using System.Threading;
 
     /// <summary>
     /// Hello JobRequest.

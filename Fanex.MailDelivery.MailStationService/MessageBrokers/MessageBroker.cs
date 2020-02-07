@@ -1,9 +1,8 @@
 ﻿using EasyNetQ;
 using EasyNetQ.Logging;
 using Fanex.MailDelivery.Core;
-using Fanex.MailDelivery.Core.Messaging.Job;
+using Fanex.MailDelivery.Core.Messaging;
 using Fanex.MailDelivery.Core.Models;
-using Fanex.MailDelivery.Core.Models.Report;
 using Fanex.MailDelivery.MailStationService.Logging;
 using Fanex.MailDelivery.Services.Services.MailService;
 using System;

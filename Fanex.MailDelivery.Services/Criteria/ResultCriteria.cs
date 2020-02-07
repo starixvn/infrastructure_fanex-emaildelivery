@@ -1,7 +1,7 @@
 ﻿namespace Fanex.MailDelivery.Services.Criteria
 {
     using Fanex.Data.Repository;
-    
+
     public class ResultCriteria : CriteriaBase
     {
         public ResultCriteria()

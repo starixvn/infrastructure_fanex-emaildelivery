@@ -48,24 +48,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="Messaging\Job\AbortJobRequest.cs" />
-    <Compile Include="Messaging\Job\GetMailTaskByIdRequest.cs" />
-    <Compile Include="Messaging\Job\GetScheduleByMailIdRequest.cs" />
-    <Compile Include="Messaging\Job\GetScheduleByMailIdResponse.cs" />
-    <Compile Include="Messaging\Job\GetScheduleListRequest.cs" />
-    <Compile Include="Messaging\Job\GetScheduleListResponse.cs" />
-    <Compile Include="Messaging\Job\ScheduleChangeRequest.cs" />
-    <Compile Include="Messaging\Job\ScheduleRequest.cs" />
+    <Compile Include="Messaging\GetMailTaskByIdRequest.cs" />
+    <Compile Include="Messaging\GetScheduleListRequest.cs" />
+    <Compile Include="Messaging\GetScheduleListResponse.cs" />
     <Compile Include="Models\FileExtension.cs" />
-    <Compile Include="Models\Group\GroupModel.cs" />
     <Compile Include="Models\MailType.cs" />
     <Compile Include="MailDeliveryConstants.cs" />
-    <Compile Include="Messaging\Job\UpdateActiveTimeRequest.cs" />
-    <Compile Include="Models\Mails\MailModel.cs" />
-    <Compile Include="Models\Recipient\RecipientModel.cs" />
-    <Compile Include="Models\Report\MailTaskModel.cs" />
+    <Compile Include="Messaging\UpdateActiveTimeRequest.cs" />
+    <Compile Include="Models\MailTaskModel.cs" />
     <Compile Include="Models\TaskLog.cs" />
-    <Compile Include="Models\ClientStatusModel.cs" />
     <Compile Include="Models\JobMessage.cs" />
     <Compile Include="Models\JobStatus.cs" />
     <Compile Include="Models\Mail.cs" />

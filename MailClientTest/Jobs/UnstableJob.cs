@@ -3,9 +3,9 @@ using Fanex.MailDelivery.Core.Models;
 
 namespace MailClientTest.Jobs
 {
+    using Quartz;
     using System;
     using System.Threading;
-    using Quartz;
 
     /// <summary>
     /// Hello JobRequest.
