@@ -1,12 +1,8 @@
 ﻿using Fanex.MailDelivery.Core;
+using System.Configuration;
 
 namespace Fanex.MailDelivery.Client.Configurations
 {
-    using System.Configuration;
-
-    /// <summary>
-    /// Mail Client Section.
-    /// </summary>
     public class MailClientSection : ConfigurationSection
     {
         [ConfigurationProperty("applicationSendMailId", IsRequired = true)]
