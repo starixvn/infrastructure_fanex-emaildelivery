@@ -25,15 +25,11 @@ namespace Fanex.MailDelivery.Client.Handlers
 
         Task PublishClientNotifyMessageAsync();
 
-        void SubscribeScheduleChange();
-
         Task PublishJobMessageAsync(JobMessage jobMessage);
 
         Task<JobMessage> RequestAddMailTaskForRunningJobAsync(JobMessage jobMessage);
 
         Task<MailTaskModel> RequestMailTaskByIdAsync(GetMailTaskByIdRequest request);
-
-        void SubscribeRetryJob();
     }
 
     public class MailClientMessageBroker : IMailClientMessageBroker

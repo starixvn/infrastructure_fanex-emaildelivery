@@ -13,9 +13,9 @@ namespace Fanex.MailDelivery.Client.Handlers
 {
     public interface IJobHandler
     {
-        Task Start();
+        Task StartAsync();
 
-        Task Stop();
+        Task StopAsync();
 
         Task StartJobs(IList<Schedule> schedules);
 
@@ -30,7 +30,7 @@ namespace Fanex.MailDelivery.Client.Handlers
     {
         private IScheduler scheduler;
 
-        public async Task Start()
+        public async Task StartAsync()
         {
             ISchedulerFactory schedFact = new StdSchedulerFactory();
             scheduler = await schedFact.GetScheduler();
@@ -47,7 +47,7 @@ namespace Fanex.MailDelivery.Client.Handlers
             }
         }
 
-        public async Task Stop()
+        public async Task StopAsync()
         {
             if (scheduler != null)
             {

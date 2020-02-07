@@ -11,20 +11,20 @@ namespace Fanex.MailDelivery.Client
         private static IJobHandler jobHandler;
         private static IMailClientMessageBroker messageBroker;
 
-        public static void Start(IJobHandler jobHandler = null, IMailClientMessageBroker messageBroker = null)
+        public static async Task StartAsync(IJobHandler jobHandler = null, IMailClientMessageBroker messageBroker = null)
         {
             MailClientHandler.jobHandler = jobHandler ?? new JobHandler();
             MailClientHandler.messageBroker = messageBroker ?? new MailClientMessageBroker();
 
             MailClientHandler.messageBroker.Start(MailClientHandler.jobHandler);
-            MailClientHandler.jobHandler.Start();
+            await MailClientHandler.jobHandler.StartAsync();
         }
 
-        public static async Task Stop()
+        public static async Task StopAsync()
         {
             messageBroker.Stop();
 
-            await jobHandler.Stop();
+            await jobHandler.StopAsync();
         }
 
         public static async Task SendFunctionMailAsync(Mail mail)
@@ -32,17 +32,17 @@ namespace Fanex.MailDelivery.Client
             await messageBroker.PublishMailAsync(mail);
         }
 
-        public static async Task<IList<Schedule>> GetSchedulesAsync()
+        internal static async Task<IList<Schedule>> GetSchedulesAsync()
         {
             return await messageBroker.GetSchedulesAsync();
         }
 
-        public static async Task PublishClientNotifyMessageAsync()
+        internal static async Task PublishClientNotifyMessageAsync()
         {
             await messageBroker.PublishClientNotifyMessageAsync();
         }
 
-        public static async Task<JobMessage> RequestAddMailTaskForRunningJobAsync(JobMessage jobResult)
+        internal static async Task<JobMessage> RequestAddMailTaskForRunningJobAsync(JobMessage jobResult)
         {
             return await messageBroker.RequestAddMailTaskForRunningJobAsync(jobResult);
         }
@@ -52,12 +52,12 @@ namespace Fanex.MailDelivery.Client
             return await messageBroker.RequestMailTaskByIdAsync(taskID);
         }
 
-        public static async Task ReportJobAsync(JobMessage jobResult)
+        internal static async Task ReportJobAsync(JobMessage jobResult)
         {
             await messageBroker.PublishJobMessageAsync(jobResult);
         }
 
-        public static async Task RetryJob(Schedule schedule)
+        internal static async Task RetryJob(Schedule schedule)
         {
             await jobHandler.RetryJob(schedule);
         }
