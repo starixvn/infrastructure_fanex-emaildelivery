@@ -52,7 +52,10 @@ namespace Fanex.MailDelivery.MailStationService
                 catch (Exception exception)
                 {
                     logService.LogError(exception);
+                }
 
+                if (startCounter > 0)
+                {
                     StartService();
                 }
             }

@@ -12,9 +12,11 @@ namespace Fanex.MailDelivery.Client.Jobs
     {
         public async Task Execute(IJobExecutionContext context)
         {
+            Schedule schedule = null;
+
             try
             {
-                Schedule schedule = context.MergedJobDataMap[MailDeliveryConstants.ScheduleJobDataKey] as Schedule;
+                schedule = context.MergedJobDataMap[MailDeliveryConstants.ScheduleJobDataKey] as Schedule;
 
                 if (schedule != null && schedule.Active)
                 {
@@ -35,7 +37,7 @@ namespace Fanex.MailDelivery.Client.Jobs
 
                     if (schedule.TaskId == 0)
                     {
-                        throw new InvalidOperationException($"Cannot add a new mail task for the scheduled mail #{schedule.Id}");
+                        throw new InvalidOperationException($"Cannot add a new mail task for the scheduled mail.");
                     }
 
                     var mailtask = await MailClientHandler.RequestMailTaskByIdAsync(new GetMailTaskByIdRequest
@@ -51,7 +53,7 @@ namespace Fanex.MailDelivery.Client.Jobs
             }
             catch (Exception ex)
             {
-                LogService.LogError(ex);
+                LogService.LogError(ex, schedule);
             }
         }
 

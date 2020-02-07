@@ -1,11 +1,17 @@
 ﻿using Fanex.Logging;
 using Fanex.Logging.Extensions;
+using Fanex.MailDelivery.Core.Models;
 using System;
 
 namespace Fanex.MailDelivery.Client.Logging
 {
     internal static class LogService
     {
+        public static void LogInfo(string logMessage)
+        {
+            Logger.Log.Info(logMessage);
+        }
+
         public static void LogError(Exception exception)
         {
             LogError(exception.Message, exception);
@@ -21,9 +27,20 @@ namespace Fanex.MailDelivery.Client.Logging
             Logger.Log.Error(logMessage);
         }
 
-        public static void LogInfo(string logMessage)
+        public static void LogError(Exception ex, Schedule schedule)
         {
-            Logger.Log.Info(logMessage);
+            if (schedule != null)
+            {
+                string message = $@"Schedule Mail #{schedule.Id}
+                                <br>\r\nMail Name: {schedule.Name}
+                                <br>\r\nMessage: {ex.Message}";
+
+                LogError(message, ex);
+            }
+            else
+            {
+                LogError(ex);
+            }
         }
     }
 }

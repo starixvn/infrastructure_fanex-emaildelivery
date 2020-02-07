@@ -49,7 +49,7 @@ namespace Fanex.MailDelivery.Services.Services.Logging
         {
             if (schedule != null)
             {
-                string message = $@"{(schedule.TriggerTypeEnum == MailType.Function ? "Function" : "Schedule")} MailId: {schedule.Id}
+                string message = $@"{(schedule.TriggerTypeEnum == MailType.Function ? "Function" : "Schedule")} Mail #{schedule.Id}
                                 <br>\r\nMail Name: {schedule.Name}
                                 <br>\r\nMessage: {ex.Message}";
 
@@ -63,7 +63,7 @@ namespace Fanex.MailDelivery.Services.Services.Logging
 
         public void LogError(Exception ex, int mailId)
         {
-            string message = $@"Schedule MailId: {mailId}
+            string message = $@"Schedule Mail #{mailId}
                                 <br>\r\nMessage: {ex.Message}";
 
             LogError(message, ex);
@@ -71,7 +71,7 @@ namespace Fanex.MailDelivery.Services.Services.Logging
 
         public void LogError(Exception ex, List<int> scheduleIds)
         {
-            string message = $@"MailId: {string.Join(", ", scheduleIds)}
+            string message = $@"Mail #{string.Join(", ", scheduleIds)}
                                 <br>\r\nMessage: {ex.Message}";
 
             LogError(message, ex);

@@ -5,6 +5,7 @@ using Fanex.MailDelivery.Client.Logging;
 using Fanex.MailDelivery.Core;
 using Fanex.MailDelivery.Core.Messaging;
 using Fanex.MailDelivery.Core.Models;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -39,16 +40,47 @@ namespace Fanex.MailDelivery.Client.Handlers
         private readonly string runNowJobSubscriptionId = string.Format(MailDeliveryConstants.RunNowJobRoutingKeyFormat, AppSettings.MailCientConfig.SiteId);
         private IBus bus;
         private IJobHandler jobHandler;
+        private int rabbitMQConnectionRetryCount;
 
         public void Start(IJobHandler jobHandler)
         {
             LogProvider.SetCurrentLogProvider(new RabbitMQLogProvider());
             this.jobHandler = jobHandler;
-            bus = RabbitHutch.CreateBus(AppSettings.MailCientConfig.RabbitMQConnectionString);
+
+            RetryConnectRabbitMQ();
 
             SubscribeScheduleChange();
             SubscribeRunNowJob();
             SubscribeRetryJob();
+        }
+
+        private void RetryConnectRabbitMQ()
+        {
+            rabbitMQConnectionRetryCount++;
+
+            if (rabbitMQConnectionRetryCount <= AppSettings.MailCientConfig.RabbitMQConnectionRetryLimit)
+            {
+                try
+                {
+                    bus = RabbitHutch.CreateBus(AppSettings.MailCientConfig.RabbitMQConnectionString);
+
+                    rabbitMQConnectionRetryCount = 0;
+                }
+                catch (Exception ex)
+                {
+                    LogService.LogError(ex);
+
+                    if (rabbitMQConnectionRetryCount == AppSettings.MailCientConfig.RabbitMQConnectionRetryLimit)
+                    {
+                        throw new EasyNetQException($"Cannot connect to RabbitMQ server after retrying connection {AppSettings.MailCientConfig.RabbitMQConnectionRetryLimit} times");
+                    }
+                }
+
+                if (rabbitMQConnectionRetryCount > 0)
+                {
+                    RetryConnectRabbitMQ();
+                }
+            }
         }
 
         public void Stop()

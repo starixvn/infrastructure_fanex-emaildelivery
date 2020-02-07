@@ -195,7 +195,7 @@ namespace Fanex.MailDelivery.Services.Services.MailService
 
                     if (mailRecordId > 0)
                     {
-                        logService.LogInfo($"Mail({mail.MailingListId}) are stored successfully with mail record id {mailRecordId}.");
+                        logService.LogInfo($"Mail #{mail.MailingListId} are stored successfully with mail record id {mailRecordId}.");
 
                         mailRecord.IsReady = true;
                         mailRecord.MailID = mailRecordId;
@@ -209,7 +209,7 @@ namespace Fanex.MailDelivery.Services.Services.MailService
                     }
                     else
                     {
-                        throw new InvalidOperationException($"Failed to store Mail({mail.MailingListId}).");
+                        throw new InvalidOperationException($"Failed to store Mail #{mail.MailingListId}.");
                     }
                 }
             }

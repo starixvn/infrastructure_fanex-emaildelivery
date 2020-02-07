@@ -30,11 +30,16 @@ namespace Fanex.MailDelivery.Client.Configurations
             set { this["Functions"] = value; }
         }
 
-        [ConfigurationProperty("messageBrokerLogCategory", IsRequired = true)]
-        public string MessageBrokerLogCategory
+        [ConfigurationProperty("rabbitMQConnectionRetryLimit", IsRequired = false, DefaultValue = 5)]
+        public int RabbitMQConnectionRetryLimit
         {
-            get { return (string)this["messageBrokerLogCategory"]; }
-            set { this["messageBrokerLogCategory"] = value; }
+            get
+            {
+                var retryLimit = (int)this["rabbitMQConnectionRetryLimit"];
+
+                return (retryLimit > 0 ? retryLimit : 1);
+            }
+            set { this["rabbitMQConnectionRetryLimit"] = value; }
         }
 
         [ConfigurationProperty("rabbitMQConnectionString", IsRequired = true)]
