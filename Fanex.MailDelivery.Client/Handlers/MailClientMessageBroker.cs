@@ -153,7 +153,7 @@ namespace Fanex.MailDelivery.Client.Handlers
         {
             bus.SubscribeAsync<Schedule>(
                 GetSubscriptionIdKey(updateScheduleSubscriptionId),
-                schedule => jobHandler.UpdateSchedule(schedule),
+                schedule => jobHandler.UpdateScheduleAsync(schedule),
                 config => config.WithTopic(updateScheduleSubscriptionId));
         }
 
@@ -161,7 +161,7 @@ namespace Fanex.MailDelivery.Client.Handlers
         {
             bus.SubscribeAsync<Schedule>(
                 GetSubscriptionIdKey(runNowJobSubscriptionId),
-                request => jobHandler.RetryAllProcess(request),
+                request => jobHandler.RetryAllProcessAsync(request),
                 config => config.WithTopic(runNowJobSubscriptionId));
         }
 
@@ -169,7 +169,7 @@ namespace Fanex.MailDelivery.Client.Handlers
         {
             bus.SubscribeAsync<Schedule>(
                 GetSubscriptionIdKey(retryJobSubscriptionId),
-                schedule => jobHandler.RetryAllProcess(schedule),
+                schedule => jobHandler.RetryAllProcessAsync(schedule),
                 config => config.WithTopic(retryJobSubscriptionId));
         }
         #endregion

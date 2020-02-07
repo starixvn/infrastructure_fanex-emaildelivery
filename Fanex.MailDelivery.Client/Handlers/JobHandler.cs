@@ -17,13 +17,13 @@ namespace Fanex.MailDelivery.Client.Handlers
 
         Task StopAsync();
 
-        Task StartJobs(IList<Schedule> schedules);
+        Task StartJobsAsync(IList<Schedule> schedules);
 
-        Task UpdateSchedule(Schedule schedule);
+        Task UpdateScheduleAsync(Schedule schedule);
 
-        Task RetryJob(Schedule schedule);
+        Task RetryJobAsync(Schedule schedule);
 
-        Task RetryAllProcess(Schedule schedule);
+        Task RetryAllProcessAsync(Schedule schedule);
     }
 
     public class JobHandler : IJobHandler
@@ -35,6 +35,8 @@ namespace Fanex.MailDelivery.Client.Handlers
             ISchedulerFactory schedFact = new StdSchedulerFactory();
             scheduler = await schedFact.GetScheduler();
 
+            await scheduler.Shutdown();
+
             await scheduler.Start();
 
             await StartUpdateActiveTimeJob();
@@ -43,7 +45,7 @@ namespace Fanex.MailDelivery.Client.Handlers
             {
                 var schedules = await MailClientHandler.GetSchedulesAsync();
 
-                await StartJobs(schedules);
+                await StartJobsAsync(schedules);
             }
         }
 
@@ -55,7 +57,7 @@ namespace Fanex.MailDelivery.Client.Handlers
             }
         }
 
-        public async Task StartJobs(IList<Schedule> schedules)
+        public async Task StartJobsAsync(IList<Schedule> schedules)
         {
             foreach (var schedule in schedules)
             {
@@ -79,7 +81,7 @@ namespace Fanex.MailDelivery.Client.Handlers
             }
         }
 
-        public async Task RetryAllProcess(Schedule schedule)
+        public async Task RetryAllProcessAsync(Schedule schedule)
         {
             IJobDetail job = GetRetryJob(schedule);
             ITrigger trigger = GetRetryAllProcessTrigger(schedule);
@@ -87,7 +89,7 @@ namespace Fanex.MailDelivery.Client.Handlers
             await scheduler.ScheduleJob(job, trigger);
         }
 
-        public async Task RetryJob(Schedule schedule)
+        public async Task RetryJobAsync(Schedule schedule)
         {
             IJobDetail job = GetRetryJob(schedule);
             ITrigger trigger = GetRetryTrigger(schedule);
@@ -102,7 +104,7 @@ namespace Fanex.MailDelivery.Client.Handlers
             await scheduler.Interrupt(job.Key);
         }
 
-        public async Task UpdateSchedule(Schedule schedule)
+        public async Task UpdateScheduleAsync(Schedule schedule)
         {
             // If the schedule is belong to current Client.
             // We just manage the Schedule belong to us (in appconfig).
