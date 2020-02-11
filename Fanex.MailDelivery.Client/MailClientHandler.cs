@@ -57,7 +57,7 @@ namespace Fanex.MailDelivery.Client
             await messageBroker.PublishJobMessageAsync(jobResult);
         }
 
-        internal static async Task RetryJob(Schedule schedule)
+        internal static async Task RetryJobAsync(Schedule schedule)
         {
             await jobHandler.RetryJobAsync(schedule);
         }

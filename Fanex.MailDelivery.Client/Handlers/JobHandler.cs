@@ -83,10 +83,13 @@ namespace Fanex.MailDelivery.Client.Handlers
 
         public async Task RetryAllProcessAsync(Schedule schedule)
         {
-            IJobDetail job = GetRetryJob(schedule);
-            ITrigger trigger = GetRetryAllProcessTrigger(schedule);
+            if (AppSettings.HasScheduleId(schedule.Id))
+            {
+                IJobDetail job = GetRetryJob(schedule);
+                ITrigger trigger = GetRetryAllProcessTrigger(schedule);
 
-            await scheduler.ScheduleJob(job, trigger);
+                await scheduler.ScheduleJob(job, trigger);
+            }
         }
 
         public async Task RetryJobAsync(Schedule schedule)

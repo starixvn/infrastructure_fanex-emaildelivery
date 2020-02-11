@@ -161,7 +161,7 @@ namespace Fanex.MailDelivery.Client.Handlers
         {
             bus.SubscribeAsync<Schedule>(
                 GetSubscriptionIdKey(runNowJobSubscriptionId),
-                request => jobHandler.RetryAllProcessAsync(request),
+                schedule => jobHandler.RetryAllProcessAsync(schedule),
                 config => config.WithTopic(runNowJobSubscriptionId));
         }
 

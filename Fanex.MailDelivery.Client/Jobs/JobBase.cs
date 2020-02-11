@@ -123,7 +123,7 @@ namespace Fanex.MailDelivery.Client.Jobs
 
             if (schedule.IsRunning())
             {
-                await MailClientHandler.RetryJob(schedule);
+                await MailClientHandler.RetryJobAsync(schedule);
             }
         }
     }
