@@ -34,9 +34,9 @@ namespace Fanex.MailDelivery.Client.Handlers
         {
             ISchedulerFactory schedFact = new StdSchedulerFactory();
             scheduler = await schedFact.GetScheduler();
-
             await scheduler.Shutdown();
 
+            scheduler = await schedFact.GetScheduler();
             await scheduler.Start();
 
             await StartUpdateActiveTimeJob();

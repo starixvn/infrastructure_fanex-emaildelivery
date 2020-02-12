@@ -1,6 +1,7 @@
 ﻿using Fanex.MailDelivery.Client.Handlers;
 using Fanex.MailDelivery.Core.Messaging;
 using Fanex.MailDelivery.Core.Models;
+using log4net.Config;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -13,10 +14,13 @@ namespace Fanex.MailDelivery.Client
 
         public static async Task StartAsync(IJobHandler jobHandler = null, IMailClientMessageBroker messageBroker = null)
         {
+            XmlConfigurator.Configure();
+
             MailClientHandler.jobHandler = jobHandler ?? new JobHandler();
             MailClientHandler.messageBroker = messageBroker ?? new MailClientMessageBroker();
 
             MailClientHandler.messageBroker.Start(MailClientHandler.jobHandler);
+
             await MailClientHandler.jobHandler.StartAsync();
         }
 
@@ -32,7 +36,7 @@ namespace Fanex.MailDelivery.Client
             await messageBroker.PublishMailAsync(mail);
         }
 
-        internal static async Task<IList<Schedule>> GetSchedulesAsync()
+        public static async Task<IList<Schedule>> GetSchedulesAsync()
         {
             return await messageBroker.GetSchedulesAsync();
         }

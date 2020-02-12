@@ -3,58 +3,51 @@ using Fanex.MailDelivery.Client.Configurations;
 using Fanex.MailDelivery.Core.Models;
 using System;
 using System.ServiceProcess;
-using System.Threading;
+using System.Threading.Tasks;
 
 namespace MailClientTest.Installer
 {
     public partial class MailClientTestService : ServiceBase
     {
-        private int counter;
-        private int maxRetryStartUpService = 5;
-        private int maxIntervalStartUpServiceInSecond = 60;
-
         protected override void OnStart(string[] args)
         {
             try
             {
-                bool isStarted = false;
-
-                while (!isStarted)
-                {
-                    isStarted = Execute();
-
-                    if (counter >= maxRetryStartUpService)
-                    {
-                        throw new Exception("The service can't be started, maybe it's related to RabbitMQ or something else.");
-                    }
-
-                    Thread.Sleep(1000 * maxIntervalStartUpServiceInSecond);
-                }
+                MailClientHandler.StartAsync()
+                                .GetAwaiter()
+                                .GetResult();
 
                 Console.WriteLine("Mail Client Service Site: {0} started.", AppSettings.MailCientConfig.SiteId);
                 Console.WriteLine("App Name: {0}", System.Diagnostics.Process.GetProcessById(System.Diagnostics.Process.GetCurrentProcess().Id).ProcessName);
-                var schedules = AppSettings.MailCientConfig.Schedules;
-                foreach (ScheduleElement schedule in schedules)
+
+                foreach (ScheduleElement schedule in AppSettings.MailCientConfig.Schedules)
                 {
                     Console.WriteLine("Schedule list: {0}", schedule.Id);
                 }
 
-                var listschedule = MailClientHandler.GetSchedules();
-                if (listschedule == null || listschedule.Count == 0)
+                var schedules = MailClientHandler.GetSchedulesAsync()
+                                                    .GetAwaiter()
+                                                    .GetResult();
+
+                if (schedules == null || schedules.Count == 0)
                 {
-                    Console.WriteLine("List Schedule is null or empty");
+                    Console.WriteLine("Schedule list is null or empty");
                 }
                 else
                 {
-                    Console.WriteLine("Get Schedules success.");
-                    foreach (var schedule in listschedule)
+                    Console.WriteLine("Get Schedules successfully.");
+
+                    foreach (var schedule in schedules)
                     {
+                        schedule.ConvertToServerTime(MailClientSection.IsLocalEnvironment());
+
                         Console.WriteLine("Schedule: {0}; Cron: {1}", schedule.Id, schedule.RepeatExpression);
-                        schedule.ConvertToServerTime(MailClientSection.GetConfig().IsLocalEnvironment());
                     }
                 }
 
-                SendFunctionMail();
+                SendFunctionMailAsync()
+                    .GetAwaiter()
+                    .GetResult();
             }
             catch (Exception ex)
             {
@@ -72,39 +65,29 @@ namespace MailClientTest.Installer
 
         protected override void OnStop()
         {
-            MailClientHandler.Stop();
+            MailClientHandler.StopAsync()
+                            .GetAwaiter()
+                            .GetResult();
         }
 
-        private void SendFunctionMail()
+        private async Task SendFunctionMailAsync()
         {
-            var mail = new Mail
+            int mailingListId = AppSettings.GetFunctionId("FuntionA");
+
+            if (mailingListId > 0)
             {
-                Subject = "Mail Station Test (Function Mail).",
-                Title = "Mail Station Test (Function Mail).",
-                Body = "Email Body.",
-            };
+                var mail = new Mail
+                {
+                    Subject = "Mail Station Test (Function Mail).",
+                    Title = "Mail Station Test (Function Mail).",
+                    Body = "Email Body.",
+                    MailingListId = mailingListId
+                };
 
-            mail.MailingListId = AppSettings.GetFunctionId("FuntionA");
-            MailClientHandler.SendFunctionMail(mail);
-            Console.WriteLine("Function Mail has been sent.");
-        }
+                await MailClientHandler.SendFunctionMailAsync(mail);
 
-        private bool Execute()
-        {
-            var result = false;
-
-            try
-            {
-                counter++;
-                MailClientHandler.Start();
-                result = true;
+                Console.WriteLine("Function Mail has been sent.");
             }
-            catch (Exception exception)
-            {
-                Console.WriteLine($"Service starts fail at {DateTime.Now} - {exception.Message}");
-            }
-
-            return result;
         }
     }
 }

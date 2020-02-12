@@ -62,7 +62,10 @@ namespace Fanex.MailDelivery.Services.Services.MailService
                     MailId = mail
                 });
 
-                schedules.Add(schedule);
+                if (schedule != null)
+                {
+                    schedules.Add(schedule);
+                }
             }
 
             return new GetScheduleListResponse { Schedules = schedules };
@@ -180,7 +183,11 @@ namespace Fanex.MailDelivery.Services.Services.MailService
             {
                 schedule = mailRepository.GetScheduleByMailId(new GetScheduleByMailIdCriteria { MailId = mail.MailingListId });
 
-                if (schedule.Active)
+                if (schedule == null)
+                {
+                    throw new InvalidOperationException($"Mail #{mail.MailingListId} is not found.");
+                }
+                else if (schedule.Active)
                 {
                     var mailRecord = ConvertFromMailToMailRecord(mail);
 
@@ -211,6 +218,10 @@ namespace Fanex.MailDelivery.Services.Services.MailService
                     {
                         throw new InvalidOperationException($"Failed to store Mail #{mail.MailingListId}.");
                     }
+                }
+                else
+                {
+                    throw new InvalidOperationException($"Mail #{mail.MailingListId} is disabled.");
                 }
             }
             catch (Exception ex)
