@@ -5,7 +5,7 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fanex.MailDelivery.Client", "Fanex.MailDelivery.Client\Fanex.MailDelivery.Client.csproj", "{708E1FCE-82C4-443B-B1E9-0E64BCABE80E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MailClientTest", "MailClientTest\MailClientTest.csproj", "{2218E3C7-066D-47A4-AA3E-8F81063FB046}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MailStationTest", "MailStationTest\MailStationTest.csproj", "{2218E3C7-066D-47A4-AA3E-8F81063FB046}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fanex.MailDelivery.Core", "Fanex.MailDelivery.Core\Fanex.MailDelivery.Core.csproj", "{C7ED0DE9-6A20-4223-B251-6EF530B74139}"
 EndProject

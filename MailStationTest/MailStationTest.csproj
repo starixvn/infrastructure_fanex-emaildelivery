@@ -8,8 +8,8 @@
     <ProjectGuid>{2218E3C7-066D-47A4-AA3E-8F81063FB046}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MailClientTest</RootNamespace>
-    <AssemblyName>MailClientTest</AssemblyName>
+    <RootNamespace>MailStationTest</RootNamespace>
+    <AssemblyName>MailStationTest</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
@@ -148,11 +148,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Installer\MailClientTestService.cs">
+    <Compile Include="MailStationTestService.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Installer\MailClientTestService.Designer.cs">
-      <DependentUpon>MailClientTestService.cs</DependentUpon>
+    <Compile Include="MailStationTestService.Designer.cs">
+      <DependentUpon>MailStationTestService.cs</DependentUpon>
     </Compile>
     <Compile Include="Jobs\SuccessWithoutSendMailJob.cs" />
     <Compile Include="Jobs\DataNotReadyJob.cs" />

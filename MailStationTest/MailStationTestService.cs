@@ -5,9 +5,9 @@ using System;
 using System.ServiceProcess;
 using System.Threading.Tasks;
 
-namespace MailClientTest.Installer
+namespace MailStationTest
 {
-    public partial class MailClientTestService : ServiceBase
+    public partial class MailStationTestService : ServiceBase
     {
         protected override void OnStart(string[] args)
         {

@@ -1,9 +1,9 @@
-﻿namespace MailClientTest.Installer
+﻿namespace MailStationTest
 {
     /// <summary>
     /// Mail client service for testing.
     /// </summary>
-    public partial class MailClientTestService
+    public partial class MailStationTestService
     {
         /// <summary> 
         /// Required designer variable.

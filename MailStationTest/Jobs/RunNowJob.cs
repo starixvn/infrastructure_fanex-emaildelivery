@@ -2,7 +2,7 @@
 using Fanex.MailDelivery.Core.Models;
 using Quartz;
 
-namespace MailClientTest.Jobs
+namespace MailStationTest.Jobs
 {
     public class RunNowJob : JobBase
     {

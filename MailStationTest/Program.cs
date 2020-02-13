@@ -1,9 +1,8 @@
-﻿using MailClientTest.Installer;
-using System;
+﻿using System;
 using System.Reflection;
 using System.ServiceProcess;
 
-namespace MailClientTest
+namespace MailStationTest
 {
     public class Program
     {
@@ -15,7 +14,7 @@ namespace MailClientTest
         {
             ServiceBase[] servicesToRun = new ServiceBase[]
             {
-                new MailClientTestService()
+                new MailStationTestService()
             };
 
             if (Environment.UserInteractive)

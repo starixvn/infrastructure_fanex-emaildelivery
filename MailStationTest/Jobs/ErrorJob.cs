@@ -1,6 +1,6 @@
 ﻿using Fanex.MailDelivery.Core.Models;
 
-namespace MailClientTest.Jobs
+namespace MailStationTest.Jobs
 {
     using Fanex.MailDelivery.Client.Jobs;
     using Quartz;
@@ -10,32 +10,29 @@ namespace MailClientTest.Jobs
     /// <summary>
     /// Hello JobRequest.
     /// </summary>
-    public class NormalJob : JobBase
+    public class ErrorJob : JobBase
     {
         protected override JobMessage Run(Schedule schedule, IJobExecutionContext jobContext)
         {
             var jobLog = string.Format(
-                "Run Normal JobRequest: \n\tSite Id: {0}, Schedule: {1}. \n\tSent at {2}",
+                "Run Error JobRequest: \n\tSite Id: {0}, Schedule: {1}. \n\tSent at {2}",
                 schedule.SiteId,
                 schedule.Id,
                 DateTime.Now);
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine(jobLog);
             Console.ForegroundColor = ConsoleColor.White;
+            
+            // Get JobRequest init value here
+            ////jobContext.MergedJobDataMap
 
-            //// Compose mail here.
+            // Compose mail here.
             var mail = new Mail();
-            mail.Subject = "Mail Station Test (Normal JobRequest).";
-            mail.Title = "Mail Station Test (Normal JobRequest).";
-            mail.Body = "Email Body";
+            mail.Subject = "Mail Station Test (Error JobRequest).";
+            mail.Title = "Mail Station Test (Error JobRequest).";
+            mail.Body = "Email Body.";
             Thread.Sleep(5000);
-
-            return new JobMessage
-            {
-                Mail = mail,
-                Schedule = schedule,
-                JobStatus = JobStatus.Success
-            };
+            throw new InvalidCastException("Cannot Complete this JobRequest.");
         }
     }
 }
