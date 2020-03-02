@@ -14,12 +14,14 @@ namespace Fanex.MailDelivery.Client.Logging
 
         public static void LogError(Exception exception)
         {
-            LogError(exception.Message, exception);
+            Logger.Log.Error(null, exception);
         }
 
         public static void LogError(string message, Exception exception)
         {
-            var logMessage = new LogMessage(message)
+            string errorMessage = $"{(string.IsNullOrWhiteSpace(message) ? string.Empty : $"{message} -> ")}{exception.InnerException?.Message ?? exception.Message}";
+
+            var logMessage = new LogMessage(errorMessage)
                         .AddSection("Server Info", CommonInfoGetters.GetServerInfo())
                         .AddSection("Exception Info", CommonInfoGetters.GetExceptionInfo(exception))
                         .ToString();
@@ -27,13 +29,11 @@ namespace Fanex.MailDelivery.Client.Logging
             Logger.Log.Error(logMessage);
         }
 
-        public static void LogError(Exception ex, Schedule schedule)
+        public static void LogError(Schedule schedule, Exception ex)
         {
             if (schedule != null)
             {
-                string message = $@"Schedule Mail #{schedule.Id}
-                                <br>\r\nMail Name: {schedule.Name}
-                                <br>\r\nMessage: {ex.Message}";
+                string message = $@"Schedule Mail #{schedule.Id},{Environment.NewLine}Mail Name: {schedule.Name},{Environment.NewLine}Error: {ex.Message}";
 
                 LogError(message, ex);
             }
@@ -41,6 +41,24 @@ namespace Fanex.MailDelivery.Client.Logging
             {
                 LogError(ex);
             }
+        }
+
+        public static void LogError(string message, Schedule schedule, Exception ex)
+        {
+            string errorMessage = schedule != null
+                                ? $@"Schedule Mail #{schedule.Id},{Environment.NewLine}Mail Name: {schedule.Name},{Environment.NewLine}Error: {message}"
+                                : message;
+
+            LogError(errorMessage, ex);
+        }
+
+        public static void LogError(string message, string mailIds, Exception ex)
+        {
+            string errorMessage = !string.IsNullOrWhiteSpace(mailIds)
+                                ? $@"Mails #{mailIds},{Environment.NewLine}Error: {message}"
+                                : message;
+
+            LogError(errorMessage, ex);
         }
     }
 }

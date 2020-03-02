@@ -53,7 +53,7 @@ namespace Fanex.MailDelivery.Client.Jobs
             }
             catch (Exception ex)
             {
-                LogService.LogError(ex, schedule);
+                LogService.LogError(schedule, ex);
             }
         }
 

@@ -4,6 +4,7 @@ using Fanex.MailDelivery.Core;
 using Fanex.MailDelivery.Core.Messaging;
 using Fanex.MailDelivery.Core.Models;
 using Fanex.MailDelivery.MailStationService.Logging;
+using Fanex.MailDelivery.Services.Services.Logging;
 using Fanex.MailDelivery.Services.Services.MailService;
 using System;
 using System.Threading.Tasks;
@@ -12,52 +13,79 @@ namespace Fanex.MailDelivery.MailStationService.MessageBrokers
 {
     public interface IMessageBroker : IDisposable
     {
-        void Start();
+        Task StartAsync();
     }
 
     public class MessageBroker : IMessageBroker
     {
         private IBus bus;
         private readonly IMailService mailService;
+        private const int waitingForRabbitMQInSeconds = 30;
+        private readonly LogService logService;
 
-        public MessageBroker()
-            : this(null)
+        public MessageBroker(LogService logService)
+            : this(null, logService)
         {
         }
 
-        public MessageBroker(IMailService mailService)
+        public MessageBroker(IMailService mailService, LogService logService)
         {
             LogProvider.SetCurrentLogProvider(new RabbitMQLogProvider());
 
+            this.logService = logService;
             this.mailService = mailService ?? new MailService(AppSettings.SendMailRetryLimit, AppSettings.SendMailRetryIntervalInSeconds);
         }
 
-        public void Start()
+        public async Task StartAsync()
         {
             bus = RabbitHutch.CreateBus(AppSettings.RabbitMQConnectionString);
+
+            while (!bus.IsConnected)
+            {
+                await Task.Delay(TimeSpan.FromSeconds(waitingForRabbitMQInSeconds));
+            }
+
+            await SubscribeMailAsync();
+            await SubscribeJobResultAsync();
+            await SubscribeClientNotificationMessageAsync();
 
             ResponseGetScheduleList();
             RespondGetMailTaskForById();
             RespondAddMailTaskForRunningJob();
-
-            SubscribeMail();
-            SubscribeJobResult();
-            SubscribeClientNotificationMessage();
         }
 
         #region Subscribe
-        private void SubscribeMail()
+        private async Task SubscribeMailAsync()
         {
-            bus.SubscribeAsync<Mail>(
-                MailDeliveryConstants.SendMailRoutingKey,
+            bool isFailed = false;
+
+            try
+            {
+                bus.SubscribeAsync<Mail>(
+                    MailDeliveryConstants.SendMailRoutingKey,
                     mail => mailService.SendMail(mail),
                     config => config.WithTopic(MailDeliveryConstants.SendMailRoutingKey));
+            }
+            catch (Exception ex)
+            {
+                logService.LogError($"There is an error while subscribing a queue with key {MailDeliveryConstants.SendMailRoutingKey}. Retrying...", ex);
+                isFailed = true;
+            }
+
+            if (isFailed)
+            {
+                await SubscribeMailAsync();
+            }
         }
 
-        private void SubscribeClientNotificationMessage()
+        private async Task SubscribeClientNotificationMessageAsync()
         {
-            bus.SubscribeAsync<UpdateActiveTimeRequest>(
-                MailDeliveryConstants.ClientNotificationTopic,
+            bool isFailed = false;
+
+            try
+            {
+                bus.SubscribeAsync<UpdateActiveTimeRequest>(
+                    MailDeliveryConstants.ClientNotificationTopic,
                     clientInfoMessage =>
                     {
                         mailService.UpdateClientActiveTime(clientInfoMessage);
@@ -65,37 +93,108 @@ namespace Fanex.MailDelivery.MailStationService.MessageBrokers
                         return Task.CompletedTask;
                     },
                     config => config.WithTopic(MailDeliveryConstants.ClientNotificationTopic));
+            }
+            catch (Exception ex)
+            {
+                logService.LogError($"There is an error while subscribing a queue with key {MailDeliveryConstants.ClientNotificationTopic}. Retrying...", ex);
+                isFailed = true;
+            }
+
+            if (isFailed)
+            {
+                await SubscribeClientNotificationMessageAsync();
+            }
         }
 
-        private void SubscribeJobResult()
+        private async Task SubscribeJobResultAsync()
         {
-            bus.SubscribeAsync<JobMessage>(
-                MailDeliveryConstants.JobResultRoutingKey,
+            bool isFailed = false;
+
+            try
+            {
+                bus.SubscribeAsync<JobMessage>(
+                    MailDeliveryConstants.JobResultRoutingKey,
                     jobStatus => mailService.UpdateJobStatus(jobStatus),
                     config => config.WithTopic(MailDeliveryConstants.JobResultRoutingKey));
+            }
+            catch (Exception ex)
+            {
+                logService.LogError($"There is an error while subscribing a queue with key {MailDeliveryConstants.JobResultRoutingKey}. Retrying...", ex);
+                isFailed = true;
+            }
+
+            if (isFailed)
+            {
+                await SubscribeJobResultAsync();
+            }
         }
         #endregion
 
         #region Response
         private void ResponseGetScheduleList()
         {
-            bus.RespondAsync<GetScheduleListRequest, GetScheduleListResponse>(request => Task.FromResult(mailService.GetScheduleList(request)));
+            bool isFailed = false;
+
+            try
+            {
+                bus.RespondAsync<GetScheduleListRequest, GetScheduleListResponse>(request => Task.FromResult(mailService.GetScheduleList(request)));
+            }
+            catch (Exception ex)
+            {
+                logService.LogError($"There is an error while registering to response schedules to clients. Retrying...", ex);
+                isFailed = true;
+            }
+
+            if (isFailed)
+            {
+                ResponseGetScheduleList();
+            }
         }
 
         private void RespondAddMailTaskForRunningJob()
         {
-            bus.RespondAsync<JobMessage, JobMessage>(
-                jobMessage =>
-                {
-                    mailService.AddMailTaskForRunningJob(jobMessage);
+            bool isFailed = false;
 
-                    return Task.FromResult(jobMessage);
-                });
+            try
+            {
+                bus.RespondAsync<JobMessage, JobMessage>(
+                    jobMessage =>
+                    {
+                        mailService.AddMailTaskForRunningJob(jobMessage);
+
+                        return Task.FromResult(jobMessage);
+                    });
+            }
+            catch (Exception ex)
+            {
+                logService.LogError($"There is an error while registering to add mail tasks for running jobs. Retrying...", ex);
+                isFailed = true;
+            }
+
+            if (isFailed)
+            {
+                RespondAddMailTaskForRunningJob();
+            }
         }
 
         private void RespondGetMailTaskForById()
         {
-            bus.RespondAsync<GetMailTaskByIdRequest, MailTaskModel>(request => Task.FromResult(mailService.GetMailTaskById(request)));
+            bool isFailed = false;
+
+            try
+            {
+                bus.RespondAsync<GetMailTaskByIdRequest, MailTaskModel>(request => Task.FromResult(mailService.GetMailTaskById(request)));
+            }
+            catch (Exception ex)
+            {
+                logService.LogError($"There is an error while registering to response mail tasks to clients. Retrying...", ex);
+                isFailed = true;
+            }
+
+            if (isFailed)
+            {
+                RespondGetMailTaskForById();
+            }
         }
         #endregion
 

@@ -1,7 +1,6 @@
 ﻿using Fanex.Data.Configuration;
 using Fanex.MailDelivery.MailStationService.MessageBrokers;
 using Fanex.MailDelivery.Services.Services.Logging;
-using System;
 using System.ServiceProcess;
 
 namespace Fanex.MailDelivery.MailStationService
@@ -9,9 +8,7 @@ namespace Fanex.MailDelivery.MailStationService
     partial class MainService : ServiceBase
     {
         private IMessageBroker messageBroker;
-        private int startCounter;
         private readonly LogService logService;
-        private const int ErrorCode = -99;
 
         public MainService()
             : this(null, null)
@@ -23,46 +20,18 @@ namespace Fanex.MailDelivery.MailStationService
             InitializeComponent();
 
             this.logService = logService ?? new LogServiceImpl();
-            this.messageBroker = messageBroker ?? new MessageBroker();
+            this.messageBroker = messageBroker ?? new MessageBroker(this.logService);
             DbSettingProviderManager.Current.Start();
         }
 
-        protected override void OnStart(string[] args)
+        protected override async void OnStart(string[] args)
         {
-            StartService();
+            await messageBroker.StartAsync();
         }
 
         protected override void OnStop()
         {
             messageBroker?.Dispose();
-        }
-
-        private void StartService()
-        {
-            startCounter++;
-
-            if (startCounter <= AppSettings.StartRetryLimit)
-            {
-                try
-                {
-                    messageBroker.Start();
-
-                    startCounter = 0;
-                }
-                catch (Exception exception)
-                {
-                    logService.LogError(exception);
-                }
-
-                if (startCounter > 0)
-                {
-                    StartService();
-                }
-            }
-            else
-            {
-                Environment.Exit(ErrorCode);
-            }
         }
     }
 }

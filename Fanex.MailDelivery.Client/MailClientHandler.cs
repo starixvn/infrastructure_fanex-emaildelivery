@@ -19,7 +19,7 @@ namespace Fanex.MailDelivery.Client
             MailClientHandler.jobHandler = jobHandler ?? new JobHandler();
             MailClientHandler.messageBroker = messageBroker ?? new MailClientMessageBroker();
 
-            MailClientHandler.messageBroker.Start(MailClientHandler.jobHandler);
+            await MailClientHandler.messageBroker.StartAsync(MailClientHandler.jobHandler);
 
             await MailClientHandler.jobHandler.StartAsync();
         }
@@ -33,7 +33,7 @@ namespace Fanex.MailDelivery.Client
 
         public static async Task SendFunctionMailAsync(Mail mail)
         {
-            await messageBroker.PublishMailAsync(mail);
+            await messageBroker.SendFunctionMailAsync(mail);
         }
 
         public static async Task<IList<Schedule>> GetSchedulesAsync()
@@ -58,7 +58,7 @@ namespace Fanex.MailDelivery.Client
 
         internal static async Task ReportJobAsync(JobMessage jobResult)
         {
-            await messageBroker.PublishJobMessageAsync(jobResult);
+            await messageBroker.ReportJobAsync(jobResult);
         }
 
         internal static async Task RetryJobAsync(Schedule schedule)

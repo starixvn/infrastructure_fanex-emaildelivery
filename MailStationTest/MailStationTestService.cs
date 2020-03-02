@@ -1,4 +1,5 @@
-﻿using Fanex.MailDelivery.Client;
+﻿using Fanex.Logging;
+using Fanex.MailDelivery.Client;
 using Fanex.MailDelivery.Client.Configurations;
 using Fanex.MailDelivery.Core.Models;
 using System;
@@ -51,8 +52,11 @@ namespace MailStationTest
             }
             catch (Exception ex)
             {
+                LogService.Error(ex.InnerException?.Message ?? ex.Message, ex);
+
                 Console.WriteLine(ex.Message);
                 var innerException = ex.InnerException;
+
                 while (innerException != null)
                 {
                     Console.WriteLine(innerException.Message);

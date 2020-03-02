@@ -16,17 +16,17 @@ namespace Fanex.MailDelivery.Client.Handlers
 {
     public interface IMailClientMessageBroker
     {
-        void Start(IJobHandler jobHandler);
+        Task StartAsync(IJobHandler jobHandler);
 
         void Stop();
 
-        Task PublishMailAsync(Mail mail);
+        Task SendFunctionMailAsync(Mail mail);
 
         Task<IList<Schedule>> GetSchedulesAsync();
 
         Task PublishClientNotifyMessageAsync();
 
-        Task PublishJobMessageAsync(JobMessage jobMessage);
+        Task ReportJobAsync(JobMessage jobMessage);
 
         Task<JobMessage> RequestAddMailTaskForRunningJobAsync(JobMessage jobMessage);
 
@@ -40,47 +40,22 @@ namespace Fanex.MailDelivery.Client.Handlers
         private readonly string runNowJobSubscriptionId = string.Format(MailDeliveryConstants.RunNowJobRoutingKeyFormat, AppSettings.MailCientConfig.SiteId);
         private IBus bus;
         private IJobHandler jobHandler;
-        private int rabbitMQConnectionRetryCount;
+        private const int waitingForRabbitMQInSeconds = 30;
 
-        public void Start(IJobHandler jobHandler)
+        public async Task StartAsync(IJobHandler jobHandler)
         {
             LogProvider.SetCurrentLogProvider(new RabbitMQLogProvider());
             this.jobHandler = jobHandler;
+            bus = RabbitHutch.CreateBus(AppSettings.MailCientConfig.RabbitMQConnectionString);
 
-            RetryConnectRabbitMQ();
-
-            SubscribeScheduleChange();
-            SubscribeRunNowJob();
-            SubscribeRetryJob();
-        }
-
-        private void RetryConnectRabbitMQ()
-        {
-            rabbitMQConnectionRetryCount++;
-
-            if (rabbitMQConnectionRetryCount <= AppSettings.MailCientConfig.RabbitMQConnectionRetryLimit)
+            while (!bus.IsConnected)
             {
-                try
-                {
-                    bus = RabbitHutch.CreateBus(AppSettings.MailCientConfig.RabbitMQConnectionString);
-
-                    rabbitMQConnectionRetryCount = 0;
-                }
-                catch (Exception ex)
-                {
-                    LogService.LogError(ex);
-
-                    if (rabbitMQConnectionRetryCount == AppSettings.MailCientConfig.RabbitMQConnectionRetryLimit)
-                    {
-                        throw new EasyNetQException($"Cannot connect to RabbitMQ server after retrying connection {AppSettings.MailCientConfig.RabbitMQConnectionRetryLimit} times");
-                    }
-                }
-
-                if (rabbitMQConnectionRetryCount > 0)
-                {
-                    RetryConnectRabbitMQ();
-                }
+                await Task.Delay(TimeSpan.FromSeconds(waitingForRabbitMQInSeconds));
             }
+
+            await SubscribeScheduleChangeAsync();
+            await SubscribeRunNowJobAsync();
+            await SubscribeRetryJobAsync();
         }
 
         public void Stop()
@@ -89,7 +64,7 @@ namespace Fanex.MailDelivery.Client.Handlers
         }
 
         #region PublishAsync
-        public async Task PublishMailAsync(Mail mail)
+        public async Task SendFunctionMailAsync(Mail mail)
         {
             if (mail.ApplicationSendMailId == 0)
             {
@@ -98,7 +73,7 @@ namespace Fanex.MailDelivery.Client.Handlers
 
             mail.SiteId = AppSettings.MailCientConfig.SiteId;
 
-            await bus.PublishAsync(mail, MailDeliveryConstants.SendMailRoutingKey);
+            await PublishMailAsync(mail);
         }
 
         public async Task PublishClientNotifyMessageAsync()
@@ -109,14 +84,60 @@ namespace Fanex.MailDelivery.Client.Handlers
             await bus.PublishAsync(new UpdateActiveTimeRequest { MailIds = mailIds }, MailDeliveryConstants.ClientNotificationTopic);
         }
 
-        public async Task PublishJobMessageAsync(JobMessage jobMessage)
+        public async Task ReportJobAsync(JobMessage jobMessage)
         {
             if (jobMessage.Mail != null && jobMessage.Mail.ApplicationSendMailId == 0)
             {
                 jobMessage.Mail.ApplicationSendMailId = AppSettings.MailCientConfig.ApplicationSendMailId;
             }
 
-            await bus.PublishAsync(jobMessage, MailDeliveryConstants.JobResultRoutingKey);
+            await PublishJobMessageAsync(jobMessage);
+        }
+
+        private async Task PublishMailAsync(Mail mail)
+        {
+            bool isFailed = false;
+
+            try
+            {
+                await bus.PublishAsync(mail, MailDeliveryConstants.SendMailRoutingKey);
+            }
+            catch (Exception ex)
+            {
+                LogService.LogError($"There is an error while sending a function mail to Mail Station server. Retrying in {waitingForRabbitMQInSeconds} seconds...", $"{mail.MailingListId}", ex);
+                isFailed = true;
+            }
+
+            if (isFailed)
+            {
+                await Task.Delay(TimeSpan.FromSeconds(waitingForRabbitMQInSeconds));
+
+                await PublishMailAsync(mail);
+            }
+        }
+
+        private async Task PublishJobMessageAsync(JobMessage jobMessage)
+        {
+            bool isFailed = false;
+
+            try
+            {
+                await bus.PublishAsync(jobMessage, MailDeliveryConstants.JobResultRoutingKey);
+            }
+            catch (Exception ex)
+            {
+                LogService.LogError($@"There is an error while reporting the status of the scheduled mail to Mail Station server. Retrying in {
+                                        waitingForRabbitMQInSeconds
+                                        } seconds...", jobMessage.Schedule, ex);
+                isFailed = true;
+            }
+
+            if (isFailed)
+            {
+                await Task.Delay(TimeSpan.FromSeconds(waitingForRabbitMQInSeconds));
+
+                await PublishJobMessageAsync(jobMessage);
+            }
         }
 
         #endregion
@@ -132,45 +153,149 @@ namespace Fanex.MailDelivery.Client.Handlers
                 request.MailIds.Add(scheduleConfig.Id);
             }
 
-            GetScheduleListResponse response = await bus.RequestAsync<GetScheduleListRequest, GetScheduleListResponse>(request);
+            GetScheduleListResponse response = await RequestMailSchedules(request);
 
             return response.Schedules;
         }
 
         public async Task<JobMessage> RequestAddMailTaskForRunningJobAsync(JobMessage jobMessage)
         {
-            return await bus.RequestAsync<JobMessage, JobMessage>(jobMessage);
+            JobMessage result = null;
+            bool isFailed = false;
+
+            try
+            {
+                result = await bus.RequestAsync<JobMessage, JobMessage>(jobMessage);
+            }
+            catch (Exception ex)
+            {
+                LogService.LogError($"There is an error while sending a request to add mail task. Retrying...", jobMessage.Schedule, ex);
+                isFailed = true;
+            }
+
+            if (isFailed)
+            {
+                result = await RequestAddMailTaskForRunningJobAsync(jobMessage);
+            }
+
+            return result;
         }
 
         public async Task<MailTaskModel> RequestMailTaskByIdAsync(GetMailTaskByIdRequest request)
         {
-            return await bus.RequestAsync<GetMailTaskByIdRequest, MailTaskModel>(request);
+            MailTaskModel result = null;
+            bool isFailed = false;
+
+            try
+            {
+                result = await bus.RequestAsync<GetMailTaskByIdRequest, MailTaskModel>(request);
+            }
+            catch (Exception ex)
+            {
+                LogService.LogError($"Client cannot get the mail task #{request.TaskId} from Mail Station server. Retrying...", ex);
+                isFailed = true;
+            }
+
+            if (isFailed)
+            {
+                result = await RequestMailTaskByIdAsync(request);
+            }
+
+            return result;
+        }
+
+        private async Task<GetScheduleListResponse> RequestMailSchedules(GetScheduleListRequest request)
+        {
+            GetScheduleListResponse response = null;
+            bool isFailed = false;
+
+            try
+            {
+                response = await bus.RequestAsync<GetScheduleListRequest, GetScheduleListResponse>(request);
+            }
+            catch (Exception ex)
+            {
+                LogService.LogError($"Client cannot get schedules from Mail Station server. Retrying...", string.Join(", ", request.MailIds), ex);
+                isFailed = true;
+            }
+
+            if (isFailed)
+            {
+                response = await RequestMailSchedules(request);
+            }
+
+            return response;
         }
         #endregion
 
         #region Subscribe
-        public void SubscribeScheduleChange()
+        public async Task SubscribeScheduleChangeAsync()
         {
-            bus.SubscribeAsync<Schedule>(
-                GetSubscriptionIdKey(updateScheduleSubscriptionId),
-                schedule => jobHandler.UpdateScheduleAsync(schedule),
-                config => config.WithTopic(updateScheduleSubscriptionId));
+            bool isFailed = false;
+
+            try
+            {
+                bus.SubscribeAsync<Schedule>(
+                    GetSubscriptionIdKey(updateScheduleSubscriptionId),
+                    schedule => jobHandler.UpdateScheduleAsync(schedule),
+                    config => config.WithTopic(updateScheduleSubscriptionId));
+            }
+            catch (Exception ex)
+            {
+                LogService.LogError($"There is an error while subscribing a queue with key {updateScheduleSubscriptionId}. Retrying...", ex);
+                isFailed = true;
+            }
+
+            if (isFailed)
+            {
+                await SubscribeScheduleChangeAsync();
+            }
         }
 
-        public void SubscribeRunNowJob()
+        public async Task SubscribeRunNowJobAsync()
         {
-            bus.SubscribeAsync<Schedule>(
-                GetSubscriptionIdKey(runNowJobSubscriptionId),
-                schedule => jobHandler.RetryAllProcessAsync(schedule),
-                config => config.WithTopic(runNowJobSubscriptionId));
+            bool isFailed = false;
+
+            try
+            {
+                bus.SubscribeAsync<Schedule>(
+                    GetSubscriptionIdKey(runNowJobSubscriptionId),
+                    schedule => jobHandler.RetryAllProcessAsync(schedule),
+                    config => config.WithTopic(runNowJobSubscriptionId));
+            }
+            catch (Exception ex)
+            {
+                LogService.LogError($"There is an error while subscribing a queue with key {runNowJobSubscriptionId}. Retrying...", ex);
+                isFailed = true;
+            }
+
+            if (isFailed)
+            {
+                await SubscribeRunNowJobAsync();
+            }
         }
 
-        public void SubscribeRetryJob()
+        public async Task SubscribeRetryJobAsync()
         {
-            bus.SubscribeAsync<Schedule>(
-                GetSubscriptionIdKey(retryJobSubscriptionId),
-                schedule => jobHandler.RetryAllProcessAsync(schedule),
-                config => config.WithTopic(retryJobSubscriptionId));
+            bool isFailed = false;
+
+            try
+            {
+                bus.SubscribeAsync<Schedule>(
+                    GetSubscriptionIdKey(retryJobSubscriptionId),
+                    schedule => jobHandler.RetryAllProcessAsync(schedule),
+                    config => config.WithTopic(retryJobSubscriptionId));
+            }
+            catch (Exception ex)
+            {
+                LogService.LogError($"There is an error while subscribing a queue with key {retryJobSubscriptionId}. Retrying...", ex);
+                isFailed = true;
+            }
+
+            if (isFailed)
+            {
+                await SubscribeRetryJobAsync();
+            }
         }
         #endregion
 
