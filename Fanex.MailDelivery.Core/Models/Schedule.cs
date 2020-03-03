@@ -67,7 +67,7 @@ namespace Fanex.MailDelivery.Core.Models
             };
         }
 
-        public bool IsRunning()
+        public bool CanRetry()
         {
             return CurrentRetryTimes <= MaxRetryTimes;
         }

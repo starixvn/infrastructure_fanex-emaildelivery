@@ -33,7 +33,7 @@ namespace Fanex.MailDelivery.Client.Logging
         {
             if (schedule != null)
             {
-                string message = $@"Schedule Mail #{schedule.Id},{Environment.NewLine}Mail Name: {schedule.Name},{Environment.NewLine}Error: {ex.Message}";
+                string message = $@"Schedule Mail #{schedule.Id} ({schedule.Name}){Environment.NewLine}Error: {ex.Message}";
 
                 LogError(message, ex);
             }
@@ -46,7 +46,7 @@ namespace Fanex.MailDelivery.Client.Logging
         public static void LogError(string message, Schedule schedule, Exception ex)
         {
             string errorMessage = schedule != null
-                                ? $@"Schedule Mail #{schedule.Id},{Environment.NewLine}Mail Name: {schedule.Name},{Environment.NewLine}Error: {message}"
+                                ? $@"Schedule Mail #{schedule.Id} ({schedule.Name}){Environment.NewLine}Error: {message}"
                                 : message;
 
             LogError(errorMessage, ex);
@@ -55,7 +55,7 @@ namespace Fanex.MailDelivery.Client.Logging
         public static void LogError(string message, string mailIds, Exception ex)
         {
             string errorMessage = !string.IsNullOrWhiteSpace(mailIds)
-                                ? $@"Mails #{mailIds},{Environment.NewLine}Error: {message}"
+                                ? $@"Mails #{mailIds}{Environment.NewLine}Error: {message}"
                                 : message;
 
             LogError(errorMessage, ex);

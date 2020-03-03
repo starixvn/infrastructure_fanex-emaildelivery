@@ -169,7 +169,7 @@ namespace Fanex.MailDelivery.Client.Handlers
             }
             catch (Exception ex)
             {
-                LogService.LogError($"There is an error while sending a request to add mail task. Retrying...", jobMessage.Schedule, ex);
+                LogService.LogError($"There is an error while sending a request to add a running mail task. Retrying...", jobMessage.Schedule, ex);
                 isFailed = true;
             }
 
@@ -239,6 +239,8 @@ namespace Fanex.MailDelivery.Client.Handlers
                     GetSubscriptionIdKey(updateScheduleSubscriptionId),
                     schedule => jobHandler.UpdateScheduleAsync(schedule),
                     config => config.WithTopic(updateScheduleSubscriptionId));
+
+                LogService.LogInfo($"Subcribed the queue with key {updateScheduleSubscriptionId} successfully");
             }
             catch (Exception ex)
             {
@@ -262,6 +264,8 @@ namespace Fanex.MailDelivery.Client.Handlers
                     GetSubscriptionIdKey(runNowJobSubscriptionId),
                     schedule => jobHandler.RetryAllProcessAsync(schedule),
                     config => config.WithTopic(runNowJobSubscriptionId));
+
+                LogService.LogInfo($"Subcribed the queue with key {runNowJobSubscriptionId} successfully");
             }
             catch (Exception ex)
             {
@@ -285,6 +289,8 @@ namespace Fanex.MailDelivery.Client.Handlers
                     GetSubscriptionIdKey(retryJobSubscriptionId),
                     schedule => jobHandler.RetryAllProcessAsync(schedule),
                     config => config.WithTopic(retryJobSubscriptionId));
+
+                LogService.LogInfo($"Subcribed the queue with key {retryJobSubscriptionId} successfully");
             }
             catch (Exception ex)
             {

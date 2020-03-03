@@ -65,10 +65,12 @@ namespace Fanex.MailDelivery.MailStationService.MessageBrokers
                     MailDeliveryConstants.SendMailRoutingKey,
                     mail => mailService.SendMail(mail),
                     config => config.WithTopic(MailDeliveryConstants.SendMailRoutingKey));
+
+                logService.LogInfo($"Subcribed the queue with key {MailDeliveryConstants.SendMailRoutingKey} successfully");
             }
             catch (Exception ex)
             {
-                logService.LogError($"There is an error while subscribing a queue with key {MailDeliveryConstants.SendMailRoutingKey}. Retrying...", ex);
+                logService.LogError($"There is an error while subscribing the queue with key {MailDeliveryConstants.SendMailRoutingKey}. Retrying...", ex);
                 isFailed = true;
             }
 
@@ -93,10 +95,12 @@ namespace Fanex.MailDelivery.MailStationService.MessageBrokers
                         return Task.CompletedTask;
                     },
                     config => config.WithTopic(MailDeliveryConstants.ClientNotificationTopic));
+
+                logService.LogInfo($"Subcribed the queue with key {MailDeliveryConstants.ClientNotificationTopic} successfully");
             }
             catch (Exception ex)
             {
-                logService.LogError($"There is an error while subscribing a queue with key {MailDeliveryConstants.ClientNotificationTopic}. Retrying...", ex);
+                logService.LogError($"There is an error while subscribing the queue with key {MailDeliveryConstants.ClientNotificationTopic}. Retrying...", ex);
                 isFailed = true;
             }
 
@@ -116,10 +120,12 @@ namespace Fanex.MailDelivery.MailStationService.MessageBrokers
                     MailDeliveryConstants.JobResultRoutingKey,
                     jobStatus => mailService.UpdateJobStatus(jobStatus),
                     config => config.WithTopic(MailDeliveryConstants.JobResultRoutingKey));
+
+                logService.LogInfo($"Subcribed the queue with key {MailDeliveryConstants.JobResultRoutingKey} successfully");
             }
             catch (Exception ex)
             {
-                logService.LogError($"There is an error while subscribing a queue with key {MailDeliveryConstants.JobResultRoutingKey}. Retrying...", ex);
+                logService.LogError($"There is an error while subscribing the queue with key {MailDeliveryConstants.JobResultRoutingKey}. Retrying...", ex);
                 isFailed = true;
             }
 
@@ -138,6 +144,8 @@ namespace Fanex.MailDelivery.MailStationService.MessageBrokers
             try
             {
                 bus.RespondAsync<GetScheduleListRequest, GetScheduleListResponse>(request => Task.FromResult(mailService.GetScheduleList(request)));
+
+                logService.LogInfo($"Registered to response schedules to clients successfully");
             }
             catch (Exception ex)
             {
@@ -164,6 +172,8 @@ namespace Fanex.MailDelivery.MailStationService.MessageBrokers
 
                         return Task.FromResult(jobMessage);
                     });
+
+                logService.LogInfo($"Registered to add mail tasks for running jobs successfully");
             }
             catch (Exception ex)
             {
@@ -184,6 +194,8 @@ namespace Fanex.MailDelivery.MailStationService.MessageBrokers
             try
             {
                 bus.RespondAsync<GetMailTaskByIdRequest, MailTaskModel>(request => Task.FromResult(mailService.GetMailTaskById(request)));
+
+                logService.LogInfo($"Registered to response mail tasks to clients successfully");
             }
             catch (Exception ex)
             {

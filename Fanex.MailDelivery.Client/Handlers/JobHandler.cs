@@ -32,17 +32,17 @@ namespace Fanex.MailDelivery.Client.Handlers
 
         public async Task StartAsync()
         {
-            ISchedulerFactory schedFact = new StdSchedulerFactory();
-            scheduler = await schedFact.GetScheduler();
-            await scheduler.Shutdown();
-
-            scheduler = await schedFact.GetScheduler();
-            await scheduler.Start();
-
-            await StartUpdateActiveTimeJob();
-
             if (AppSettings.MailCientConfig.HasSchedule())
             {
+                ISchedulerFactory schedFact = new StdSchedulerFactory();
+                scheduler = await schedFact.GetScheduler();
+                await scheduler.Shutdown();
+
+                scheduler = await schedFact.GetScheduler();
+                await scheduler.Start();
+
+                await StartUpdateActiveTimeJob();
+
                 var schedules = await MailClientHandler.GetSchedulesAsync();
 
                 await StartJobsAsync(schedules);
@@ -229,7 +229,7 @@ namespace Fanex.MailDelivery.Client.Handlers
             JobDataMap jobDataMap = GetJobDataMap(schedule);
 
             ITrigger retryTrigger = TriggerBuilder.Create()
-                .StartAt(DateTimeOffset.Now.AddSeconds(schedule.RetryInterval * 60))
+                .StartAt(DateTimeOffset.Now.AddMinutes(schedule.RetryInterval))
                 .UsingJobData(jobDataMap)
                 .Build();
 
