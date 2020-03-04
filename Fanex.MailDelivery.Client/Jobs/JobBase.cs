@@ -16,7 +16,7 @@ namespace Fanex.MailDelivery.Client.Jobs
         public async Task Execute(IJobExecutionContext context)
         {
             Schedule schedule = null;
-            logger = new StringBuilder();
+            logger = new StringBuilder($"Client Logs:{Environment.NewLine}");
 
             try
             {
@@ -47,7 +47,7 @@ namespace Fanex.MailDelivery.Client.Jobs
 
                         schedule.TaskId = jobResult.Schedule.TaskId;
 
-                        message = $"Added a running task for mail #{schedule.Id} ({schedule.Name})";
+                        message = $"Added a running task for the mail #{schedule.Id} ({schedule.Name})";
 
                         logger.AppendLine($"> {message}");
                         LogService.LogInfo(message);
@@ -59,7 +59,7 @@ namespace Fanex.MailDelivery.Client.Jobs
                     }
                     else
                     {
-                        message = $"Running mail task #{schedule.TaskId}";
+                        message = $"Running the task #{schedule.TaskId} of the mail #{schedule.Id} ({schedule.Name})";
 
                         logger.AppendLine($"> {message}");
                         LogService.LogInfo(message);
@@ -96,7 +96,7 @@ namespace Fanex.MailDelivery.Client.Jobs
         private async Task HandleJob(IJobExecutionContext context, Schedule schedule, JobMessage jobMessage)
         {
             JobMessage jobResult = jobMessage;
-            string message = $"Running job to generate a mail #{schedule.Id} ({schedule.Name})";
+            string message = $"Running job to generate the mail #{schedule.Id} ({schedule.Name})";
 
             logger.AppendLine($"> {message}");
             LogService.LogInfo(message);
@@ -109,13 +109,17 @@ namespace Fanex.MailDelivery.Client.Jobs
 
             if (jobResult.JobStatus == JobStatus.Success || jobResult.JobStatus == JobStatus.SuccessWithoutSendmail)
             {
-                message = $"Generated a mail #{schedule.Id} ({schedule.Name}) successfully";
+                message = $"Generated the mail #{schedule.Id} ({schedule.Name}) successfully";
 
                 logger.AppendLine($"> {message}");
                 LogService.LogInfo(message);
             }
             else
             {
+                message = $"The task status of the mail #{schedule.Id} ({schedule.Name}) is {jobResult.JobStatus.ToString()}";
+                logger.AppendLine($"> {message}");
+                LogService.LogInfo(message);
+
                 await RetryJobAsync(jobResult.Schedule);
             }
 
@@ -193,7 +197,7 @@ namespace Fanex.MailDelivery.Client.Jobs
             }
             else if (schedule.CanRetry())
             {
-                message = $"Retry({schedule.CurrentRetryTimes}) to generate mail #{schedule.Id} ({schedule.Name}) in {schedule.RetryInterval} minutes...";
+                message = $"Retry({schedule.CurrentRetryTimes}) to generate the mail #{schedule.Id} ({schedule.Name}) in {schedule.RetryInterval} minutes...";
 
                 logger.AppendLine($"> {message}");
                 LogService.LogInfo(message);
@@ -202,13 +206,11 @@ namespace Fanex.MailDelivery.Client.Jobs
             }
             else
             {
-                message = $"Exceeded maximum retrying time({schedule.MaxRetryTimes}) for mail #{schedule.Id} ({schedule.Name})";
+                message = $"Exceeded maximum retrying time({schedule.MaxRetryTimes}) for the mail #{schedule.Id} ({schedule.Name})";
 
                 logger.AppendLine($"> {message}");
                 LogService.LogInfo(message);
             }
-
-
         }
     }
 }

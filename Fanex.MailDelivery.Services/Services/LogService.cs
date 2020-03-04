@@ -10,6 +10,8 @@ namespace Fanex.MailDelivery.Services.Services.Logging
     {
         void LogInfo(string logMessage);
 
+        void LogError(string message);
+
         void LogError(string message, Exception exception);
 
         void LogError(Exception exception);
@@ -28,6 +30,15 @@ namespace Fanex.MailDelivery.Services.Services.Logging
         public void LogInfo(string logMessage)
         {
             Logger.Log.Info(logMessage);
+        }
+
+        public void LogError(string message)
+        {
+            var logMessage = new LogMessage(message)
+                        .AddSection("Server Info", CommonInfoGetters.GetServerInfo())
+                        .ToString();
+
+            Logger.Log.Error(logMessage);
         }
 
         public void LogError(string message, Exception exception)

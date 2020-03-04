@@ -11,6 +11,7 @@ using Fanex.MailDelivery.Services.Services.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Fanex.MailDelivery.Services.Services.MailService
@@ -92,7 +93,17 @@ namespace Fanex.MailDelivery.Services.Services.MailService
         {
             try
             {
-                Console.ForegroundColor = ConsoleColor.Red;
+                if (jobMessage.TaskLog != null)
+                {
+                    mailRepository.AddMailLog(new AddMailLogCriteria
+                    {
+                        LogTime = jobMessage.TaskLog.LogTime,
+                        ExceptionMessage = jobMessage.TaskLog.Message,
+                        StackTrace = jobMessage.TaskLog.StackTrace,
+                        Status = (int)jobMessage.JobStatus,
+                        TaskId = jobMessage.Schedule.TaskId
+                    });
+                }
 
                 switch (jobMessage.JobStatus)
                 {
@@ -105,7 +116,7 @@ namespace Fanex.MailDelivery.Services.Services.MailService
                         break;
 
                     case JobStatus.Success:
-                        await UpdateSuccessJob(jobMessage);
+                        await SendMailForSuccessfulJob(jobMessage);
                         break;
 
                     case JobStatus.SuccessWithoutSendmail:
@@ -124,8 +135,6 @@ namespace Fanex.MailDelivery.Services.Services.MailService
                         // Do nothing
                         break;
                 }
-
-                Console.ForegroundColor = ConsoleColor.White;
             }
             catch (Exception ex)
             {
@@ -178,6 +187,8 @@ namespace Fanex.MailDelivery.Services.Services.MailService
             var mailRecordId = 0;
             Schedule schedule = null;
             int taskId = mailTaskId;
+            var logger = new StringBuilder($"Server Logs:{Environment.NewLine}");
+            string message = string.Empty;
 
             try
             {
@@ -193,30 +204,45 @@ namespace Fanex.MailDelivery.Services.Services.MailService
 
                     ValidateMail(mailRecord);
 
+                    message = $"Inserting a mail record for the mail #{mail.MailingListId}";
+                    logger.AppendLine($"> {message}");
+                    logService.LogInfo(message);
+
                     mailRecordId = (int)mailDeliverBusiness.InsertMailRecord(mailRecord);
 
                     if (schedule.TriggerTypeEnum == MailType.Function)
                     {
+                        message = $"Inserting the task for the function mail #{mail.MailingListId}";
+                        logger.AppendLine($"> {message}");
+                        logService.LogInfo(message);
+
                         taskId = InsertMailTaskForFunctionMail(mail, mailRecordId);
                     }
 
                     if (mailRecordId > 0)
                     {
-                        logService.LogInfo($"Mail #{mail.MailingListId} are stored successfully with mail record id {mailRecordId}.");
+                        message = $"Sending out the mail record #{mailRecordId} (mail #{mail.MailingListId})";
+                        logger.AppendLine($"> {message}");
+                        logService.LogInfo(message);
 
                         mailRecord.IsReady = true;
                         mailRecord.MailID = mailRecordId;
                         mailRecord.ResentCount = sendMailRetryLimit;
 
-                        string errorMessage = await SendMailRecord(mailRecord);
+                        bool isSuccessful = await SendMailRecord(mailRecord, mail.MailingListId, logger);
 
-                        TaskLog taskLog = !string.IsNullOrWhiteSpace(errorMessage) ? new TaskLog { LogTime = DateTime.Now, Message = errorMessage } : null;
+                        var status = isSuccessful ? JobStatus.Success : JobStatus.JobFailed;
+                        var taskLog = new TaskLog
+                        {
+                            LogTime = DateTime.Now,
+                            Message = logger.ToString()
+                        };
 
-                        InsertOrUpdateMailTaskAndLog(taskId, mail, mailRecordId, taskLog);
+                        InsertOrUpdateMailTaskAndLog(taskId, mail, mailRecordId, status, taskLog);
                     }
                     else
                     {
-                        throw new InvalidOperationException($"Failed to store Mail #{mail.MailingListId}.");
+                        throw new InvalidOperationException($"Failed to store a mail record for the mail #{mail.MailingListId}.");
                     }
                 }
                 else
@@ -232,10 +258,11 @@ namespace Fanex.MailDelivery.Services.Services.MailService
                     taskId,
                     mail,
                     mailRecordId,
+                    JobStatus.JobFailed,
                     new TaskLog
                     {
                         LogTime = DateTime.Now,
-                        Message = ex.InnerException?.Message ?? ex.Message,
+                        Message = $"{logger}{Environment.NewLine}There is an error -> {ex.InnerException?.Message ?? ex.Message}",
                         StackTrace = ex.StackTrace
                     });
             }
@@ -255,7 +282,12 @@ namespace Fanex.MailDelivery.Services.Services.MailService
             return taskId;
         }
 
-        private void InsertOrUpdateMailTaskAndLog(int mailTaskId, Mail mail, int mailRecordId, TaskLog taskLog)
+        private void InsertOrUpdateMailTaskAndLog(
+            int mailTaskId,
+            Mail mail,
+            int mailRecordId,
+            JobStatus status,
+            TaskLog taskLog = null)
         {
             try
             {
@@ -268,7 +300,6 @@ namespace Fanex.MailDelivery.Services.Services.MailService
 
                 if (taskId > 0)
                 {
-                    var status = taskLog == null ? JobStatus.Success : JobStatus.JobFailed;
                     var updateTaskCriteria = new UpdateMailTaskStatusCriteria
                     {
                         TaskId = taskId,
@@ -298,7 +329,7 @@ namespace Fanex.MailDelivery.Services.Services.MailService
                             LogTime = taskLog.LogTime,
                             ExceptionMessage = taskLog.Message,
                             StackTrace = taskLog.StackTrace,
-                            Status = (int)JobStatus.JobFailed,
+                            Status = (int)status,
                             TaskId = taskId
                         });
                     }
@@ -310,25 +341,54 @@ namespace Fanex.MailDelivery.Services.Services.MailService
             }
         }
 
-        private async Task<string> SendMailRecord(MailRecord mailRecord)
+        private async Task<bool> SendMailRecord(MailRecord mailRecord, int mailId, StringBuilder logger)
         {
+            bool isSuccessful = true;
             string error = string.Empty;
+            string message = string.Empty;
 
             if (mailRecord != null)
             {
                 MailExtension.SendMail(mailRecord, out error);
 
-                if (!string.IsNullOrWhiteSpace(error) && mailRecord.ResentCount > 0)
+                if (!string.IsNullOrWhiteSpace(error))
                 {
-                    await Task.Delay(TimeSpan.FromSeconds(sendMailRetryIntervalInSeconds));
+                    isSuccessful = false;
+                    message = $"Failed to send the mail record #{mailRecord.MailID} (mail #{mailId}) -> {error}";
+                    logger.AppendLine($"> {message}");
+                    logService.LogError(message);
 
-                    mailRecord.ResentCount--;
+                    if (mailRecord.ResentCount > 0)
+                    {
+                        message = $"Retry to send the mail record #{mailRecord.MailID} (mail #{mailId}) in {sendMailRetryIntervalInSeconds} seconds...";
+                        logger.AppendLine($"> {message}");
+                        logService.LogInfo(message);
 
-                    error = await SendMailRecord(mailRecord);
+                        await Task.Delay(TimeSpan.FromSeconds(sendMailRetryIntervalInSeconds));
+
+                        mailRecord.ResentCount--;
+
+                        isSuccessful = await SendMailRecord(mailRecord, mailId, logger);
+                    }
+                    else
+                    {
+                        message = $"Sending the mail record #{mailRecord.MailID} (mail #{mailId}) exceeded maximum retrying time({sendMailRetryLimit})";
+
+                        logger.AppendLine($"> {message}");
+                        logService.LogError(message);
+                    }
+                }
+                else
+                {
+                    isSuccessful = true;
+
+                    message = $"Succeeded to send the mail record #{mailRecord.MailID} (mail #{mailId})";
+                    logger.AppendLine($"> {message}");
+                    logService.LogError(message);
                 }
             }
 
-            return error;
+            return isSuccessful;
         }
 
         private static void ValidateMail(MailRecord mail)
@@ -352,19 +412,6 @@ namespace Fanex.MailDelivery.Services.Services.MailService
                 TaskId = jobMessage.Schedule.TaskId,
                 RetryCount = jobMessage.Schedule.CurrentRetryTimes
             });
-
-            if (jobMessage.Schedule.CurrentRetryTimes > 0 && jobMessage.TaskLog != null)
-            {
-                // If is retried then write log.
-                mailRepository.AddMailLog(new AddMailLogCriteria
-                {
-                    LogTime = jobMessage.TaskLog.LogTime,
-                    ExceptionMessage = jobMessage.TaskLog.Message,
-                    StackTrace = jobMessage.TaskLog.StackTrace,
-                    Status = (int)jobMessage.JobStatus,
-                    TaskId = jobMessage.Schedule.TaskId
-                });
-            }
         }
 
         private void UpdateAbortJob(JobMessage jobMessage)
@@ -385,13 +432,19 @@ namespace Fanex.MailDelivery.Services.Services.MailService
             });
         }
 
-        private async Task UpdateSuccessJob(JobMessage jobMessage)
+        private async Task SendMailForSuccessfulJob(JobMessage jobMessage)
         {
             var mailTask = mailRepository.GetMailTaskById(new GetMailTaskByIdCriteria { MailTaskId = jobMessage.Schedule.TaskId });
 
             if (mailTask.Status != (int)JobStatus.Abort)
             {
                 await SendMail(jobMessage.Mail, jobMessage.Schedule.TaskId);
+            }
+            else
+            {
+                string message = $"Not allow to send out the mail #{jobMessage.Schedule.Id} ({jobMessage.Schedule.Name}) because it is aborted by user";
+
+                logService.LogInfo(message);
             }
         }
 
@@ -424,18 +477,6 @@ namespace Fanex.MailDelivery.Services.Services.MailService
                 TaskId = jobMessage.Schedule.TaskId,
                 Status = (int)JobStatus.JobFailed
             });
-
-            if (jobMessage.TaskLog != null)
-            {
-                mailRepository.AddMailLog(new AddMailLogCriteria
-                {
-                    LogTime = jobMessage.TaskLog.LogTime,
-                    ExceptionMessage = jobMessage.TaskLog.Message,
-                    StackTrace = jobMessage.TaskLog.StackTrace,
-                    Status = (int)jobMessage.JobStatus,
-                    TaskId = jobMessage.Schedule.TaskId
-                });
-            }
         }
 
         private MailRecord ConvertFromMailToMailRecord(Mail mail)
