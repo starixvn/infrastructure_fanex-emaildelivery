@@ -10,9 +10,9 @@
         public const string RunNowJobRoutingKeyFormat = "RoutingKey.RunNowJob_{0}";
 
         public const string AutoMailJobNameFormat = "AutoMailJob_{0}";
-        public const string MailCentralizedTriggerGroup = "Fanex.MailDelivery.Client.MailCentralizedTriggerGroup";
+        public const string MailCentralizedTriggerGroup = "MailStationClient.TriggerGroup";
 
-        public const string ScheduleJobDataKey = "Fanex.MailDelivery.Client.ScheduleJobDataKey";
+        public const string ScheduleJobDataKey = "MailStationClient.ScheduleJobDataKey";
         public const string RabbitMQLoginPassword = ";password=1q2w3e$R";
 
         public const string ClientNotificationJobName = "ClientNotificationJobName";
@@ -20,10 +20,8 @@
         public const string ClientNotificationTopic = "ClientNotificationTopic";
 
         public const int ClientNotificationIntervalTimeInSecond = 10;
-
-        // Server Time is UTC -4.
-        public const string LocalServerTimeZone = "SA Western Standard Time";
-
-        public const string LiveServerTimeZone = "SA Western Standard Time";
+        
+        public const string DevServerTimeZone = "SE Asia Standard Time"; // (UTC+07:00) Bangkok, Hanoi, Jakarta   
+        public const string LiveServerTimeZone = "SA Western Standard Time"; //(UTC-04:00) Georgetown, La Paz, Manaus, San Juan
     }
 }

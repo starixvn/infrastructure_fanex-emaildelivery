@@ -40,7 +40,7 @@ namespace MailStationTest
 
                     foreach (var schedule in schedules)
                     {
-                        schedule.ConvertToServerTime(MailClientSection.IsLocalEnvironment());
+                        schedule.ConvertToServerTime(MailClientSection.IsDevEnvironment());
 
                         Console.WriteLine("Schedule: {0}; Cron: {1}", schedule.Id, schedule.RepeatExpression);
                     }

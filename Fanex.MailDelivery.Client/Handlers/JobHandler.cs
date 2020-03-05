@@ -196,7 +196,7 @@ namespace Fanex.MailDelivery.Client.Handlers
 
         private static IJobDetail GetRetryJob(Schedule schedule)
         {
-            schedule.ConvertToServerTime(MailClientSection.IsLocalEnvironment());
+            schedule.ConvertToServerTime(MailClientSection.IsDevEnvironment());
 
             string jobName = string.Format(MailDeliveryConstants.AutoMailJobNameFormat, schedule.Id + Guid.NewGuid().ToString());
 
@@ -224,7 +224,7 @@ namespace Fanex.MailDelivery.Client.Handlers
 
         private static ITrigger GetRetryTrigger(Schedule schedule)
         {
-            schedule.ConvertToServerTime(MailClientSection.IsLocalEnvironment());
+            schedule.ConvertToServerTime(MailClientSection.IsDevEnvironment());
 
             JobDataMap jobDataMap = GetJobDataMap(schedule);
 
@@ -238,7 +238,7 @@ namespace Fanex.MailDelivery.Client.Handlers
 
         private static ITrigger GetTrigger(Schedule schedule)
         {
-            schedule.ConvertToServerTime(MailClientSection.IsLocalEnvironment());
+            schedule.ConvertToServerTime(MailClientSection.IsDevEnvironment());
 
             JobDataMap jobData = GetJobDataMap(schedule);
 

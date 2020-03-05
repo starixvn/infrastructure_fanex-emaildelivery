@@ -24,9 +24,9 @@ namespace Fanex.MailDelivery.MailStationService
             DbSettingProviderManager.Current.Start();
         }
 
-        protected override async void OnStart(string[] args)
+        protected override void OnStart(string[] args)
         {
-            await messageBroker.StartAsync();
+            messageBroker.Start();
         }
 
         protected override void OnStop()

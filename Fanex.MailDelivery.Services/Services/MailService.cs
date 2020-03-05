@@ -253,6 +253,7 @@ namespace Fanex.MailDelivery.Services.Services.MailService
             catch (Exception ex)
             {
                 logService.LogError(ex, schedule, mail.MailingListId);
+                logger.AppendLine($"There is an error -> {ex.InnerException?.Message ?? ex.Message}");
 
                 InsertOrUpdateMailTaskAndLog(
                     taskId,
@@ -262,7 +263,7 @@ namespace Fanex.MailDelivery.Services.Services.MailService
                     new TaskLog
                     {
                         LogTime = DateTime.Now,
-                        Message = $"{logger}{Environment.NewLine}There is an error -> {ex.InnerException?.Message ?? ex.Message}",
+                        Message = logger.ToString(),
                         StackTrace = ex.StackTrace
                     });
             }
@@ -303,13 +304,9 @@ namespace Fanex.MailDelivery.Services.Services.MailService
                     var updateTaskCriteria = new UpdateMailTaskStatusCriteria
                     {
                         TaskId = taskId,
-                        Status = (int)status
+                        Status = (int)status,
+                        LastSent = DateTime.Now
                     };
-
-                    if (status == JobStatus.Success)
-                    {
-                        updateTaskCriteria.LastSent = DateTime.Now;
-                    }
 
                     mailRepository.UpdateMailTaskStatus(updateTaskCriteria);
 
@@ -384,7 +381,7 @@ namespace Fanex.MailDelivery.Services.Services.MailService
 
                     message = $"Succeeded to send the mail record #{mailRecord.MailID} (mail #{mailId})";
                     logger.AppendLine($"> {message}");
-                    logService.LogError(message);
+                    logService.LogInfo(message);
                 }
             }
 
@@ -404,7 +401,8 @@ namespace Fanex.MailDelivery.Services.Services.MailService
             mailRepository.UpdateMailTaskStatus(new UpdateMailTaskStatusCriteria
             {
                 TaskId = jobMessage.Schedule.TaskId,
-                Status = (int)JobStatus.Running
+                Status = (int)JobStatus.Running,
+                LastSent = DateTime.Now
             });
 
             mailRepository.UpdateRetryCounter(new UpdateTaskRetryCounterCriteria
@@ -419,7 +417,8 @@ namespace Fanex.MailDelivery.Services.Services.MailService
             mailRepository.UpdateMailTaskStatus(new UpdateMailTaskStatusCriteria
             {
                 TaskId = jobMessage.Schedule.TaskId,
-                Status = (int)JobStatus.Abort
+                Status = (int)JobStatus.Abort,
+                LastSent = DateTime.Now
             });
         }
 
@@ -428,7 +427,8 @@ namespace Fanex.MailDelivery.Services.Services.MailService
             mailRepository.UpdateMailTaskStatus(new UpdateMailTaskStatusCriteria
             {
                 TaskId = jobMessage.Schedule.TaskId,
-                Status = (int)jobMessage.JobStatus
+                Status = (int)jobMessage.JobStatus,
+                LastSent = DateTime.Now
             });
         }
 
@@ -475,7 +475,8 @@ namespace Fanex.MailDelivery.Services.Services.MailService
             mailRepository.UpdateMailTaskStatus(new UpdateMailTaskStatusCriteria
             {
                 TaskId = jobMessage.Schedule.TaskId,
-                Status = (int)JobStatus.JobFailed
+                Status = (int)JobStatus.JobFailed,
+                LastSent = DateTime.Now
             });
         }
 

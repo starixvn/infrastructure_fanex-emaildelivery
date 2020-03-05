@@ -19,7 +19,7 @@ namespace Fanex.MailDelivery.Client.Logging
 
         public static void LogError(string message, Exception exception)
         {
-            string errorMessage = $"{(string.IsNullOrWhiteSpace(message) ? string.Empty : $"{message} -> ")}{exception.InnerException?.Message ?? exception.Message}";
+            string errorMessage = $"{(string.IsNullOrWhiteSpace(message) ? "Error:" : $"{message} -> ")} {exception.InnerException?.Message ?? exception.Message}";
 
             var logMessage = new LogMessage(errorMessage)
                         .AddSection("Server Info", CommonInfoGetters.GetServerInfo())
@@ -33,7 +33,7 @@ namespace Fanex.MailDelivery.Client.Logging
         {
             if (schedule != null)
             {
-                string message = $@"Schedule Mail #{schedule.Id} ({schedule.Name}){Environment.NewLine}Error: {ex.Message}";
+                string message = $@"Schedule Mail #{schedule.Id} ({schedule.Name})";
 
                 LogError(message, ex);
             }

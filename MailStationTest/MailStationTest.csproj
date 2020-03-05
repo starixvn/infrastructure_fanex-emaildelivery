@@ -156,8 +156,6 @@
     </Compile>
     <Compile Include="Jobs\SuccessWithoutSendMailJob.cs" />
     <Compile Include="Jobs\DataNotReadyJob.cs" />
-    <Compile Include="Jobs\MissingJob.cs" />
-    <Compile Include="Jobs\RunNowJob.cs" />
     <Compile Include="Jobs\UnstableJob.cs" />
     <Compile Include="Jobs\ErrorJob.cs" />
     <Compile Include="Jobs\NormalJob.cs" />

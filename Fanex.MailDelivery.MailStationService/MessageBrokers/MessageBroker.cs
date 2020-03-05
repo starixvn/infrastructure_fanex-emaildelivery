@@ -7,13 +7,14 @@ using Fanex.MailDelivery.MailStationService.Logging;
 using Fanex.MailDelivery.Services.Services.Logging;
 using Fanex.MailDelivery.Services.Services.MailService;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Fanex.MailDelivery.MailStationService.MessageBrokers
 {
     public interface IMessageBroker : IDisposable
     {
-        Task StartAsync();
+        void Start();
     }
 
     public class MessageBroker : IMessageBroker
@@ -36,18 +37,18 @@ namespace Fanex.MailDelivery.MailStationService.MessageBrokers
             this.mailService = mailService ?? new MailService(AppSettings.SendMailRetryLimit, AppSettings.SendMailRetryIntervalInSeconds);
         }
 
-        public async Task StartAsync()
+        public void Start()
         {
             bus = RabbitHutch.CreateBus(AppSettings.RabbitMQConnectionString);
 
             while (!bus.IsConnected)
             {
-                await Task.Delay(TimeSpan.FromSeconds(waitingForRabbitMQInSeconds));
+                Thread.Sleep(waitingForRabbitMQInSeconds);
             }
 
-            await SubscribeMailAsync();
-            await SubscribeJobResultAsync();
-            await SubscribeClientNotificationMessageAsync();
+            SubscribeMail();
+            SubscribeJobResult();
+            SubscribeClientNotificationMessage();
 
             ResponseGetScheduleList();
             RespondGetMailTaskForById();
@@ -55,7 +56,7 @@ namespace Fanex.MailDelivery.MailStationService.MessageBrokers
         }
 
         #region Subscribe
-        private async Task SubscribeMailAsync()
+        private void SubscribeMail()
         {
             bool isFailed = false;
 
@@ -76,11 +77,11 @@ namespace Fanex.MailDelivery.MailStationService.MessageBrokers
 
             if (isFailed)
             {
-                await SubscribeMailAsync();
+                SubscribeMail();
             }
         }
 
-        private async Task SubscribeClientNotificationMessageAsync()
+        private void SubscribeClientNotificationMessage()
         {
             bool isFailed = false;
 
@@ -106,11 +107,11 @@ namespace Fanex.MailDelivery.MailStationService.MessageBrokers
 
             if (isFailed)
             {
-                await SubscribeClientNotificationMessageAsync();
+                SubscribeClientNotificationMessage();
             }
         }
 
-        private async Task SubscribeJobResultAsync()
+        private void SubscribeJobResult()
         {
             bool isFailed = false;
 
@@ -131,7 +132,7 @@ namespace Fanex.MailDelivery.MailStationService.MessageBrokers
 
             if (isFailed)
             {
-                await SubscribeJobResultAsync();
+                SubscribeJobResult();
             }
         }
         #endregion

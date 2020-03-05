@@ -77,9 +77,9 @@ namespace Fanex.MailDelivery.Core.Models
             return EndTime != null && EndTime < DateTime.Now;
         }
 
-        public void ConvertToServerTime(bool isLocalEnvironment)
+        public void ConvertToServerTime(bool isDevEnvironment)
         {
-            int hoursDifferent = CalculateHoursDifferentBeetweenLocalAndServer(isLocalEnvironment);
+            int hoursDifferent = CalculateHoursDifferentBeetweenDevAndServer(isDevEnvironment);
 
             StartTime = StartTime.AddHours(hoursDifferent);
 
@@ -113,9 +113,9 @@ namespace Fanex.MailDelivery.Core.Models
             RepeatExpression = string.Join(" ", cron);
         }
 
-        private static int CalculateHoursDifferentBeetweenLocalAndServer(bool isLocalEnvironment)
+        private static int CalculateHoursDifferentBeetweenDevAndServer(bool isDevEnvironment)
         {
-            string timezoneName = isLocalEnvironment ? MailDeliveryConstants.LocalServerTimeZone : MailDeliveryConstants.LiveServerTimeZone;
+            string timezoneName = isDevEnvironment ? MailDeliveryConstants.DevServerTimeZone : MailDeliveryConstants.LiveServerTimeZone;
             DateTime nowDate = DateTime.Now;
 
             return -(TimeZoneInfo.ConvertTime(nowDate, TimeZoneInfo.FindSystemTimeZoneById(timezoneName)) - nowDate).Hours;

@@ -57,12 +57,12 @@ namespace Fanex.MailDelivery.Client.Configurations
             return Schedules.Count > 0;
         }
 
-        public static bool IsLocalEnvironment()
+        public static bool IsDevEnvironment()
         {
-            string environment = MailClientSection.GetConfig().Environment ?? string.Empty;
-            bool isLocal = environment.Length == 0 || environment.Trim().Equals("local");
+            string environment = GetConfig().Environment ?? string.Empty;
+            bool isDev = environment.Length == 0 || environment.Trim().Equals("dev");
 
-            return isLocal;
+            return isDev;
         }
     }
 }
