@@ -6,7 +6,7 @@ using System;
 using System.ServiceProcess;
 using System.Threading.Tasks;
 
-namespace MailStationTest
+namespace MailStationClientTest
 {
     public partial class MailStationTestService : ServiceBase
     {

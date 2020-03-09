@@ -1,4 +1,4 @@
-﻿namespace MailStationTest
+﻿namespace MailStationClientTest
 {
     /// <summary>
     /// Mail client service for testing.

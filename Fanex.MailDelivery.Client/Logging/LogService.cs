@@ -60,5 +60,14 @@ namespace Fanex.MailDelivery.Client.Logging
 
             LogError(errorMessage, ex);
         }
+
+        public static void LogError(string message)
+        {           
+            var logMessage = new LogMessage(message)
+                        .AddSection("Server Info", CommonInfoGetters.GetServerInfo())                        
+                        .ToString();
+
+            Logger.Log.Error(logMessage);
+        }
     }
 }

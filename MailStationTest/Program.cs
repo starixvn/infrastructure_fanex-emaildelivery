@@ -2,7 +2,7 @@
 using System.Reflection;
 using System.ServiceProcess;
 
-namespace MailStationTest
+namespace MailStationClientTest
 {
     public class Program
     {

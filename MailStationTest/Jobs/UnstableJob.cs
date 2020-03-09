@@ -1,7 +1,7 @@
 ﻿using Fanex.MailDelivery.Client.Jobs;
 using Fanex.MailDelivery.Core.Models;
 
-namespace MailStationTest.Jobs
+namespace MailStationClientTest.Jobs
 {
     using Quartz;
     using System;

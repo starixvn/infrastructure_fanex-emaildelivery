@@ -63,19 +63,24 @@ namespace Fanex.MailDelivery.Client.Handlers
             {
                 if (schedule != null && schedule.Active && !schedule.IsScheduleEnd())
                 {
-                    IJobDetail job = GetJobDetail(schedule);
-                    ITrigger trigger = GetTrigger(schedule);
-
-                    // Unschedule all redundant job.
-                    await scheduler.UnscheduleJob(trigger.Key);
-
-                    await scheduler.ScheduleJob(job, trigger);
-
-                    LogService.LogInfo(string.Format("Cron string: {0}", schedule.RepeatExpression));
-
                     if (schedule.SiteId != AppSettings.MailCientConfig.SiteId)
                     {
-                        LogService.LogInfo(string.Format("Current site id is {0}, but schedule site id is {1}", AppSettings.MailCientConfig.SiteId, schedule.SiteId));
+                        var message = $"Only run for mails belonging the same site #{AppSettings.MailCientConfig.SiteId}. " +
+                                        $"But mail #{schedule.Id} ({schedule.Name}) belongs another site #{schedule.SiteId}, it's ignored.";
+
+                        LogService.LogError(message);
+                    }
+                    else
+                    {
+                        LogService.LogInfo($"Mail #{schedule.Id} ({schedule.Name}) is triggered by the schedule ({schedule.RepeatExpression})");
+
+                        IJobDetail job = GetJobDetail(schedule);
+                        ITrigger trigger = GetTrigger(schedule);
+
+                        // Unschedule all redundant job.
+                        await scheduler.UnscheduleJob(trigger.Key);
+
+                        await scheduler.ScheduleJob(job, trigger);
                     }
                 }
             }
@@ -85,6 +90,8 @@ namespace Fanex.MailDelivery.Client.Handlers
         {
             if (AppSettings.HasScheduleId(schedule.Id))
             {
+                LogService.LogInfo($"Mail #{schedule.Id} ({schedule.Name}) is triggered to start now from management site (mSite)");
+
                 IJobDetail job = GetRetryJob(schedule);
                 ITrigger trigger = GetRetryAllProcessTrigger(schedule);
 
@@ -118,21 +125,33 @@ namespace Fanex.MailDelivery.Client.Handlers
 
                 if (oldTrigger != null)
                 {
-                    if (schedule.Active && !schedule.IsScheduleEnd())
+                    if (!schedule.Active)
                     {
-                        ITrigger newTrigger = GetTrigger(schedule);
+                        LogService.LogInfo($"Mail #{schedule.Id} ({schedule.Name}) is disabled");
 
-                        await scheduler.RescheduleJob(triggerKey, newTrigger);
+                        await scheduler.UnscheduleJob(triggerKey);
+                    }
+                    else if (schedule.IsScheduleEnd())
+                    {
+                        LogService.LogInfo($"Mail #{schedule.Id} ({schedule.Name}) is expired");
+
+                        await scheduler.UnscheduleJob(triggerKey);
                     }
                     else
                     {
-                        await scheduler.UnscheduleJob(triggerKey);
+                        LogService.LogInfo($"Mail #{schedule.Id} ({schedule.Name}) is updated the new schedule ({schedule.RepeatExpression})");
+
+                        ITrigger newTrigger = GetTrigger(schedule);
+
+                        await scheduler.RescheduleJob(triggerKey, newTrigger);
                     }
                 }
                 else
                 {
                     if (!schedule.IsScheduleEnd())
                     {
+                        LogService.LogInfo($"Mail #{schedule.Id} ({schedule.Name}) is enabled");
+
                         IJobDetail job = GetJobDetail(schedule);
                         ITrigger trigger = GetTrigger(schedule);
 

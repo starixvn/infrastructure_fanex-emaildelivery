@@ -6,6 +6,7 @@ using Fanex.MailDelivery.Core.Messaging;
 using Fanex.MailDelivery.Core.Models;
 using Fanex.MailDelivery.Services.Criteria;
 using Fanex.MailDelivery.Services.Criteria.Job;
+using Fanex.MailDelivery.Services.Models;
 using Fanex.MailDelivery.Services.Repositories;
 using Fanex.MailDelivery.Services.Services.Logging;
 using System;
@@ -225,11 +226,11 @@ namespace Fanex.MailDelivery.Services.Services.MailService
                         logger.AppendLine($"> {message}");
                         logService.LogInfo(message);
 
+                        var retryMailRecord = new RetryMailRecord(mailRecord, sendMailRetryLimit);
                         mailRecord.IsReady = true;
                         mailRecord.MailID = mailRecordId;
-                        mailRecord.ResentCount = sendMailRetryLimit;
 
-                        bool isSuccessful = await SendMailRecord(mailRecord, mail.MailingListId, logger);
+                        bool isSuccessful = await SendMailRecord(retryMailRecord, mail.MailingListId, logger);
 
                         var status = isSuccessful ? JobStatus.Success : JobStatus.JobFailed;
                         var taskLog = new TaskLog
@@ -338,11 +339,12 @@ namespace Fanex.MailDelivery.Services.Services.MailService
             }
         }
 
-        private async Task<bool> SendMailRecord(MailRecord mailRecord, int mailId, StringBuilder logger)
+        private async Task<bool> SendMailRecord(RetryMailRecord retryMailRecord, int mailId, StringBuilder logger)
         {
             bool isSuccessful = true;
             string error = string.Empty;
             string message = string.Empty;
+            var mailRecord = retryMailRecord.MailRecord;
 
             if (mailRecord != null)
             {
@@ -351,21 +353,21 @@ namespace Fanex.MailDelivery.Services.Services.MailService
                 if (!string.IsNullOrWhiteSpace(error))
                 {
                     isSuccessful = false;
-                    message = $"Failed to send the mail record #{mailRecord.MailID} (mail #{mailId}) -> {error}";
+                    message = $"Failed to send the mail record #{mailRecord.MailID} (mail #{mailId}) -> Error: {error}";
                     logger.AppendLine($"> {message}");
                     logService.LogError(message);
 
-                    if (mailRecord.ResentCount > 0)
-                    {
-                        message = $"Retry to send the mail record #{mailRecord.MailID} (mail #{mailId}) in {sendMailRetryIntervalInSeconds} seconds...";
+                    if (retryMailRecord.RetryCount > 0)
+                    {                        
+                        await Task.Delay(TimeSpan.FromSeconds(sendMailRetryIntervalInSeconds));
+
+                        retryMailRecord.RetryCount--;
+
+                        message = $"Resend({retryMailRecord.ResendTime}) the mail record #{mailRecord.MailID} (mail #{mailId}) in {sendMailRetryIntervalInSeconds} seconds...";
                         logger.AppendLine($"> {message}");
                         logService.LogInfo(message);
 
-                        await Task.Delay(TimeSpan.FromSeconds(sendMailRetryIntervalInSeconds));
-
-                        mailRecord.ResentCount--;
-
-                        isSuccessful = await SendMailRecord(mailRecord, mailId, logger);
+                        isSuccessful = await SendMailRecord(retryMailRecord, mailId, logger);
                     }
                     else
                     {
