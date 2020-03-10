@@ -34,7 +34,7 @@ namespace Fanex.MailDelivery.MailStationService.MessageBrokers
             LogProvider.SetCurrentLogProvider(new RabbitMQLogProvider());
 
             this.logService = logService;
-            this.mailService = mailService ?? new MailService(AppSettings.SendMailRetryLimit, AppSettings.SendMailRetryIntervalInSeconds);
+            this.mailService = mailService ?? new MailService(AppSettings.SendMailRetryLimit, AppSettings.SendMailRetryIntervalInMinutes);
         }
 
         public void Start()
@@ -169,7 +169,7 @@ namespace Fanex.MailDelivery.MailStationService.MessageBrokers
                 bus.RespondAsync<JobMessage, JobMessage>(
                     jobMessage =>
                     {
-                        mailService.AddMailTaskForRunningJob(jobMessage);
+                        jobMessage.Schedule.TaskId = mailService.AddMailTaskForRunningJob(jobMessage);
 
                         return Task.FromResult(jobMessage);
                     });

@@ -4,19 +4,18 @@ namespace Fanex.MailDelivery.Services.Models
 {
     public class RetryMailRecord
     {
-        public RetryMailRecord(MailRecord mailRecord, int retryCount)
+        public RetryMailRecord(MailRecord mailRecord, int maxRetryCount)
         {
             MailRecord = mailRecord;
-            RetryCount = retryCount;
-            MaxRetryCount = retryCount;
+            MaxRetryCount = maxRetryCount;
         }
 
         public MailRecord MailRecord { get; private set; }
 
-        public int RetryCount { get; set; }
+        public int RetryTime { get; set; }
 
         public int MaxRetryCount { get; private set; }
 
-        public int ResendTime => MaxRetryCount - RetryCount;
+        public bool CanRetry => RetryTime <= MaxRetryCount;
     }
 }
