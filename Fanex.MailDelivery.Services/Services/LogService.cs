@@ -4,7 +4,7 @@ using Fanex.MailDelivery.Core.Models;
 using System;
 using System.Collections.Generic;
 
-namespace Fanex.MailDelivery.Services.Services.Logging
+namespace Fanex.MailDelivery.Services.Services
 {
     public interface LogService
     {

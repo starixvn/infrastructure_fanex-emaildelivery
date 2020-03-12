@@ -1,13 +1,13 @@
 ﻿using Fanex.Data.Configuration;
 using Fanex.MailDelivery.MailStationService.MessageBrokers;
-using Fanex.MailDelivery.Services.Services.Logging;
+using Fanex.MailDelivery.Services.Services;
 using System.ServiceProcess;
 
 namespace Fanex.MailDelivery.MailStationService
 {
     partial class MainService : ServiceBase
     {
-        private IMessageBroker messageBroker;
+        private MessageBroker messageBroker;
         private readonly LogService logService;
 
         public MainService()
@@ -15,12 +15,12 @@ namespace Fanex.MailDelivery.MailStationService
         {
         }
 
-        public MainService(IMessageBroker messageBroker, LogService logService)
+        public MainService(MessageBroker messageBroker, LogService logService)
         {
             InitializeComponent();
 
             this.logService = logService ?? new LogServiceImpl();
-            this.messageBroker = messageBroker ?? new MessageBroker(this.logService);
+            this.messageBroker = messageBroker ?? new MessageBrokerImpl(this.logService);
             DbSettingProviderManager.Current.Start();
         }
 

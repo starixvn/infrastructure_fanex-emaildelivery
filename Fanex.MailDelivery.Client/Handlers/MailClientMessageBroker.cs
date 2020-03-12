@@ -24,13 +24,15 @@ namespace Fanex.MailDelivery.Client.Handlers
 
         Task<IList<Schedule>> GetSchedulesAsync();
 
+        Task<UMInfoModel> GetUMInfoAsync(int retryCount = 0);
+
         Task PublishClientNotifyMessageAsync();
 
         Task ReportJobAsync(JobMessage jobMessage);
 
-        Task<JobMessage> RequestAddMailTaskForRunningJobAsync(JobMessage jobMessage);
+        Task<JobMessage> RequestAddMailTaskForRunningJobAsync(JobMessage jobMessage, int retryCount = 0);
 
-        Task<MailTaskModel> RequestMailTaskByIdAsync(GetMailTaskByIdRequest request);
+        Task<MailTaskModel> RequestMailTaskByIdAsync(GetMailTaskByIdRequest request, int retryCount = 0);
     }
 
     public class MailClientMessageBroker : IMailClientMessageBroker
@@ -40,7 +42,7 @@ namespace Fanex.MailDelivery.Client.Handlers
         private readonly string runNowJobSubscriptionId = string.Format(MailDeliveryConstants.RunNowJobRoutingKeyFormat, AppSettings.MailCientConfig.SiteId);
         private IBus bus;
         private IJobHandler jobHandler;
-        private const int waitingForRabbitMQInSeconds = 30;
+        private readonly int waitingForRabbitMQInSeconds = AppSettings.MailCientConfig.RequestRetryIntervalInSeconds;
 
         public async Task StartAsync(IJobHandler jobHandler)
         {
@@ -94,7 +96,7 @@ namespace Fanex.MailDelivery.Client.Handlers
             await PublishJobMessageAsync(jobMessage);
         }
 
-        private async Task PublishMailAsync(Mail mail)
+        private async Task PublishMailAsync(Mail mail, int retryCount = 0)
         {
             bool isFailed = false;
 
@@ -108,15 +110,17 @@ namespace Fanex.MailDelivery.Client.Handlers
                 isFailed = true;
             }
 
-            if (isFailed)
+            if (isFailed && retryCount <= AppSettings.MailCientConfig.RequestRetryLimit)
             {
+                retryCount++;
+
                 await Task.Delay(TimeSpan.FromSeconds(waitingForRabbitMQInSeconds));
 
-                await PublishMailAsync(mail);
+                await PublishMailAsync(mail, retryCount);
             }
         }
 
-        private async Task PublishJobMessageAsync(JobMessage jobMessage)
+        private async Task PublishJobMessageAsync(JobMessage jobMessage, int retryCount = 0)
         {
             bool isFailed = false;
 
@@ -132,11 +136,13 @@ namespace Fanex.MailDelivery.Client.Handlers
                 isFailed = true;
             }
 
-            if (isFailed)
+            if (isFailed && retryCount <= AppSettings.MailCientConfig.RequestRetryLimit)
             {
+                retryCount++;
+
                 await Task.Delay(TimeSpan.FromSeconds(waitingForRabbitMQInSeconds));
 
-                await PublishJobMessageAsync(jobMessage);
+                await PublishJobMessageAsync(jobMessage, retryCount);
             }
         }
 
@@ -158,7 +164,7 @@ namespace Fanex.MailDelivery.Client.Handlers
             return response.Schedules;
         }
 
-        public async Task<JobMessage> RequestAddMailTaskForRunningJobAsync(JobMessage jobMessage)
+        public async Task<JobMessage> RequestAddMailTaskForRunningJobAsync(JobMessage jobMessage, int retryCount = 0)
         {
             JobMessage result = null;
             bool isFailed = false;
@@ -173,15 +179,17 @@ namespace Fanex.MailDelivery.Client.Handlers
                 isFailed = true;
             }
 
-            if (isFailed)
+            if (isFailed && retryCount <= AppSettings.MailCientConfig.RequestRetryLimit)
             {
-                result = await RequestAddMailTaskForRunningJobAsync(jobMessage);
+                retryCount++;
+
+                result = await RequestAddMailTaskForRunningJobAsync(jobMessage, retryCount);
             }
 
             return result;
         }
 
-        public async Task<MailTaskModel> RequestMailTaskByIdAsync(GetMailTaskByIdRequest request)
+        public async Task<MailTaskModel> RequestMailTaskByIdAsync(GetMailTaskByIdRequest request, int retryCount = 0)
         {
             MailTaskModel result = null;
             bool isFailed = false;
@@ -196,15 +204,42 @@ namespace Fanex.MailDelivery.Client.Handlers
                 isFailed = true;
             }
 
-            if (isFailed)
+            if (isFailed && retryCount <= AppSettings.MailCientConfig.RequestRetryLimit)
             {
-                result = await RequestMailTaskByIdAsync(request);
+                retryCount++;
+
+                result = await RequestMailTaskByIdAsync(request, retryCount);
             }
 
             return result;
         }
 
-        private async Task<GetScheduleListResponse> RequestMailSchedules(GetScheduleListRequest request)
+        public async Task<UMInfoModel> GetUMInfoAsync(int retryCount = 0)
+        {
+            UMInfoModel result = null;
+            bool isFailed = false;
+
+            try
+            {
+                result = await bus.RequestAsync<UMInfoModel, UMInfoModel>(new UMInfoModel());
+            }
+            catch (Exception ex)
+            {
+                LogService.LogError($"Client cannot get the UM info from Mail Station server. Retrying...", ex);
+                isFailed = true;
+            }
+
+            if (isFailed && retryCount <= AppSettings.MailCientConfig.RequestRetryLimit)
+            {
+                retryCount++;
+
+                result = await GetUMInfoAsync(retryCount);
+            }
+
+            return result;
+        }
+
+        private async Task<GetScheduleListResponse> RequestMailSchedules(GetScheduleListRequest request, int retryCount = 0)
         {
             GetScheduleListResponse response = null;
             bool isFailed = false;
@@ -219,9 +254,11 @@ namespace Fanex.MailDelivery.Client.Handlers
                 isFailed = true;
             }
 
-            if (isFailed)
+            if (isFailed && retryCount <= AppSettings.MailCientConfig.RequestRetryLimit)
             {
-                response = await RequestMailSchedules(request);
+                retryCount++;
+
+                response = await RequestMailSchedules(request, retryCount);
             }
 
             return response;
@@ -229,7 +266,7 @@ namespace Fanex.MailDelivery.Client.Handlers
         #endregion
 
         #region Subscribe
-        public async Task SubscribeScheduleChangeAsync()
+        public async Task SubscribeScheduleChangeAsync(int retryCount = 0)
         {
             bool isFailed = false;
 
@@ -248,13 +285,15 @@ namespace Fanex.MailDelivery.Client.Handlers
                 isFailed = true;
             }
 
-            if (isFailed)
+            if (isFailed && retryCount <= AppSettings.MailCientConfig.RequestRetryLimit)
             {
-                await SubscribeScheduleChangeAsync();
+                retryCount++;
+
+                await SubscribeScheduleChangeAsync(retryCount);
             }
         }
 
-        public async Task SubscribeRunNowJobAsync()
+        public async Task SubscribeRunNowJobAsync(int retryCount = 0)
         {
             bool isFailed = false;
 
@@ -273,13 +312,15 @@ namespace Fanex.MailDelivery.Client.Handlers
                 isFailed = true;
             }
 
-            if (isFailed)
+            if (isFailed && retryCount <= AppSettings.MailCientConfig.RequestRetryLimit)
             {
-                await SubscribeRunNowJobAsync();
+                retryCount++;
+
+                await SubscribeRunNowJobAsync(retryCount);
             }
         }
 
-        public async Task SubscribeRetryJobAsync()
+        public async Task SubscribeRetryJobAsync(int retryCount = 0)
         {
             bool isFailed = false;
 
@@ -298,9 +339,11 @@ namespace Fanex.MailDelivery.Client.Handlers
                 isFailed = true;
             }
 
-            if (isFailed)
+            if (isFailed && retryCount <= AppSettings.MailCientConfig.RequestRetryLimit)
             {
-                await SubscribeRetryJobAsync();
+                retryCount++;
+
+                await SubscribeRetryJobAsync(retryCount);
             }
         }
         #endregion

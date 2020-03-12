@@ -4,37 +4,38 @@ using Fanex.MailDelivery.Core;
 using Fanex.MailDelivery.Core.Messaging;
 using Fanex.MailDelivery.Core.Models;
 using Fanex.MailDelivery.MailStationService.Logging;
-using Fanex.MailDelivery.Services.Services.Logging;
-using Fanex.MailDelivery.Services.Services.MailService;
+using Fanex.MailDelivery.Services.Services;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Fanex.MailDelivery.MailStationService.MessageBrokers
 {
-    public interface IMessageBroker : IDisposable
+    public interface MessageBroker : IDisposable
     {
         void Start();
     }
 
-    public class MessageBroker : IMessageBroker
+    public class MessageBrokerImpl : MessageBroker
     {
         private IBus bus;
-        private readonly IMailService mailService;
-        private const int waitingForRabbitMQInSeconds = 30;
+        private readonly MailService mailService;
         private readonly LogService logService;
+        private readonly UMService umService;
+        private const int waitingForRabbitMQInSeconds = 30;
 
-        public MessageBroker(LogService logService)
-            : this(null, logService)
+        public MessageBrokerImpl(LogService logService)
+            : this(null, logService, null)
         {
         }
 
-        public MessageBroker(IMailService mailService, LogService logService)
+        public MessageBrokerImpl(MailService mailService, LogService logService, UMService umService)
         {
             LogProvider.SetCurrentLogProvider(new RabbitMQLogProvider());
 
             this.logService = logService;
-            this.mailService = mailService ?? new MailService(AppSettings.SendMailRetryLimit, AppSettings.SendMailRetryIntervalInMinutes);
+            this.mailService = mailService ?? new MailServiceImpl(AppSettings.SendMailRetryLimit, AppSettings.SendMailRetryIntervalInMinutes);
+            this.umService = umService ?? new UMServiceImpl(AppSettings.ONEbookUMServiceUri, AppSettings.CheckUMIntervalInMinutes, logService);
         }
 
         public void Start()
@@ -53,6 +54,7 @@ namespace Fanex.MailDelivery.MailStationService.MessageBrokers
             ResponseGetScheduleList();
             RespondGetMailTaskForById();
             RespondAddMailTaskForRunningJob();
+            RespondUMInfo();
         }
 
         #region Subscribe
@@ -64,7 +66,12 @@ namespace Fanex.MailDelivery.MailStationService.MessageBrokers
             {
                 bus.SubscribeAsync<Mail>(
                     MailDeliveryConstants.SendMailRoutingKey,
-                    mail => mailService.SendMail(mail),
+                    async (mail) =>
+                    {
+                        await umService.WaitForUMOff();
+
+                        await mailService.SendMail(mail);
+                    },
                     config => config.WithTopic(MailDeliveryConstants.SendMailRoutingKey));
 
                 logService.LogInfo($"Subcribed the queue with key {MailDeliveryConstants.SendMailRoutingKey} successfully");
@@ -119,7 +126,12 @@ namespace Fanex.MailDelivery.MailStationService.MessageBrokers
             {
                 bus.SubscribeAsync<JobMessage>(
                     MailDeliveryConstants.JobResultRoutingKey,
-                    jobStatus => mailService.UpdateJobStatus(jobStatus),
+                    async (jobStatus) =>
+                    {
+                        await umService.WaitForUMOff();
+
+                        await mailService.UpdateJobStatus(jobStatus);
+                    },
                     config => config.WithTopic(MailDeliveryConstants.JobResultRoutingKey));
 
                 logService.LogInfo($"Subcribed the queue with key {MailDeliveryConstants.JobResultRoutingKey} successfully");
@@ -188,6 +200,28 @@ namespace Fanex.MailDelivery.MailStationService.MessageBrokers
             }
         }
 
+        private void RespondUMInfo()
+        {
+            bool isFailed = false;
+
+            try
+            {
+                bus.RespondAsync<UMInfoModel, UMInfoModel>((x) => umService.GetUMInfo());
+
+                logService.LogInfo($"Registered to respond the UM info to clients successfully");
+            }
+            catch (Exception ex)
+            {
+                logService.LogError($"There is an error while registering to respond the UM info to clients. Retrying...", ex);
+                isFailed = true;
+            }
+
+            if (isFailed)
+            {
+                RespondUMInfo();
+            }
+        }
+
         private void RespondGetMailTaskForById()
         {
             bool isFailed = false;
@@ -229,7 +263,7 @@ namespace Fanex.MailDelivery.MailStationService.MessageBrokers
             }
         }
 
-        ~MessageBroker()
+        ~MessageBrokerImpl()
         {
             Dispose(false);
         }

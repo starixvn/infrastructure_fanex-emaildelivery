@@ -12,6 +12,7 @@ namespace Fanex.MailDelivery.Client.Jobs
     public abstract class JobBase : IJob
     {
         private StringBuilder logger;
+        private const int ServerGMT = -4;
 
         public async Task Execute(IJobExecutionContext context)
         {
@@ -22,69 +23,16 @@ namespace Fanex.MailDelivery.Client.Jobs
             {
                 schedule = context.MergedJobDataMap[MailDeliveryConstants.ScheduleJobDataKey] as Schedule;
 
-                if (schedule != null && !schedule.Active)
+                if (schedule != null)
                 {
-                    LogService.LogInfo($"Scheduled Mail #{schedule.Id} ({schedule.Name}) is disabled.");
-                }
-                else if (schedule != null && schedule.Active)
-                {
-                    string message = $"Scheduled Mail #{schedule.Id} ({schedule.Name}) is running...";
-
-                    logger.AppendLine($"> {message}");
-                    LogService.LogInfo(message);
-
-                    JobMessage jobResult = new JobMessage
+                    if (!schedule.Active)
                     {
-                        JobStatus = JobStatus.Running,
-                        ScheduledTime = context.ScheduledFireTimeUtc.GetValueOrDefault().DateTime.ToLocalTime(),
-                        RunningTime = context.FireTimeUtc.DateTime.ToLocalTime(),
-                        Schedule = schedule.Clone()
-                    };
-
-                    if (schedule.TaskId == 0)
-                    {
-                        jobResult = await MailClientHandler.RequestAddMailTaskForRunningJobAsync(jobResult);
-
-                        schedule.TaskId = jobResult.Schedule.TaskId;
-
-                        message = $"Added a running task for the mail #{schedule.Id} ({schedule.Name})";
-
-                        logger.AppendLine($"> {message}");
-                        LogService.LogInfo(message);
-                    }
-
-                    if (schedule.TaskId == 0)
-                    {
-                        throw new InvalidOperationException($"Cannot add a running mail task for the scheduled mail #{schedule.Id} ({schedule.Name}).");
+                        LogService.LogInfo($"Scheduled Mail #{schedule.Id} ({schedule.Name}) is disabled.");
                     }
                     else
                     {
-                        message = $"Running the task #{schedule.TaskId} of the mail #{schedule.Id} ({schedule.Name})";
-
-                        logger.AppendLine($"> {message}");
-                        LogService.LogInfo(message);
+                        await StartGenerateMail(context, schedule);
                     }
-
-                    var mailtask = await MailClientHandler.RequestMailTaskByIdAsync(new GetMailTaskByIdRequest
-                    {
-                        TaskId = schedule.TaskId
-                    });
-
-                    if (mailtask != null && mailtask.Status != (int)JobStatus.Abort)
-                    {
-                        await HandleJob(context, schedule, jobResult);
-                    }
-                    else
-                    {
-                        message = $"Cannot run job to generate mail #{schedule.Id} ({schedule.Name}) because mail task #{schedule.TaskId} is aborted by user";
-
-                        logger.AppendLine($"> {message}");
-                        LogService.LogInfo(message);
-                    }
-                }
-                else
-                {
-                    //Do nothing
                 }
             }
             catch (Exception ex)
@@ -93,34 +41,60 @@ namespace Fanex.MailDelivery.Client.Jobs
             }
         }
 
-        private async Task HandleJob(IJobExecutionContext context, Schedule schedule, JobMessage jobMessage)
+        private async Task StartGenerateMail(IJobExecutionContext context, Schedule schedule)
         {
-            JobMessage jobResult = jobMessage;
-            string message = $"Running job to generate the mail #{schedule.Id} ({schedule.Name})";
+            string message = $"Scheduled Mail #{schedule.Id} ({schedule.Name}) is running...";
 
             logger.AppendLine($"> {message}");
             LogService.LogInfo(message);
 
-            await MailClientHandler.ReportJobAsync(jobResult);
-
-            jobResult = RunJob(context, schedule, jobResult);
-
-            jobResult.Schedule = schedule;
-
-            if (jobResult.JobStatus == JobStatus.Success || jobResult.JobStatus == JobStatus.SuccessWithoutSendmail)
+            JobMessage jobResult = new JobMessage
             {
-                message = $"Generated the mail #{schedule.Id} ({schedule.Name}) successfully";
+                JobStatus = JobStatus.Running,
+                ScheduledTime = context.ScheduledFireTimeUtc.GetValueOrDefault().DateTime.ToLocalTime(),
+                RunningTime = context.FireTimeUtc.DateTime.ToLocalTime(),
+                Schedule = schedule.Clone()
+            };
+
+            if (schedule.TaskId == 0)
+            {
+                jobResult = await MailClientHandler.RequestAddMailTaskForRunningJobAsync(jobResult);
+
+                schedule.TaskId = jobResult.Schedule.TaskId;
+
+                message = $"Added a running task for the mail #{schedule.Id} ({schedule.Name})";
 
                 logger.AppendLine($"> {message}");
                 LogService.LogInfo(message);
             }
+
+            if (schedule.TaskId == 0)
+            {
+                throw new InvalidOperationException($"Cannot add a running mail task for the scheduled mail #{schedule.Id} ({schedule.Name}).");
+            }
             else
             {
-                message = $"The task status of the mail #{schedule.Id} ({schedule.Name}) is {jobResult.JobStatus.ToString()}";
+                message = $"Running the task #{schedule.TaskId} of the mail #{schedule.Id} ({schedule.Name})";
+
                 logger.AppendLine($"> {message}");
                 LogService.LogInfo(message);
+            }
 
-                await RetryJobAsync(jobResult.Schedule);
+            var mailtask = await MailClientHandler.RequestMailTaskByIdAsync(new GetMailTaskByIdRequest
+            {
+                TaskId = schedule.TaskId
+            });
+
+            if (mailtask != null && mailtask.Status != (int)JobStatus.Abort)
+            {
+                jobResult = await HandleJob(context, schedule, jobResult);
+            }
+            else
+            {
+                message = $"Cannot run job to generate mail #{schedule.Id} ({schedule.Name}) because mail task #{schedule.TaskId} is aborted by user";
+
+                logger.AppendLine($"> {message}");
+                LogService.LogInfo(message);
             }
 
             if (jobResult.TaskLog != null)
@@ -143,6 +117,59 @@ namespace Fanex.MailDelivery.Client.Jobs
             {
                 schedule.TaskId = 0;
             }
+        }
+
+        private async Task<JobMessage> HandleJob(IJobExecutionContext context, Schedule schedule, JobMessage jobMessage)
+        {
+            string message = string.Empty;
+            JobMessage jobResult = jobMessage;
+            var umInfo = await MailClientHandler.GetUMInfoAsync();
+
+            if (umInfo != null && umInfo.IsUnderMaintenanceTime)
+            {
+                var from = umInfo.From.AddHours(ServerGMT);
+                var to = umInfo.To.AddHours(ServerGMT);
+                var afterUMTime = new DateTime(umInfo.To.Ticks, DateTimeKind.Utc).AddMinutes(5);
+
+                message = $"Not allow to run the scheduled mail #{schedule.Id} ({schedule.Name}) in UM time ({from} - {to}) GMT{ServerGMT}. " +
+                               $"It's re-scheduled to run at {afterUMTime.AddHours(ServerGMT)}.";
+
+                logger.AppendLine($"> {message}");
+                LogService.LogInfo(message);
+
+                await MailClientHandler.RunAfterUMJobAsync(schedule, afterUMTime);
+            }
+            else
+            {
+                message = $"Running job to generate the mail #{schedule.Id} ({schedule.Name})";
+
+                logger.AppendLine($"> {message}");
+                LogService.LogInfo(message);
+
+                await MailClientHandler.ReportJobAsync(jobResult);
+
+                jobResult = RunJob(context, schedule, jobResult);
+
+                jobResult.Schedule = schedule;
+
+                if (jobResult.JobStatus == JobStatus.Success || jobResult.JobStatus == JobStatus.SuccessWithoutSendmail)
+                {
+                    message = $"Generated the mail #{schedule.Id} ({schedule.Name}) successfully";
+
+                    logger.AppendLine($"> {message}");
+                    LogService.LogInfo(message);
+                }
+                else
+                {
+                    message = $"The task status of the mail #{schedule.Id} ({schedule.Name}) is {jobResult.JobStatus.ToString()}";
+                    logger.AppendLine($"> {message}");
+                    LogService.LogInfo(message);
+
+                    await RetryJobAsync(jobResult.Schedule);
+                }
+            }
+
+            return jobResult;
         }
 
         private JobMessage RunJob(IJobExecutionContext context, Schedule schedule, JobMessage jobMessage)

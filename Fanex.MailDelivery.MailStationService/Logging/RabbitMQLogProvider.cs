@@ -1,5 +1,5 @@
 ﻿using EasyNetQ.Logging;
-using Fanex.MailDelivery.Services.Services.Logging;
+using Fanex.MailDelivery.Services.Services;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -79,7 +79,7 @@ namespace Fanex.MailDelivery.MailStationService.Logging
         #endregion
     }
 
-    public class RabbitMQLogProvider : EasyNetQ.Logging.ILogProvider, IDisposable
+    public class RabbitMQLogProvider : ILogProvider, IDisposable
     {
         private readonly RabbitMQLogger logger;
 

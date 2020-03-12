@@ -1,5 +1,6 @@
 ﻿using Fanex.MailDelivery.Core;
 using System.Configuration;
+using System.Text.RegularExpressions;
 
 namespace Fanex.MailDelivery.Client.Configurations
 {
@@ -29,8 +30,33 @@ namespace Fanex.MailDelivery.Client.Configurations
         [ConfigurationProperty("rabbitMQConnectionString", IsRequired = true)]
         public string RabbitMQConnectionString
         {
-            get { return (string)this["rabbitMQConnectionString"] + MailDeliveryConstants.RabbitMQLoginPassword; }
+            get
+            {
+                const string pattern = "\btimeout=[0-9]+\b;*";
+                var connection = $"{this["rabbitMQConnectionString"]}{MailDeliveryConstants.RabbitMQLoginPassword}";
+
+                if (!Regex.IsMatch(connection, pattern, RegexOptions.IgnoreCase))
+                {
+                    connection = $"{connection}{MailDeliveryConstants.RabbitMQTimeout}";
+                }
+
+                return connection;
+            }
             set { this["rabbitMQConnectionString"] = value; }
+        }
+
+        [ConfigurationProperty("requestRetryLimit", IsRequired = false, DefaultValue = 10)]
+        public int RequestRetryLimit
+        {
+            get { return (int)this["requestRetryLimit"]; }
+            set { this["requestRetryLimit"] = value; }
+        }
+
+        [ConfigurationProperty("requestRetryIntervalInSeconds", IsRequired = false, DefaultValue = 120)]
+        public int RequestRetryIntervalInSeconds
+        {
+            get { return (int)this["requestRetryIntervalInSeconds"]; }
+            set { this["requestRetryIntervalInSeconds"] = value; }
         }
 
         [ConfigurationProperty("Schedules", IsRequired = false)]

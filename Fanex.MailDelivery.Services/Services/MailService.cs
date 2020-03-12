@@ -8,16 +8,15 @@ using Fanex.MailDelivery.Services.Criteria;
 using Fanex.MailDelivery.Services.Criteria.Job;
 using Fanex.MailDelivery.Services.Models;
 using Fanex.MailDelivery.Services.Repositories;
-using Fanex.MailDelivery.Services.Services.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Fanex.MailDelivery.Services.Services.MailService
+namespace Fanex.MailDelivery.Services.Services
 {
-    public interface IMailService
+    public interface MailService
     {
         Task UpdateJobStatus(JobMessage jobMessage);
 
@@ -32,7 +31,7 @@ namespace Fanex.MailDelivery.Services.Services.MailService
         void UpdateClientActiveTime(UpdateActiveTimeRequest updateActiveTimeRequest);
     }
 
-    public class MailService : IMailService
+    public class MailServiceImpl : MailService
     {
         private readonly IMailRepository mailRepository;
         private readonly IMailDeliverBusiness mailDeliverBusiness;
@@ -40,17 +39,21 @@ namespace Fanex.MailDelivery.Services.Services.MailService
         private readonly int sendMailRetryLimit;
         private readonly int sendMailRetryIntervalInMinutes;
 
-        public MailService(int sendMailRetryLimit, int sendMailRetryIntervalInMinutes) : this(null, sendMailRetryLimit, sendMailRetryIntervalInMinutes)
+        public MailServiceImpl(int sendMailRetryLimit, int sendMailRetryIntervalInMinutes)
+            : this(null, sendMailRetryLimit, sendMailRetryIntervalInMinutes)
         {
         }
 
-        public MailService(LogService logService, int sendMailRetryLimit, int sendMailRetryIntervalInMinutes)
+        public MailServiceImpl(
+            LogService logService,
+            int sendMailRetryLimit,
+            int sendMailRetryIntervalInMinutes)
         {
+            this.sendMailRetryIntervalInMinutes = sendMailRetryIntervalInMinutes;
+            this.sendMailRetryLimit = sendMailRetryLimit;
             this.logService = logService ?? new LogServiceImpl();
             mailRepository = new MailRepository();
             mailDeliverBusiness = new MailDeliverBusiness();
-            this.sendMailRetryIntervalInMinutes = sendMailRetryIntervalInMinutes;
-            this.sendMailRetryLimit = sendMailRetryLimit;
         }
 
         public GetScheduleListResponse GetScheduleList(GetScheduleListRequest request)
@@ -59,14 +62,21 @@ namespace Fanex.MailDelivery.Services.Services.MailService
 
             foreach (int mail in request.MailIds)
             {
-                Schedule schedule = mailRepository.GetScheduleByMailId(new GetScheduleByMailIdCriteria
+                try
                 {
-                    MailId = mail
-                });
+                    Schedule schedule = mailRepository.GetScheduleByMailId(new GetScheduleByMailIdCriteria
+                    {
+                        MailId = mail
+                    });
 
-                if (schedule != null)
+                    if (schedule != null)
+                    {
+                        schedules.Add(schedule);
+                    }
+                }
+                catch (Exception ex)
                 {
-                    schedules.Add(schedule);
+                    logService.LogError(ex, mail);
                 }
             }
 

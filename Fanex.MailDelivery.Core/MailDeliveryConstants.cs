@@ -14,13 +14,14 @@
 
         public const string ScheduleJobDataKey = "MailStationClient.ScheduleJobDataKey";
         public const string RabbitMQLoginPassword = ";password=1q2w3e$R";
+        public const string RabbitMQTimeout = ";timeout=120";
 
         public const string ClientNotificationJobName = "ClientNotificationJobName";
         public const string ClientNotificationTriggerName = "ClientNotificationTriggerName";
         public const string ClientNotificationTopic = "ClientNotificationTopic";
 
         public const int ClientNotificationIntervalTimeInSecond = 10;
-        
+
         public const string DevServerTimeZone = "SE Asia Standard Time"; // (UTC+07:00) Bangkok, Hanoi, Jakarta   
         public const string LiveServerTimeZone = "SA Western Standard Time"; //(UTC-04:00) Georgetown, La Paz, Manaus, San Juan
     }

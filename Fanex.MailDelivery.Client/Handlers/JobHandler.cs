@@ -24,6 +24,8 @@ namespace Fanex.MailDelivery.Client.Handlers
         Task RetryJobAsync(Schedule schedule);
 
         Task RetryAllProcessAsync(Schedule schedule);
+
+        Task RunAfterUMJobAsync(Schedule schedule, DateTimeOffset afterUMEndTime);
     }
 
     public class JobHandler : IJobHandler
@@ -59,6 +61,11 @@ namespace Fanex.MailDelivery.Client.Handlers
 
         public async Task StartJobsAsync(IList<Schedule> schedules)
         {
+            if (schedules.Count == 0)
+            {
+                LogService.LogInfo("There is no any schedules to start.");
+            }
+
             foreach (var schedule in schedules)
             {
                 if (schedule != null && schedule.Active && !schedule.IsScheduleEnd())
@@ -103,6 +110,14 @@ namespace Fanex.MailDelivery.Client.Handlers
         {
             IJobDetail job = GetRetryJob(schedule);
             ITrigger trigger = GetRetryTrigger(schedule);
+
+            await scheduler.ScheduleJob(job, trigger);
+        }
+
+        public async Task RunAfterUMJobAsync(Schedule schedule, DateTimeOffset afterUMEndTime)
+        {
+            IJobDetail job = GetRetryJob(schedule);
+            ITrigger trigger = GetAfterUMTrigger(schedule, afterUMEndTime);
 
             await scheduler.ScheduleJob(job, trigger);
         }
@@ -253,6 +268,20 @@ namespace Fanex.MailDelivery.Client.Handlers
                 .Build();
 
             return retryTrigger;
+        }
+
+        private static ITrigger GetAfterUMTrigger(Schedule schedule, DateTimeOffset afterUMEndTime)
+        {
+            schedule.ConvertToServerTime(MailClientSection.IsDevEnvironment());
+
+            JobDataMap jobDataMap = GetJobDataMap(schedule);
+
+            ITrigger afterUMTrigger = TriggerBuilder.Create()
+                .StartAt(afterUMEndTime)
+                .UsingJobData(jobDataMap)
+                .Build();
+
+            return afterUMTrigger;
         }
 
         private static ITrigger GetTrigger(Schedule schedule)

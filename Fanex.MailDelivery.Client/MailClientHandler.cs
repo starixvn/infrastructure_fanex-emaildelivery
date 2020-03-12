@@ -2,6 +2,7 @@
 using Fanex.MailDelivery.Core.Messaging;
 using Fanex.MailDelivery.Core.Models;
 using log4net.Config;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -64,6 +65,16 @@ namespace Fanex.MailDelivery.Client
         internal static async Task RetryJobAsync(Schedule schedule)
         {
             await jobHandler.RetryJobAsync(schedule);
+        }
+
+        internal static async Task RunAfterUMJobAsync(Schedule schedule, DateTimeOffset afterUMEndTime)
+        {
+            await jobHandler.RunAfterUMJobAsync(schedule, afterUMEndTime);
+        }
+
+        internal static async Task<UMInfoModel> GetUMInfoAsync()
+        {
+            return await messageBroker.GetUMInfoAsync();
         }
     }
 }
