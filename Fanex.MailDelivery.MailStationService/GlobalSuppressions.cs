@@ -6,3 +6,6 @@
 
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Blocker Code Smell", "S1147:Exit methods should not be called", Justification = "<Pending>",
     Scope = "member", Target = "~M:Fanex.MailDelivery.MailStationService.MainService.StartService")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Blocker Code Smell", "S4462:Calls to \"async\" methods should not be blocking",
+    Justification = "<Pending>", Scope = "member", Target = "~M:Fanex.MailDelivery.MailStationService.MainService.OnStart(System.String[])")]
+

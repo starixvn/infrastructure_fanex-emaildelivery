@@ -16,5 +16,7 @@ namespace Fanex.MailDelivery.MailStationService
         public static string ONEbookUMServiceUri => ConfigurationManager.AppSettings.Get("ONEbook.UM:ServiceUri");
 
         public static int CheckUMIntervalInMinutes => Convert.ToInt32(ConfigurationManager.AppSettings.Get("MailStation:CheckUMIntervalInMinutes"));
+
+        public static int UpdateFailedForLongRunningTaskIntervalInMinutes => Convert.ToInt32(ConfigurationManager.AppSettings.Get("MailStation:UpdateFailedForLongRunningTaskIntervalInMinutes"));
     }
 }

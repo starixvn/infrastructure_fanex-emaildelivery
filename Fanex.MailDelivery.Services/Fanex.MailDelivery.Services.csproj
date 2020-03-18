@@ -121,6 +121,7 @@
     <Compile Include="Criteria\ServiceMonitoringCheckInCriteria.cs" />
     <Compile Include="Criteria\GetScheduleByMailIdCriteria.cs" />
     <Compile Include="Criteria\UpdateClientActiveTimeCriteria.cs" />
+    <Compile Include="Criteria\UpdateFailedForLongRunningMailTaskCriteria.cs" />
     <Compile Include="Criteria\UpdateMailTaskStatusCriteria.cs" />
     <Compile Include="Criteria\UpdateMailTaskMSiteMailIdCriteria.cs" />
     <Compile Include="Criteria\UpdateTaskRetryCounterCriteria.cs" />

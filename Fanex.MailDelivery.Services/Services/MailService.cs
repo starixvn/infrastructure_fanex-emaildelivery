@@ -29,6 +29,8 @@ namespace Fanex.MailDelivery.Services.Services
         GetScheduleListResponse GetScheduleList(GetScheduleListRequest request);
 
         void UpdateClientActiveTime(UpdateActiveTimeRequest updateActiveTimeRequest);
+
+        void UpdateFailedForLongRunningMailTask();
     }
 
     public class MailServiceImpl : MailService
@@ -150,6 +152,18 @@ namespace Fanex.MailDelivery.Services.Services
             catch (Exception ex)
             {
                 logService.LogError(ex, jobMessage.Schedule);
+            }
+        }
+
+        public void UpdateFailedForLongRunningMailTask()
+        {
+            try
+            {
+                mailRepository.UpdateFailedForLongRunningMailTask();
+            }
+            catch (Exception ex)
+            {
+                logService.LogError(ex);
             }
         }
 

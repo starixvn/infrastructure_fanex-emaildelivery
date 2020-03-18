@@ -91,6 +91,7 @@ namespace Fanex.MailDelivery.Client.Jobs
             }
             else
             {
+                jobResult.JobStatus = JobStatus.Abort;
                 message = $"Cannot run job to generate mail #{schedule.Id} ({schedule.Name}) because mail task #{schedule.TaskId} is aborted by user";
 
                 logger.AppendLine($"> {message}");

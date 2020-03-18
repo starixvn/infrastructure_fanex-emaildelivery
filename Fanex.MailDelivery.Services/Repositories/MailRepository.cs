@@ -33,6 +33,8 @@ namespace Fanex.MailDelivery.Services.Repositories
         MailRecord GetMailRecordById(int mailId);
 
         void UpdateServiceCheckIn(ServiceMonitoringCheckInCriteria criteria);
+
+        void UpdateFailedForLongRunningMailTask();
     }
 
     public class MailRepository : IMailRepository
@@ -57,6 +59,16 @@ namespace Fanex.MailDelivery.Services.Repositories
 
         public void UpdateServiceCheckIn(ServiceMonitoringCheckInCriteria criteria)
         {
+            using (var db = new ObjectDb(criteria.GetSettingKey()))
+            {
+                db.ExecuteNonQuery(criteria.GetSpParams());
+            }
+        }
+
+        public void UpdateFailedForLongRunningMailTask()
+        {
+            var criteria = new UpdateFailedForLongRunningMailTaskCriteria();
+
             using (var db = new ObjectDb(criteria.GetSettingKey()))
             {
                 db.ExecuteNonQuery(criteria.GetSpParams());

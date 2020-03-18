@@ -32,6 +32,7 @@
       <Mapping DataField="CronExpression" ObjectProperty="CronExpression" />
       <Mapping DataField="LastActive" ObjectProperty="LastActive" />
     </Setting>
+    <Setting Key="Mail_Core_UpdateFailedForLongRunningTasks" SpName="Mail_Core_UpdateFailedForLongRunningTasks" DbName="DBMMS.bodb_MMS.bodbAdminNet" />
   </Function>
 
   <Function Name="MailDeliver">
