@@ -1,4 +1,5 @@
-﻿using Fanex.MailDelivery.Client.Handlers;
+﻿using Fanex.MailDelivery.Client.Configurations;
+using Fanex.MailDelivery.Client.Handlers;
 using Fanex.MailDelivery.Core.Messaging;
 using Fanex.MailDelivery.Core.Models;
 using log4net.Config;
@@ -15,7 +16,10 @@ namespace Fanex.MailDelivery.Client
 
         public static async Task StartAsync(IJobHandler jobHandler = null, IMailClientMessageBroker messageBroker = null)
         {
-            XmlConfigurator.Configure();
+            if (AppSettings.MailCientConfig.EnableQuartzLog)
+            {
+                XmlConfigurator.Configure();
+            }
 
             MailClientHandler.jobHandler = jobHandler ?? new JobHandler();
             MailClientHandler.messageBroker = messageBroker ?? new MailClientMessageBroker();

@@ -45,7 +45,7 @@ namespace Fanex.MailDelivery.Client.Configurations
             set { this["rabbitMQConnectionString"] = value; }
         }
 
-        [ConfigurationProperty("requestRetryLimit", IsRequired = false, DefaultValue = 10)]
+        [ConfigurationProperty("requestRetryLimit", IsRequired = false, DefaultValue = 20)]
         public int RequestRetryLimit
         {
             get { return (int)this["requestRetryLimit"]; }
@@ -71,6 +71,13 @@ namespace Fanex.MailDelivery.Client.Configurations
         {
             get { return (int)this["siteId"]; }
             set { this["siteId"] = value; }
+        }
+
+        [ConfigurationProperty("enableQuartzLog", IsRequired = false, DefaultValue = false)]
+        public bool EnableQuartzLog
+        {
+            get { return (bool)this["enableQuartzLog"]; }
+            set { this["enableQuartzLog"] = value; }
         }
 
         public static MailClientSection GetConfig(string sectionName = "Fanex.MailDelivery.Client")
