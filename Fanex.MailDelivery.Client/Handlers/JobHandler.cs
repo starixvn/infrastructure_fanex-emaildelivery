@@ -53,10 +53,7 @@ namespace Fanex.MailDelivery.Client.Handlers
 
         public async Task StopAsync()
         {
-            if (scheduler != null)
-            {
-                await scheduler.Shutdown();
-            }
+            await scheduler?.Shutdown();
         }
 
         public async Task StartJobsAsync(IList<Schedule> schedules)

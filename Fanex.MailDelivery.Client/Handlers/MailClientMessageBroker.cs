@@ -62,7 +62,7 @@ namespace Fanex.MailDelivery.Client.Handlers
 
         public void Stop()
         {
-            bus.Dispose();
+            bus?.Dispose();
         }
 
         #region PublishAsync

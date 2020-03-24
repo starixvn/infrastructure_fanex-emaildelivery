@@ -17,7 +17,7 @@ namespace MailStationClient.AutoJobDemo
             var filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "attachment.txt");
             var mail = new Mail
             {
-                Subject = "Mail Station Client - Auto job demo.",
+                Subject = "Mail Station Client - Auto job demo",
                 Title = "Auto job demo",
                 Body = "Auto job Body",
                 Attachments = new List<MailAttachment> {

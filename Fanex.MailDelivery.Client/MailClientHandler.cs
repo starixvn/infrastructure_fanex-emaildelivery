@@ -50,9 +50,9 @@ namespace Fanex.MailDelivery.Client
 
         public static async Task StopAsync()
         {
-            messageBroker.Stop();
+            messageBroker?.Stop();
 
-            await jobHandler.StopAsync();
+            await jobHandler?.StopAsync();
         }
 
         public static void SendFunctionMail(Mail mail)
