@@ -93,7 +93,7 @@ namespace Fanex.MailDelivery.Client.Configurations
         public static bool IsDevEnvironment()
         {
             string environment = GetConfig().Environment ?? string.Empty;
-            bool isDev = environment.Length == 0 || environment.Trim().Equals("dev");
+            bool isDev = environment.Trim().Equals("dev", System.StringComparison.OrdinalIgnoreCase);
 
             return isDev;
         }

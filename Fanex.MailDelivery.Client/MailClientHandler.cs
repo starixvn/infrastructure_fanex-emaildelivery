@@ -14,7 +14,19 @@ namespace Fanex.MailDelivery.Client
         private static IJobHandler jobHandler;
         private static IMailClientMessageBroker messageBroker;
 
-        public static async Task StartAsync(IJobHandler jobHandler = null, IMailClientMessageBroker messageBroker = null)
+        public static void Start()
+        {
+            StartAsync()
+                .GetAwaiter()
+                .GetResult();
+        }
+
+        public static async Task StartAsync()
+        {
+            await StartAsync(null, null);
+        }
+
+        public static async Task StartAsync(IJobHandler jobHandler, IMailClientMessageBroker messageBroker)
         {
             if (AppSettings.MailCientConfig.EnableQuartzLog)
             {
@@ -29,11 +41,25 @@ namespace Fanex.MailDelivery.Client
             await MailClientHandler.jobHandler.StartAsync();
         }
 
+        public static void Stop()
+        {
+            StopAsync()
+                .GetAwaiter()
+                .GetResult();
+        }
+
         public static async Task StopAsync()
         {
             messageBroker.Stop();
 
             await jobHandler.StopAsync();
+        }
+
+        public static void SendFunctionMail(Mail mail)
+        {
+            SendFunctionMailAsync(mail)
+                .GetAwaiter()
+                .GetResult();
         }
 
         public static async Task SendFunctionMailAsync(Mail mail)

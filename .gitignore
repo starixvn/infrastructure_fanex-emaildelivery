@@ -79,3 +79,4 @@ UpgradeLog*.XML
 
 # Zeta Resource Editor
 *.zreproj
+*.nupkg
