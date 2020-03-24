@@ -83,6 +83,8 @@ namespace Fanex.MailDelivery.Services.Services
 
                 if (isUM)
                 {
+                    logService.LogInfo("Waiting for UM off before continue sending email...");
+
                     await Task.Delay(TimeSpan.FromMinutes(checkUMIntervalInMinutes));
                 }
             }
