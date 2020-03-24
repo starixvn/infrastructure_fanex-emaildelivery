@@ -9,16 +9,17 @@ namespace Fanex.MailDelivery.Services.Services
 {
     public interface UMService
     {
-        Task<UMInfoModel> GetUMInfo();
+        Task<UMInfoModel> GetUMInfo(int retryCount = 0);
 
         Task WaitForUMOff();
     }
 
     public class UMServiceImpl : UMService
     {
+        private const int UMGMT = 8;
+        private const int RetryIntervalInSeconds = 10;
         private readonly LogService logService;
         private readonly string umApiBaseUrl;
-        private const int UMGMT = 8;
         private readonly int checkUMIntervalInMinutes;
 
         public UMServiceImpl(string umApiBaseUrl, int checkUMIntervalInMinutes, LogService logService)
@@ -28,9 +29,10 @@ namespace Fanex.MailDelivery.Services.Services
             this.checkUMIntervalInMinutes = checkUMIntervalInMinutes;
         }
 
-        public async Task<UMInfoModel> GetUMInfo()
+        public async Task<UMInfoModel> GetUMInfo(int retryCount = 0)
         {
             UMInfoModel result;
+            bool isFailed = false;
 
             try
             {
@@ -54,8 +56,17 @@ namespace Fanex.MailDelivery.Services.Services
             catch (Exception ex)
             {
                 logService.LogError($"Cannot get UM info -> Error: {ex.InnerException?.Message ?? ex.Message}", ex);
-
+                isFailed = true;
                 result = new UMInfoModel();
+            }
+
+            if (isFailed && retryCount == 0)
+            {
+                retryCount++;
+
+                await Task.Delay(TimeSpan.FromSeconds(RetryIntervalInSeconds));
+
+                result = await GetUMInfo(retryCount);
             }
 
             return result;
