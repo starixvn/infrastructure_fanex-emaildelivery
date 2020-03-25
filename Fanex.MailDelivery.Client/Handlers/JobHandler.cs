@@ -64,7 +64,7 @@ namespace Fanex.MailDelivery.Client.Handlers
                 await scheduler.Shutdown();
             }
         }
-       
+
         public async Task RetryAllProcessAsync(Schedule schedule)
         {
             if (AppSettings.HasScheduleId(schedule.Id))
@@ -101,7 +101,7 @@ namespace Fanex.MailDelivery.Client.Handlers
             if (AppSettings.HasScheduleId(schedule.Id))
             {
                 var triggerKey = new TriggerKey(schedule.Id.ToString(), MailDeliveryConstants.MailCentralizedTriggerGroup);
-                var oldTrigger = scheduler.GetTrigger(triggerKey);
+                var oldTrigger = await scheduler.GetTrigger(triggerKey);
 
                 if (oldTrigger != null)
                 {
@@ -130,7 +130,7 @@ namespace Fanex.MailDelivery.Client.Handlers
                 {
                     if (!schedule.IsScheduleEnd())
                     {
-                        LogService.LogInfo($"Mail #{schedule.Id} ({schedule.Name}) is enabled");
+                        LogService.LogInfo($"Mail #{schedule.Id} ({schedule.Name}) is enabled and triggered at the schedule ({schedule.RepeatExpression})");
 
                         IJobDetail job = GetJobDetail(schedule);
                         ITrigger trigger = GetTrigger(schedule);

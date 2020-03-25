@@ -58,7 +58,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Fanex.MailDelivery.Client, Version=1.1.0.1, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Fanex.MailStation.2.0.0-beta7\lib\net461\Fanex.MailDelivery.Client.dll</HintPath>
+      <HintPath>..\packages\Fanex.MailStation.2.0.0-rc1\lib\net461\Fanex.MailDelivery.Client.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Fanex.MailDelivery.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
