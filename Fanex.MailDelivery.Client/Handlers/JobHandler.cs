@@ -17,8 +17,6 @@ namespace Fanex.MailDelivery.Client.Handlers
 
         Task StopAsync();
 
-        Task StartJobsAsync(IList<Schedule> schedules);
-
         Task UpdateScheduleAsync(Schedule schedule);
 
         Task RetryJobAsync(Schedule schedule);
@@ -26,13 +24,15 @@ namespace Fanex.MailDelivery.Client.Handlers
         Task RetryAllProcessAsync(Schedule schedule);
 
         Task RunAfterUMJobAsync(Schedule schedule, DateTimeOffset afterUMEndTime);
+
+        Task InitializeSchedulerAsync();
     }
 
     public class JobHandler : IJobHandler
     {
         private IScheduler scheduler;
 
-        public async Task StartAsync()
+        public async Task InitializeSchedulerAsync()
         {
             if (AppSettings.MailCientConfig.HasSchedule())
             {
@@ -42,7 +42,13 @@ namespace Fanex.MailDelivery.Client.Handlers
 
                 scheduler = await schedFact.GetScheduler();
                 await scheduler.Start();
+            }
+        }
 
+        public async Task StartAsync()
+        {
+            if (AppSettings.MailCientConfig.HasSchedule())
+            {
                 await StartUpdateActiveTimeJob();
 
                 var schedules = await MailClientHandler.GetSchedulesAsync();
@@ -53,43 +59,12 @@ namespace Fanex.MailDelivery.Client.Handlers
 
         public async Task StopAsync()
         {
-            await scheduler?.Shutdown();
-        }
-
-        public async Task StartJobsAsync(IList<Schedule> schedules)
-        {
-            if (schedules.Count == 0)
+            if (scheduler != null)
             {
-                LogService.LogInfo("There is no any schedules to start.");
-            }
-
-            foreach (var schedule in schedules)
-            {
-                if (schedule != null && schedule.Active && !schedule.IsScheduleEnd())
-                {
-                    if (schedule.SiteId != AppSettings.MailCientConfig.SiteId)
-                    {
-                        var message = $"Only run for mails belonging the same site #{AppSettings.MailCientConfig.SiteId}. " +
-                                        $"But mail #{schedule.Id} ({schedule.Name}) belongs another site #{schedule.SiteId}, it's ignored.";
-
-                        LogService.LogError(message);
-                    }
-                    else
-                    {
-                        LogService.LogInfo($"Mail #{schedule.Id} ({schedule.Name}) is triggered by the schedule ({schedule.RepeatExpression})");
-
-                        IJobDetail job = GetJobDetail(schedule);
-                        ITrigger trigger = GetTrigger(schedule);
-
-                        // Unschedule all redundant job.
-                        await scheduler.UnscheduleJob(trigger.Key);
-
-                        await scheduler.ScheduleJob(job, trigger);
-                    }
-                }
+                await scheduler.Shutdown();
             }
         }
-
+       
         public async Task RetryAllProcessAsync(Schedule schedule)
         {
             if (AppSettings.HasScheduleId(schedule.Id))
@@ -117,13 +92,6 @@ namespace Fanex.MailDelivery.Client.Handlers
             ITrigger trigger = GetAfterUMTrigger(schedule, afterUMEndTime);
 
             await scheduler.ScheduleJob(job, trigger);
-        }
-
-        public async Task AbortJob(Schedule schedule)
-        {
-            IJobDetail job = GetRetryJob(schedule);
-
-            await scheduler.Interrupt(job.Key);
         }
 
         public async Task UpdateScheduleAsync(Schedule schedule)
@@ -166,6 +134,40 @@ namespace Fanex.MailDelivery.Client.Handlers
 
                         IJobDetail job = GetJobDetail(schedule);
                         ITrigger trigger = GetTrigger(schedule);
+
+                        await scheduler.ScheduleJob(job, trigger);
+                    }
+                }
+            }
+        }
+
+        private async Task StartJobsAsync(IList<Schedule> schedules)
+        {
+            if (schedules.Count == 0)
+            {
+                LogService.LogInfo("There is no any schedules to start.");
+            }
+
+            foreach (var schedule in schedules)
+            {
+                if (schedule != null && schedule.Active && !schedule.IsScheduleEnd())
+                {
+                    if (schedule.SiteId != AppSettings.MailCientConfig.SiteId)
+                    {
+                        var message = $"Only run for mails belonging the same site #{AppSettings.MailCientConfig.SiteId}. " +
+                                        $"But mail #{schedule.Id} ({schedule.Name}) belongs another site #{schedule.SiteId}, it's ignored.";
+
+                        LogService.LogError(message);
+                    }
+                    else
+                    {
+                        LogService.LogInfo($"Mail #{schedule.Id} ({schedule.Name}) is triggered by the schedule ({schedule.RepeatExpression})");
+
+                        IJobDetail job = GetJobDetail(schedule);
+                        ITrigger trigger = GetTrigger(schedule);
+
+                        // Unschedule all redundant job.
+                        await scheduler.UnscheduleJob(trigger.Key);
 
                         await scheduler.ScheduleJob(job, trigger);
                     }

@@ -16,9 +16,11 @@ namespace Fanex.MailDelivery.Client.Handlers
 {
     public interface IMailClientMessageBroker
     {
-        Task StartAsync(IJobHandler jobHandler);
+        IJobHandler JobHandler { get; }
 
-        void Stop();
+        Task StartAsync();
+
+        Task StopAsync();
 
         Task SendFunctionMailAsync(Mail mail);
 
@@ -40,15 +42,27 @@ namespace Fanex.MailDelivery.Client.Handlers
         private readonly string updateScheduleSubscriptionId = string.Format(MailDeliveryConstants.UpdateScheduleRoutingKeyFormat, AppSettings.MailCientConfig.SiteId);
         private readonly string retryJobSubscriptionId = string.Format(MailDeliveryConstants.RetryJobRoutingKeyFormat, AppSettings.MailCientConfig.SiteId);
         private readonly string runNowJobSubscriptionId = string.Format(MailDeliveryConstants.RunNowJobRoutingKeyFormat, AppSettings.MailCientConfig.SiteId);
-        private IBus bus;
-        private IJobHandler jobHandler;
+        private readonly IBus bus;
+        private readonly IJobHandler jobHandler;
         private readonly int waitingForRabbitMQInSeconds = AppSettings.MailCientConfig.RequestRetryIntervalInSeconds;
 
-        public async Task StartAsync(IJobHandler jobHandler)
+        public MailClientMessageBroker() : this(null)
+        {
+        }
+
+        public MailClientMessageBroker(IJobHandler jobHandler)
         {
             LogProvider.SetCurrentLogProvider(new RabbitMQLogProvider());
-            this.jobHandler = jobHandler;
+
+            this.jobHandler = jobHandler ?? new JobHandler();
             bus = RabbitHutch.CreateBus(AppSettings.MailCientConfig.RabbitMQConnectionString);
+        }
+
+        public IJobHandler JobHandler => jobHandler;
+
+        public async Task StartAsync()
+        {
+            await jobHandler.InitializeSchedulerAsync();
 
             while (!bus.IsConnected)
             {
@@ -58,11 +72,15 @@ namespace Fanex.MailDelivery.Client.Handlers
             await SubscribeScheduleChangeAsync();
             await SubscribeRunNowJobAsync();
             await SubscribeRetryJobAsync();
+
+            await jobHandler.StartAsync();
         }
 
-        public void Stop()
+        public async Task StopAsync()
         {
-            bus?.Dispose();
+            bus.Dispose();
+
+            await jobHandler.StopAsync();
         }
 
         #region PublishAsync

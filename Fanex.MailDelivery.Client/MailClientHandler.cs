@@ -11,7 +11,6 @@ namespace Fanex.MailDelivery.Client
 {
     public static class MailClientHandler
     {
-        private static IJobHandler jobHandler;
         private static IMailClientMessageBroker messageBroker;
 
         public static void Start()
@@ -23,22 +22,19 @@ namespace Fanex.MailDelivery.Client
 
         public static async Task StartAsync()
         {
-            await StartAsync(null, null);
+            await StartAsync(null);
         }
 
-        public static async Task StartAsync(IJobHandler jobHandler, IMailClientMessageBroker messageBroker)
+        public static async Task StartAsync(IMailClientMessageBroker messageBroker)
         {
             if (AppSettings.MailCientConfig.EnableQuartzLog)
             {
                 XmlConfigurator.Configure();
             }
 
-            MailClientHandler.jobHandler = jobHandler ?? new JobHandler();
             MailClientHandler.messageBroker = messageBroker ?? new MailClientMessageBroker();
 
-            await MailClientHandler.messageBroker.StartAsync(MailClientHandler.jobHandler);
-
-            await MailClientHandler.jobHandler.StartAsync();
+            await MailClientHandler.messageBroker.StartAsync();
         }
 
         public static void Stop()
@@ -50,9 +46,7 @@ namespace Fanex.MailDelivery.Client
 
         public static async Task StopAsync()
         {
-            messageBroker?.Stop();
-
-            await jobHandler?.StopAsync();
+            await messageBroker.StopAsync();
         }
 
         public static void SendFunctionMail(Mail mail)
@@ -94,12 +88,12 @@ namespace Fanex.MailDelivery.Client
 
         internal static async Task RetryJobAsync(Schedule schedule)
         {
-            await jobHandler.RetryJobAsync(schedule);
+            await messageBroker.JobHandler.RetryJobAsync(schedule);
         }
 
         internal static async Task RunAfterUMJobAsync(Schedule schedule, DateTimeOffset afterUMEndTime)
         {
-            await jobHandler.RunAfterUMJobAsync(schedule, afterUMEndTime);
+            await messageBroker.JobHandler.RunAfterUMJobAsync(schedule, afterUMEndTime);
         }
 
         internal static async Task<UMInfoModel> GetUMInfoAsync()
