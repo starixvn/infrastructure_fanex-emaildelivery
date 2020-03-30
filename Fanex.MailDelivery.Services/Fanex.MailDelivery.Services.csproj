@@ -58,7 +58,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Fanex.MailDeliver.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Fanex.MailDeliver.Core.1.0.0-beta2\lib\net40\Fanex.MailDeliver.Core.dll</HintPath>
+      <HintPath>..\packages\Fanex.MailDeliver.Core.1.0.0-beta3\lib\net40\Fanex.MailDeliver.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Fanex.MailDeliver.MailClient, Version=1.0.0.4, Culture=neutral, processorArchitecture=MSIL">
@@ -150,7 +150,6 @@
     <Analyzer Include="..\packages\SonarAnalyzer.CSharp.7.14.0.8411\analyzers\SonarAnalyzer.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="CodeAnalysis\CodeAnalysisConfiguration.xml" />
     <Content Include="_Dependencies\EASendMail40.dll" />
     <Content Include="_Dependencies\log4net.dll" />
   </ItemGroup>
