@@ -385,7 +385,14 @@ namespace Fanex.MailDelivery.Services.Services
                 logger.AppendLine($"> {message}");
                 logService.LogInfo(message);
 
-                MailExtension.SendMail(mailRecord, out error);
+                var record = mailRecord.IsReady ? mailRecord : mailDeliverBusiness.GetMailRecord(mailRecord.MailID, true);
+
+                if (record == null)
+                {
+                    throw new InvalidOperationException($"Cannot get mail record #{mailRecord.MailID} to send.");
+                }
+
+                MailExtension.SendMail(record, out error);
 
                 if (!string.IsNullOrWhiteSpace(error))
                 {
@@ -398,6 +405,7 @@ namespace Fanex.MailDelivery.Services.Services
 
                     if (retryMailRecord.CanRetry)
                     {
+                        mailRecord.IsReady = false;
                         message = $"Resend({retryMailRecord.RetryTime}) the mail record #{mailRecord.MailID} (mail #{mailId}) in {sendMailRetryIntervalInMinutes} minutes...";
                         logger.AppendLine($"> {message}");
                         logService.LogInfo(message);
