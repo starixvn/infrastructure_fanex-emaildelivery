@@ -69,9 +69,12 @@ namespace Fanex.MailDelivery.Client.Handlers
                 await Task.Delay(TimeSpan.FromSeconds(waitingForRabbitMQInSeconds));
             }
 
-            await SubscribeScheduleChangeAsync();
-            await SubscribeRunNowJobAsync();
-            await SubscribeRetryJobAsync();
+            if (AppSettings.MailCientConfig.HasSchedule())
+            {
+                await SubscribeScheduleChangeAsync();
+                await SubscribeRunNowJobAsync();
+                await SubscribeRetryJobAsync();
+            }
 
             await jobHandler.StartAsync();
         }
