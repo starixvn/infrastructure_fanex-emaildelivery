@@ -18,5 +18,9 @@ namespace Fanex.MailDelivery.MailStationService
         public static int CheckUMIntervalInMinutes => Convert.ToInt32(ConfigurationManager.AppSettings.Get("MailStation:CheckUMIntervalInMinutes"));
 
         public static int UpdateFailedForLongRunningTaskIntervalInMinutes => Convert.ToInt32(ConfigurationManager.AppSettings.Get("MailStation:UpdateFailedForLongRunningTaskIntervalInMinutes"));
+
+        public static string LogCategory => ConfigurationManager.AppSettings.Get("MailStation:LogCategory");
+
+        public static string SentryDsn => ConfigurationManager.AppSettings.Get("MailStation:SentryDsn");
     }
 }

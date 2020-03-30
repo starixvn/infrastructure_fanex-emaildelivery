@@ -1,4 +1,8 @@
-﻿using System;
+﻿using Fanex.Logging;
+using Fanex.Logging.Sentry.RavenClient;
+using SharpRaven;
+using System;
+using System.Collections.Generic;
 using System.Reflection;
 using System.ServiceProcess;
 
@@ -8,6 +12,16 @@ namespace Fanex.MailDelivery.MailStationService
     {
         public static void Main(string[] args)
         {
+            LogManager
+                .SetDefaultLogCategory(AppSettings.LogCategory)
+                .Use(new List<ILogEngine>
+                {
+                     new SentryLogging(new SentryEngineOptions {
+                        Dsn = new Dsn(AppSettings.SentryDsn),
+                        Environment = AppSettings.LogCategory
+                     })
+                });
+
             var servicesToRun = new ServiceBase[]
              {
                 new MainService()
