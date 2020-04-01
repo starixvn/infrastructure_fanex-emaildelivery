@@ -13,7 +13,7 @@ Changes
 
 * Update libraries
 
-* Support .Net Framework 4.6.1
+* .Net Framework 4.6.1
 
 Installation
 #############
