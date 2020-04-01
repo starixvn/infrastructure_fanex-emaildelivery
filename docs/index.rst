@@ -15,6 +15,8 @@ Changes
 
 * .Net Framework 4.6.1
 
+* Remove attribute **messageBrokerLogCategory**
+
 Installation
 #############
 
