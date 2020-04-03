@@ -58,14 +58,13 @@ namespace Fanex.MailDelivery.Client.Jobs
 
             if (schedule.TaskId == 0)
             {
+                message = $"Adding a running task for the mail #{schedule.Id} ({schedule.Name})";
+                logger.AppendLine($"> {message}");
+                LogService.LogInfo(message);
+
                 jobResult = await MailClientHandler.RequestAddMailTaskForRunningJobAsync(jobResult);
 
                 schedule.TaskId = jobResult.Schedule.TaskId;
-
-                message = $"Added a running task for the mail #{schedule.Id} ({schedule.Name})";
-
-                logger.AppendLine($"> {message}");
-                LogService.LogInfo(message);
             }
 
             if (schedule.TaskId == 0)
