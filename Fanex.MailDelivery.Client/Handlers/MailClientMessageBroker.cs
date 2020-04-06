@@ -42,6 +42,7 @@ namespace Fanex.MailDelivery.Client.Handlers
         private readonly string updateScheduleSubscriptionId = string.Format(MailDeliveryConstants.UpdateScheduleRoutingKeyFormat, AppSettings.MailCientConfig.SiteId);
         private readonly string retryJobSubscriptionId = string.Format(MailDeliveryConstants.RetryJobRoutingKeyFormat, AppSettings.MailCientConfig.SiteId);
         private readonly string runNowJobSubscriptionId = string.Format(MailDeliveryConstants.RunNowJobRoutingKeyFormat, AppSettings.MailCientConfig.SiteId);
+        private readonly string runAfterUMJobSubscriptionId = string.Format(MailDeliveryConstants.RunAfterUMJobRoutingKeyFormat, AppSettings.MailCientConfig.SiteId);
         private readonly IBus bus;
         private readonly IJobHandler jobHandler;
         private readonly int waitingForRabbitMQInSeconds = AppSettings.MailCientConfig.RequestRetryIntervalInSeconds;
@@ -74,6 +75,7 @@ namespace Fanex.MailDelivery.Client.Handlers
                 await SubscribeScheduleChangeAsync();
                 await SubscribeRunNowJobAsync();
                 await SubscribeRetryJobAsync();
+                await SubscribeRunAfterUMJobAsync();
             }
 
             await jobHandler.StartAsync();
@@ -167,6 +169,29 @@ namespace Fanex.MailDelivery.Client.Handlers
             }
         }
 
+        public async Task PublishRunAfterUMJobAsync(Schedule schedule, int retryCount = 0)
+        {
+            bool isFailed = false;
+
+            try
+            {
+                await bus.PublishAsync(schedule, runAfterUMJobSubscriptionId);
+            }
+            catch (Exception ex)
+            {
+                LogService.LogError($"There is an error while registering to run this job after UM. Retrying in {waitingForRabbitMQInSeconds} seconds...", schedule, ex);
+                isFailed = true;
+            }
+
+            if (isFailed && retryCount <= AppSettings.MailCientConfig.RequestRetryLimit)
+            {
+                retryCount++;
+
+                await Task.Delay(TimeSpan.FromSeconds(waitingForRabbitMQInSeconds));
+
+                await PublishRunAfterUMJobAsync(schedule, retryCount);
+            }
+        }
         #endregion
 
         #region RequestAsync
@@ -322,7 +347,7 @@ namespace Fanex.MailDelivery.Client.Handlers
             {
                 bus.SubscribeAsync<Schedule>(
                     GetSubscriptionIdKey(runNowJobSubscriptionId),
-                    schedule => jobHandler.RetryAllProcessAsync(schedule),
+                    schedule => RetryAllProcessAsync(schedule),
                     config => config.WithTopic(runNowJobSubscriptionId));
 
                 LogService.LogInfo($"Subcribed the queue with key {runNowJobSubscriptionId} successfully");
@@ -349,7 +374,7 @@ namespace Fanex.MailDelivery.Client.Handlers
             {
                 bus.SubscribeAsync<Schedule>(
                     GetSubscriptionIdKey(retryJobSubscriptionId),
-                    schedule => jobHandler.RetryAllProcessAsync(schedule),
+                    schedule => RetryAllProcessAsync(schedule),
                     config => config.WithTopic(retryJobSubscriptionId));
 
                 LogService.LogInfo($"Subcribed the queue with key {retryJobSubscriptionId} successfully");
@@ -367,7 +392,65 @@ namespace Fanex.MailDelivery.Client.Handlers
                 await SubscribeRetryJobAsync(retryCount);
             }
         }
+
+        public async Task SubscribeRunAfterUMJobAsync(int retryCount = 0)
+        {
+            bool isFailed = false;
+
+            try
+            {
+                bus.SubscribeAsync<Schedule>(
+                    GetSubscriptionIdKey(runAfterUMJobSubscriptionId),
+                    schedule => RunAfterUMJobAsync(schedule),
+                    config => config.WithTopic(runAfterUMJobSubscriptionId));
+
+                LogService.LogInfo($"Subcribed the queue with key {runAfterUMJobSubscriptionId} successfully");
+            }
+            catch (Exception ex)
+            {
+                LogService.LogError($"There is an error while subscribing a queue with key {runAfterUMJobSubscriptionId}. Retrying...", ex);
+                isFailed = true;
+            }
+
+            if (isFailed && retryCount <= AppSettings.MailCientConfig.RequestRetryLimit)
+            {
+                retryCount++;
+
+                await SubscribeRunAfterUMJobAsync(retryCount);
+            }
+        }
         #endregion
+
+        private async Task RunAfterUMJobAsync(Schedule schedule)
+        {
+            var umInfo = await GetUMInfoAsync();
+
+            if (umInfo != null && umInfo.IsUnderMaintenanceTime)
+            {
+                var afterUMTime = new DateTime(umInfo.To.Ticks, DateTimeKind.Utc).AddMinutes(1);
+
+                TimeSpan waitingTime = afterUMTime - DateTime.UtcNow;
+
+                if (waitingTime.TotalSeconds > 0)
+                {
+                    LogService.LogInfo($"Waiting for UM time in {waitingTime.TotalMinutes} minutes.");
+
+                    await Task.Delay(waitingTime);
+                }
+            }
+
+            await jobHandler.RetryAllProcessAsync(schedule);
+        }
+
+        private async Task RetryAllProcessAsync(Schedule schedule)
+        {
+            if (AppSettings.HasScheduleId(schedule.Id))
+            {
+                LogService.LogInfo($"Mail #{schedule.Id} ({schedule.Name}) is triggered to start now from management site (mSite)");
+
+                await jobHandler.RetryAllProcessAsync(schedule);
+            }
+        }
 
         private static string GetSubscriptionIdKey(string topic)
         {

@@ -44,9 +44,25 @@ namespace Fanex.MailDelivery.Client.Jobs
         private async Task StartGenerateMail(IJobExecutionContext context, Schedule schedule)
         {
             string message = $"Scheduled Mail #{schedule.Id} ({schedule.Name}) is running...";
-
             logger.AppendLine($"> {message}");
             LogService.LogInfo(message);
+
+            var umInfo = await MailClientHandler.GetUMInfoAsync();
+
+            if (umInfo != null && umInfo.IsUnderMaintenanceTime)
+            {
+                var from = umInfo.From.AddHours(ServerGMT);
+                var to = umInfo.To.AddHours(ServerGMT);
+                var afterUMTime = new DateTime(umInfo.To.Ticks, DateTimeKind.Utc).AddMinutes(5);
+
+                message = $"Not allow to run the scheduled mail #{schedule.Id} ({schedule.Name}) in UM time ({from} - {to}) GMT{ServerGMT}. " +
+                               $"It'll run after UM.";
+
+                logger.AppendLine($"> {message}");
+                LogService.LogInfo(message);
+
+                await MailClientHandler.RunAfterUMJobAsync(schedule, afterUMTime);
+            }
 
             JobMessage jobResult = new JobMessage
             {

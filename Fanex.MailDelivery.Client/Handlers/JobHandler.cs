@@ -69,8 +69,6 @@ namespace Fanex.MailDelivery.Client.Handlers
         {
             if (AppSettings.HasScheduleId(schedule.Id))
             {
-                LogService.LogInfo($"Mail #{schedule.Id} ({schedule.Name}) is triggered to start now from management site (mSite)");
-
                 IJobDetail job = GetRetryJob(schedule);
                 ITrigger trigger = GetRetryAllProcessTrigger(schedule);
 

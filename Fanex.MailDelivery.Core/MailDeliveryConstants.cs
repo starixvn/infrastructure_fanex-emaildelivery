@@ -8,6 +8,7 @@
         public const string RetryJobRoutingKeyFormat = "RoutingKey.RetryJob_{0}";
         public const string AbortJobRoutingKeyFormat = "RoutingKey.AbortJob";
         public const string RunNowJobRoutingKeyFormat = "RoutingKey.RunNowJob_{0}";
+        public const string RunAfterUMJobRoutingKeyFormat = "RoutingKey.RunAfterUMJob_{0}";
 
         public const string AutoMailJobNameFormat = "AutoMailJob_{0}";
         public const string MailCentralizedTriggerGroup = "MailStationClient.TriggerGroup";
