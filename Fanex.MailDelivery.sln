@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MailStationClient.AutoJobDe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MailStationClient.FunctionMailDemo", "MailStationClient.FunctionMail\MailStationClient.FunctionMailDemo.csproj", "{9A98D4F8-FD93-40F6-8A4E-2505D078FE7E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "demo", "demo", "{3734F784-650C-49B3-97EC-1E1FB7559111}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -140,5 +142,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{41BA7D82-1D25-44CF-9555-68158431FD2A} = {3734F784-650C-49B3-97EC-1E1FB7559111}
+		{9A98D4F8-FD93-40F6-8A4E-2505D078FE7E} = {3734F784-650C-49B3-97EC-1E1FB7559111}
 	EndGlobalSection
 EndGlobal

@@ -22,7 +22,7 @@ namespace Fanex.MailDelivery.MailStationService.MessageBrokers
         private readonly MailService mailService;
         private readonly LogService logService;
         private readonly UMService umService;
-        private const int waitingForRabbitMQInSeconds = 30;
+        private const int waitingForRabbitMQInSeconds = 5;
 
         public MessageBrokerImpl(LogService logService)
             : this(null, logService, null)

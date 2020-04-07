@@ -91,9 +91,9 @@ namespace Fanex.MailDelivery.Client
             await messageBroker.JobHandler.RetryJobAsync(schedule);
         }
 
-        internal static async Task RunAfterUMJobAsync(Schedule schedule, DateTimeOffset afterUMEndTime)
+        internal static async Task RunAfterUMJobAsync(Schedule schedule)
         {
-            await messageBroker.JobHandler.RunAfterUMJobAsync(schedule, afterUMEndTime);
+            await messageBroker.PublishRunAfterUMJobAsync(schedule);
         }
 
         internal static async Task<UMInfoModel> GetUMInfoAsync()

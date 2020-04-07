@@ -35,6 +35,8 @@ namespace Fanex.MailDelivery.Client.Handlers
         Task<JobMessage> RequestAddMailTaskForRunningJobAsync(JobMessage jobMessage, int retryCount = 0);
 
         Task<MailTaskModel> RequestMailTaskByIdAsync(GetMailTaskByIdRequest request, int retryCount = 0);
+
+        Task PublishRunAfterUMJobAsync(Schedule schedule, int retryCount = 0);
     }
 
     public class MailClientMessageBroker : IMailClientMessageBroker

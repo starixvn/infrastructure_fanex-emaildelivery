@@ -53,17 +53,23 @@ namespace Fanex.MailDelivery.Client.Jobs
             {
                 var from = umInfo.From.AddHours(ServerGMT);
                 var to = umInfo.To.AddHours(ServerGMT);
-                var afterUMTime = new DateTime(umInfo.To.Ticks, DateTimeKind.Utc).AddMinutes(5);
-
                 message = $"Not allow to run the scheduled mail #{schedule.Id} ({schedule.Name}) in UM time ({from} - {to}) GMT{ServerGMT}. " +
                                $"It'll run after UM.";
 
                 logger.AppendLine($"> {message}");
                 LogService.LogInfo(message);
 
-                await MailClientHandler.RunAfterUMJobAsync(schedule, afterUMTime);
+                await MailClientHandler.RunAfterUMJobAsync(schedule);
             }
+            else
+            {
+                await GenerateMailAsync(context, schedule);
+            }
+        }
 
+        private async Task GenerateMailAsync(IJobExecutionContext context, Schedule schedule)
+        {
+            string message = string.Empty;
             JobMessage jobResult = new JobMessage
             {
                 JobStatus = JobStatus.Running,
@@ -139,50 +145,31 @@ namespace Fanex.MailDelivery.Client.Jobs
         {
             string message = string.Empty;
             JobMessage jobResult = jobMessage;
-            var umInfo = await MailClientHandler.GetUMInfoAsync();
+            message = $"Running job to generate the mail #{schedule.Id} ({schedule.Name})";
 
-            if (umInfo != null && umInfo.IsUnderMaintenanceTime)
+            logger.AppendLine($"> {message}");
+            LogService.LogInfo(message);
+
+            await MailClientHandler.ReportJobAsync(jobResult);
+
+            jobResult = RunJob(context, schedule, jobResult);
+
+            jobResult.Schedule = schedule;
+
+            if (jobResult.JobStatus == JobStatus.Success || jobResult.JobStatus == JobStatus.SuccessWithoutSendmail)
             {
-                var from = umInfo.From.AddHours(ServerGMT);
-                var to = umInfo.To.AddHours(ServerGMT);
-                var afterUMTime = new DateTime(umInfo.To.Ticks, DateTimeKind.Utc).AddMinutes(5);
-
-                message = $"Not allow to run the scheduled mail #{schedule.Id} ({schedule.Name}) in UM time ({from} - {to}) GMT{ServerGMT}. " +
-                               $"It's re-scheduled to run at {afterUMTime.AddHours(ServerGMT)}.";
+                message = $"Generated the mail #{schedule.Id} ({schedule.Name}) successfully";
 
                 logger.AppendLine($"> {message}");
                 LogService.LogInfo(message);
-
-                await MailClientHandler.RunAfterUMJobAsync(schedule, afterUMTime);
             }
             else
             {
-                message = $"Running job to generate the mail #{schedule.Id} ({schedule.Name})";
-
+                message = $"The task status of the mail #{schedule.Id} ({schedule.Name}) is {jobResult.JobStatus.ToString()}";
                 logger.AppendLine($"> {message}");
                 LogService.LogInfo(message);
 
-                await MailClientHandler.ReportJobAsync(jobResult);
-
-                jobResult = RunJob(context, schedule, jobResult);
-
-                jobResult.Schedule = schedule;
-
-                if (jobResult.JobStatus == JobStatus.Success || jobResult.JobStatus == JobStatus.SuccessWithoutSendmail)
-                {
-                    message = $"Generated the mail #{schedule.Id} ({schedule.Name}) successfully";
-
-                    logger.AppendLine($"> {message}");
-                    LogService.LogInfo(message);
-                }
-                else
-                {
-                    message = $"The task status of the mail #{schedule.Id} ({schedule.Name}) is {jobResult.JobStatus.ToString()}";
-                    logger.AppendLine($"> {message}");
-                    LogService.LogInfo(message);
-
-                    await RetryJobAsync(jobResult.Schedule);
-                }
+                await RetryJobAsync(jobResult.Schedule);
             }
 
             return jobResult;
