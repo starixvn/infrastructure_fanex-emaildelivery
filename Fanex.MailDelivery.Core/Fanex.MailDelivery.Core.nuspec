@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/10/nuspec.xsd">
   <metadata>
     <id>Fanex.MailStation.Core</id>
-    <version>1.0.0-beta4</version>
+    <version>1.0.0-beta5</version>
     <title>Fanex.MailStation.Core</title>
     <authors>Nexcel Solutions</authors>
     <owners>Nexcel Solutions</owners>
@@ -11,6 +11,8 @@
     <summary></summary>
     <releaseNotes>Core classes</releaseNotes>
     <copyright>Copyright 2020</copyright>
-    <dependencies />
+    <dependencies>
+      <group targetFramework=".NETFramework4.6.1" />
+    </dependencies>
   </metadata>
 </package>
