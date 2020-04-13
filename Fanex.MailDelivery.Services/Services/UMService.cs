@@ -82,7 +82,7 @@ namespace Fanex.MailDelivery.Services.Services
 
                 if (waitingTime.TotalSeconds > 0)
                 {
-                    logService.LogInfo($"Waiting for UM off in {waitingTime.TotalMinutes} minutes before continue...");
+                    logService.LogInfo($"Waiting for UM off in {(int)waitingTime.TotalMinutes} minutes before continue...");
 
                     await Task.Delay(waitingTime);
                 }

@@ -435,7 +435,7 @@ namespace Fanex.MailDelivery.Client.Handlers
 
                 if (waitingTime.TotalSeconds > 0)
                 {
-                    LogService.LogInfo($"Waiting for UM time in {waitingTime.TotalMinutes} minutes.");
+                    LogService.LogInfo($"Waiting for UM time in {(int)waitingTime.TotalMinutes} minutes.");
 
                     await Task.Delay(waitingTime);
                 }
