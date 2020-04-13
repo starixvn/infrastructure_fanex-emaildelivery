@@ -35,7 +35,7 @@ namespace Fanex.MailDelivery.MailStationService.MessageBrokers
 
             this.logService = logService;
             this.mailService = mailService ?? new MailServiceImpl(logService, AppSettings.SendMailRetryLimit, AppSettings.SendMailRetryIntervalInMinutes);
-            this.umService = umService ?? new UMServiceImpl(AppSettings.ONEbookUMServiceUri, AppSettings.CheckUMIntervalInMinutes, logService);
+            this.umService = umService ?? new UMServiceImpl(AppSettings.ONEbookUMServiceUri, logService);
         }
 
         public void Start()

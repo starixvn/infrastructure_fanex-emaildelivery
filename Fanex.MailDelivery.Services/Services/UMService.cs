@@ -20,13 +20,11 @@ namespace Fanex.MailDelivery.Services.Services
         private const int RetryIntervalInSeconds = 10;
         private readonly LogService logService;
         private readonly string umApiBaseUrl;
-        private readonly int checkUMIntervalInMinutes;
 
-        public UMServiceImpl(string umApiBaseUrl, int checkUMIntervalInMinutes, LogService logService)
+        public UMServiceImpl(string umApiBaseUrl, LogService logService)
         {
             this.umApiBaseUrl = umApiBaseUrl;
             this.logService = logService;
-            this.checkUMIntervalInMinutes = checkUMIntervalInMinutes;
         }
 
         public async Task<UMInfoModel> GetUMInfo(int retryCount = 0)
@@ -74,18 +72,19 @@ namespace Fanex.MailDelivery.Services.Services
 
         public async Task WaitForUMOff()
         {
-            var isUM = true;
+            var umInfo = await GetUMInfo();
+            bool isUM = umInfo != null && umInfo.IsUnderMaintenanceTime;
 
-            while (isUM)
+            if (isUM)
             {
-                var umInfo = await GetUMInfo();
-                isUM = umInfo != null && umInfo.IsUnderMaintenanceTime;
+                var afterUMTime = new DateTime(umInfo.To.Ticks, DateTimeKind.Utc).AddMinutes(1);
+                TimeSpan waitingTime = afterUMTime - DateTime.UtcNow;
 
-                if (isUM)
+                if (waitingTime.TotalSeconds > 0)
                 {
-                    logService.LogInfo("Waiting for UM off before continue sending email...");
+                    logService.LogInfo($"Waiting for UM off in {waitingTime.TotalMinutes} minutes before continue...");
 
-                    await Task.Delay(TimeSpan.FromMinutes(checkUMIntervalInMinutes));
+                    await Task.Delay(waitingTime);
                 }
             }
         }
