@@ -53,6 +53,7 @@ namespace Fanex.MailDelivery.Client.Jobs
             {
                 var from = umInfo.From.AddHours(ServerGMT);
                 var to = umInfo.To.AddHours(ServerGMT);
+                schedule.CurrentFireTime = context.ScheduledFireTimeUtc.GetValueOrDefault().DateTime.ToLocalTime();
                 message = $"Not allow to run the scheduled mail #{schedule.Id} ({schedule.Name}) in UM time ({from} - {to}) GMT{ServerGMT}. " +
                                $"It'll run after UM.";
 
@@ -73,7 +74,7 @@ namespace Fanex.MailDelivery.Client.Jobs
             JobMessage jobResult = new JobMessage
             {
                 JobStatus = JobStatus.Running,
-                ScheduledTime = context.ScheduledFireTimeUtc.GetValueOrDefault().DateTime.ToLocalTime(),
+                ScheduledTime = schedule.CurrentFireTime.HasValue ? schedule.CurrentFireTime.Value : context.ScheduledFireTimeUtc.GetValueOrDefault().DateTime.ToLocalTime(),
                 RunningTime = context.FireTimeUtc.DateTime.ToLocalTime(),
                 Schedule = schedule.Clone()
             };

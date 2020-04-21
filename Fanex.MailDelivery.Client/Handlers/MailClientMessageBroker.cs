@@ -425,23 +425,26 @@ namespace Fanex.MailDelivery.Client.Handlers
 
         private async Task RunAfterUMJobAsync(Schedule schedule)
         {
-            var umInfo = await GetUMInfoAsync();
-
-            if (umInfo != null && umInfo.IsUnderMaintenanceTime)
+            if (AppSettings.HasScheduleId(schedule.Id))
             {
-                var afterUMTime = new DateTime(umInfo.To.Ticks, DateTimeKind.Utc).AddMinutes(1);
+                var umInfo = await GetUMInfoAsync();
 
-                TimeSpan waitingTime = afterUMTime - DateTime.UtcNow;
-
-                if (waitingTime.TotalSeconds > 0)
+                if (umInfo != null && umInfo.IsUnderMaintenanceTime)
                 {
-                    LogService.LogInfo($"Waiting for UM time in {(int)waitingTime.TotalMinutes} minutes.");
+                    var afterUMTime = new DateTime(umInfo.To.Ticks, DateTimeKind.Utc).AddMinutes(1);
 
-                    await Task.Delay(waitingTime);
+                    TimeSpan waitingTime = afterUMTime - DateTime.UtcNow;
+
+                    if (waitingTime.TotalSeconds > 0)
+                    {
+                        LogService.LogInfo($"Waiting for UM time in {(int)waitingTime.TotalMinutes} minutes.");
+
+                        await Task.Delay(waitingTime);
+                    }
                 }
-            }
 
-            await jobHandler.RetryAllProcessAsync(schedule);
+                await jobHandler.RetryAllProcessAsync(schedule);
+            }
         }
 
         private async Task RetryAllProcessAsync(Schedule schedule)
