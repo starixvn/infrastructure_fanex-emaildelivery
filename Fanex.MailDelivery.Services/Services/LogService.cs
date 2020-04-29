@@ -27,9 +27,20 @@ namespace Fanex.MailDelivery.Services.Services
 
     public class LogServiceImpl : LogService
     {
+        private readonly ILogger logger;
+
+        public LogServiceImpl() : this(null)
+        {
+        }
+
+        public LogServiceImpl(ILogger logger)
+        {
+            this.logger = logger ?? Logger.Log;
+        }
+
         public void LogInfo(string logMessage)
         {
-            Logger.Log.Info(logMessage);
+            logger.Info(logMessage);
         }
 
         public void LogError(string message)
@@ -38,7 +49,7 @@ namespace Fanex.MailDelivery.Services.Services
                         .AddSection("Server Info", CommonInfoGetters.GetServerInfo())
                         .ToString();
 
-            Logger.Log.Error(logMessage);
+            logger.Error(logMessage);
         }
 
         public void LogError(string message, Exception exception)
@@ -48,7 +59,7 @@ namespace Fanex.MailDelivery.Services.Services
                         .AddSection("Exception Info", CommonInfoGetters.GetExceptionInfo(exception))
                         .ToString();
 
-            Logger.Log.Error(logMessage);
+            logger.Error(logMessage);
         }
 
         public void LogError(Exception exception)

@@ -27,6 +27,14 @@ pipeline {
       }    
     }
 
+    stage("C# Test"){
+      steps{
+        script{
+          pipelineLib.xUnitForNetFramework()
+        }
+      }
+    }
+
     stage("SonarQube Analysis"){
       steps{       
         script{
