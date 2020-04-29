@@ -18,7 +18,7 @@ pipeline {
     stage('Build') {
       steps {       
         script{
-          pipelineLib.beginSonarQubeForMsBuild("MailStation", "NexOps / Mail Station", "")
+          pipelineLib.beginSonarQubeForMsBuild("MailStation", "NexOps / Mail Station", "/d:sonar.cs.opencover.reportsPaths=%WORKSPACE%\\coverage.xml /d:sonar.cs.xunit.reportsPaths=%WORKSPACE%\\UnitTest.xml")
 
           pipelineLib.restoreNuget()
 
