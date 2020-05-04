@@ -42,20 +42,22 @@ namespace Fanex.MailDelivery.Services.Services
         private readonly int sendMailRetryIntervalInMinutes;
 
         public MailServiceImpl(int sendMailRetryLimit, int sendMailRetryIntervalInMinutes)
-            : this(null, sendMailRetryLimit, sendMailRetryIntervalInMinutes)
+            : this(sendMailRetryLimit, sendMailRetryIntervalInMinutes, null, null, null)
         {
         }
 
         public MailServiceImpl(
-            LogService logService,
             int sendMailRetryLimit,
-            int sendMailRetryIntervalInMinutes)
+            int sendMailRetryIntervalInMinutes,
+            LogService logService,
+            IMailRepository mailRepository,
+            IMailDeliverBusiness mailDeliverBusiness)
         {
             this.sendMailRetryIntervalInMinutes = sendMailRetryIntervalInMinutes;
             this.sendMailRetryLimit = sendMailRetryLimit;
             this.logService = logService ?? new LogServiceImpl();
-            mailRepository = new MailRepository();
-            mailDeliverBusiness = new MailDeliverBusiness();
+            this.mailRepository = mailRepository ?? new MailRepository();
+            this.mailDeliverBusiness = mailDeliverBusiness ?? new MailDeliverBusiness();
         }
 
         public GetScheduleListResponse GetScheduleList(GetScheduleListRequest request)

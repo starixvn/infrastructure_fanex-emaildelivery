@@ -19,12 +19,16 @@ namespace Fanex.MailDelivery.Services.Services
         private const int UMGMT = 8;
         private const int RetryIntervalInSeconds = 10;
         private readonly LogService logService;
-        private readonly string umApiBaseUrl;
+        private readonly IRestClient client;
 
-        public UMServiceImpl(string umApiBaseUrl, LogService logService)
+        public UMServiceImpl(string umApiBaseUrl, LogService logService) : this(umApiBaseUrl, logService, null)
         {
-            this.umApiBaseUrl = umApiBaseUrl;
+        }
+
+        public UMServiceImpl(string umApiBaseUrl, LogService logService, IRestClient client)
+        {
             this.logService = logService;
+            this.client = client ?? new RestClient(new Uri(umApiBaseUrl));
         }
 
         public async Task<UMInfoModel> GetUMInfo(int retryCount = 0)
@@ -34,21 +38,27 @@ namespace Fanex.MailDelivery.Services.Services
 
             try
             {
-                var client = new RestClient(new Uri(umApiBaseUrl));
                 var request = new RestRequest("UnderMaintenance/getall", DataFormat.Json);
 
-                var allUMInfos = await client.GetAsync<Dictionary<string, UMInfoModel>>(request);
+                var response = await client.ExecuteGetAsync<Dictionary<string, UMInfoModel>>(request);
 
-                result = allUMInfos.Values.FirstOrDefault(x => x.IsUnderMaintenanceTime);
-
-                if (result != null)
+                if (response.IsSuccessful)
                 {
-                    result.From = result.From.AddHours(UMGMT * -1); //Convert to UTC
-                    result.To = result.To.AddHours(UMGMT * -1);
+                    result = response.Data.Values.FirstOrDefault(x => x.IsUnderMaintenanceTime);
+
+                    if (result != null)
+                    {
+                        result.From = result.From.AddHours(UMGMT * -1); //Convert to UTC
+                        result.To = result.To.AddHours(UMGMT * -1);
+                    }
+                    else
+                    {
+                        result = new UMInfoModel();
+                    }
                 }
                 else
                 {
-                    result = new UMInfoModel();
+                    throw response.ErrorException;
                 }
             }
             catch (Exception ex)
