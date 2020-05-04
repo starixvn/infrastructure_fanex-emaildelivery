@@ -1,10 +1,12 @@
 ﻿using Fanex.MailDeliver.Business.Interface;
 using Fanex.MailDelivery.Core.Messaging;
 using Fanex.MailDelivery.Core.Models;
+using Fanex.MailDelivery.Services.Criteria;
 using Fanex.MailDelivery.Services.Criteria.Job;
 using Fanex.MailDelivery.Services.Repositories;
 using Fanex.MailDelivery.Services.Services;
 using NSubstitute;
+using System;
 using System.Collections.Generic;
 using Xunit;
 
@@ -59,6 +61,49 @@ namespace Fanex.MailDelivery.Services.Tests.Services
                 schedules.Schedules,
                 (x) => Assert.Equal(mailId1, x.Id),
                 (x) => Assert.Equal(mailId2, x.Id));
+        }
+
+        [Fact]
+        public void GetScheduleList_HasException_CallLogErrorOfLogService()
+        {
+            // Arrange
+            int mailId = 123;
+            mockMailRepository.GetScheduleByMailId(Arg.Compat.Any<GetScheduleByMailIdCriteria>()).Returns(x => { throw new Exception(); });
+
+            // Act
+            mailService.GetScheduleList(new GetScheduleListRequest { MailIds = new List<int> { mailId } });
+
+            // Assert
+            mockLogService.Received(1).LogError(Arg.Compat.Any<Exception>(), mailId);
+        }
+
+        [Fact]
+        public void UpdateClientActiveTime_Any_CallUpdateClientActiveTimeOfRepository()
+        {
+            // Arrange
+            var mailId = "123";
+
+            // Act
+            mailService.UpdateClientActiveTime(new UpdateActiveTimeRequest { MailIds = mailId });
+
+            // Assert
+            mockMailRepository.Received(1).UpdateClientActiveTime(Arg.Compat.Is<UpdateClientActiveTimeCriteria>(x => x.MailIds == mailId));
+        }
+
+        [Fact]
+        public void UpdateClientActiveTime_HasException_CallLogErrorOfLogService()
+        {
+            // Arrange
+            var mailId = "123";
+            mockMailRepository
+                .When(x => x.UpdateClientActiveTime(Arg.Compat.Any<UpdateClientActiveTimeCriteria>()))
+                .Do((x) => { throw new Exception(); });
+
+            // Act
+            mailService.UpdateClientActiveTime(new UpdateActiveTimeRequest { MailIds = mailId });
+
+            // Assert
+            mockLogService.Received(1).LogError(Arg.Compat.Any<Exception>());
         }
     }
 }

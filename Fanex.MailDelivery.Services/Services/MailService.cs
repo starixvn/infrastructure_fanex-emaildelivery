@@ -49,6 +49,13 @@ namespace Fanex.MailDelivery.Services.Services
         public MailServiceImpl(
             int sendMailRetryLimit,
             int sendMailRetryIntervalInMinutes,
+            LogService logService)
+            : this(sendMailRetryLimit, sendMailRetryIntervalInMinutes, logService, null, null)
+        { }
+
+        public MailServiceImpl(
+            int sendMailRetryLimit,
+            int sendMailRetryIntervalInMinutes,
             LogService logService,
             IMailRepository mailRepository,
             IMailDeliverBusiness mailDeliverBusiness)
