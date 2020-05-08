@@ -3,6 +3,7 @@ using Fanex.MailDelivery.Core.Models;
 using Quartz;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 
 namespace MailStationClient.AutoJobDemo
@@ -17,7 +18,7 @@ namespace MailStationClient.AutoJobDemo
             var filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "attachment.txt");
             var mail = new Mail
             {
-                Subject = "Mail Station Client - Auto job demo",
+                Subject = $"[{ConfigurationManager.AppSettings.Get("Environment")}] Mail Station Client - Auto job demo",
                 Title = "Auto job demo",
                 Body = "Auto job Body",
                 Attachments = new List<MailAttachment> {
