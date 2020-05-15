@@ -158,6 +158,10 @@
     </Content>
     <Content Include="MailStationClient.AutoJobDemo.exe.sit.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="MailStationClient.AutoJobDemo.exe.pro.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="MailStationClient.AutoJobDemo.ruleset" />
     <None Include="packages.config" />
