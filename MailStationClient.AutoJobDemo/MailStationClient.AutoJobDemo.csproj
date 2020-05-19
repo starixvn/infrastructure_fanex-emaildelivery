@@ -65,11 +65,11 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Fanex.MailDelivery.Client, Version=1.1.0.1, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Fanex.MailStation.2.0.0\lib\net461\Fanex.MailDelivery.Client.dll</HintPath>
+      <HintPath>..\packages\Fanex.MailStation.2.0.1\lib\net461\Fanex.MailDelivery.Client.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Fanex.MailDelivery.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Fanex.MailStation.Core.1.0.0\lib\net461\Fanex.MailDelivery.Core.dll</HintPath>
+      <HintPath>..\packages\Fanex.MailStation.Core.1.0.1\lib\net461\Fanex.MailDelivery.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
@@ -139,6 +139,7 @@
     <Compile Include="AutoJobService.Designer.cs">
       <DependentUpon>AutoJobService.cs</DependentUpon>
     </Compile>
+    <Compile Include="ErrorJob.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SendMailJob.cs" />
