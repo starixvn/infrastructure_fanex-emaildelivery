@@ -31,6 +31,8 @@ namespace Fanex.MailDelivery.Services.Services
         void UpdateClientActiveTime(UpdateActiveTimeRequest updateActiveTimeRequest);
 
         void UpdateFailedForLongRunningMailTask();
+
+        void InsertTaskLog(TaskLog log);
     }
 
     public class MailServiceImpl : MailService
@@ -198,6 +200,27 @@ namespace Fanex.MailDelivery.Services.Services
             }
 
             return taskId;
+        }
+
+        public void InsertTaskLog(TaskLog log)
+        {
+            try
+            {
+                if (log.TaskId > 0)
+                {
+                    mailRepository.AddMailLog(new AddMailLogCriteria
+                    {
+                        LogTime = DateTime.Now,
+                        ExceptionMessage = log.Message,
+                        Status = log.Status,
+                        TaskId = log.TaskId
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                logService.LogError(ex);
+            }
         }
 
         public MailTaskModel GetMailTaskById(GetMailTaskByIdRequest request)

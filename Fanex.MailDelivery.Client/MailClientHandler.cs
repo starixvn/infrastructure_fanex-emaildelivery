@@ -3,7 +3,6 @@ using Fanex.MailDelivery.Client.Handlers;
 using Fanex.MailDelivery.Core.Messaging;
 using Fanex.MailDelivery.Core.Models;
 using log4net.Config;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -66,6 +65,11 @@ namespace Fanex.MailDelivery.Client
             return await messageBroker.GetSchedulesAsync();
         }
 
+        internal static async Task<Schedule> GetScheduleAsync(int mailId)
+        {
+            return await messageBroker.GetScheduleAsync(mailId);
+        }
+
         internal static async Task PublishClientNotifyMessageAsync()
         {
             await messageBroker.PublishClientNotifyMessageAsync();
@@ -99,6 +103,11 @@ namespace Fanex.MailDelivery.Client
         internal static async Task<UMInfoModel> GetUMInfoAsync()
         {
             return await messageBroker.GetUMInfoAsync();
+        }
+
+        internal static async Task InsertTaskLogAsync(TaskLog taskLog)
+        {
+            await messageBroker.PublishTaskLogAsync(taskLog);
         }
     }
 }

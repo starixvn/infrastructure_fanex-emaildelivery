@@ -4,6 +4,7 @@
     {
         public const string SendMailRoutingKey = "RoutingKey.SendMail";
         public const string JobResultRoutingKey = "RoutingKey.JobResult";
+        public const string TaskLogRoutingKey = "RoutingKey.TaskLog";
         public const string UpdateScheduleRoutingKeyFormat = "RoutingKey.UpdateSchedule_{0}";
         public const string RetryJobRoutingKeyFormat = "RoutingKey.RetryJob_{0}";
         public const string AbortJobRoutingKeyFormat = "RoutingKey.AbortJob";

@@ -147,6 +147,36 @@ namespace Fanex.MailDelivery.MailStationService.MessageBrokers
                 SubscribeJobResult();
             }
         }
+
+        private void SubscribeTaskLogMessage()
+        {
+            bool isFailed = false;
+
+            try
+            {
+                bus.SubscribeAsync<TaskLog>(
+                    MailDeliveryConstants.TaskLogRoutingKey,
+                    log =>
+                    {
+                        mailService.InsertTaskLog(log);
+
+                        return Task.CompletedTask;
+                    },
+                    config => config.WithTopic(MailDeliveryConstants.TaskLogRoutingKey));
+
+                logService.LogInfo($"Subcribed the queue with key {MailDeliveryConstants.TaskLogRoutingKey} successfully");
+            }
+            catch (Exception ex)
+            {
+                logService.LogError($"There is an error while subscribing the queue with key {MailDeliveryConstants.TaskLogRoutingKey}. Retrying...", ex);
+                isFailed = true;
+            }
+
+            if (isFailed)
+            {
+                SubscribeTaskLogMessage();
+            }
+        }
         #endregion
 
         #region Response

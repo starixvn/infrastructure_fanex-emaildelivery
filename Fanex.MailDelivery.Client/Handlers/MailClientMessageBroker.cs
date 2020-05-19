@@ -26,6 +26,8 @@ namespace Fanex.MailDelivery.Client.Handlers
 
         Task<IList<Schedule>> GetSchedulesAsync();
 
+        Task<Schedule> GetScheduleAsync(int mailId);
+
         Task<UMInfoModel> GetUMInfoAsync(int retryCount = 0);
 
         Task PublishClientNotifyMessageAsync();
@@ -37,6 +39,8 @@ namespace Fanex.MailDelivery.Client.Handlers
         Task<MailTaskModel> RequestMailTaskByIdAsync(GetMailTaskByIdRequest request, int retryCount = 0);
 
         Task PublishRunAfterUMJobAsync(Schedule schedule, int retryCount = 0);
+
+        Task PublishTaskLogAsync(TaskLog taskLog, int retryCount = 0);
     }
 
     public class MailClientMessageBroker : IMailClientMessageBroker
@@ -194,6 +198,30 @@ namespace Fanex.MailDelivery.Client.Handlers
                 await PublishRunAfterUMJobAsync(schedule, retryCount);
             }
         }
+
+        public async Task PublishTaskLogAsync(TaskLog taskLog, int retryCount = 0)
+        {
+            bool isFailed = false;
+
+            try
+            {
+                await bus.PublishAsync(taskLog, MailDeliveryConstants.TaskLogRoutingKey);
+            }
+            catch (Exception ex)
+            {
+                LogService.LogError($"There is an error while sending a task log to Mail Station server for inserting. Retrying in {waitingForRabbitMQInSeconds} seconds...", ex);
+                isFailed = true;
+            }
+
+            if (isFailed && retryCount <= AppSettings.MailCientConfig.RequestRetryLimit)
+            {
+                retryCount++;
+
+                await Task.Delay(TimeSpan.FromSeconds(waitingForRabbitMQInSeconds));
+
+                await PublishTaskLogAsync(taskLog, retryCount);
+            }
+        }
         #endregion
 
         #region RequestAsync
@@ -210,6 +238,15 @@ namespace Fanex.MailDelivery.Client.Handlers
             GetScheduleListResponse response = await RequestMailSchedules(request);
 
             return response.Schedules;
+        }
+
+        public async Task<Schedule> GetScheduleAsync(int mailId)
+        {
+            var request = new GetScheduleListRequest { MailIds = new List<int> { mailId } };
+
+            GetScheduleListResponse response = await RequestMailSchedules(request);
+
+            return response?.Schedules.FirstOrDefault();
         }
 
         public async Task<JobMessage> RequestAddMailTaskForRunningJobAsync(JobMessage jobMessage, int retryCount = 0)

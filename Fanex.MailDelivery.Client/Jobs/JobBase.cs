@@ -25,14 +25,7 @@ namespace Fanex.MailDelivery.Client.Jobs
 
                 if (schedule != null)
                 {
-                    if (!schedule.Active)
-                    {
-                        LogService.LogInfo($"Scheduled Mail #{schedule.Id} ({schedule.Name}) is disabled.");
-                    }
-                    else
-                    {
-                        await StartGenerateMail(context, schedule);
-                    }
+                    await StartGenerateMail(context, schedule);
                 }
             }
             catch (Exception ex)
@@ -41,12 +34,25 @@ namespace Fanex.MailDelivery.Client.Jobs
             }
         }
 
+        private static async Task InsertTaskLogAsync(int taskId, string message)
+        {
+            if (taskId > 0)
+            {
+                var taskLog = new TaskLog
+                {
+                    LogTime = DateTime.Now,
+                    Message = message,
+                    Status = (int)JobStatus.JobFailed,
+                    TaskId = taskId
+                };
+
+                await MailClientHandler.InsertTaskLogAsync(taskLog);
+            }
+        }
+
         private async Task StartGenerateMail(IJobExecutionContext context, Schedule schedule)
         {
-            string message = $"Scheduled Mail #{schedule.Id} ({schedule.Name}) is running...";
-            logger.AppendLine($"> {message}");
-            LogService.LogInfo(message);
-
+            string message = string.Empty;
             var umInfo = await MailClientHandler.GetUMInfoAsync();
 
             if (umInfo != null && umInfo.IsUnderMaintenanceTime)
@@ -64,13 +70,29 @@ namespace Fanex.MailDelivery.Client.Jobs
             }
             else
             {
-                await GenerateMailAsync(context, schedule);
+                var remoteSchedule = await MailClientHandler.GetScheduleAsync(schedule.Id);
+
+                if ((remoteSchedule != null && !remoteSchedule.Active) || !schedule.Active)
+                {
+                    message = $"Scheduled Mail #{schedule.Id} ({schedule.Name}) is disabled => Cannot run.";
+
+                    LogService.LogInfo(message);
+
+                    await InsertTaskLogAsync(schedule.TaskId, message);
+                }
+                else
+                {
+                    await GenerateMailAsync(context, schedule);
+                }
             }
         }
 
         private async Task GenerateMailAsync(IJobExecutionContext context, Schedule schedule)
         {
-            string message = string.Empty;
+            string message = $"Scheduled Mail #{schedule.Id} ({schedule.Name}) is running...";
+            logger.AppendLine($"> {message}");
+            LogService.LogInfo(message);
+           
             JobMessage jobResult = new JobMessage
             {
                 JobStatus = JobStatus.Running,
@@ -218,10 +240,18 @@ namespace Fanex.MailDelivery.Client.Jobs
         {
             schedule.CurrentRetryTimes++;
             string message = string.Empty;
+            var remoteSchedule = await MailClientHandler.GetScheduleAsync(schedule.Id);
 
             if (schedule.MaxRetryTimes == 0)
             {
                 message = $"The mail #{schedule.Id} ({schedule.Name}) is not allowed to retry in its setting.";
+
+                logger.AppendLine($"> {message}");
+                LogService.LogInfo(message);
+            }
+            else if (remoteSchedule != null && !remoteSchedule.Active)
+            {
+                message = $"Scheduled Mail #{schedule.Id} ({schedule.Name}) is disabled => Cannot retry.";
 
                 logger.AppendLine($"> {message}");
                 LogService.LogInfo(message);
