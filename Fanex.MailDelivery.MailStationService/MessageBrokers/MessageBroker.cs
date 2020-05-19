@@ -49,6 +49,7 @@ namespace Fanex.MailDelivery.MailStationService.MessageBrokers
 
             SubscribeMail();
             SubscribeJobResult();
+            SubscribeTaskLogMessage();
             SubscribeClientNotificationMessage();
 
             ResponseGetScheduleList();
