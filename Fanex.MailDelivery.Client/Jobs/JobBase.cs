@@ -25,7 +25,7 @@ namespace Fanex.MailDelivery.Client.Jobs
 
                 if (schedule != null)
                 {
-                    await StartGenerateMail(context, schedule);
+                    await StartGenerateMail(context, schedule.Clone());
                 }
             }
             catch (Exception ex)

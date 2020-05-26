@@ -63,7 +63,10 @@ namespace Fanex.MailDelivery.Core.Models
                 Active = Active,
                 RetryInterval = RetryInterval,
                 MaxRetryTimes = MaxRetryTimes,
-                CurrentRetryTimes = CurrentRetryTimes
+                CurrentRetryTimes = CurrentRetryTimes,
+                CurrentFireTime = CurrentFireTime,
+                TriggerType = TriggerType,
+                TriggerTypeEnum = TriggerTypeEnum
             };
         }
 
