@@ -347,6 +347,98 @@ namespace Fanex.MailDelivery.Services.Tests.Services
             mockLogService.Received(1).LogInfo(Arg.Compat.Any<string>());
         }
 
+        [Fact]
+        public void UpdateFailedForLongRunningMailTask_Any_CallUpdateFailedForLongRunningMailTaskOfRepository()
+        {
+            // Act
+            mailService.UpdateFailedForLongRunningMailTask();
+
+            // Assert
+            mockMailRepository.Received(1).UpdateFailedForLongRunningMailTask();
+        }
+
+        [Fact]
+        public void UpdateFailedForLongRunningMailTask_ThrowException_CallLogErrorOfLogService()
+        {
+            // Arrange
+            mockMailRepository.When((x) => x.UpdateFailedForLongRunningMailTask()).Throw(new InvalidOperationException());
+
+            // Act
+            mailService.UpdateFailedForLongRunningMailTask();
+
+            // Assert
+            mockLogService.Received(1).LogError(Arg.Compat.Any<InvalidOperationException>());
+        }
+
+        [Fact]
+        public void AddMailTaskForRunningJob_Any_CallAddMailTaskOfRepository()
+        {
+            // Act
+            mailService.AddMailTaskForRunningJob(new JobMessage { Schedule = new Schedule() });
+
+            // Assert
+            mockMailRepository.Received(1).AddMailTask(Arg.Compat.Any<AddMailTaskCriteria>());
+        }
+
+        [Fact]
+        public void AddMailTaskForRunningJob_ThrowException_CallLogErrorOfLogService()
+        {
+            // Arrange
+            mockMailRepository.When((x) => x.AddMailTask(Arg.Compat.Any<AddMailTaskCriteria>())).Throw(new InvalidOperationException());
+
+            // Act
+            mailService.AddMailTaskForRunningJob(new JobMessage { Schedule = new Schedule() });
+
+            // Assert
+            mockLogService.Received(1).LogError(Arg.Compat.Any<InvalidOperationException>(), Arg.Compat.Any<Schedule>());
+        }
+
+        [Fact]
+        public void InsertTaskLog_Any_CallAddMailLogOfRepository()
+        {
+            // Act
+            mailService.InsertTaskLog(new TaskLog { TaskId = 1 });
+
+            // Assert
+            mockMailRepository.Received(1).AddMailLog(Arg.Compat.Any<AddMailLogCriteria>());
+        }
+
+        [Fact]
+        public void InsertTaskLog_ThrowException_CallLogErrorOfLogService()
+        {
+            // Arrange
+            mockMailRepository.When((x) => x.AddMailLog(Arg.Compat.Any<AddMailLogCriteria>())).Throw(new InvalidOperationException());
+
+            // Act
+            mailService.InsertTaskLog(new TaskLog { TaskId = 1 });
+
+            // Assert
+            mockLogService.Received(1).LogError(Arg.Compat.Any<InvalidOperationException>());
+        }
+
+        [Fact]
+        public void GetMailTaskById_Any_CallGetMailTaskByIdOfRepository()
+        {
+            // Act
+            mailService.GetMailTaskById(new GetMailTaskByIdRequest());
+
+            // Assert
+            mockMailRepository.Received(1).GetMailTaskById(Arg.Compat.Any<GetMailTaskByIdCriteria>());
+        }
+
+        [Fact]
+        public void GetMailTaskById_ThrowException_CallLogErrorOfLogService()
+        {
+            // Arrange
+            mockMailRepository.When((x) => x.GetMailTaskById(Arg.Compat.Any<GetMailTaskByIdCriteria>())).Throw(new InvalidOperationException());
+
+            // Act
+            mailService.GetMailTaskById(new GetMailTaskByIdRequest());
+
+            // Assert
+            mockLogService.Received(1).LogError(Arg.Compat.Any<InvalidOperationException>());
+        }
+
         #region Helper
         private static JobMessage GenerateJobMessage()
         {
