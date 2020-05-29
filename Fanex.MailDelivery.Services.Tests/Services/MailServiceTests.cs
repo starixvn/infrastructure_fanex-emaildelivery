@@ -167,6 +167,21 @@ namespace Fanex.MailDelivery.Services.Tests.Services
         }
 
         [Fact]
+        public async Task UpdateJobStatus_Failed_CallUpdateMailTaskStatusOfRepository()
+        {
+            // Arrange
+            JobMessage jobResult = GenerateJobMessage();
+            jobResult.JobStatus = JobStatus.JobFailed;
+
+            // Act
+            await mailService.UpdateJobStatus(jobResult);
+
+            // Assert
+            mockMailRepository.Received(1).UpdateMailTaskStatus(
+                Arg.Compat.Is<UpdateMailTaskStatusCriteria>(x => x.Status == (int)JobStatus.JobFailed && x.TaskId == jobResult.Schedule.TaskId));
+        }
+
+        [Fact]
         public async Task UpdateJobStatus_AbortedJob_CallUpdateMailTaskStatusOfRepository()
         {
             // Arrange

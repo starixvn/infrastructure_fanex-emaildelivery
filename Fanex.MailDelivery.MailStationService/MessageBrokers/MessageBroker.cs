@@ -25,22 +25,26 @@ namespace Fanex.MailDelivery.MailStationService.MessageBrokers
         private const int waitingForRabbitMQInSeconds = 5;
 
         public MessageBrokerImpl(LogService logService)
-            : this(null, logService, null)
+            : this(null, logService, null, null)
         {
         }
 
-        public MessageBrokerImpl(MailService mailService, LogService logService, UMService umService)
+        public MessageBrokerImpl(MailService mailService, LogService logService, UMService umService, IBus bus)
         {
             LogProvider.SetCurrentLogProvider(new RabbitMQLogProvider());
 
             this.logService = logService;
             this.mailService = mailService ?? new MailServiceImpl(AppSettings.SendMailRetryLimit, AppSettings.SendMailRetryIntervalInMinutes, logService);
             this.umService = umService ?? new UMServiceImpl(AppSettings.ONEbookUMServiceUri, logService);
+            this.bus = bus;
         }
 
         public void Start()
         {
-            bus = RabbitHutch.CreateBus(AppSettings.RabbitMQConnectionString);
+            if (bus == null)
+            {
+                bus = RabbitHutch.CreateBus(AppSettings.RabbitMQConnectionString);
+            }
 
             while (!bus.IsConnected)
             {

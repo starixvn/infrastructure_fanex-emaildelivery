@@ -8,9 +8,13 @@ namespace Fanex.MailDelivery.MailStationService.Jobs
     {
         private readonly MailService mailService;
 
-        public UpdateFailedForLongRunningTaskJob()
+        public UpdateFailedForLongRunningTaskJob() : this(null)
         {
-            mailService = new MailServiceImpl(AppSettings.SendMailRetryLimit, AppSettings.SendMailRetryIntervalInMinutes);
+        }
+
+        public UpdateFailedForLongRunningTaskJob(MailService mailService)
+        {
+            this.mailService = mailService ?? new MailServiceImpl(AppSettings.SendMailRetryLimit, AppSettings.SendMailRetryIntervalInMinutes);
         }
 
         public Task Execute(IJobExecutionContext context)
