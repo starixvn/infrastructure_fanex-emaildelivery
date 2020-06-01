@@ -1,6 +1,7 @@
 ﻿using EasyNetQ;
 using EasyNetQ.FluentConfiguration;
 using Fanex.MailDelivery.Core;
+using Fanex.MailDelivery.Core.Messaging;
 using Fanex.MailDelivery.Core.Models;
 using Fanex.MailDelivery.MailStationService.MessageBrokers;
 using Fanex.MailDelivery.Services.Services;
@@ -42,5 +43,87 @@ namespace Fanex.MailDelivery.MailStationService.Tests.MessageBrokers
                 Arg.Compat.Any<Action<ISubscriptionConfiguration>>());
         }
 
+        [Fact]
+        public void Start_Any_CallSubscribeJobMessage()
+        {
+            // Act
+            messageBroker.Start();
+
+            // Assert
+            mockBus.Received(1).SubscribeAsync<JobMessage>(
+                MailDeliveryConstants.JobResultRoutingKey,
+                Arg.Compat.Any<Func<JobMessage, Task>>(),
+                Arg.Compat.Any<Action<ISubscriptionConfiguration>>());
+        }
+
+        [Fact]
+        public void Start_Any_CallSubscribeTaskLog()
+        {
+            // Act
+            messageBroker.Start();
+
+            // Assert
+            mockBus.Received(1).SubscribeAsync<TaskLog>(
+                MailDeliveryConstants.TaskLogRoutingKey,
+                Arg.Compat.Any<Func<TaskLog, Task>>(),
+                Arg.Compat.Any<Action<ISubscriptionConfiguration>>());
+        }
+
+        [Fact]
+        public void Start_Any_CallSubscribeClientNotificationMessage()
+        {
+            // Act
+            messageBroker.Start();
+
+            // Assert
+            mockBus.Received(1).SubscribeAsync<UpdateActiveTimeRequest>(
+                MailDeliveryConstants.ClientNotificationTopic,
+                Arg.Compat.Any<Func<UpdateActiveTimeRequest, Task>>(),
+                Arg.Compat.Any<Action<ISubscriptionConfiguration>>());
+        }
+
+        [Fact]
+        public void Start_Any_CallResponseGetScheduleList()
+        {
+            // Act
+            messageBroker.Start();
+
+            // Assert
+            mockBus.Received(1).RespondAsync<GetScheduleListRequest, GetScheduleListResponse>(
+                Arg.Compat.Any<Func<GetScheduleListRequest, Task<GetScheduleListResponse>>>());
+        }
+
+        [Fact]
+        public void Start_Any_CallRespondAddMailTaskForRunningJob()
+        {
+            // Act
+            messageBroker.Start();
+
+            // Assert
+            mockBus.Received(1).RespondAsync<JobMessage, JobMessage>(
+                Arg.Compat.Any<Func<JobMessage, Task<JobMessage>>>());
+        }
+
+        [Fact]
+        public void Start_Any_CallRespondGetMailTaskForById()
+        {
+            // Act
+            messageBroker.Start();
+
+            // Assert
+            mockBus.Received(1).RespondAsync<GetMailTaskByIdRequest, MailTaskModel>(
+                Arg.Compat.Any<Func<GetMailTaskByIdRequest, Task<MailTaskModel>>>());
+        }
+
+        [Fact]
+        public void Start_Any_CallRespondUMInfo()
+        {
+            // Act
+            messageBroker.Start();
+
+            // Assert
+            mockBus.Received(1).RespondAsync<UMInfoModel, UMInfoModel>(
+                Arg.Compat.Any<Func<UMInfoModel, Task<UMInfoModel>>>());
+        }
     }
 }

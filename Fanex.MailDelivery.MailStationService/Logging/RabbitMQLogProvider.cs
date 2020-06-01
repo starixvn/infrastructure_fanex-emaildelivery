@@ -83,9 +83,13 @@ namespace Fanex.MailDelivery.MailStationService.Logging
     {
         private readonly RabbitMQLogger logger;
 
-        public RabbitMQLogProvider()
+        public RabbitMQLogProvider() : this(null)
         {
-            this.logger = new RabbitMQLogger();
+        }
+
+        public RabbitMQLogProvider(RabbitMQLogger logger)
+        {
+            this.logger = logger ?? new RabbitMQLogger();
         }
 
         public EasyNetQ.Logging.Logger GetLogger(string name)

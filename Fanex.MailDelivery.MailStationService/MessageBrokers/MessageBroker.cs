@@ -31,7 +31,7 @@ namespace Fanex.MailDelivery.MailStationService.MessageBrokers
 
         public MessageBrokerImpl(MailService mailService, LogService logService, UMService umService, IBus bus)
         {
-            LogProvider.SetCurrentLogProvider(new RabbitMQLogProvider());
+            LogProvider.SetCurrentLogProvider(new RabbitMQLogProvider(new RabbitMQLogger(logService)));
 
             this.logService = logService;
             this.mailService = mailService ?? new MailServiceImpl(AppSettings.SendMailRetryLimit, AppSettings.SendMailRetryIntervalInMinutes, logService);
