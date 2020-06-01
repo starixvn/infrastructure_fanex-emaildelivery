@@ -1,4 +1,3 @@
-//Test
 @Library("JenkinsPipelineLibrary") _
 
 pipeline {  
@@ -30,7 +29,7 @@ pipeline {
     stage("C# Test"){
       steps{
         script{
-          pipelineLib.xUnitForNetFramework()
+          pipelineLib.xUnitForNetFrameworkx86()
         }
       }
     }
