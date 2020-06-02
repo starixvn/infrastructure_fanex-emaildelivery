@@ -54,16 +54,16 @@ namespace Fanex.MailDelivery.Client.Handlers
         private readonly IJobHandler jobHandler;
         private readonly int waitingForRabbitMQInSeconds = AppSettings.MailCientConfig.RequestRetryIntervalInSeconds;
 
-        public MailClientMessageBroker() : this(null)
+        public MailClientMessageBroker() : this(null, null)
         {
         }
 
-        public MailClientMessageBroker(IJobHandler jobHandler)
+        public MailClientMessageBroker(IJobHandler jobHandler, IBus bus)
         {
             LogProvider.SetCurrentLogProvider(new RabbitMQLogProvider());
 
             this.jobHandler = jobHandler ?? new JobHandler();
-            bus = RabbitHutch.CreateBus(AppSettings.MailCientConfig.RabbitMQConnectionString);
+            this.bus = bus ?? RabbitHutch.CreateBus(AppSettings.MailCientConfig.RabbitMQConnectionString);
         }
 
         public IJobHandler JobHandler => jobHandler;
@@ -140,7 +140,7 @@ namespace Fanex.MailDelivery.Client.Handlers
                 isFailed = true;
             }
 
-            if (isFailed && retryCount <= AppSettings.MailCientConfig.RequestRetryLimit)
+            if (isFailed && retryCount < AppSettings.MailCientConfig.RequestRetryLimit)
             {
                 retryCount++;
 
@@ -166,7 +166,7 @@ namespace Fanex.MailDelivery.Client.Handlers
                 isFailed = true;
             }
 
-            if (isFailed && retryCount <= AppSettings.MailCientConfig.RequestRetryLimit)
+            if (isFailed && retryCount < AppSettings.MailCientConfig.RequestRetryLimit)
             {
                 retryCount++;
 
@@ -190,7 +190,7 @@ namespace Fanex.MailDelivery.Client.Handlers
                 isFailed = true;
             }
 
-            if (isFailed && retryCount <= AppSettings.MailCientConfig.RequestRetryLimit)
+            if (isFailed && retryCount < AppSettings.MailCientConfig.RequestRetryLimit)
             {
                 retryCount++;
 
@@ -214,7 +214,7 @@ namespace Fanex.MailDelivery.Client.Handlers
                 isFailed = true;
             }
 
-            if (isFailed && retryCount <= AppSettings.MailCientConfig.RequestRetryLimit)
+            if (isFailed && retryCount < AppSettings.MailCientConfig.RequestRetryLimit)
             {
                 retryCount++;
 
@@ -238,7 +238,7 @@ namespace Fanex.MailDelivery.Client.Handlers
 
             GetScheduleListResponse response = await RequestMailSchedules(request);
 
-            return response.Schedules;
+            return response?.Schedules;
         }
 
         public async Task<Schedule> GetScheduleAsync(int mailId)
@@ -265,7 +265,7 @@ namespace Fanex.MailDelivery.Client.Handlers
                 isFailed = true;
             }
 
-            if (isFailed && retryCount <= AppSettings.MailCientConfig.RequestRetryLimit)
+            if (isFailed && retryCount < AppSettings.MailCientConfig.RequestRetryLimit)
             {
                 retryCount++;
 
@@ -290,7 +290,7 @@ namespace Fanex.MailDelivery.Client.Handlers
                 isFailed = true;
             }
 
-            if (isFailed && retryCount <= AppSettings.MailCientConfig.RequestRetryLimit)
+            if (isFailed && retryCount < AppSettings.MailCientConfig.RequestRetryLimit)
             {
                 retryCount++;
 
@@ -315,7 +315,7 @@ namespace Fanex.MailDelivery.Client.Handlers
                 isFailed = true;
             }
 
-            if (isFailed && retryCount <= AppSettings.MailCientConfig.RequestRetryLimit)
+            if (isFailed && retryCount < AppSettings.MailCientConfig.RequestRetryLimit)
             {
                 retryCount++;
 
@@ -340,7 +340,7 @@ namespace Fanex.MailDelivery.Client.Handlers
                 isFailed = true;
             }
 
-            if (isFailed && retryCount <= AppSettings.MailCientConfig.RequestRetryLimit)
+            if (isFailed && retryCount < AppSettings.MailCientConfig.RequestRetryLimit)
             {
                 retryCount++;
 
@@ -371,7 +371,7 @@ namespace Fanex.MailDelivery.Client.Handlers
                 isFailed = true;
             }
 
-            if (isFailed && retryCount <= AppSettings.MailCientConfig.RequestRetryLimit)
+            if (isFailed && retryCount < AppSettings.MailCientConfig.RequestRetryLimit)
             {
                 retryCount++;
 
@@ -398,7 +398,7 @@ namespace Fanex.MailDelivery.Client.Handlers
                 isFailed = true;
             }
 
-            if (isFailed && retryCount <= AppSettings.MailCientConfig.RequestRetryLimit)
+            if (isFailed && retryCount < AppSettings.MailCientConfig.RequestRetryLimit)
             {
                 retryCount++;
 
@@ -425,7 +425,7 @@ namespace Fanex.MailDelivery.Client.Handlers
                 isFailed = true;
             }
 
-            if (isFailed && retryCount <= AppSettings.MailCientConfig.RequestRetryLimit)
+            if (isFailed && retryCount < AppSettings.MailCientConfig.RequestRetryLimit)
             {
                 retryCount++;
 
@@ -452,7 +452,7 @@ namespace Fanex.MailDelivery.Client.Handlers
                 isFailed = true;
             }
 
-            if (isFailed && retryCount <= AppSettings.MailCientConfig.RequestRetryLimit)
+            if (isFailed && retryCount < AppSettings.MailCientConfig.RequestRetryLimit)
             {
                 retryCount++;
 

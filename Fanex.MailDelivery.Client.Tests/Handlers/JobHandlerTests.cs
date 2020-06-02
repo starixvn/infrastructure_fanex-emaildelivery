@@ -4,6 +4,7 @@ using Fanex.MailDelivery.Core.Models;
 using NSubstitute;
 using Quartz;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -156,12 +157,71 @@ namespace Fanex.MailDelivery.Client.Tests.Handlers
         }
         #endregion
 
+        #region StartJobsAsync
+        [Fact]
+        public async Task StartJobsAsync_ActiveAndNotEnded_CallUnscheduleJob()
+        {
+            // Arrange
+            Schedule schedule = FakeSchedule();
+            await handler.InitializeSchedulerAsync();
+
+            // Act
+            await handler.StartJobsAsync(new List<Schedule> { schedule });
+
+            // Assert
+            await mockScheduler.Received(1).UnscheduleJob(Arg.Compat.Any<TriggerKey>());
+        }
+
+        [Fact]
+        public async Task StartJobsAsync_ActiveAndNotEnded_CallScheduleJob()
+        {
+            // Arrange
+            Schedule schedule = FakeSchedule();
+            await handler.InitializeSchedulerAsync();
+
+            // Act
+            await handler.StartJobsAsync(new List<Schedule> { schedule });
+
+            // Assert
+            await mockScheduler.Received(1).ScheduleJob(Arg.Compat.Any<IJobDetail>(), Arg.Compat.Any<ITrigger>());
+        }
+
+        [Fact]
+        public async Task StartJobsAsync_DifferentSiteId_NotCallScheduleJob()
+        {
+            // Arrange
+            Schedule schedule = FakeSchedule();
+            schedule.SiteId = 1;
+            await handler.InitializeSchedulerAsync();
+
+            // Act
+            await handler.StartJobsAsync(new List<Schedule> { schedule });
+
+            // Assert
+            await mockScheduler.DidNotReceive().ScheduleJob(Arg.Compat.Any<IJobDetail>(), Arg.Compat.Any<ITrigger>());
+        }
+        #endregion
+
+        [Fact]
+        public async Task StartUpdateActiveTimeJob_Any_CallScheduleJob()
+        {
+            // Arrange
+            await handler.InitializeSchedulerAsync();
+
+            // Act
+            await handler.StartUpdateActiveTimeJob();
+
+            // Assert
+            await mockScheduler.Received(1).ScheduleJob(Arg.Compat.Any<IJobDetail>(), Arg.Compat.Any<ITrigger>());
+        }
+
         #region helper
         private static Schedule FakeSchedule()
         {
             return new Schedule
             {
                 Id = 1,
+                SiteId = 97,
                 RepeatExpression = "* * 4 * * ?",
                 StartTime = DateTime.Now.AddDays(-1),
                 Active = true

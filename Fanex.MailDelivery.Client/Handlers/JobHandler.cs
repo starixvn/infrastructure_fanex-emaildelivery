@@ -138,7 +138,7 @@ namespace Fanex.MailDelivery.Client.Handlers
             }
         }
 
-        private async Task StartJobsAsync(IList<Schedule> schedules)
+        public async Task StartJobsAsync(IList<Schedule> schedules)
         {
             if (schedules.Count == 0)
             {
@@ -172,7 +172,7 @@ namespace Fanex.MailDelivery.Client.Handlers
             }
         }
 
-        private async Task StartUpdateActiveTimeJob()
+        public async Task StartUpdateActiveTimeJob()
         {
             IJobDetail job = JobBuilder.Create<ClientNotificationJob>()
                 .WithIdentity(MailDeliveryConstants.ClientNotificationJobName)
