@@ -27,6 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fanex.MailDelivery.Services
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fanex.MailDelivery.MailStationService.Tests", "Fanex.MailDelivery.MailStationService.Tests\Fanex.MailDelivery.MailStationService.Tests.csproj", "{795BD9F0-1A27-46A1-8E25-9B857EBAADD2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fanex.MailDelivery.Client.Tests", "Fanex.MailDelivery.Client.Tests\Fanex.MailDelivery.Client.Tests.csproj", "{6EBB9A4C-75DA-4A3E-9CFC-113646549820}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -179,6 +181,22 @@ Global
 		{795BD9F0-1A27-46A1-8E25-9B857EBAADD2}.Release|x64.Build.0 = Release|Any CPU
 		{795BD9F0-1A27-46A1-8E25-9B857EBAADD2}.Release|x86.ActiveCfg = Release|Any CPU
 		{795BD9F0-1A27-46A1-8E25-9B857EBAADD2}.Release|x86.Build.0 = Release|Any CPU
+		{6EBB9A4C-75DA-4A3E-9CFC-113646549820}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6EBB9A4C-75DA-4A3E-9CFC-113646549820}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6EBB9A4C-75DA-4A3E-9CFC-113646549820}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{6EBB9A4C-75DA-4A3E-9CFC-113646549820}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{6EBB9A4C-75DA-4A3E-9CFC-113646549820}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{6EBB9A4C-75DA-4A3E-9CFC-113646549820}.Debug|x64.Build.0 = Debug|Any CPU
+		{6EBB9A4C-75DA-4A3E-9CFC-113646549820}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6EBB9A4C-75DA-4A3E-9CFC-113646549820}.Debug|x86.Build.0 = Debug|Any CPU
+		{6EBB9A4C-75DA-4A3E-9CFC-113646549820}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6EBB9A4C-75DA-4A3E-9CFC-113646549820}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6EBB9A4C-75DA-4A3E-9CFC-113646549820}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{6EBB9A4C-75DA-4A3E-9CFC-113646549820}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{6EBB9A4C-75DA-4A3E-9CFC-113646549820}.Release|x64.ActiveCfg = Release|Any CPU
+		{6EBB9A4C-75DA-4A3E-9CFC-113646549820}.Release|x64.Build.0 = Release|Any CPU
+		{6EBB9A4C-75DA-4A3E-9CFC-113646549820}.Release|x86.ActiveCfg = Release|Any CPU
+		{6EBB9A4C-75DA-4A3E-9CFC-113646549820}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -189,5 +207,6 @@ Global
 		{CC784B47-C746-4F4D-AAA1-BB8127F81178} = {CCA5280E-8F40-43D1-B9B1-5C3426514376}
 		{55D83DBB-5E23-467A-9043-9965C433967B} = {CC784B47-C746-4F4D-AAA1-BB8127F81178}
 		{795BD9F0-1A27-46A1-8E25-9B857EBAADD2} = {CC784B47-C746-4F4D-AAA1-BB8127F81178}
+		{6EBB9A4C-75DA-4A3E-9CFC-113646549820} = {CC784B47-C746-4F4D-AAA1-BB8127F81178}
 	EndGlobalSection
 EndGlobal

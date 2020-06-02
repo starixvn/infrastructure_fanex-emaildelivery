@@ -29,16 +29,25 @@ namespace Fanex.MailDelivery.Client.Handlers
     public class JobHandler : IJobHandler
     {
         private IScheduler scheduler;
+        private readonly ISchedulerFactory schedulerFactory;
+
+        public JobHandler() : this(null)
+        {
+        }
+
+        public JobHandler(ISchedulerFactory schedulerFactory)
+        {
+            this.schedulerFactory = schedulerFactory ?? new StdSchedulerFactory();
+        }
 
         public async Task InitializeSchedulerAsync()
         {
             if (AppSettings.MailCientConfig.HasSchedule())
             {
-                ISchedulerFactory schedFact = new StdSchedulerFactory();
-                scheduler = await schedFact.GetScheduler();
+                scheduler = await schedulerFactory.GetScheduler();
                 await scheduler.Shutdown();
 
-                scheduler = await schedFact.GetScheduler();
+                scheduler = await schedulerFactory.GetScheduler();
                 await scheduler.Start();
             }
         }
@@ -255,7 +264,7 @@ namespace Fanex.MailDelivery.Client.Handlers
                 .Build();
 
             return retryTrigger;
-        }        
+        }
 
         private static ITrigger GetTrigger(Schedule schedule)
         {
