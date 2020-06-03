@@ -405,6 +405,91 @@ namespace Fanex.MailDelivery.Client.Tests.Handlers
             await mockBus.Received(2).RequestAsync<UMInfoModel, UMInfoModel>(Arg.Compat.Any<UMInfoModel>());
         }
 
+        [Fact]
+        public async Task SubscribeScheduleChangeAsync_HasException_RetryCallSubscribeAsyncOfBus()
+        {
+            // Arrange
+            var subscriptionId = "RoutingKey.UpdateSchedule_97";
+            mockBus.When(x => x.SubscribeAsync<Schedule>(
+                       Arg.Compat.Any<string>(),
+                       Arg.Compat.Any<Func<Schedule, Task>>(),
+                       Arg.Compat.Any<Action<ISubscriptionConfiguration>>()))
+                   .Throw(new InvalidOperationException());
+
+            // Act
+            await broker.SubscribeScheduleChangeAsync();
+
+            // Assert
+            mockBus.Received(2).SubscribeAsync<Schedule>(
+                   Arg.Compat.Is<string>(x => x.StartsWith(subscriptionId)),
+                   Arg.Compat.Any<Func<Schedule, Task>>(),
+                   Arg.Compat.Any<Action<ISubscriptionConfiguration>>());
+        }
+
+        [Fact]
+        public async Task SubscribeRunNowJobAsync_HasException_RetryCallSubscribeRunNowJobAsync()
+        {
+            // Arrange
+            var subscriptionId = "RoutingKey.RunNowJob_97";
+            mockBus.When(x => x.SubscribeAsync<Schedule>(
+                           Arg.Compat.Any<string>(),
+                           Arg.Compat.Any<Func<Schedule, Task>>(),
+                           Arg.Compat.Any<Action<ISubscriptionConfiguration>>()))
+                   .Throw(new InvalidOperationException());
+
+            // Act
+            await broker.SubscribeRunNowJobAsync();
+
+            // Assert
+            mockBus.Received(2).SubscribeAsync<Schedule>(
+                   Arg.Compat.Is<string>(x => x.StartsWith(subscriptionId)),
+                   Arg.Compat.Any<Func<Schedule, Task>>(),
+                   Arg.Compat.Any<Action<ISubscriptionConfiguration>>());
+        }
+
+        [Fact]
+        public async Task SubscribeRetryJobAsync_HasException_RetryCallSubscribeRetryJobAsync()
+        {
+            // Arrange
+            var subscriptionId = "RoutingKey.RetryJob_97";
+            mockBus.When(x => x.SubscribeAsync<Schedule>(
+                      Arg.Compat.Any<string>(),
+                      Arg.Compat.Any<Func<Schedule, Task>>(),
+                      Arg.Compat.Any<Action<ISubscriptionConfiguration>>()))
+                  .Throw(new InvalidOperationException());
+
+            // Act
+            await broker.SubscribeRetryJobAsync();
+
+            // Assert
+            mockBus.Received(2).SubscribeAsync<Schedule>(
+                   Arg.Compat.Is<string>(x => x.StartsWith(subscriptionId)),
+                   Arg.Compat.Any<Func<Schedule, Task>>(),
+                   Arg.Compat.Any<Action<ISubscriptionConfiguration>>());
+        }
+
+        [Fact]
+        public async Task SubscribeRunAfterUMJobAsync_HasException_RetryCallSubscribeRunAfterUMJobAsync()
+        {
+            // Arrange
+            var subscriptionId = "RoutingKey.RunAfterUMJob_97";
+            mockBus.When(x => x.SubscribeAsync<Schedule>(
+                       Arg.Compat.Any<string>(),
+                       Arg.Compat.Any<Func<Schedule, Task>>(),
+                       Arg.Compat.Any<Action<ISubscriptionConfiguration>>()))
+                   .Throw(new InvalidOperationException());
+
+            // Act
+            await broker.SubscribeRunAfterUMJobAsync();
+
+            // Assert
+            mockBus.Received(2).SubscribeAsync<Schedule>(
+                   Arg.Compat.Is<string>(x => x.StartsWith(subscriptionId)),
+                   Arg.Compat.Any<Func<Schedule, Task>>(),
+                   Arg.Compat.Any<Action<ISubscriptionConfiguration>>());
+        }
+
+        #region helper
         private static Schedule FakeSchedule()
         {
             return new Schedule
@@ -429,5 +514,6 @@ namespace Fanex.MailDelivery.Client.Tests.Handlers
                 }
             };
         }
+        #endregion
     }
 }
