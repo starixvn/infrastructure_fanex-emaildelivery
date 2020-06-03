@@ -124,6 +124,7 @@
   <ItemGroup>
     <Compile Include="Handlers\JobHandlerTests.cs" />
     <Compile Include="Handlers\MailClientMessageBrokerTests.cs" />
+    <Compile Include="Jobs\JobBaseTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestJob.cs" />
   </ItemGroup>
