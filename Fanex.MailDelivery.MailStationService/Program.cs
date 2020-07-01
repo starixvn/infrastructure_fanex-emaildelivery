@@ -3,6 +3,7 @@ using Fanex.Logging.Sentry.RavenClient;
 using SharpRaven;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Reflection;
 using System.ServiceProcess;
 
@@ -12,6 +13,12 @@ namespace Fanex.MailDelivery.MailStationService
     {
         public static void Main(string[] args)
         {
+            ServicePointManager.Expect100Continue = true;
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
+                   | SecurityProtocolType.Tls11
+                   | SecurityProtocolType.Tls12
+                   | SecurityProtocolType.Ssl3;
+
             LogManager
                 .SetDefaultLogCategory(AppSettings.LogCategory)
                 .Use(new List<ILogEngine>
