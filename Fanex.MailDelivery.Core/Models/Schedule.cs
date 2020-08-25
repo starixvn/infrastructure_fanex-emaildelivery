@@ -36,6 +36,8 @@ namespace Fanex.MailDelivery.Core.Models
 
         public int CurrentRetryTimes { get; set; }
 
+        public bool AutoRetry { get; set; }
+
         public MailType TriggerTypeEnum
         {
             get
@@ -66,7 +68,8 @@ namespace Fanex.MailDelivery.Core.Models
                 CurrentRetryTimes = CurrentRetryTimes,
                 CurrentFireTime = CurrentFireTime,
                 TriggerType = TriggerType,
-                TriggerTypeEnum = TriggerTypeEnum
+                TriggerTypeEnum = TriggerTypeEnum,
+                AutoRetry = AutoRetry
             };
         }
 

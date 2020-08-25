@@ -34,7 +34,7 @@ namespace Fanex.MailDelivery.Client.Jobs
             }
         }
 
-        private static async Task InsertTaskLogAsync(int taskId, string message)
+        private static async Task InsertTaskLogAsync(int taskId, JobStatus status, string message)
         {
             if (taskId > 0)
             {
@@ -42,7 +42,7 @@ namespace Fanex.MailDelivery.Client.Jobs
                 {
                     LogTime = DateTime.Now,
                     Message = message,
-                    Status = (int)JobStatus.JobFailed,
+                    Status = (int)status,
                     TaskId = taskId
                 };
 
@@ -72,19 +72,56 @@ namespace Fanex.MailDelivery.Client.Jobs
             {
                 var remoteSchedule = await MailClientHandler.GetScheduleAsync(schedule.Id);
 
-                if ((remoteSchedule != null && !remoteSchedule.Active) || !schedule.Active)
+                if (remoteSchedule == null)
+                {
+                    throw new InvalidOperationException($"Scheduled Mail #{schedule.Id} is not found.");
+                }
+                else if (!remoteSchedule.Active || !schedule.Active)
                 {
                     message = $"Scheduled Mail #{schedule.Id} ({schedule.Name}) is disabled => Cannot run.";
 
                     LogService.LogInfo(message);
 
-                    await InsertTaskLogAsync(schedule.TaskId, message);
+                    await InsertTaskLogAsync(schedule.TaskId, JobStatus.JobFailed, message);
                 }
                 else
                 {
-                    await GenerateMailAsync(context, schedule);
+                    var canRun = await CanRunAsync(schedule);
+
+                    if (canRun)
+                    {
+                        await GenerateMailAsync(context, schedule);
+                    }
                 }
             }
+        }
+
+        private async Task<bool> CanRunAsync(Schedule schedule)
+        {
+            bool canRun = true;
+
+            if (schedule.AutoRetry && schedule.TaskId > 0)
+            {
+                MailTaskModel mailTask = await MailClientHandler.RequestMailTaskByIdAsync(new GetMailTaskByIdRequest { TaskId = schedule.TaskId });
+
+                if (mailTask != null)
+                {
+                    canRun = mailTask.Status != (int)JobStatus.Success
+                                     && mailTask.Status != (int)JobStatus.SuccessWithoutSendmail
+                                     && mailTask.Status != (int)JobStatus.Running;
+
+                    if (!canRun)
+                    {
+                        string message = $"The task status of the mail #{schedule.Id} ({schedule.Name}) is {((JobStatus)mailTask.Status).ToString()} => Stop auto-retry.";
+
+                        LogService.LogInfo(message);
+
+                        await InsertTaskLogAsync(schedule.TaskId, (JobStatus)mailTask.Status, message);
+                    }
+                }
+            }
+
+            return canRun;
         }
 
         private async Task GenerateMailAsync(IJobExecutionContext context, Schedule schedule)
@@ -92,7 +129,7 @@ namespace Fanex.MailDelivery.Client.Jobs
             string message = $"Scheduled Mail #{schedule.Id} ({schedule.Name}) is running...";
             logger.AppendLine($"> {message}");
             LogService.LogInfo(message);
-           
+
             JobMessage jobResult = new JobMessage
             {
                 JobStatus = JobStatus.Running,
@@ -258,6 +295,7 @@ namespace Fanex.MailDelivery.Client.Jobs
             }
             else if (schedule.CanRetry())
             {
+                schedule.AutoRetry = true;
                 message = $"Retry({schedule.CurrentRetryTimes}) to generate the mail #{schedule.Id} ({schedule.Name}) in {schedule.RetryInterval} minutes...";
 
                 logger.AppendLine($"> {message}");
