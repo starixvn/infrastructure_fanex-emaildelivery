@@ -5,6 +5,7 @@ using Fanex.MailDelivery.Client.Logging;
 using Fanex.MailDelivery.Core;
 using Fanex.MailDelivery.Core.Messaging;
 using Fanex.MailDelivery.Core.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -468,6 +469,8 @@ namespace Fanex.MailDelivery.Client.Handlers
 
                 if (umInfo != null && umInfo.IsUnderMaintenanceTime)
                 {
+                    LogService.LogInfo($"UM Info: {JsonConvert.SerializeObject(umInfo)}");
+
                     var afterUMTime = new DateTime(umInfo.To.Ticks, DateTimeKind.Utc).AddMinutes(1);
 
                     TimeSpan waitingTime = afterUMTime - DateTime.UtcNow;
