@@ -1,5 +1,6 @@
 ﻿using EasyNetQ;
 using EasyNetQ.FluentConfiguration;
+using Fanex.Caching;
 using Fanex.MailDelivery.Core;
 using Fanex.MailDelivery.Core.Messaging;
 using Fanex.MailDelivery.Core.Models;
@@ -19,15 +20,17 @@ namespace Fanex.MailDelivery.MailStationService.Tests.MessageBrokers
         private readonly LogService mockLogService;
         private readonly UMService mockUMService;
         private readonly MessageBroker messageBroker;
+        private readonly ICacheService mockCacheService;
 
         public MessageBrokerTests()
         {
             mockMailService = Substitute.For<MailService>();
             mockLogService = Substitute.For<LogService>();
             mockUMService = Substitute.For<UMService>();
+            mockCacheService = Substitute.For<ICacheService>();
             mockBus = Substitute.For<IBus>();
             mockBus.IsConnected.Returns(true);
-            messageBroker = new MessageBrokerImpl(mockMailService, mockLogService, mockUMService, mockBus);
+            messageBroker = new MessageBrokerImpl(mockMailService, mockLogService, mockUMService, mockBus, mockCacheService);
         }
 
         [Fact]

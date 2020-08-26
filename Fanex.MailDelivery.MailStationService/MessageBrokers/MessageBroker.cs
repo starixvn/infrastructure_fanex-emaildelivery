@@ -1,5 +1,6 @@
 ﻿using EasyNetQ;
 using EasyNetQ.Logging;
+using Fanex.Caching;
 using Fanex.MailDelivery.Core;
 using Fanex.MailDelivery.Core.Messaging;
 using Fanex.MailDelivery.Core.Models;
@@ -23,13 +24,15 @@ namespace Fanex.MailDelivery.MailStationService.MessageBrokers
         private readonly LogService logService;
         private readonly UMService umService;
         private const int waitingForRabbitMQInSeconds = 5;
+        private ICacheService cacheService;
+        private const string UMInfoCacheKey = "MailStation.UMInfoCacheKey";
 
         public MessageBrokerImpl(LogService logService)
-            : this(null, logService, null, null)
+            : this(null, logService, null, null, null)
         {
         }
 
-        public MessageBrokerImpl(MailService mailService, LogService logService, UMService umService, IBus bus)
+        public MessageBrokerImpl(MailService mailService, LogService logService, UMService umService, IBus bus, ICacheService cacheService)
         {
             LogProvider.SetCurrentLogProvider(new RabbitMQLogProvider(new RabbitMQLogger(logService)));
 
@@ -37,6 +40,7 @@ namespace Fanex.MailDelivery.MailStationService.MessageBrokers
             this.mailService = mailService ?? new MailServiceImpl(AppSettings.SendMailRetryLimit, AppSettings.SendMailRetryIntervalInMinutes, logService);
             this.umService = umService ?? new UMServiceImpl(AppSettings.ONEbookUMServiceUri, logService);
             this.bus = bus;
+            this.cacheService = cacheService ?? new CacheService();
         }
 
         public void Start()
@@ -241,7 +245,25 @@ namespace Fanex.MailDelivery.MailStationService.MessageBrokers
 
             try
             {
-                bus.RespondAsync<UMInfoModel, UMInfoModel>((x) => umService.GetUMInfo());
+                bus.RespondAsync<UMInfoModel, UMInfoModel>(async (x) =>
+                {
+                    var umInfo = cacheService.Get<UMInfoModel>(UMInfoCacheKey);
+
+                    if (umInfo == null)
+                    {
+                        umInfo = await umService.GetUMInfo();
+
+                        if (umInfo != null && umInfo.IsUnderMaintenanceTime)
+                        {
+                            cacheService.Set(
+                                UMInfoCacheKey,
+                                umInfo,
+                                new CacheItemOptions().SetAbsoluteExpiration(TimeSpan.FromSeconds(AppSettings.UMInfoCachingTimeoutInSeconds)));
+                        }
+                    }
+
+                    return umInfo;
+                });
 
                 logService.LogInfo($"Registered to respond the UM info to clients successfully");
             }

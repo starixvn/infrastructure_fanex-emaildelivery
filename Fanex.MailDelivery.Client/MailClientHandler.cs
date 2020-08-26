@@ -109,5 +109,10 @@ namespace Fanex.MailDelivery.Client
         {
             await messageBroker.PublishTaskLogAsync(taskLog);
         }
+
+        internal static async Task UpdateSchedulesAsync(IList<Schedule> schedules)
+        {
+            await messageBroker.UpdateSchedulesAsync(schedules);
+        }
     }
 }

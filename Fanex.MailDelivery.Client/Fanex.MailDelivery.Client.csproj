@@ -135,6 +135,7 @@
     <Compile Include="Jobs\ClientNotificationJob.cs" />
     <Compile Include="Handlers\JobHandler.cs" />
     <Compile Include="Handlers\MailClientMessageBroker.cs" />
+    <Compile Include="Jobs\UpdateScheduleJob.cs" />
     <Compile Include="Logging\LogService.cs" />
     <Compile Include="Logging\RabbitMQLogProvider.cs" />
     <Compile Include="MailClientHandler.cs" />

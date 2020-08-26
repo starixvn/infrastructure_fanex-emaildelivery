@@ -59,6 +59,13 @@ namespace Fanex.MailDelivery.Client.Configurations
             set { this["requestRetryIntervalInSeconds"] = value; }
         }
 
+        [ConfigurationProperty("updateSchedulesIntervalInSeconds", IsRequired = false, DefaultValue = 300)]
+        public int UpdateSchedulesIntervalInSeconds
+        {
+            get { return (int)this["updateSchedulesIntervalInSeconds"]; }
+            set { this["updateSchedulesIntervalInSeconds"] = value; }
+        }
+
         [ConfigurationProperty("Schedules", IsRequired = false)]
         public ScheduleElementCollection Schedules
         {

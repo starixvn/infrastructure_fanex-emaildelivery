@@ -20,5 +20,7 @@ namespace Fanex.MailDelivery.MailStationService
         public static string LogCategory => ConfigurationManager.AppSettings.Get("MailStation:LogCategory");
 
         public static string SentryDsn => ConfigurationManager.AppSettings.Get("MailStation:SentryDsn");
+
+        public static int UMInfoCachingTimeoutInSeconds => Convert.ToInt32(ConfigurationManager.AppSettings.Get("MailStation:UMInfoCachingTimeoutInSeconds"));
     }
 }

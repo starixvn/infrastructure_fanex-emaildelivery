@@ -61,6 +61,8 @@ namespace Fanex.MailDelivery.Client.Handlers
                 var schedules = await MailClientHandler.GetSchedulesAsync();
 
                 await StartJobsAsync(schedules);
+
+                await StartUpdateSchedulesJob();
             }
         }
 
@@ -102,6 +104,9 @@ namespace Fanex.MailDelivery.Client.Handlers
 
                 if (oldTrigger != null)
                 {
+                    var oldSchedule = oldTrigger.JobDataMap[MailDeliveryConstants.ScheduleJobDataKey] as Schedule;
+                    bool hasChange = oldSchedule == null || !oldSchedule.RepeatExpression.Equals(schedule.RepeatExpression, StringComparison.OrdinalIgnoreCase);
+
                     if (!schedule.Active)
                     {
                         LogService.LogInfo($"Mail #{schedule.Id} ({schedule.Name}) is disabled");
@@ -114,7 +119,7 @@ namespace Fanex.MailDelivery.Client.Handlers
 
                         await scheduler.UnscheduleJob(triggerKey);
                     }
-                    else
+                    else if (hasChange)
                     {
                         LogService.LogInfo($"Mail #{schedule.Id} ({schedule.Name}) is updated the new schedule ({schedule.RepeatExpression})");
 
@@ -122,10 +127,14 @@ namespace Fanex.MailDelivery.Client.Handlers
 
                         await scheduler.RescheduleJob(triggerKey, newTrigger);
                     }
+                    else
+                    {
+                        // No changes => Do nothing
+                    }
                 }
                 else
                 {
-                    if (!schedule.IsScheduleEnd())
+                    if (schedule.Active && !schedule.IsScheduleEnd())
                     {
                         LogService.LogInfo($"Mail #{schedule.Id} ({schedule.Name}) is enabled and triggered at the schedule ({schedule.RepeatExpression})");
 
@@ -183,6 +192,24 @@ namespace Fanex.MailDelivery.Client.Handlers
                 .StartNow()
                 .WithSimpleSchedule(x => x.WithIntervalInSeconds(MailDeliveryConstants.ClientNotificationIntervalTimeInSecond).RepeatForever())
                 .ForJob(MailDeliveryConstants.ClientNotificationJobName)
+                .Build();
+
+            await scheduler.DeleteJob(job.Key);
+
+            await scheduler.ScheduleJob(job, trigger);
+        }
+
+        public async Task StartUpdateSchedulesJob()
+        {
+            IJobDetail job = JobBuilder.Create<UpdateScheduleJob>()
+                .WithIdentity(UpdateScheduleJob.JobIdentity)
+                .Build();
+
+            ITrigger trigger = TriggerBuilder.Create()
+                .WithIdentity(UpdateScheduleJob.TriggerIdentity)
+                .StartNow()
+                .WithSimpleSchedule(x => x.WithIntervalInSeconds(AppSettings.MailCientConfig.UpdateSchedulesIntervalInSeconds).RepeatForever())
+                .ForJob(UpdateScheduleJob.JobIdentity)
                 .Build();
 
             await scheduler.DeleteJob(job.Key);

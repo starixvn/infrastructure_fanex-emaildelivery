@@ -42,6 +42,8 @@ namespace Fanex.MailDelivery.Client.Handlers
         Task PublishRunAfterUMJobAsync(Schedule schedule, int retryCount = 0);
 
         Task PublishTaskLogAsync(TaskLog taskLog, int retryCount = 0);
+
+        Task UpdateSchedulesAsync(IList<Schedule> schedules);
     }
 
     public class MailClientMessageBroker : IMailClientMessageBroker
@@ -457,6 +459,19 @@ namespace Fanex.MailDelivery.Client.Handlers
                 retryCount++;
 
                 await SubscribeRunAfterUMJobAsync(retryCount);
+            }
+        }
+        #endregion
+
+        #region Job tasks
+        public async Task UpdateSchedulesAsync(IList<Schedule> schedules)
+        {
+            if (schedules != null)
+            {
+                foreach (var schedule in schedules)
+                {
+                    await jobHandler.UpdateScheduleAsync(schedule);
+                }
             }
         }
         #endregion
