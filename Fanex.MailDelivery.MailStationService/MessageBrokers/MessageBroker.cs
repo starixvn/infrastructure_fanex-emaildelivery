@@ -24,7 +24,7 @@ namespace Fanex.MailDelivery.MailStationService.MessageBrokers
         private readonly LogService logService;
         private readonly UMService umService;
         private const int waitingForRabbitMQInSeconds = 5;
-        private ICacheService cacheService;
+        private readonly ICacheService cacheService;
         private const string UMInfoCacheKey = "MailStation.UMInfoCacheKey";
 
         public MessageBrokerImpl(LogService logService)

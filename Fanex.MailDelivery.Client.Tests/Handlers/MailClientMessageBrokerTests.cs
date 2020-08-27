@@ -1,5 +1,6 @@
 ﻿using EasyNetQ;
 using EasyNetQ.FluentConfiguration;
+using Fanex.Caching;
 using Fanex.MailDelivery.Client.Handlers;
 using Fanex.MailDelivery.Core;
 using Fanex.MailDelivery.Core.Messaging;
@@ -17,14 +18,16 @@ namespace Fanex.MailDelivery.Client.Tests.Handlers
         private readonly MailClientMessageBroker broker;
         private readonly IBus mockBus;
         private readonly IJobHandler mockJobHandler;
+        private readonly ICacheService cacheService;
 
         public MailClientMessageBrokerTests()
         {
             mockJobHandler = Substitute.For<IJobHandler>();
+            cacheService = Substitute.For<ICacheService>();
             mockBus = Substitute.For<IBus>();
             mockBus.IsConnected.Returns(true);
 
-            broker = new MailClientMessageBroker(mockJobHandler, mockBus);
+            broker = new MailClientMessageBroker(mockJobHandler, mockBus, cacheService);
         }
 
         #region StartAsync

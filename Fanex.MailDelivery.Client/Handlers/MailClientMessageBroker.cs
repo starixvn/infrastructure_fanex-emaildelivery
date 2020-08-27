@@ -1,5 +1,6 @@
 ﻿using EasyNetQ;
 using EasyNetQ.Logging;
+using Fanex.Caching;
 using Fanex.MailDelivery.Client.Configurations;
 using Fanex.MailDelivery.Client.Logging;
 using Fanex.MailDelivery.Core;
@@ -55,17 +56,20 @@ namespace Fanex.MailDelivery.Client.Handlers
         private readonly IBus bus;
         private readonly IJobHandler jobHandler;
         private readonly int waitingForRabbitMQInSeconds = AppSettings.MailCientConfig.RequestRetryIntervalInSeconds;
+        private readonly ICacheService cacheService;
+        private const string RunAfterUMScheduleKey = "MailStation.RunAfterUMScheduleKey";
 
-        public MailClientMessageBroker() : this(null, null)
+        public MailClientMessageBroker() : this(null, null, null)
         {
         }
 
-        public MailClientMessageBroker(IJobHandler jobHandler, IBus bus)
+        public MailClientMessageBroker(IJobHandler jobHandler, IBus bus, ICacheService cacheService)
         {
             LogProvider.SetCurrentLogProvider(new RabbitMQLogProvider());
 
             this.jobHandler = jobHandler ?? new JobHandler();
             this.bus = bus ?? RabbitHutch.CreateBus(AppSettings.MailCientConfig.RabbitMQConnectionString);
+            this.cacheService = cacheService ?? new CacheService();
         }
 
         public IJobHandler JobHandler => jobHandler;
@@ -444,7 +448,7 @@ namespace Fanex.MailDelivery.Client.Handlers
                 bus.SubscribeAsync<Schedule>(
                     GetSubscriptionIdKey(runAfterUMJobSubscriptionId),
                     schedule => RunAfterUMJobAsync(schedule),
-                    config => config.WithTopic(runAfterUMJobSubscriptionId));
+                    config => config.WithTopic(runAfterUMJobSubscriptionId).WithPrefetchCount(1));
 
                 LogService.LogInfo($"Subcribed the queue with key {runAfterUMJobSubscriptionId} successfully");
             }
@@ -498,7 +502,18 @@ namespace Fanex.MailDelivery.Client.Handlers
                     }
                 }
 
-                await jobHandler.RetryAllProcessAsync(schedule);
+                var runScheduleCacheKey = $"{RunAfterUMScheduleKey}{schedule.Id}";
+                var runSchedule = cacheService.Get<Schedule>(runScheduleCacheKey);
+
+                if (runSchedule == null)
+                {
+                    await jobHandler.RetryAllProcessAsync(schedule);
+
+                    cacheService.Set(
+                                runScheduleCacheKey,
+                                schedule,
+                                new CacheItemOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(30)));
+                }
             }
         }
 
