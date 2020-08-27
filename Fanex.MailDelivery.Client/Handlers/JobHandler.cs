@@ -78,6 +78,8 @@ namespace Fanex.MailDelivery.Client.Handlers
         {
             if (AppSettings.HasScheduleId(schedule.Id))
             {
+                await StopAutoRetry(schedule);
+
                 IJobDetail job = GetRetryJob(schedule);
                 ITrigger trigger = GetRetryAllProcessTrigger(schedule);
 
@@ -85,12 +87,31 @@ namespace Fanex.MailDelivery.Client.Handlers
             }
         }
 
+        private async Task StopAutoRetry(Schedule schedule)
+        {
+            if (schedule.TaskId > 0)
+            {
+                var autoRetryTriggerKey = new TriggerKey(schedule.TaskId.ToString(), MailDeliveryConstants.MailCentralizedTriggerGroup);
+                var oldTrigger = await scheduler.GetTrigger(autoRetryTriggerKey);
+
+                if (oldTrigger != null)
+                {
+                    await scheduler.UnscheduleJob(autoRetryTriggerKey);
+                }
+            }
+        }
+
         public async Task RetryJobAsync(Schedule schedule)
         {
-            IJobDetail job = GetRetryJob(schedule);
-            ITrigger trigger = GetRetryTrigger(schedule);
+            if (schedule.TaskId > 0)
+            {
+                await StopAutoRetry(schedule);
 
-            await scheduler.ScheduleJob(job, trigger);
+                IJobDetail job = GetRetryJob(schedule);
+                ITrigger trigger = GetAutoRetryTrigger(schedule);
+
+                await scheduler.ScheduleJob(job, trigger);
+            }
         }
 
         public async Task UpdateScheduleAsync(Schedule schedule)
@@ -279,13 +300,13 @@ namespace Fanex.MailDelivery.Client.Handlers
             return retryTrigger;
         }
 
-        private static ITrigger GetRetryTrigger(Schedule schedule)
+        private static ITrigger GetAutoRetryTrigger(Schedule schedule)
         {
             schedule.ConvertToServerTime(MailClientSection.IsDevEnvironment());
-
             JobDataMap jobDataMap = GetJobDataMap(schedule);
 
             ITrigger retryTrigger = TriggerBuilder.Create()
+                .WithIdentity(schedule.TaskId.ToString(), MailDeliveryConstants.MailCentralizedTriggerGroup)
                 .StartAt(DateTimeOffset.Now.AddMinutes(schedule.RetryInterval))
                 .UsingJobData(jobDataMap)
                 .Build();

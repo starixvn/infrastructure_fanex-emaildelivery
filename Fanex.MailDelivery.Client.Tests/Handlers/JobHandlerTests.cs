@@ -81,6 +81,7 @@ namespace Fanex.MailDelivery.Client.Tests.Handlers
         {
             // Arrange
             Schedule schedule = FakeSchedule();
+            schedule.TaskId = 1;
             await handler.InitializeSchedulerAsync();
 
             // Act
@@ -89,7 +90,7 @@ namespace Fanex.MailDelivery.Client.Tests.Handlers
             // Assert
             await mockScheduler.Received(1).ScheduleJob(Arg.Compat.Any<IJobDetail>(), Arg.Compat.Any<ITrigger>());
         }
-
+        
         #region UpdateScheduleAsync
         [Fact]
         public async Task UpdateScheduleAsync_OldTriggerAndActiveSchedule_CallRescheduleJob()

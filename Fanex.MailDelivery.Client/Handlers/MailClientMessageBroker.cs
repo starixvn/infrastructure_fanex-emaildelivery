@@ -512,7 +512,7 @@ namespace Fanex.MailDelivery.Client.Handlers
                     cacheService.Set(
                                 runScheduleCacheKey,
                                 schedule,
-                                new CacheItemOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(30)));
+                                new CacheItemOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(3)));
                 }
             }
         }
