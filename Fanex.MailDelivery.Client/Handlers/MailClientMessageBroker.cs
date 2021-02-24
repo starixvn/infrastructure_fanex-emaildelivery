@@ -49,27 +49,35 @@ namespace Fanex.MailDelivery.Client.Handlers
 
     public class MailClientMessageBroker : IMailClientMessageBroker
     {
-        private readonly string updateScheduleSubscriptionId = string.Format(MailDeliveryConstants.UpdateScheduleRoutingKeyFormat, AppSettings.MailCientConfig.SiteId);
-        private readonly string retryJobSubscriptionId = string.Format(MailDeliveryConstants.RetryJobRoutingKeyFormat, AppSettings.MailCientConfig.SiteId);
-        private readonly string runNowJobSubscriptionId = string.Format(MailDeliveryConstants.RunNowJobRoutingKeyFormat, AppSettings.MailCientConfig.SiteId);
-        private readonly string runAfterUMJobSubscriptionId = string.Format(MailDeliveryConstants.RunAfterUMJobRoutingKeyFormat, AppSettings.MailCientConfig.SiteId);
+        private readonly string updateScheduleSubscriptionId;
+        private readonly string retryJobSubscriptionId;
+        private readonly string runNowJobSubscriptionId;
+        private readonly string runAfterUMJobSubscriptionId;
         private readonly IBus bus;
         private readonly IJobHandler jobHandler;
-        private readonly int waitingForRabbitMQInSeconds = AppSettings.MailCientConfig.RequestRetryIntervalInSeconds;
+        private readonly int waitingForRabbitMQInSeconds;
         private readonly ICacheService cacheService;
         private const string RunAfterUMScheduleKey = "MailStation.RunAfterUMScheduleKey";
+        private readonly MailStationSetting mailStationSetting;
 
-        public MailClientMessageBroker() : this(null, null, null)
+        public MailClientMessageBroker(MailStationSetting mailStationSetting) : this(null, null, null, mailStationSetting)
         {
         }
 
-        public MailClientMessageBroker(IJobHandler jobHandler, IBus bus, ICacheService cacheService)
+        public MailClientMessageBroker(IJobHandler jobHandler, IBus bus, ICacheService cacheService, MailStationSetting mailStationSetting)
         {
             LogProvider.SetCurrentLogProvider(new RabbitMQLogProvider());
 
-            this.jobHandler = jobHandler ?? new JobHandler();
-            this.bus = bus ?? RabbitHutch.CreateBus(AppSettings.MailCientConfig.RabbitMQConnectionString);
+            this.mailStationSetting = mailStationSetting;
+            this.jobHandler = jobHandler ?? new JobHandler(mailStationSetting);
+            this.bus = bus ?? RabbitHutch.CreateBus(mailStationSetting.RabbitMQConnectionString);
             this.cacheService = cacheService ?? new CacheService();
+
+            updateScheduleSubscriptionId = string.Format(MailDeliveryConstants.UpdateScheduleRoutingKeyFormat, mailStationSetting.SiteId);
+            retryJobSubscriptionId = string.Format(MailDeliveryConstants.RetryJobRoutingKeyFormat, mailStationSetting.SiteId);
+            runNowJobSubscriptionId = string.Format(MailDeliveryConstants.RunNowJobRoutingKeyFormat, mailStationSetting.SiteId);
+            runAfterUMJobSubscriptionId = string.Format(MailDeliveryConstants.RunAfterUMJobRoutingKeyFormat, mailStationSetting.SiteId);
+            waitingForRabbitMQInSeconds = mailStationSetting.RequestRetryIntervalInSeconds;
         }
 
         public IJobHandler JobHandler => jobHandler;
@@ -83,7 +91,7 @@ namespace Fanex.MailDelivery.Client.Handlers
                 await Task.Delay(TimeSpan.FromSeconds(waitingForRabbitMQInSeconds));
             }
 
-            if (AppSettings.MailCientConfig.HasSchedule())
+            if (mailStationSetting.HasSchedule())
             {
                 await SubscribeScheduleChangeAsync();
                 await SubscribeRunNowJobAsync();
@@ -106,18 +114,18 @@ namespace Fanex.MailDelivery.Client.Handlers
         {
             if (mail.ApplicationSendMailId == 0)
             {
-                mail.ApplicationSendMailId = AppSettings.MailCientConfig.ApplicationSendMailId;
+                mail.ApplicationSendMailId = mailStationSetting.ApplicationSendMailId;
             }
 
-            mail.SiteId = AppSettings.MailCientConfig.SiteId;
+            mail.SiteId = mailStationSetting.SiteId;
 
             await PublishMailAsync(mail);
         }
 
         public async Task PublishClientNotifyMessageAsync()
         {
-            ScheduleElementCollection schedules = AppSettings.MailCientConfig.Schedules;
-            string mailIds = string.Join(",", schedules.OfType<ScheduleElement>().Select(x => x.Id));
+            var schedules = mailStationSetting.Schedules;
+            string mailIds = string.Join(",", schedules.OfType<ScheduleSetting>().Select(x => x.Id));
 
             await bus.PublishAsync(new UpdateActiveTimeRequest { MailIds = mailIds }, MailDeliveryConstants.ClientNotificationTopic);
         }
@@ -126,7 +134,7 @@ namespace Fanex.MailDelivery.Client.Handlers
         {
             if (jobMessage.Mail != null && jobMessage.Mail.ApplicationSendMailId == 0)
             {
-                jobMessage.Mail.ApplicationSendMailId = AppSettings.MailCientConfig.ApplicationSendMailId;
+                jobMessage.Mail.ApplicationSendMailId = mailStationSetting.ApplicationSendMailId;
             }
 
             await PublishJobMessageAsync(jobMessage);
@@ -146,7 +154,7 @@ namespace Fanex.MailDelivery.Client.Handlers
                 isFailed = true;
             }
 
-            if (isFailed && retryCount < AppSettings.MailCientConfig.RequestRetryLimit)
+            if (isFailed && retryCount < mailStationSetting.RequestRetryLimit)
             {
                 retryCount++;
 
@@ -172,7 +180,7 @@ namespace Fanex.MailDelivery.Client.Handlers
                 isFailed = true;
             }
 
-            if (isFailed && retryCount < AppSettings.MailCientConfig.RequestRetryLimit)
+            if (isFailed && retryCount < mailStationSetting.RequestRetryLimit)
             {
                 retryCount++;
 
@@ -196,7 +204,7 @@ namespace Fanex.MailDelivery.Client.Handlers
                 isFailed = true;
             }
 
-            if (isFailed && retryCount < AppSettings.MailCientConfig.RequestRetryLimit)
+            if (isFailed && retryCount < mailStationSetting.RequestRetryLimit)
             {
                 retryCount++;
 
@@ -220,7 +228,7 @@ namespace Fanex.MailDelivery.Client.Handlers
                 isFailed = true;
             }
 
-            if (isFailed && retryCount < AppSettings.MailCientConfig.RequestRetryLimit)
+            if (isFailed && retryCount < mailStationSetting.RequestRetryLimit)
             {
                 retryCount++;
 
@@ -234,10 +242,10 @@ namespace Fanex.MailDelivery.Client.Handlers
         #region RequestAsync
         public async Task<IList<Schedule>> GetSchedulesAsync()
         {
-            ScheduleElementCollection schedules = AppSettings.MailCientConfig.Schedules;
+            var schedules = mailStationSetting.Schedules;
             var request = new GetScheduleListRequest();
 
-            foreach (ScheduleElement scheduleConfig in schedules)
+            foreach (ScheduleSetting scheduleConfig in schedules)
             {
                 request.MailIds.Add(scheduleConfig.Id);
             }
@@ -271,7 +279,7 @@ namespace Fanex.MailDelivery.Client.Handlers
                 isFailed = true;
             }
 
-            if (isFailed && retryCount < AppSettings.MailCientConfig.RequestRetryLimit)
+            if (isFailed && retryCount < mailStationSetting.RequestRetryLimit)
             {
                 retryCount++;
 
@@ -296,7 +304,7 @@ namespace Fanex.MailDelivery.Client.Handlers
                 isFailed = true;
             }
 
-            if (isFailed && retryCount < AppSettings.MailCientConfig.RequestRetryLimit)
+            if (isFailed && retryCount < mailStationSetting.RequestRetryLimit)
             {
                 retryCount++;
 
@@ -321,7 +329,7 @@ namespace Fanex.MailDelivery.Client.Handlers
                 isFailed = true;
             }
 
-            if (isFailed && retryCount < AppSettings.MailCientConfig.RequestRetryLimit)
+            if (isFailed && retryCount < mailStationSetting.RequestRetryLimit)
             {
                 retryCount++;
 
@@ -346,7 +354,7 @@ namespace Fanex.MailDelivery.Client.Handlers
                 isFailed = true;
             }
 
-            if (isFailed && retryCount < AppSettings.MailCientConfig.RequestRetryLimit)
+            if (isFailed && retryCount < mailStationSetting.RequestRetryLimit)
             {
                 retryCount++;
 
@@ -377,7 +385,7 @@ namespace Fanex.MailDelivery.Client.Handlers
                 isFailed = true;
             }
 
-            if (isFailed && retryCount < AppSettings.MailCientConfig.RequestRetryLimit)
+            if (isFailed && retryCount < mailStationSetting.RequestRetryLimit)
             {
                 retryCount++;
 
@@ -404,7 +412,7 @@ namespace Fanex.MailDelivery.Client.Handlers
                 isFailed = true;
             }
 
-            if (isFailed && retryCount < AppSettings.MailCientConfig.RequestRetryLimit)
+            if (isFailed && retryCount < mailStationSetting.RequestRetryLimit)
             {
                 retryCount++;
 
@@ -431,7 +439,7 @@ namespace Fanex.MailDelivery.Client.Handlers
                 isFailed = true;
             }
 
-            if (isFailed && retryCount < AppSettings.MailCientConfig.RequestRetryLimit)
+            if (isFailed && retryCount < mailStationSetting.RequestRetryLimit)
             {
                 retryCount++;
 
@@ -458,7 +466,7 @@ namespace Fanex.MailDelivery.Client.Handlers
                 isFailed = true;
             }
 
-            if (isFailed && retryCount < AppSettings.MailCientConfig.RequestRetryLimit)
+            if (isFailed && retryCount < mailStationSetting.RequestRetryLimit)
             {
                 retryCount++;
 
@@ -482,7 +490,7 @@ namespace Fanex.MailDelivery.Client.Handlers
 
         private async Task RunAfterUMJobAsync(Schedule schedule)
         {
-            if (AppSettings.HasScheduleId(schedule.Id))
+            if (mailStationSetting.HasScheduleId(schedule.Id))
             {
                 var umInfo = await GetUMInfoAsync();
 
@@ -519,7 +527,7 @@ namespace Fanex.MailDelivery.Client.Handlers
 
         private async Task RetryAllProcessAsync(Schedule schedule)
         {
-            if (AppSettings.HasScheduleId(schedule.Id))
+            if (mailStationSetting.HasScheduleId(schedule.Id))
             {
                 LogService.LogInfo($"Mail #{schedule.Id} ({schedule.Name}) is triggered to start now from management site (mSite)");
 

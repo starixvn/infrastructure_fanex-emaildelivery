@@ -1,4 +1,6 @@
-﻿using Fanex.MailDelivery.Client.Handlers;
+﻿using Fanex.Logging;
+using Fanex.MailDelivery.Client.Configurations;
+using Fanex.MailDelivery.Client.Handlers;
 using Fanex.MailDelivery.Core;
 using Fanex.MailDelivery.Core.Models;
 using NSubstitute;
@@ -18,11 +20,15 @@ namespace Fanex.MailDelivery.Client.Tests.Handlers
 
         public JobHandlerTests()
         {
+            LogManager
+                .SetDefaultLogCategory("")
+                .Use(new List<ILogEngine> { Substitute.For<ILogEngine>() });
+
             mockScheduler = Substitute.For<IScheduler>();
             mockSchedulerFactory = Substitute.For<ISchedulerFactory>();
             mockSchedulerFactory.GetScheduler().Returns(mockScheduler);
 
-            handler = new JobHandler(mockSchedulerFactory);
+            handler = new JobHandler(mockSchedulerFactory, new MailStationSetting());
         }
 
         [Fact]
@@ -90,7 +96,7 @@ namespace Fanex.MailDelivery.Client.Tests.Handlers
             // Assert
             await mockScheduler.Received(1).ScheduleJob(Arg.Compat.Any<IJobDetail>(), Arg.Compat.Any<ITrigger>());
         }
-        
+
         #region UpdateScheduleAsync
         [Fact]
         public async Task UpdateScheduleAsync_OldTriggerAndActiveSchedule_CallRescheduleJob()

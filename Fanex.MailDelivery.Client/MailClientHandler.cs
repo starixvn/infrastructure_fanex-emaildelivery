@@ -2,7 +2,6 @@
 using Fanex.MailDelivery.Client.Handlers;
 using Fanex.MailDelivery.Core.Messaging;
 using Fanex.MailDelivery.Core.Models;
-using log4net.Config;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -12,26 +11,23 @@ namespace Fanex.MailDelivery.Client
     {
         private static IMailClientMessageBroker messageBroker;
 
-        public static void Start()
+        public static void Start(MailStationSetting mailStationSetting)
         {
-            StartAsync()
+            StartAsync(mailStationSetting)
                 .GetAwaiter()
                 .GetResult();
         }
 
-        public static async Task StartAsync()
+        public static async Task StartAsync(MailStationSetting mailStationSetting)
         {
-            await StartAsync(null);
+            var broker = new MailClientMessageBroker(mailStationSetting);
+
+            await StartAsync(broker);
         }
 
         public static async Task StartAsync(IMailClientMessageBroker messageBroker)
         {
-            if (AppSettings.MailCientConfig.EnableQuartzLog)
-            {
-                XmlConfigurator.Configure();
-            }
-
-            MailClientHandler.messageBroker = messageBroker ?? new MailClientMessageBroker();
+            MailClientHandler.messageBroker = messageBroker;
 
             await MailClientHandler.messageBroker.StartAsync();
         }

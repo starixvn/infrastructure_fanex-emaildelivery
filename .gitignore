@@ -81,3 +81,4 @@ UpgradeLog*.XML
 *.zreproj
 *.nupkg
 _build
+.vs/

@@ -30,19 +30,21 @@ namespace Fanex.MailDelivery.Client.Handlers
     {
         private IScheduler scheduler;
         private readonly ISchedulerFactory schedulerFactory;
+        private readonly MailStationSetting mailStationSetting;
 
-        public JobHandler() : this(null)
+        public JobHandler(MailStationSetting mailStationSetting) : this(null, mailStationSetting)
         {
         }
 
-        public JobHandler(ISchedulerFactory schedulerFactory)
+        public JobHandler(ISchedulerFactory schedulerFactory, MailStationSetting mailStationSetting)
         {
             this.schedulerFactory = schedulerFactory ?? new StdSchedulerFactory();
+            this.mailStationSetting = mailStationSetting;
         }
 
         public async Task InitializeSchedulerAsync()
         {
-            if (AppSettings.MailCientConfig.HasSchedule())
+            if (mailStationSetting.HasSchedule())
             {
                 scheduler = await schedulerFactory.GetScheduler();
                 await scheduler.Shutdown();
@@ -54,7 +56,7 @@ namespace Fanex.MailDelivery.Client.Handlers
 
         public async Task StartAsync()
         {
-            if (AppSettings.MailCientConfig.HasSchedule())
+            if (mailStationSetting.HasSchedule())
             {
                 await StartUpdateActiveTimeJob();
 
@@ -76,7 +78,7 @@ namespace Fanex.MailDelivery.Client.Handlers
 
         public async Task RetryAllProcessAsync(Schedule schedule)
         {
-            if (AppSettings.HasScheduleId(schedule.Id))
+            if (mailStationSetting.HasScheduleId(schedule.Id))
             {
                 await StopAutoRetry(schedule);
 
@@ -118,7 +120,7 @@ namespace Fanex.MailDelivery.Client.Handlers
         {
             // If the schedule is belong to current Client.
             // We just manage the Schedule belong to us (in appconfig).
-            if (AppSettings.HasScheduleId(schedule.Id))
+            if (mailStationSetting.HasScheduleId(schedule.Id))
             {
                 var triggerKey = new TriggerKey(schedule.Id.ToString(), MailDeliveryConstants.MailCentralizedTriggerGroup);
                 var oldTrigger = await scheduler.GetTrigger(triggerKey);
@@ -179,9 +181,9 @@ namespace Fanex.MailDelivery.Client.Handlers
             {
                 if (schedule != null && schedule.Active && !schedule.IsScheduleEnd())
                 {
-                    if (schedule.SiteId != AppSettings.MailCientConfig.SiteId)
+                    if (schedule.SiteId != mailStationSetting.SiteId)
                     {
-                        var message = $"Only run for mails belonging the same site #{AppSettings.MailCientConfig.SiteId}. " +
+                        var message = $"Only run for mails belonging the same site #{mailStationSetting.SiteId}. " +
                                         $"But mail #{schedule.Id} ({schedule.Name}) belongs another site #{schedule.SiteId}, it's ignored.";
 
                         LogService.LogError(message);
@@ -229,7 +231,7 @@ namespace Fanex.MailDelivery.Client.Handlers
             ITrigger trigger = TriggerBuilder.Create()
                 .WithIdentity(UpdateScheduleJob.TriggerIdentity)
                 .StartNow()
-                .WithSimpleSchedule(x => x.WithIntervalInSeconds(AppSettings.MailCientConfig.UpdateSchedulesIntervalInSeconds).RepeatForever())
+                .WithSimpleSchedule(x => x.WithIntervalInSeconds(mailStationSetting.UpdateSchedulesIntervalInSeconds).RepeatForever())
                 .ForJob(UpdateScheduleJob.JobIdentity)
                 .Build();
 
@@ -238,12 +240,12 @@ namespace Fanex.MailDelivery.Client.Handlers
             await scheduler.ScheduleJob(job, trigger);
         }
 
-        private static IJobDetail GetJobDetail(Schedule schedule)
+        private IJobDetail GetJobDetail(Schedule schedule)
         {
             string jobName = string.Format(MailDeliveryConstants.AutoMailJobNameFormat, schedule.Id);
 
             // Define the job and tie it to our JobRequest class
-            Type jobType = AppSettings.GetJobType(schedule.Id);
+            Type jobType = mailStationSetting.GetJobType(schedule.Id);
             IJobDetail jobDetail = JobBuilder.Create(jobType)
                 .WithIdentity(jobName, MailDeliveryConstants.MailCentralizedTriggerGroup)
                 .Build();
@@ -251,18 +253,18 @@ namespace Fanex.MailDelivery.Client.Handlers
             return jobDetail;
         }
 
-        private static JobDataMap GetJobDataMap(Schedule schedule)
+        private JobDataMap GetJobDataMap(Schedule schedule)
         {
             JobDataMap jobDataMap = new JobDataMap();
             jobDataMap.Add(MailDeliveryConstants.ScheduleJobDataKey, schedule);
 
-            var schedules = AppSettings.MailCientConfig.Schedules;
+            var schedules = mailStationSetting.Schedules;
 
-            foreach (ScheduleElement scheduleConfig in schedules)
+            foreach (ScheduleSetting scheduleConfig in schedules)
             {
                 if (schedule.Id == scheduleConfig.Id)
                 {
-                    foreach (JobInputDataElement jobData in scheduleConfig.JobInputData)
+                    foreach (JobInputDataSetting jobData in scheduleConfig.JobInputData)
                     {
                         jobDataMap.Add(jobData.Name, jobData.Value);
                     }
@@ -272,14 +274,14 @@ namespace Fanex.MailDelivery.Client.Handlers
             return jobDataMap;
         }
 
-        private static IJobDetail GetRetryJob(Schedule schedule)
+        private IJobDetail GetRetryJob(Schedule schedule)
         {
-            schedule.ConvertToServerTime(MailClientSection.IsDevEnvironment());
+            schedule.ConvertToServerTime(mailStationSetting.IsDevEnvironment());
 
             string jobName = string.Format(MailDeliveryConstants.AutoMailJobNameFormat, schedule.Id + Guid.NewGuid().ToString());
 
             // Define the job and tie it to our JobRequest class
-            Type jobType = AppSettings.GetJobType(schedule.Id);
+            Type jobType = mailStationSetting.GetJobType(schedule.Id);
 
             IJobDetail job = JobBuilder.Create(jobType)
                 .WithIdentity(jobName, MailDeliveryConstants.MailCentralizedTriggerGroup)
@@ -288,7 +290,7 @@ namespace Fanex.MailDelivery.Client.Handlers
             return job;
         }
 
-        private static ITrigger GetRetryAllProcessTrigger(Schedule schedule)
+        private ITrigger GetRetryAllProcessTrigger(Schedule schedule)
         {
             JobDataMap jobDataMap = GetJobDataMap(schedule);
 
@@ -300,9 +302,9 @@ namespace Fanex.MailDelivery.Client.Handlers
             return retryTrigger;
         }
 
-        private static ITrigger GetAutoRetryTrigger(Schedule schedule)
+        private ITrigger GetAutoRetryTrigger(Schedule schedule)
         {
-            schedule.ConvertToServerTime(MailClientSection.IsDevEnvironment());
+            schedule.ConvertToServerTime(mailStationSetting.IsDevEnvironment());
             JobDataMap jobDataMap = GetJobDataMap(schedule);
 
             ITrigger retryTrigger = TriggerBuilder.Create()
@@ -314,9 +316,9 @@ namespace Fanex.MailDelivery.Client.Handlers
             return retryTrigger;
         }
 
-        private static ITrigger GetTrigger(Schedule schedule)
+        private ITrigger GetTrigger(Schedule schedule)
         {
-            schedule.ConvertToServerTime(MailClientSection.IsDevEnvironment());
+            schedule.ConvertToServerTime(mailStationSetting.IsDevEnvironment());
 
             JobDataMap jobData = GetJobDataMap(schedule);
 

@@ -13,7 +13,7 @@ using Xunit;
 
 namespace Fanex.MailDelivery.MailStationService.Tests.MessageBrokers
 {
-    public class MessageBrokerTests
+    public class MessageBrokerTests : IDisposable
     {
         private readonly IBus mockBus;
         private readonly MailService mockMailService;
@@ -128,5 +128,33 @@ namespace Fanex.MailDelivery.MailStationService.Tests.MessageBrokers
             mockBus.Received(1).RespondAsync<UMInfoModel, UMInfoModel>(
                 Arg.Compat.Any<Func<UMInfoModel, Task<UMInfoModel>>>());
         }
+
+        #region IDisposable Support
+        private bool disposedValue = false;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    messageBroker.Dispose();
+                }
+
+                disposedValue = true;
+            }
+        }
+
+        ~MessageBrokerTests()
+        {
+            Dispose(false);
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        #endregion
     }
 }

@@ -1,6 +1,8 @@
 ﻿using EasyNetQ;
 using EasyNetQ.FluentConfiguration;
 using Fanex.Caching;
+using Fanex.Logging;
+using Fanex.MailDelivery.Client.Configurations;
 using Fanex.MailDelivery.Client.Handlers;
 using Fanex.MailDelivery.Core;
 using Fanex.MailDelivery.Core.Messaging;
@@ -22,12 +24,17 @@ namespace Fanex.MailDelivery.Client.Tests.Handlers
 
         public MailClientMessageBrokerTests()
         {
+            LogManager
+                .SetDefaultLogCategory("")
+                .Use(new List<ILogEngine> { Substitute.For<ILogEngine>() });
+
+            var mailStationSetting = new MailStationSetting();
             mockJobHandler = Substitute.For<IJobHandler>();
             cacheService = Substitute.For<ICacheService>();
             mockBus = Substitute.For<IBus>();
             mockBus.IsConnected.Returns(true);
 
-            broker = new MailClientMessageBroker(mockJobHandler, mockBus, cacheService);
+            broker = new MailClientMessageBroker(mockJobHandler, mockBus, cacheService, mailStationSetting);
         }
 
         #region StartAsync

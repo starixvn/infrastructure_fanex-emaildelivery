@@ -1,0 +1,105 @@
+﻿using Fanex.Logging;
+using Fanex.Logging.Sentry;
+using Fanex.MailDelivery.Client;
+using Fanex.MailDelivery.Client.Configurations;
+using Fanex.MailDelivery.Core.Models;
+using Microsoft.Extensions.Configuration;
+using Sentry;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+namespace MailStationClient.NetCoreTest
+{
+    class Program
+    {
+        static async Task Main(string[] args)
+        {
+            RegisterLogging();
+
+            var configuration = new ConfigurationBuilder()
+                                  .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+                                  .AddJsonFile("appsettings.json", false, false)
+                                  .Build();
+
+            var mailStationSetting = configuration.GetSection("MailStationSetting").Get<MailStationSetting>();
+
+            await StartMailSchedules(mailStationSetting);
+        }
+
+        private static async Task StartMailSchedules(MailStationSetting mailStationSetting)
+        {
+            try
+            {
+                await MailClientHandler.StartAsync(mailStationSetting);
+
+                Console.WriteLine("Mail Client Service Site: {0} started.", mailStationSetting.SiteId);
+                Console.WriteLine("App Name: {0}", System.Diagnostics.Process.GetProcessById(System.Diagnostics.Process.GetCurrentProcess().Id).ProcessName);
+
+                foreach (var schedule in mailStationSetting.Schedules)
+                {
+                    Console.WriteLine("Schedule list: {0}", schedule.Id);
+                }
+
+                var schedules = await MailClientHandler.GetSchedulesAsync();
+
+                if (schedules == null || schedules.Count == 0)
+                {
+                    Console.WriteLine("Schedule list is null or empty");
+                }
+                else
+                {
+                    Console.WriteLine("Get Schedules successfully.");
+
+                    foreach (var schedule in schedules)
+                    {
+                        schedule.ConvertToServerTime(mailStationSetting.IsDevEnvironment());
+
+                        Console.WriteLine("Schedule: {0}; Cron: {1}", schedule.Id, schedule.RepeatExpression);
+                    }
+                }
+
+                await SendFunctionMailAsync(mailStationSetting);
+
+                Console.ReadLine();
+            }
+            finally
+            {
+                await MailClientHandler.StopAsync();
+            }
+        }
+
+        private static async Task SendFunctionMailAsync(MailStationSetting mailStationSetting)
+        {
+            int mailingListId = mailStationSetting.GetFunctionId("FuntionA");
+
+            if (mailingListId > 0)
+            {
+                var mail = new Mail
+                {
+                    Subject = "Mail Station Test (Function Mail).",
+                    Title = "Mail Station Test (Function Mail).",
+                    Body = "Email Body.",
+                    MailingListId = mailingListId
+                };
+
+                await MailClientHandler.SendFunctionMailAsync(mail);
+
+                Console.WriteLine("Function Mail has been sent.");
+            }
+        }
+
+        private static void RegisterLogging()
+        {
+            LogManager
+                .SetDefaultLogCategory("")
+                .Use(new List<ILogEngine>
+                {
+                     new SentryLogging(new SentryEngineOptions {
+                        Dsn = new Dsn("https://3714717bde1f487795ca0bdeb6c6da9f@sentry.nexdev.net/98"),
+                        Environment = "DEV"
+                     })
+                });
+        }
+    }
+}

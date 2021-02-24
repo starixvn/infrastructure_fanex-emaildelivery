@@ -187,6 +187,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <AdditionalFiles Include="..\.sonarlint\mailstation\CSharp\SonarLint.xml">
+      <Link>SonarLint.xml</Link>
+    </AdditionalFiles>
     <Content Include="Configurations\Fanex.MailDelivery.MailStationService.PRO.exe.config">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -215,7 +218,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Fanex.MailDelivery.Core\Fanex.MailDelivery.Core.csproj">
-      <Project>{c7ed0de9-6a20-4223-b251-6ef530b74139}</Project>
+      <Project>{2fe3078e-af3e-49d6-9e2d-ce50251d4506}</Project>
       <Name>Fanex.MailDelivery.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\Fanex.MailDelivery.Services\Fanex.MailDelivery.Services.csproj">
