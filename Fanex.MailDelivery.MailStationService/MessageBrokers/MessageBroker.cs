@@ -45,10 +45,7 @@ namespace Fanex.MailDelivery.MailStationService.MessageBrokers
 
         public void Start()
         {
-            if (bus == null)
-            {
-                bus = RabbitHutch.CreateBus(AppSettings.RabbitMQConnectionString);
-            }
+            bus = bus ?? RabbitHutch.CreateBus(AppSettings.RabbitMQConnectionString);
 
             while (!bus.IsConnected)
             {

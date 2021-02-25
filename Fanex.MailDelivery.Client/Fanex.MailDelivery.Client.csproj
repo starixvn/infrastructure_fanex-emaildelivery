@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
-    <CodeAnalysisRuleSet>..\.sonarlint\mailstationcsharp.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>Fanex.MailDelivery.Client.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <ItemGroup>

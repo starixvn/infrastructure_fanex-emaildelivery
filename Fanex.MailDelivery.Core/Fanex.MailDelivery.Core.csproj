@@ -9,7 +9,7 @@
     <PackageTags>MailStation</PackageTags>
     <PackageId>Fanex.MailStation.Core</PackageId>
     <Product>Fanex.MailStation.Core</Product>
-    <CodeAnalysisRuleSet>..\.sonarlint\mailstationcsharp.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>Fanex.MailDelivery.Core.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <ItemGroup>

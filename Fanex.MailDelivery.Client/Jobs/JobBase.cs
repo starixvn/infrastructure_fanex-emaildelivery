@@ -133,7 +133,7 @@ namespace Fanex.MailDelivery.Client.Jobs
             JobMessage jobResult = new JobMessage
             {
                 JobStatus = JobStatus.Running,
-                ScheduledTime = schedule.CurrentFireTime.HasValue ? schedule.CurrentFireTime.Value : context.ScheduledFireTimeUtc.GetValueOrDefault().DateTime.ToLocalTime(),
+                ScheduledTime = schedule.CurrentFireTime ?? context.ScheduledFireTimeUtc.GetValueOrDefault().DateTime.ToLocalTime(),
                 RunningTime = context.FireTimeUtc.DateTime.ToLocalTime(),
                 Schedule = schedule.Clone()
             };
@@ -237,7 +237,7 @@ namespace Fanex.MailDelivery.Client.Jobs
 
         private JobMessage RunJob(IJobExecutionContext context, Schedule schedule, JobMessage jobMessage)
         {
-            JobMessage jobResult = jobMessage;
+            JobMessage jobResult;
 
             try
             {
@@ -257,6 +257,7 @@ namespace Fanex.MailDelivery.Client.Jobs
             {
                 LogService.LogError(schedule, ex);
 
+                jobResult = jobMessage;
                 jobResult.TaskLog = new TaskLog
                 {
                     LogTime = DateTime.Now,
