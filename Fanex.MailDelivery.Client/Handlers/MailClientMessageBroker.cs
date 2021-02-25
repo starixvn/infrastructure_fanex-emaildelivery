@@ -125,7 +125,7 @@ namespace Fanex.MailDelivery.Client.Handlers
         public async Task PublishClientNotifyMessageAsync()
         {
             var schedules = mailStationSetting.Schedules;
-            string mailIds = string.Join(",", schedules.OfType<ScheduleSetting>().Select(x => x.Id));
+            string mailIds = string.Join(",", schedules.Select(x => x.Id));
 
             await bus.PublishAsync(new UpdateActiveTimeRequest { MailIds = mailIds }, MailDeliveryConstants.ClientNotificationTopic);
         }
