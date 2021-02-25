@@ -5,4 +5,6 @@
 // a specific target and scoped to a namespace, type, member, etc.
 
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S109:Magic numbers should not be used", Justification = "<Pending>")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Bug", "S2674:The length returned from a stream read should be checked", Justification = "<Pending>",
+    Scope = "member", Target = "~M:Fanex.MailDelivery.Core.Models.MailAttachment.ReadFileContent(System.String)")]
 
