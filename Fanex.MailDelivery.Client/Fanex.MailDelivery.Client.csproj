@@ -4,31 +4,28 @@
     <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
     <CodeAnalysisRuleSet>Fanex.MailDelivery.Client.ruleset</CodeAnalysisRuleSet>
     <PackageId>Fanex.MailStation</PackageId>
-    <Version>3.0.0-beta2</Version>
+    <Version>3.0.0-beta3</Version>
     <Authors>Nexcel Solutions</Authors>
     <Product>Fanex.MailStation</Product>
     <Description>Centralized all emails.</Description>
     <Copyright>Copyright 2021</Copyright>
     <PackageTags>MailStation</PackageTags>
     <PackageReleaseNotes>- Support .Net Core &amp; .Net Framework:
-   + .Net Core:
-      var configuration = new ConfigurationBuilder()
-                                                         .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-                                                         .AddJsonFile("appsettings.json", false, false)
-                                                         .Build();
+ + .Net Core:
+      var configuration = new ConfigurationBuilder().SetBasePath(AppDomain.CurrentDomain.BaseDirectory).AddJsonFile("appsettings.json", false, false).Build();
       var mailStationSetting = configuration.GetSection("MailStationSetting").Get&lt;MailStationSetting&gt;();
       await MailClientHandler.StartAsync(mailStationSetting);
 
  + .Net Framework:
       await MailClientHandler.StartAsync(new MailStationSetting());
-</PackageReleaseNotes>
+    </PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
     <AdditionalFiles Include="..\.sonarlint\mailstation\CSharp\SonarLint.xml" Link="SonarLint.xml" />
   </ItemGroup>
 
-  <ItemGroup>
+  <ItemGroup >
     <Content Include="app.config.transform">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
