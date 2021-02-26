@@ -10,20 +10,16 @@ namespace MailStationClientTest
 {
     public partial class MailStationTestService : ServiceBase
     {
-        private MailStationSetting mailStationSetting;
-
         protected override void OnStart(string[] args)
         {
             try
             {
-                mailStationSetting = new MailStationSetting();
+                MailClientHandler.Start();
 
-                MailClientHandler.Start(mailStationSetting);
-
-                Console.WriteLine("Mail Client Service Site: {0} started.", mailStationSetting.SiteId);
+                Console.WriteLine("Mail Client Service Site: {0} started.", MailClientHandler.MailStationSetting.SiteId);
                 Console.WriteLine("App Name: {0}", System.Diagnostics.Process.GetProcessById(System.Diagnostics.Process.GetCurrentProcess().Id).ProcessName);
 
-                foreach (var schedule in mailStationSetting.Schedules)
+                foreach (var schedule in MailClientHandler.MailStationSetting.Schedules)
                 {
                     Console.WriteLine("Schedule list: {0}", schedule.Id);
                 }
@@ -78,7 +74,7 @@ namespace MailStationClientTest
 
         private async Task SendFunctionMailAsync()
         {
-            int mailingListId = mailStationSetting.GetFunctionId("FuntionA");
+            int mailingListId = MailClientHandler.MailStationSetting.GetFunctionId("FuntionA");
 
             if (mailingListId > 0)
             {

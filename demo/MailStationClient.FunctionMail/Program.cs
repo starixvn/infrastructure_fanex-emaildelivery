@@ -1,5 +1,4 @@
 ﻿using Fanex.MailDelivery.Client;
-using Fanex.MailDelivery.Client.Configurations;
 using Fanex.MailDelivery.Core.Models;
 using System.Threading.Tasks;
 
@@ -15,15 +14,14 @@ namespace MailStationClient.FunctionMailDemo
         {
             try
             {
-                var mailStationSetting = new MailStationSetting();
-                await MailClientHandler.StartAsync(mailStationSetting);
+                await MailClientHandler.StartAsync();
 
                 var mail = new Mail
                 {
                     Subject = "Mail Station Client - Function mail demo",
                     Title = "Function mail demo",
                     Body = "Function mail Body",
-                    MailingListId = mailStationSetting.GetFunctionId("FunctionMail")
+                    MailingListId = MailClientHandler.MailStationSetting.GetFunctionId("FunctionMail")
                 };
 
                 if (mail.MailingListId > 0)

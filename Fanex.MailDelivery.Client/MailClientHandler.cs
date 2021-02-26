@@ -2,8 +2,14 @@
 using Fanex.MailDelivery.Client.Handlers;
 using Fanex.MailDelivery.Core.Messaging;
 using Fanex.MailDelivery.Core.Models;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.IO;
+
+#if !NETFRAMEWORK
+using Microsoft.Extensions.Configuration;
+#endif
 
 namespace Fanex.MailDelivery.Client
 {
@@ -11,19 +17,51 @@ namespace Fanex.MailDelivery.Client
     {
         private static IMailClientMessageBroker messageBroker;
 
-        public static void Start(MailStationSetting mailStationSetting)
+        public static MailStationSetting MailStationSetting { get; private set; }
+
+#if NETFRAMEWORK
+        public static void Start()
         {
-            StartAsync(mailStationSetting)
+            StartAsync()
                 .GetAwaiter()
                 .GetResult();
         }
 
-        public static async Task StartAsync(MailStationSetting mailStationSetting)
+        public static async Task StartAsync()
         {
-            var broker = new MailClientMessageBroker(mailStationSetting);
+            MailStationSetting = new MailStationSetting();
+            var broker = new MailClientMessageBroker(MailStationSetting);
 
             await StartAsync(broker);
         }
+#else
+        public static void Start(string appSettingFileName = "appsettings.json")
+        {
+            StartAsync(appSettingFileName)
+                .GetAwaiter()
+                .GetResult();
+        }
+
+        public static async Task StartAsync(string appSettingFileName = "appsettings.json")
+        {
+            var fileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, appSettingFileName);
+
+            if (!File.Exists(fileName))
+            {
+                throw new FileNotFoundException($"{fileName} not found.");
+            }
+
+            var configuration = new ConfigurationBuilder()
+                                  .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+                                  .AddJsonFile(appSettingFileName, false, false)
+                                  .Build();
+            MailStationSetting = configuration.GetSection("Fanex.MailDelivery.Client").Get<MailStationSetting>();
+
+            var broker = new MailClientMessageBroker(MailStationSetting);
+
+            await StartAsync(broker);
+        }
+#endif
 
         public static async Task StartAsync(IMailClientMessageBroker messageBroker)
         {
@@ -41,7 +79,7 @@ namespace Fanex.MailDelivery.Client
 
         public static async Task StopAsync()
         {
-            await messageBroker.StopAsync();
+            await messageBroker?.StopAsync();
         }
 
         public static void SendFunctionMail(Mail mail)

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 
 namespace Fanex.MailDelivery.Core.Models
 {
@@ -124,6 +125,12 @@ namespace Fanex.MailDelivery.Core.Models
             string timezoneName = isDevEnvironment ? MailDeliveryConstants.DevServerTimeZone : MailDeliveryConstants.LiveServerTimeZone;
             DateTime nowDate = DateTime.Now;
 
+#if !NETFRAMEWORK
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                timezoneName = TimeZoneConverter.TZConvert.WindowsToIana(timezoneName);
+            }
+#endif
             return -(TimeZoneInfo.ConvertTime(nowDate, TimeZoneInfo.FindSystemTimeZoneById(timezoneName)) - nowDate).Hours;
         }
     }

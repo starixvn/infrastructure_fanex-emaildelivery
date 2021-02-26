@@ -9,9 +9,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fanex.MailDelivery.Services
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fanex.MailDelivery.MailStationService", "Fanex.MailDelivery.MailStationService\Fanex.MailDelivery.MailStationService.csproj", "{B7144728-6615-4A45-9810-34D141410569}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MailStationClient.AutoJobDemo", "MailStationClient.AutoJobDemo\MailStationClient.AutoJobDemo.csproj", "{41BA7D82-1D25-44CF-9555-68158431FD2A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MailStationClient.AutoJobDemo", "demo\MailStationClient.AutoJobDemo\MailStationClient.AutoJobDemo.csproj", "{41BA7D82-1D25-44CF-9555-68158431FD2A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MailStationClient.FunctionMailDemo", "MailStationClient.FunctionMail\MailStationClient.FunctionMailDemo.csproj", "{9A98D4F8-FD93-40F6-8A4E-2505D078FE7E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MailStationClient.FunctionMailDemo", "demo\MailStationClient.FunctionMail\MailStationClient.FunctionMailDemo.csproj", "{9A98D4F8-FD93-40F6-8A4E-2505D078FE7E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "demo", "demo", "{3734F784-650C-49B3-97EC-1E1FB7559111}"
 EndProject

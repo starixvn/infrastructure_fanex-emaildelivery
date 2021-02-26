@@ -1,9 +1,7 @@
 ﻿using Fanex.Logging;
 using Fanex.Logging.Sentry;
 using Fanex.MailDelivery.Client;
-using Fanex.MailDelivery.Client.Configurations;
 using Fanex.MailDelivery.Core.Models;
-using Microsoft.Extensions.Configuration;
 using Sentry;
 using System;
 using System.Collections.Generic;
@@ -17,26 +15,19 @@ namespace MailStationClient.NetCoreTest
         {
             RegisterLogging();
 
-            var configuration = new ConfigurationBuilder()
-                                  .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-                                  .AddJsonFile("appsettings.json", false, false)
-                                  .Build();
-
-            var mailStationSetting = configuration.GetSection("MailStationSetting").Get<MailStationSetting>();
-
-            await StartMailSchedules(mailStationSetting);
+            await StartMailSchedules();
         }
 
-        private static async Task StartMailSchedules(MailStationSetting mailStationSetting)
+        private static async Task StartMailSchedules()
         {
             try
             {
-                await MailClientHandler.StartAsync(mailStationSetting);
+                await MailClientHandler.StartAsync("appsettings.json");
 
-                Console.WriteLine("Mail Client Service Site: {0} started.", mailStationSetting.SiteId);
+                Console.WriteLine("Mail Client Service Site: {0} started.", MailClientHandler.MailStationSetting.SiteId);
                 Console.WriteLine("App Name: {0}", System.Diagnostics.Process.GetProcessById(System.Diagnostics.Process.GetCurrentProcess().Id).ProcessName);
 
-                foreach (var schedule in mailStationSetting.Schedules)
+                foreach (var schedule in MailClientHandler.MailStationSetting.Schedules)
                 {
                     Console.WriteLine("Schedule list: {0}", schedule.Id);
                 }
@@ -53,13 +44,13 @@ namespace MailStationClient.NetCoreTest
 
                     foreach (var schedule in schedules)
                     {
-                        schedule.ConvertToServerTime(mailStationSetting.IsDevEnvironment());
+                        schedule.ConvertToServerTime(MailClientHandler.MailStationSetting.IsDevEnvironment());
 
                         Console.WriteLine("Schedule: {0}; Cron: {1}", schedule.Id, schedule.RepeatExpression);
                     }
                 }
 
-                await SendFunctionMailAsync(mailStationSetting);
+                await SendFunctionMailAsync();
 
                 Console.ReadLine();
             }
@@ -69,9 +60,9 @@ namespace MailStationClient.NetCoreTest
             }
         }
 
-        private static async Task SendFunctionMailAsync(MailStationSetting mailStationSetting)
+        private static async Task SendFunctionMailAsync()
         {
-            int mailingListId = mailStationSetting.GetFunctionId("FuntionA");
+            int mailingListId = MailClientHandler.MailStationSetting.GetFunctionId("FuntionA");
 
             if (mailingListId > 0)
             {

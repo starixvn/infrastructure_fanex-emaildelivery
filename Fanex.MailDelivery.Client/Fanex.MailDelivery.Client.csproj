@@ -4,28 +4,26 @@
     <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
     <CodeAnalysisRuleSet>Fanex.MailDelivery.Client.ruleset</CodeAnalysisRuleSet>
     <PackageId>Fanex.MailStation</PackageId>
-    <Version>3.0.0-beta3</Version>
+    <Version>2.1.0</Version>
     <Authors>Nexcel Solutions</Authors>
     <Product>Fanex.MailStation</Product>
     <Description>Centralized all emails.</Description>
     <Copyright>Copyright 2021</Copyright>
     <PackageTags>MailStation</PackageTags>
-    <PackageReleaseNotes>- Support .Net Core &amp; .Net Framework:
- + .Net Core:
-      var configuration = new ConfigurationBuilder().SetBasePath(AppDomain.CurrentDomain.BaseDirectory).AddJsonFile("appsettings.json", false, false).Build();
-      var mailStationSetting = configuration.GetSection("MailStationSetting").Get&lt;MailStationSetting&gt;();
-      await MailClientHandler.StartAsync(mailStationSetting);
+    <PackageReleaseNotes>- Support .Net Core
+ + Use default AppSetting (appsettings.json):      
+     await MailClientHandler.StartAsync();
 
- + .Net Framework:
-      await MailClientHandler.StartAsync(new MailStationSetting());
-    </PackageReleaseNotes>
+ + Use custom AppSetting (custom-appsettings.json):
+     await MailClientHandler.StartAsync("custom-appsettings.json");
+</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
     <AdditionalFiles Include="..\.sonarlint\mailstation\CSharp\SonarLint.xml" Link="SonarLint.xml" />
   </ItemGroup>
 
-  <ItemGroup >
+  <ItemGroup>
     <Content Include="app.config.transform">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -39,7 +37,9 @@
     <PackageReference Include="Fanex.Caching" Version="2.2.2" />
     <PackageReference Include="Fanex.Logging" Version="2.0.1" />
     <PackageReference Include="Fanex.Logging.Extensions" Version="1.0.6" />
-    <PackageReference Include="Fanex.MailStation.Core" Version="2.0.0-beta1" />
+    <PackageReference Include="Fanex.MailStation.Core" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="2.0.0" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.0.0" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
     <PackageReference Include="Quartz" Version="3.2.4" />
   </ItemGroup>
 

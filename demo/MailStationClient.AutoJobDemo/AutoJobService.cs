@@ -1,5 +1,4 @@
 ﻿using Fanex.MailDelivery.Client;
-using Fanex.MailDelivery.Client.Configurations;
 using System.ServiceProcess;
 
 namespace MailStationClient.AutoJobDemo
@@ -13,7 +12,7 @@ namespace MailStationClient.AutoJobDemo
 
         protected override void OnStart(string[] args)
         {
-            MailClientHandler.Start(new MailStationSetting());
+            MailClientHandler.Start();
         }
 
         protected override void OnStop()
