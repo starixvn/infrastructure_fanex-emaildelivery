@@ -1,8 +1,11 @@
 ﻿using Fanex.MailDelivery.Core.Models;
-using RestSharp;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 namespace Fanex.MailDelivery.Services.Services
@@ -14,21 +17,23 @@ namespace Fanex.MailDelivery.Services.Services
         Task WaitForUMOff();
     }
 
-    public class UMServiceImpl : UMService
+    public class UMServiceImpl : UMService, IDisposable
     {
         private const int UMGMT = 8;
         private const int RetryIntervalInSeconds = 10;
         private readonly LogService logService;
-        private readonly IRestClient client;
+        private IHttpClientWrapper client;
+        private readonly Uri umApiUrl;
 
-        public UMServiceImpl(string umApiBaseUrl, LogService logService) : this(umApiBaseUrl, logService, null)
+        public UMServiceImpl(string umApiUrl, LogService logService) : this(umApiUrl, logService, null)
         {
         }
 
-        public UMServiceImpl(string umApiBaseUrl, LogService logService, IRestClient client)
+        public UMServiceImpl(string umApiUrl, LogService logService, IHttpClientWrapper client)
         {
+            this.umApiUrl = new Uri(umApiUrl);
             this.logService = logService;
-            this.client = client ?? new RestClient(new Uri(umApiBaseUrl));
+            this.client = client ?? new HttpClientWrapper();
         }
 
         public async Task<UMInfoModel> GetUMInfo(int retryCount = 0)
@@ -38,27 +43,18 @@ namespace Fanex.MailDelivery.Services.Services
 
             try
             {
-                var request = new RestRequest("UnderMaintenance/getall", DataFormat.Json);
+                string content = await client.GetAsync(umApiUrl).ConfigureAwait(false);
+                var umData = JsonConvert.DeserializeObject<Dictionary<string, UMInfoModel>>(content);
+                result = umData.Values.FirstOrDefault(x => x.IsUnderMaintenanceTime);
 
-                var response = await client.ExecuteGetAsync<Dictionary<string, UMInfoModel>>(request);
-
-                if (response.IsSuccessful)
+                if (result != null)
                 {
-                    result = response.Data.Values.FirstOrDefault(x => x.IsUnderMaintenanceTime);
-
-                    if (result != null)
-                    {
-                        result.From = result.From.AddHours(UMGMT * -1); //Convert to UTC
-                        result.To = result.To.AddHours(UMGMT * -1);
-                    }
-                    else
-                    {
-                        result = new UMInfoModel();
-                    }
+                    result.From = result.From.AddHours(UMGMT * -1); //Convert to UTC
+                    result.To = result.To.AddHours(UMGMT * -1);
                 }
                 else
                 {
-                    throw response.ErrorException;
+                    result = new UMInfoModel();
                 }
             }
             catch (Exception ex)
@@ -98,5 +94,34 @@ namespace Fanex.MailDelivery.Services.Services
                 }
             }
         }
+
+        #region IDisposable Support
+        private bool disposedValue;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    client?.Dispose();
+                }
+
+                client = null;
+                disposedValue = true;
+            }
+        }
+
+        ~UMServiceImpl()
+        {
+            Dispose(false);
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        #endregion
     }
 }
