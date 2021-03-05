@@ -210,6 +210,10 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Configurations\Fanex.MailDelivery.MailStationService.AWS.config">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="deployment.ignore">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
