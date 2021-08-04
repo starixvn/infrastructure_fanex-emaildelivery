@@ -3,3 +3,8 @@
 \\*.uat.exe.config
 \\*.mnl.exe.config
 \\*.sit.exe.config
+\\*.local.json
+\\*.pro.json
+\\*.uat.json
+\\*.mnl.json
+\\*.sit.json

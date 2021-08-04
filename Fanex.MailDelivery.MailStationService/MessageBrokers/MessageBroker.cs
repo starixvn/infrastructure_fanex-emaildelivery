@@ -38,7 +38,7 @@ namespace Fanex.MailDelivery.MailStationService.MessageBrokers
 
             this.logService = logService;
             this.mailService = mailService ?? new MailServiceImpl(AppSettings.SendMailRetryLimit, AppSettings.SendMailRetryIntervalInMinutes, logService);
-            this.umService = umService ?? new UMServiceImpl(AppSettings.ONEbookUMServiceUri, logService);
+            this.umService = umService ?? new UMServiceImpl(logService);
             this.bus = bus;
             this.cacheService = cacheService ?? new CacheService();
         }
@@ -64,6 +64,7 @@ namespace Fanex.MailDelivery.MailStationService.MessageBrokers
         }
 
         #region Subscribe
+
         private void SubscribeMail()
         {
             bool isFailed = false;
@@ -183,9 +184,11 @@ namespace Fanex.MailDelivery.MailStationService.MessageBrokers
                 SubscribeTaskLogMessage();
             }
         }
-        #endregion
+
+        #endregion Subscribe
 
         #region Response
+
         private void ResponseGetScheduleList()
         {
             bool isFailed = false;
@@ -297,9 +300,11 @@ namespace Fanex.MailDelivery.MailStationService.MessageBrokers
                 RespondGetMailTaskForById();
             }
         }
-        #endregion
+
+        #endregion Response
 
         #region IDisposable Support
+
         private bool disposedValue;
 
         protected virtual void Dispose(bool disposing)
@@ -328,6 +333,7 @@ namespace Fanex.MailDelivery.MailStationService.MessageBrokers
             Dispose(true);
             GC.SuppressFinalize(this);
         }
-        #endregion
+
+        #endregion IDisposable Support
     }
 }

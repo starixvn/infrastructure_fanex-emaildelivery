@@ -1,4 +1,5 @@
 ﻿using Fanex.MailDelivery.Core;
+using Fanex.MailDelivery.Core.Models;
 using System;
 using System.Configuration;
 
@@ -12,8 +13,6 @@ namespace Fanex.MailDelivery.MailStationService
         public static int SendMailRetryLimit => Convert.ToInt32(ConfigurationManager.AppSettings.Get("MailStation:SendMailRetryLimit"));
 
         public static int SendMailRetryIntervalInMinutes => Convert.ToInt32(ConfigurationManager.AppSettings.Get("MailStation:SendMailRetryIntervalInMinutes"));
-
-        public static string ONEbookUMServiceUri => ConfigurationManager.AppSettings.Get("ONEbook.UM:ServiceUri");
 
         public static int UpdateFailedForLongRunningTaskIntervalInMinutes => Convert.ToInt32(ConfigurationManager.AppSettings.Get("MailStation:UpdateFailedForLongRunningTaskIntervalInMinutes"));
 

@@ -4,6 +4,7 @@ using Fanex.MailDelivery.MailStationService.MessageBrokers;
 using Fanex.MailDelivery.Services.Services;
 using Quartz;
 using Quartz.Impl;
+using System;
 using System.ServiceProcess;
 using System.Threading.Tasks;
 
@@ -27,12 +28,12 @@ namespace Fanex.MailDelivery.MailStationService
             this.logService = logService ?? new LogServiceImpl();
             this.messageBroker = messageBroker ?? new MessageBrokerImpl(this.logService);
             DbSettingProviderManager.Current.Start();
+            RegisterService.RegisterServices();
         }
 
         protected override void OnStart(string[] args)
         {
             messageBroker.Start();
-
             RegisterJobs()
                 .GetAwaiter()
                 .GetResult();
