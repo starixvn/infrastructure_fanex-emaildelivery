@@ -17,7 +17,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="ONEbook.UM" Version="3.1.1" />
+    <PackageReference Include="ONEbook.UM.Transport" Version="3.1.1" />
+    <PackageReference Include="SimpleInjector" Version="5.3.2" />
     <PackageReference Include="TimeZoneConverter" Version="3.4.0" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
   </ItemGroup>
-
 </Project>

@@ -1,11 +1,7 @@
-﻿using Fanex.MailDelivery.Core.Models;
-using Newtonsoft.Json;
+﻿using Fanex.MailDelivery.Core;
+using Fanex.MailDelivery.Core.Models;
+using ONEbook.UM.Services;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 namespace Fanex.MailDelivery.Services.Services
@@ -22,35 +18,28 @@ namespace Fanex.MailDelivery.Services.Services
         private const int UMGMT = 8;
         private const int RetryIntervalInSeconds = 10;
         private readonly LogService logService;
-        private IHttpClientWrapper client;
-        private readonly Uri umApiUrl;
 
-        public UMServiceImpl(string umApiUrl, LogService logService) : this(umApiUrl, logService, null)
+        public UMServiceImpl(LogService logService)
         {
-        }
-
-        public UMServiceImpl(string umApiUrl, LogService logService, IHttpClientWrapper client)
-        {
-            this.umApiUrl = new Uri(umApiUrl);
             this.logService = logService;
-            this.client = client ?? new HttpClientWrapper();
         }
 
         public async Task<UMInfoModel> GetUMInfo(int retryCount = 0)
         {
-            UMInfoModel result;
+            UMInfoModel result = new UMInfoModel();
             bool isFailed = false;
 
             try
             {
-                string content = await client.GetAsync(umApiUrl).ConfigureAwait(false);
-                var umData = JsonConvert.DeserializeObject<Dictionary<string, UMInfoModel>>(content);
-                result = umData.Values.FirstOrDefault(x => x.IsUnderMaintenanceTime);
-
-                if (result != null)
+                var um = AppConfigService.Container.GetInstance<IMaintenanceService>();
+                if (um.IsUnderMaintenance())
                 {
+                    result.From = Convert.ToDateTime(um.GetUnderMaintenanceTime().From);
+                    result.To = Convert.ToDateTime(um.GetUnderMaintenanceTime().To);
+
                     result.From = result.From.AddHours(UMGMT * -1); //Convert to UTC
                     result.To = result.To.AddHours(UMGMT * -1);
+                    result.IsUnderMaintenanceTime = um.IsUnderMaintenance();
                 }
                 else
                 {
@@ -96,18 +85,13 @@ namespace Fanex.MailDelivery.Services.Services
         }
 
         #region IDisposable Support
+
         private bool disposedValue;
 
         protected virtual void Dispose(bool disposing)
         {
             if (!disposedValue)
             {
-                if (disposing)
-                {
-                    client?.Dispose();
-                }
-
-                client = null;
                 disposedValue = true;
             }
         }
@@ -122,6 +106,7 @@ namespace Fanex.MailDelivery.Services.Services
             Dispose(true);
             GC.SuppressFinalize(this);
         }
-        #endregion
+
+        #endregion IDisposable Support
     }
 }
