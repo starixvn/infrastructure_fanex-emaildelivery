@@ -17,7 +17,7 @@ pipeline {
     stage('Build') {
       steps {       
         script{
-          pipelineLib.beginSonarQubeForMsBuild("MailStation", "NexOps / Mail Station", "/d:sonar.cs.opencover.reportsPaths=%WORKSPACE%\\coverage.xml /d:sonar.cs.xunit.reportsPaths=%WORKSPACE%\\UnitTest.xml")
+          pipelineLib.beginSonarQubeForMsBuild("MailStation", "Olympus / Mail Station", "/d:sonar.cs.opencover.reportsPaths=%WORKSPACE%\\coverage.xml /d:sonar.cs.xunit.reportsPaths=%WORKSPACE%\\UnitTest.xml")
 
           pipelineLib.restoreNuget()
 
@@ -59,7 +59,7 @@ pipeline {
       step([$class: 'ACIPluginPublisher', name: '*.xml', shownOnProjectPage: false])
     }
     unsuccessful{
-      emailext body: '$DEFAULT_CONTENT', subject: '$DEFAULT_SUBJECT', to: 'larry.tran@starixsoft.com'
+      emailext body: '$DEFAULT_CONTENT', subject: '$DEFAULT_SUBJECT', to: 'robert.tran@starixsoft.com'
     }
   }
 }
