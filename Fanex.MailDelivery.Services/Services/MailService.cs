@@ -424,7 +424,13 @@ namespace Fanex.MailDelivery.Services.Services
                     throw new InvalidOperationException($"Cannot get mail record #{mailRecord.MailID} to send.");
                 }
 
-                MailExtension.SendMail(record, out error);
+                //MailExtension.SendMail(record, out error);
+                //var mailExtension = new MailExtensionImp();
+                //mailExtension.SendMail(record, out error);
+                using (var mailService = new Fanex.MailDeliver.MailClient.API.MailDeliver())
+                {
+                    mailService.SendMail(record);
+                }
 
                 if (!string.IsNullOrWhiteSpace(error))
                 {
@@ -635,7 +641,8 @@ namespace Fanex.MailDelivery.Services.Services
                         ImageType = (FileExtentions)((int)alternativeView.FileExtension),
                         LinkedID = alternativeView.Id,
                         MailID = alternativeView.MailId,
-                        StreamContent = new MemoryStream(alternativeView.FileContent)
+                        //StreamContent = new MemoryStream(alternativeView.FileContent)
+                        Bytes = alternativeView.FileContent
                     });
                 }
             }
@@ -654,7 +661,8 @@ namespace Fanex.MailDelivery.Services.Services
                     destinationMailRecord.Attachments.Add(new MailDeliver.Model.MailAttachment
                     {
                         AttachmentID = attach.Id,
-                        Content = new MemoryStream(attach.FileContent),
+                        // Content = new MemoryStream(attach.FileContent),
+                        Bytes = attach.FileContent,
                         ContentType = (FileExtentions)((int)attach.FileExtension),
                         FileName = attach.FileName,
                         MailID = attach.MailId

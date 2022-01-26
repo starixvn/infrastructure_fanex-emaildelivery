@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using SimpleInjector;
 using System;
 using System.IO;
+using MailServiceAppSettings = Fanex.MailDeliver.MailClient.AppSettings;
 
 namespace Fanex.MailDelivery.MailStationService
 {
@@ -21,6 +22,8 @@ namespace Fanex.MailDelivery.MailStationService
 
             var text = File.ReadAllText("Configurations/appsettings.json");
             AppConfigService.AppConfig = JsonConvert.DeserializeObject<ConfigSettingModel>(text);
+            MailServiceAppSettings.AppMailId = AppConfigService.AppConfig.AppMailId;
+            MailServiceAppSettings.AppMailAddress = AppConfigService.AppConfig.AppMailAddress;
         }
 
         private static void DependencyInjection()
