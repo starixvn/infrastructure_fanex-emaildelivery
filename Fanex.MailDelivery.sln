@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.1169
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31912.275
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MailStationClientTest", "MailStationTest\MailStationClientTest.csproj", "{2218E3C7-066D-47A4-AA3E-8F81063FB046}"
 EndProject
@@ -30,6 +30,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fanex.MailDelivery.Core", "Fanex.MailDelivery.Core\Fanex.MailDelivery.Core.csproj", "{2FE3078E-AF3E-49D6-9E2D-CE50251D4506}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MailStationClient.NetCoreTest", "MailStationClient.Test\MailStationClient.NetCoreTest.csproj", "{4C5F7431-631F-4B91-9881-015C5B85BDF3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MailService", "MailService", "{F67C9F03-A0A5-4693-8388-63D224A786B7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fanex.MailDeliver.Core", "..\infrastructure-net-5\Fanex.MailDeliver.Service\Fanex.MailDeliver.Core\Fanex.MailDeliver.Core.csproj", "{33A64385-649D-484C-8B0A-C3F666E840DC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -217,6 +221,22 @@ Global
 		{4C5F7431-631F-4B91-9881-015C5B85BDF3}.Release|x64.Build.0 = Release|Any CPU
 		{4C5F7431-631F-4B91-9881-015C5B85BDF3}.Release|x86.ActiveCfg = Release|Any CPU
 		{4C5F7431-631F-4B91-9881-015C5B85BDF3}.Release|x86.Build.0 = Release|Any CPU
+		{33A64385-649D-484C-8B0A-C3F666E840DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33A64385-649D-484C-8B0A-C3F666E840DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33A64385-649D-484C-8B0A-C3F666E840DC}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{33A64385-649D-484C-8B0A-C3F666E840DC}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{33A64385-649D-484C-8B0A-C3F666E840DC}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{33A64385-649D-484C-8B0A-C3F666E840DC}.Debug|x64.Build.0 = Debug|Any CPU
+		{33A64385-649D-484C-8B0A-C3F666E840DC}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{33A64385-649D-484C-8B0A-C3F666E840DC}.Debug|x86.Build.0 = Debug|Any CPU
+		{33A64385-649D-484C-8B0A-C3F666E840DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33A64385-649D-484C-8B0A-C3F666E840DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{33A64385-649D-484C-8B0A-C3F666E840DC}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{33A64385-649D-484C-8B0A-C3F666E840DC}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{33A64385-649D-484C-8B0A-C3F666E840DC}.Release|x64.ActiveCfg = Release|Any CPU
+		{33A64385-649D-484C-8B0A-C3F666E840DC}.Release|x64.Build.0 = Release|Any CPU
+		{33A64385-649D-484C-8B0A-C3F666E840DC}.Release|x86.ActiveCfg = Release|Any CPU
+		{33A64385-649D-484C-8B0A-C3F666E840DC}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -228,6 +248,7 @@ Global
 		{55D83DBB-5E23-467A-9043-9965C433967B} = {CC784B47-C746-4F4D-AAA1-BB8127F81178}
 		{795BD9F0-1A27-46A1-8E25-9B857EBAADD2} = {CC784B47-C746-4F4D-AAA1-BB8127F81178}
 		{6EBB9A4C-75DA-4A3E-9CFC-113646549820} = {CC784B47-C746-4F4D-AAA1-BB8127F81178}
+		{33A64385-649D-484C-8B0A-C3F666E840DC} = {F67C9F03-A0A5-4693-8388-63D224A786B7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9A6AD95D-89F5-49A5-A302-F9A7EEB10700}

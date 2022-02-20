@@ -1,16 +1,18 @@
 ﻿using Fanex.MailDelivery.Client;
 using Fanex.MailDelivery.Core.Models;
+using System;
+using System.Configuration;
 using System.Threading.Tasks;
 
 namespace MailStationClient.FunctionMailDemo
 {
-    class Program
+    internal class Program
     {
         protected Program()
         {
         }
 
-        static async Task Main(string[] args)
+        private static async Task Main(string[] args)
         {
             try
             {
@@ -21,13 +23,17 @@ namespace MailStationClient.FunctionMailDemo
                     Subject = "Mail Station Client - Function mail demo",
                     Title = "Function mail demo",
                     Body = "Function mail Body",
-                    MailingListId = MailClientHandler.MailStationSetting.GetFunctionId("FunctionMail")
+                    MailingListId = 3
                 };
 
                 if (mail.MailingListId > 0)
                 {
                     await MailClientHandler.SendFunctionMailAsync(mail);
                 }
+            }
+            catch (Exception ex)
+            {
+                var s = ex.Message;
             }
             finally
             {

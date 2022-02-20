@@ -49,12 +49,6 @@
     <Reference Include="Fanex.Logging.Extensions, Version=1.0.6.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Fanex.Logging.Extensions.1.0.6\lib\net461\Fanex.Logging.Extensions.dll</HintPath>
     </Reference>
-    <Reference Include="Fanex.MailDelivery.Client, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Fanex.MailStation.2.1.0\lib\net461\Fanex.MailDelivery.Client.dll</HintPath>
-    </Reference>
-    <Reference Include="Fanex.MailDelivery.Core, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Fanex.MailStation.Core.2.0.0\lib\net461\Fanex.MailDelivery.Core.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Extensions.Logging.Abstractions, Version=2.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.Extensions.Logging.Abstractions.2.1.1\lib\netstandard2.0\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
     </Reference>
@@ -113,6 +107,16 @@
     </None>
     <None Include="MailStationClient.FunctionMailDemo.ruleset" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Fanex.MailDelivery.Client\Fanex.MailDelivery.Client.csproj">
+      <Project>{259beab7-252c-46b8-b0c7-2519f4441a9f}</Project>
+      <Name>Fanex.MailDelivery.Client</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Fanex.MailDelivery.Core\Fanex.MailDelivery.Core.csproj">
+      <Project>{2fe3078e-af3e-49d6-9e2d-ce50251d4506}</Project>
+      <Name>Fanex.MailDelivery.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
